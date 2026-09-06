@@ -1,0 +1,471 @@
+{
+ "bloque": 2,
+ "reactivos": [
+  {
+   "id": "oc-61",
+   "subtema": "2.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿De qué depende el régimen de una comida, según el libro?",
+   "opciones": [
+    "Del costo del ingrediente principal",
+    "De la frecuencia y el contexto en que se prepara",
+    "De la región geográfica",
+    "Del número de comensales"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: De la frecuencia y el contexto en que se prepara."
+  },
+  {
+   "id": "oc-62",
+   "subtema": "2.1",
+   "tipo": "relacionar",
+   "pregunta": "Relaciona cada régimen con su característica principal.",
+   "pares": [
+    {
+     "izquierda": "Cotidiano",
+     "derecha": "Eficiencia de tiempo, costo y esfuerzo"
+    },
+    {
+     "izquierda": "Dominical",
+     "derecha": "Espacio de transmisión de recetas familiares"
+    },
+    {
+     "izquierda": "De festejo",
+     "derecha": "Rompe la lógica de ahorro; ingredientes caros y técnicas elaboradas"
+    }
+   ],
+   "explicacion": "Revisa el compendio de este subtema si tuviste dudas."
+  },
+  {
+   "id": "oc-63",
+   "subtema": "2.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué comida ejemplifica el régimen festivo del islam durante el Ramadán?",
+   "opciones": [
+    "El séder de Pésaj",
+    "El iftar",
+    "La cena de Nochebuena",
+    "El Año Nuevo chino"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: El iftar."
+  },
+  {
+   "id": "oc-64",
+   "subtema": "2.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "El mismo platillo puede pertenecer a distintos regímenes según cuándo y para quién se prepare.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 0,
+   "explicacion": "Verdadero, según el compendio."
+  },
+  {
+   "id": "oc-65",
+   "subtema": "2.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "El séder de _______ es una comida ritual judía con alimentos simbólicos ligados al relato del Éxodo.",
+   "opciones": [
+    "Pésaj",
+    "Ramadán",
+    "Sabbat",
+    "Iftar"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: Pésaj."
+  },
+  {
+   "id": "oc-67",
+   "subtema": "2.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué firma culinaria reconocible corresponde a la Edad Media, según el libro?",
+   "opciones": [
+    "Salsas fermentadas intensas",
+    "Mezcla intensa de especias importadas",
+    "Espectáculo visual del banquete",
+    "Deconstrucción y foraging"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: Mezcla intensa de especias importadas."
+  },
+  {
+   "id": "oc-68",
+   "subtema": "2.2",
+   "tipo": "relacionar",
+   "pregunta": "Relaciona cada época con su firma culinaria.",
+   "pares": [
+    {
+     "izquierda": "Antigua Roma",
+     "derecha": "Salsas fermentadas intensas, banquete en tres fases"
+    },
+    {
+     "izquierda": "Renacimiento",
+     "derecha": "Espectáculo visual, postres fríos elaborados"
+    },
+    {
+     "izquierda": "Codificación clásica francesa",
+     "derecha": "Salsas madre, brigada, orden estricto del menú"
+    },
+    {
+     "izquierda": "Vanguardia / New Nordic",
+     "derecha": "Deconstrucción, foraging, fermentación artesanal"
+    }
+   ],
+   "explicacion": "Revisa el compendio de este subtema si tuviste dudas."
+  },
+  {
+   "id": "oc-69",
+   "subtema": "2.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "Clasificar por épocas es idéntico a clasificar por régimen: ambos dependen de la frecuencia de preparación.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "clasificar por épocas depende de la firma histórica reconocible del platillo, no de su frecuencia."
+  },
+  {
+   "id": "oc-71",
+   "subtema": "2.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "La codificación clásica francesa, asociada a _______, aportó las salsas madre y el orden estricto del menú.",
+   "opciones": [
+    "Escoffier",
+    "Apicio",
+    "La Varenne",
+    "Scappi"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: Escoffier."
+  },
+  {
+   "id": "oc-72",
+   "subtema": "2.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué firma culinaria asocia el libro al Renacimiento?",
+   "opciones": [
+    "Espectáculo visual del banquete y postres fríos elaborados",
+    "Cocción en horno de tierra",
+    "Uso de especias del Nuevo Mundo",
+    "Menú fijo de precio único"
+   ],
+   "correcta": 0,
+   "explicacion": "Correcto: Espectáculo visual del banquete y postres fríos elaborados."
+  },
+  {
+   "id": "oc-73",
+   "subtema": "2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué características debe tener un animal terrestre para ser apto (kosher) según las leyes de kashrut?",
+   "opciones": [
+    "Ser ave de corral",
+    "Ser rumiante y de pezuña partida",
+    "Ser herbívoro exclusivamente",
+    "Vivir en zonas templadas"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: Ser rumiante y de pezuña partida."
+  },
+  {
+   "id": "oc-74",
+   "subtema": "2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "El método de sacrificio ritual judío que busca drenar completamente la sangre del animal se llama _______.",
+   "opciones": [
+    "shejitá",
+    "dhabihah",
+    "kashrut",
+    "halal"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: shejitá."
+  },
+  {
+   "id": "oc-75",
+   "subtema": "2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cómo se llama el método de sacrificio ritual islámico requerido para que la carne sea halal?",
+   "opciones": [
+    "Shejitá",
+    "Dhabihah",
+    "Kashrut",
+    "Langar"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: Dhabihah."
+  },
+  {
+   "id": "oc-76",
+   "subtema": "2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "El islam prohíbe explícitamente el consumo de cerdo, sangre, y carne de animales sacrificados sin invocar el nombre de Dios.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 0,
+   "explicacion": "Verdadero, según el compendio."
+  },
+  {
+   "id": "oc-77",
+   "subtema": "2.3",
+   "tipo": "relacionar",
+   "pregunta": "Relaciona cada tradición cristiana con su nivel de rigor en el ayuno.",
+   "pares": [
+    {
+     "izquierda": "Catolicismo",
+     "derecha": "Abstinencia de carne los viernes de Cuaresma; ayuno estricto en Miércoles de Ceniza y Viernes Santo"
+    },
+    {
+     "izquierda": "Cristianismo ortodoxo",
+     "derecha": "Hasta 200 días de ayuno al año, Gran Cuaresma de 48 días"
+    }
+   ],
+   "explicacion": "Revisa el compendio de este subtema si tuviste dudas."
+  },
+  {
+   "id": "oc-78",
+   "subtema": "2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué principio ético lleva el jainismo a su forma más estricta en materia alimentaria?",
+   "opciones": [
+    "El kashrut",
+    "El ahimsa (no violencia)",
+    "El halal",
+    "El nirvana"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: El ahimsa (no violencia)."
+  },
+  {
+   "id": "oc-79",
+   "subtema": "2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "Los practicantes más devotos del jainismo evitan incluso tubérculos como la cebolla y el ajo porque arrancarlos de raíz mata a la _______ entera.",
+   "opciones": [
+    "planta",
+    "la tierra",
+    "la cosecha",
+    "la semilla"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: planta."
+  },
+  {
+   "id": "oc-80",
+   "subtema": "2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "Todas las ramas del budismo son estrictamente vegetarianas sin excepción.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "algunas ramas, como el Theravāda, permiten el consumo de carne bajo ciertas condiciones."
+  },
+  {
+   "id": "oc-81",
+   "subtema": "2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué institución alimentaria caracteriza al sikhismo?",
+   "opciones": [
+    "El hamín",
+    "El langar",
+    "El grand couvert",
+    "El iftar"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: El langar."
+  },
+  {
+   "id": "oc-83",
+   "subtema": "2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué platillo sefardí nace de la prohibición de cocinar en sabbat?",
+   "opciones": [
+    "El hamín",
+    "El pan de cazón",
+    "El cuscús",
+    "El garum"
+   ],
+   "correcta": 0,
+   "explicacion": "Correcto: El hamín."
+  },
+  {
+   "id": "oc-84",
+   "subtema": "2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "La dieta _______ del movimiento rastafari se basa en alimentos naturales y mínimamente procesados, evitando cerdo, alcohol y sal añadida.",
+   "opciones": [
+    "Ital",
+    "Halal",
+    "Kosher",
+    "Slow"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: Ital."
+  },
+  {
+   "id": "oc-85",
+   "subtema": "2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "El zoroastrismo, una de las religiones monoteístas más antiguas, no tiene ninguna relación entre su doctrina y la alimentación.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "su relación con la alimentación gira en torno a la pureza ritual y el respeto por el fuego y el agua."
+  },
+  {
+   "id": "oc-87",
+   "subtema": "2.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué corriente gastronómica es considerada la fundacional de la gastronomía profesional occidental?",
+   "opciones": [
+    "La nouvelle cuisine",
+    "La cocina clásica francesa de Escoffier",
+    "El New Nordic",
+    "La cocina de fusión"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: La cocina clásica francesa de Escoffier."
+  },
+  {
+   "id": "oc-89",
+   "subtema": "2.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "El movimiento _______, fundado por Carlo Petrini en 1989, reacciona contra la comida rápida y la pérdida de tradición local.",
+   "opciones": [
+    "Slow Food",
+    "New Nordic",
+    "la nouvelle cuisine",
+    "Ital"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: Slow Food."
+  },
+  {
+   "id": "oc-90",
+   "subtema": "2.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué es la cocina nikkei?",
+   "opciones": [
+    "Fusión entre técnicas japonesas y sazón peruana",
+    "Cocina tradicional china del sur",
+    "Estilo de cocina vegana japonesa",
+    "Cocina de la corte imperial de Japón"
+   ],
+   "correcta": 0,
+   "explicacion": "Correcto: Fusión entre técnicas japonesas y sazón peruana."
+  },
+  {
+   "id": "oc-91",
+   "subtema": "2.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "El veganismo, el vegetarianismo y el flexitarianismo son ejemplos de corrientes definidas por restricción dietética de origen religioso.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "son corrientes definidas por restricción dietética no religiosa (ética, ambiental o de salud)."
+  },
+  {
+   "id": "oc-92",
+   "subtema": "2.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "En 2020, _______ se convirtió en el primer país en aprobar la venta comercial de carne cultivada en laboratorio.",
+   "opciones": [
+    "Singapur",
+    "Estados Unidos",
+    "Países Bajos",
+    "Japón"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: Singapur."
+  },
+  {
+   "id": "oc-94",
+   "subtema": "2.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "El chef austriaco-estadounidense Wolfgang Puck es un impulsor histórico de:",
+   "opciones": [
+    "La cocina molecular",
+    "La cocina de fusión",
+    "El movimiento Slow Food",
+    "La dieta Ital"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: La cocina de fusión."
+  },
+  {
+   "id": "oc-95",
+   "subtema": "2.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "Una corriente gastronómica casi siempre nace como reacción a la corriente que la precede.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 0,
+   "explicacion": "Verdadero, según el compendio."
+  },
+  {
+   "id": "oc-97",
+   "subtema": "2.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "El vegetarianismo, el veganismo y el flexitarianismo son corrientes definidas por restricción _______, a diferencia de las religiosas.",
+   "opciones": [
+    "dietética no religiosa",
+    "religiosa",
+    "económica",
+    "geográfica"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: dietética no religiosa."
+  },
+  {
+   "id": "oc-98",
+   "subtema": "2.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuál de los siguientes NO es uno de los cuatro criterios de clasificación del Tema 2?",
+   "opciones": [
+    "Régimen",
+    "Épocas",
+    "Religión",
+    "Nacionalidad del chef"
+   ],
+   "correcta": 3,
+   "explicacion": "Correcto: Nacionalidad del chef."
+  },
+  {
+   "id": "oc-88",
+   "subtema": "2.4",
+   "tipo": "relacionar",
+   "pregunta": "Ordena estas corrientes gastronómicas de la más antigua a la más reciente. (ordena del más antiguo al más reciente, asignando la posición correcta a cada evento)",
+   "pares": [
+    {
+     "izquierda": "Codificación clásica de Escoffier",
+     "derecha": "1º"
+    },
+    {
+     "izquierda": "Nouvelle cuisine",
+     "derecha": "2º"
+    },
+    {
+     "izquierda": "Slow Food",
+     "derecha": "3º"
+    },
+    {
+     "izquierda": "Manifiesto New Nordic",
+     "derecha": "4º"
+    }
+   ],
+   "explicacion": "Orden correcto: Codificación clásica de Escoffier → Nouvelle cuisine → Slow Food → Manifiesto New Nordic."
+  }
+ ]
+}
