@@ -1,0 +1,363 @@
+{
+  "parcial": "p1",
+  "titulo": "Examen Parcial 1 — Introducción y Tipología de la cocina",
+  "config": { "preguntasPorExamen": 41, "minutos": 60 },
+  "reactivos": [
+
+    { "id": "p1-001", "subtema": "1.1", "tipo": "opcion_multiple",
+      "pregunta": "Un alumno describe a Brillat-Savarin únicamente como \"el autor del primer libro de cocina de la historia\". ¿Qué corrige esa descripción?",
+      "opciones": [
+        "No escribió un recetario, sino una obra filosófica sobre el acto de comer, y hubo recetarios muy anteriores a él (como De re coquinaria)",
+        "En realidad Brillat-Savarin nunca escribió sobre gastronomía, solo sobre política francesa",
+        "Su libro sí es el primer recetario, pero fue publicado en el siglo XVII, no en el XIX",
+        "Es correcto: antes de él no existía ningún texto escrito relacionado con la comida"
+      ], "correcta": 0,
+      "explicacion": "Fisiología del gusto (1825) es un ensayo filosófico sobre el acto de comer, no un recetario; De re coquinaria, escrito siglos antes, ya documentaba cientos de recetas romanas." },
+
+    { "id": "p1-002", "subtema": "1.1", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué distingue el enfoque de Rachel Laudan del de Massimo Montanari, según los autores de referencia vistos en clase?",
+      "opciones": [
+        "Laudan conecta la comida con imperios y poder político a escala global; Montanari se enfoca en la identidad nacional a través de la cocina italiana",
+        "Montanari escribe sobre cocina asiática exclusivamente, mientras Laudan solo estudia México",
+        "No hay diferencia: ambos autores firman el mismo libro en coautoría",
+        "Laudan es historiadora del gusto sensorial; Montanari estudia migraciones culinarias"
+      ], "correcta": 0,
+      "explicacion": "Laudan (Gastronomía e imperio) conecta la comida con imperios, religión y poder a 20,000 años; Montanari es un medievalista centrado en la identidad italiana." },
+
+    { "id": "p1-003", "subtema": "1.1", "tipo": "verdadero_falso",
+      "pregunta": "Las recetas de las tablillas de Mesopotamia incluían medidas exactas de cada ingrediente, pensadas para cocineros principiantes.",
+      "opciones": ["Verdadero", "Falso"], "correcta": 1,
+      "explicacion": "No incluían medidas ni proporciones exactas — estaban dirigidas a cocineros profesionales ya experimentados (los nuhatimmu), capaces de interpretar instrucciones generales." },
+
+    { "id": "p1-010", "subtema": "1.1", "tipo": "relacionar",
+      "pregunta": "Relaciona a cada historiador con su línea de investigación principal.",
+      "pares": [
+        { "izquierda": "Paul Freedman", "derecha": "Historia del gusto y de cómo cambian las preferencias sensoriales" },
+        { "izquierda": "Felipe Fernández-Armesto", "derecha": "Organiza la historia culinaria mundial en ocho grandes etapas" },
+        { "izquierda": "Jeffrey Pilcher", "derecha": "Construcción de la identidad culinaria mexicana" }
+      ],
+      "explicacion": "Cada autor de referencia tiene un enfoque documentado distinto, aunque todos se complementan como parte del mismo campo académico reciente." },
+
+    { "id": "p1-011", "subtema": "1.2.1", "tipo": "opcion_multiple",
+      "pregunta": "Un alumno afirma: \"De re coquinaria fue escrito personalmente por Apicio en el siglo I, sin ninguna intervención posterior\". ¿Qué matiza esta afirmación?",
+      "opciones": [
+        "Los historiadores coinciden en que la compilación que hoy se conoce se hizo en los siglos IV o V, probablemente reuniendo recetas de varias generaciones bajo su nombre",
+        "En realidad el libro nunca menciona a Apicio, es un error histórico difundido",
+        "Apicio vivió en el siglo IV, no en el I, así que la fecha original ya es correcta",
+        "El libro fue escrito completamente por esclavos sin ninguna relación con Apicio"
+      ], "correcta": 0,
+      "explicacion": "Apicio vivió en el siglo I, pero la compilación final del texto se dató en los siglos IV-V — varias generaciones después, reuniendo recetas bajo su nombre prestigioso." },
+
+    { "id": "p1-012", "subtema": "1.2.1", "tipo": "opcion_multiple",
+      "pregunta": "¿Cuál de las siguientes NO forma parte de la secuencia tripartita del banquete romano de las clases pudientes?",
+      "opciones": ["El grand couvert", "La gustatio", "La prima mensa", "La secunda mensa"], "correcta": 0,
+      "explicacion": "El grand couvert es la comida pública del rey en Versalles (Tema 4), no una fase del banquete romano — la secuencia romana es gustatio, prima mensa y secunda mensa." },
+
+    { "id": "p1-013", "subtema": "1.2.1", "tipo": "verdadero_falso",
+      "pregunta": "Los thermopolia romanos servían comida caliente para llevar o para comer de pie, y las excavaciones de Pompeya conservan decenas casi intactos.",
+      "opciones": ["Verdadero", "Falso"], "correcta": 0,
+      "explicacion": "Confirmado: eran mostradores de comida callejera con tinajas empotradas, y Pompeya conserva el antecedente arqueológico mejor documentado de este modelo." },
+
+    { "id": "p1-020", "subtema": "1.2.2", "tipo": "opcion_multiple",
+      "pregunta": "Un alumno concluye que las especias importadas en la mesa noble medieval se usaban sobre todo para conservar los alimentos antes de la refrigeración. ¿Qué corrige el compendio sobre esa idea?",
+      "opciones": [
+        "El uso masivo de especias respondía principalmente a una lógica de ostentación y estatus social, no de conservación",
+        "Es correcto: la conservación era la única razón documentada para su uso",
+        "Las especias medievales nunca se usaron en la mesa noble, solo en monasterios",
+        "Las especias se usaban exclusivamente por su bajo costo en la Edad Media"
+      ], "correcta": 0,
+      "explicacion": "El compendio es explícito: cuantas más especias exóticas se servían, mayor era el estatus proyectado — no se trataba principalmente de conservar alimentos." },
+
+    { "id": "p1-021", "subtema": "1.2.2", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué papel jugaron los monasterios en la Edad Media según el compendio?",
+      "opciones": [
+        "Centros de innovación agrícola y de técnicas de conservación como la salazón y el ahumado",
+        "Lugares exclusivamente dedicados a prohibir cualquier tipo de cocina elaborada",
+        "El origen de la corte de Versalles y su protocolo",
+        "El primer lugar donde se documentó el uso del tenedor en Europa"
+      ], "correcta": 0,
+      "explicacion": "Los monasterios funcionaron como centros de innovación agrícola y de conservación (salazón, ahumado), impulsados en parte por los períodos de ayuno y vigilia." },
+
+    { "id": "p1-030", "subtema": "1.2.3", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué hace de la Opera dell'arte del cucinare de Scappi (1570) un documento excepcional para su época, más allá de sus recetas?",
+      "opciones": [
+        "Incluye, por primera vez en la historia editorial de la cocina, ilustraciones detalladas de la organización de una cocina real",
+        "Fue el primer libro de cocina impreso en cualquier idioma europeo",
+        "Es el único documento que menciona la existencia de Catalina de Médici",
+        "Prohibía explícitamente el uso de especias en cualquier receta"
+      ], "correcta": 0,
+      "explicacion": "Scappi documentó con ilustraciones, por primera vez, cómo se organizaba físicamente una cocina profesional real — no solo sus recetas." },
+
+    { "id": "p1-031", "subtema": "1.2.3", "tipo": "verdadero_falso",
+      "pregunta": "A Catalina de Médici se le atribuye tradicionalmente la introducción de ingredientes italianos y la popularización del tenedor en la corte francesa del siglo XVI.",
+      "opciones": ["Verdadero", "Falso"], "correcta": 0,
+      "explicacion": "Correcto, aunque el compendio matiza que algunos historiadores cuestionan qué tanto de esa atribución sobre el tenedor es leyenda posterior." },
+
+    { "id": "p1-040", "subtema": "1.2.4", "tipo": "opcion_multiple",
+      "pregunta": "Un alumno afirma que La Varenne, en Le Cuisinier François (1651), continuó usando las mismas especias exóticas medievales que Taillevent. ¿Qué corrige esto?",
+      "opciones": [
+        "La Varenne abandonó las especias exóticas en favor de hierbas locales frescas (perejil, tomillo, estragón) y verduras novedosas",
+        "Es correcto: ambos libros usan exactamente las mismas especias sin ningún cambio",
+        "La Varenne eliminó por completo cualquier condimento de sus recetas",
+        "Le Cuisinier François fue escrito antes que Le Viandier, no después"
+      ], "correcta": 0,
+      "explicacion": "El gran aporte de La Varenne fue justamente abandonar las especias exóticas medievales por hierbas locales y verduras entonces novedosas." },
+
+    { "id": "p1-041", "subtema": "1.2.4", "tipo": "opcion_multiple",
+      "pregunta": "¿Por qué Antoine Parmentier es una figura relevante en la historia de la papa en Europa?",
+      "opciones": [
+        "Como prisionero de guerra sobrevivió alimentándose de papa y después promovió su cultivo en Francia como respuesta a las hambrunas",
+        "Fue el primer agricultor europeo en cultivar papa, dos siglos antes de que llegara de América",
+        "Prohibió el consumo de papa por considerarla venenosa para el ganado",
+        "Inventó la fritura de la papa en la corte de Luis XIV"
+      ], "correcta": 0,
+      "explicacion": "Parmentier comprobó, como prisionero en Prusia, que la papa era nutritiva e inofensiva, y después promovió su cultivo en Francia." },
+
+    { "id": "p1-042", "subtema": "1.2.4", "tipo": "relacionar",
+      "pregunta": "Relaciona cada elemento de la Edad Moderna con su descripción correcta.",
+      "pares": [
+        { "izquierda": "Intercambio colombino", "derecha": "Puso en circulación ingredientes americanos y del Viejo Mundo en ambas direcciones desde 1492" },
+        { "izquierda": "Grand couvert", "derecha": "Comida pública del rey en Versalles, un espectáculo protocolario observado por cortesanos" },
+        { "izquierda": "Le Cuisinier François", "derecha": "Primer texto europeo dedicado por completo a instruir el oficio de cocinero" }
+      ],
+      "explicacion": "Los tres elementos definen procesos distintos de la Edad Moderna vistos en el Tema 1.2.4." },
+
+    { "id": "p1-050", "subtema": "1.3", "tipo": "opcion_multiple",
+      "pregunta": "¿Cuáles son los dos significados del término \"cocina económica\" que distingue el compendio?",
+      "opciones": [
+        "Un tipo de fogón doméstico de leña, y un comedor popular de bajo costo",
+        "Un restaurante de lujo y una escuela de cocina profesional",
+        "Una técnica de conservación andina y un tipo de horno eléctrico",
+        "Un movimiento gastronómico contemporáneo y una corriente religiosa"
+      ], "correcta": 0,
+      "explicacion": "\"Cocina económica\" nombra dos cosas relacionadas pero distintas: el fogón de leña (la \"chapa\") y el comedor popular de bajo costo." },
+
+    { "id": "p1-060", "subtema": "1.4", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué explica, según el compendio, que la cocina eléctrica haya tardado más de sesenta años en volverse cotidiana después de su invención en el siglo XIX?",
+      "opciones": [
+        "El alto costo de la electricidad, el suministro doméstico limitado y la corta vida útil de los primeros elementos calefactores",
+        "Una prohibición legal de usar electricidad en la cocina hasta la década de 1930",
+        "La falta total de patentes registradas antes de 1900",
+        "Que nadie propuso la idea de cocinar con electricidad antes del siglo XX"
+      ], "correcta": 0,
+      "explicacion": "La tecnología llegó antes que su adopción masiva, que dependía de infraestructura, costo y de materiales duraderos como las aleaciones de nicromo." },
+
+    { "id": "p1-061", "subtema": "1.4", "tipo": "verdadero_falso",
+      "pregunta": "El horno de microondas fue resultado de una investigación militar sobre radares, no de un desarrollo pensado desde el inicio para cocinar.",
+      "opciones": ["Verdadero", "Falso"], "correcta": 0,
+      "explicacion": "Percy Spencer lo descubrió accidentalmente en 1945 mientras trabajaba con tubos de radar para Raytheon, al notar que una barra de chocolate se derritió en su bolsillo." },
+
+    { "id": "p1-070", "subtema": "1.5", "tipo": "opcion_multiple",
+      "pregunta": "¿Cuál es el antecedente arqueológico más antiguo documentado de la cocina de calle o comida rápida?",
+      "opciones": ["Los thermopolia de la Antigua Roma", "Las fondas del Porfiriato mexicano", "Los food trucks estadounidenses", "El McDonald's original de 1940"], "correcta": 0,
+      "explicacion": "Los thermopolia romanos, documentados arqueológicamente en Pompeya, son el antecedente más antiguo de esta misma lógica de consumo rápido." },
+
+    { "id": "p1-080", "subtema": "1.6", "tipo": "opcion_multiple",
+      "pregunta": "Un alumno describe la nouvelle cuisine y el manifiesto New Nordic como \"dos movimientos completamente independientes, sin relación entre sí\". ¿Qué corrige esto?",
+      "opciones": [
+        "Ambos son ejemplos del mismo patrón: cada movimiento gastronómico nace como reacción al que lo precede",
+        "En realidad son el mismo movimiento con dos nombres distintos",
+        "El New Nordic es anterior a la nouvelle cuisine por varias décadas",
+        "Ninguno de los dos tuvo relación con Francia en ningún momento"
+      ], "correcta": 0,
+      "explicacion": "La nouvelle cuisine reaccionó contra el exceso clásico; el New Nordic reaccionó contra la hegemonía francesa — ambos siguen el mismo patrón de reacción." },
+
+    { "id": "p1-081", "subtema": "1.6", "tipo": "opcion_multiple",
+      "pregunta": "¿Por qué cerró El Bulli en 2011, según el compendio?",
+      "opciones": [
+        "Cerró deliberadamente para convertirse en una fundación de investigación culinaria, no por falta de clientes",
+        "Cerró por falta de reservaciones, ya que perdió popularidad",
+        "Fue clausurado por las autoridades sanitarias españolas",
+        "Ferran Adrià se retiró por completo de la gastronomía"
+      ], "correcta": 0,
+      "explicacion": "El Bulli recibía más de dos millones de solicitudes de reserva al año; cerró por decisión propia para convertirse en fundación de investigación." },
+
+    { "id": "p1-090", "subtema": "2.1", "tipo": "opcion_multiple",
+      "pregunta": "Un alumno afirma que el régimen de una comida depende del ingrediente específico que se use. ¿Qué corrige el compendio sobre esta idea?",
+      "opciones": [
+        "El régimen depende de la frecuencia y el contexto en que se prepara, no del ingrediente en sí — el mismo platillo puede ser cotidiano o festivo según cuándo se cocine",
+        "Es correcto: cada ingrediente pertenece siempre a un solo régimen fijo",
+        "El régimen solo aplica a platillos religiosos, no a la cocina cotidiana",
+        "El régimen se define exclusivamente por el precio del ingrediente"
+      ], "correcta": 0,
+      "explicacion": "El mismo mole puede ser comida diaria en una fonda o el plato central de una boda, según cuándo y para quién se cocine — el régimen es de frecuencia y contexto." },
+
+    { "id": "p1-091", "subtema": "2.1", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué caracteriza al régimen intermedio de la cocina dominical, según el compendio?",
+      "opciones": [
+        "Es, en muchos hogares, el espacio principal de transmisión de recetas familiares de generación en generación",
+        "Es idéntico en todo al régimen de festejo, sin ninguna diferencia real",
+        "Nunca incluye la reunión de la familia completa",
+        "Se caracteriza por usar exclusivamente ingredientes importados"
+      ], "correcta": 0,
+      "explicacion": "El régimen dominical combina frecuencia suficiente para enseñar con más tiempo disponible que entre semana, lo que lo vuelve clave para transmitir recetas." },
+
+    { "id": "p1-100", "subtema": "2.2", "tipo": "opcion_multiple",
+      "pregunta": "¿Con qué propósito, según el compendio, muchos chefs de vanguardia citan deliberadamente técnicas o estéticas de una época histórica concreta?",
+      "opciones": [
+        "Como recurso narrativo para contar una historia a través del menú",
+        "Porque la ley exige mencionar el origen histórico de cada platillo",
+        "Porque no existen ingredientes contemporáneos disponibles",
+        "Para evitar por completo cualquier innovación técnica"
+      ], "correcta": 0,
+      "explicacion": "Cada época deja una \"firma\" reconocible que puede citarse deliberadamente en la cocina contemporánea como recurso narrativo de un menú." },
+
+    { "id": "p1-101", "subtema": "2.2", "tipo": "relacionar",
+      "pregunta": "Relaciona cada época con la firma culinaria que dejó, según el compendio.",
+      "pares": [
+        { "izquierda": "Antigua Roma", "derecha": "Salsas fermentadas intensas y secuencia tripartita del banquete" },
+        { "izquierda": "Edad Media", "derecha": "Mezcla intensa de especias importadas y combinaciones agridulces" },
+        { "izquierda": "Vanguardia / New Nordic", "derecha": "Deconstrucción, foraging y fermentación artesanal" }
+      ],
+      "explicacion": "Cada época histórica revisada en el Tema 1 dejó una firma culinaria reconocible y distinta de las demás." },
+
+    { "id": "p1-110", "subtema": "2.3", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué distingue específicamente al sacrificio ritual islámico (dhabihah) del judío (shejitá), más allá de pertenecer a religiones distintas?",
+      "opciones": [
+        "El dhabihah exige cortar de un solo movimiento el esófago, la tráquea y las venas yugulares con una invocación específica; el shejitá busca drenar completamente la sangre mediante un método propio",
+        "No hay ninguna diferencia real entre ambos procedimientos",
+        "El shejitá se aplica solo a aves, y el dhabihah solo a mamíferos",
+        "El dhabihah prohíbe cualquier tipo de sacrificio animal por completo"
+      ], "correcta": 0,
+      "explicacion": "Ambos comparten la lógica del sacrificio ritual, pero con procedimientos y propósitos técnicos distintos, cada uno definido por su propia tradición." },
+
+    { "id": "p1-111", "subtema": "2.3", "tipo": "opcion_multiple",
+      "pregunta": "Un alumno afirma que todas las ramas del cristianismo comparten exactamente el mismo nivel de rigor en el ayuno. ¿Qué lo corrige?",
+      "opciones": [
+        "La tradición ortodoxa es considerablemente más estricta que la católica, con hasta 200 días de ayuno al año frente a días puntuales en el catolicismo",
+        "Es correcto: catolicismo y ortodoxia tienen exactamente las mismas reglas de ayuno",
+        "El catolicismo es la rama más estricta de todas, con más de 300 días de ayuno anual",
+        "Ninguna rama cristiana practica el ayuno en la actualidad"
+      ], "correcta": 0,
+      "explicacion": "La Gran Cuaresma ortodoxa dura 48 días con restricciones muy estrictas; el catolicismo limita el ayuno obligatorio a días puntuales del calendario litúrgico." },
+
+    { "id": "p1-112", "subtema": "2.3", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué hace del jainismo un caso de estudio valioso dentro de las tradiciones alimentarias religiosas, según el compendio?",
+      "opciones": [
+        "Muestra hasta dónde puede llevarse, de forma coherente, el principio de no violencia (ahimsa) aplicado a la alimentación, evitando incluso tubérculos",
+        "Es la religión con más seguidores del mundo y por eso se estudia primero",
+        "Es la única religión que permite el consumo libre de cualquier tipo de carne",
+        "No tiene ninguna relación entre su doctrina y sus prácticas alimentarias"
+      ], "correcta": 0,
+      "explicacion": "Los practicantes jainistas más devotos evitan incluso cebolla, ajo y papa, porque arrancarlos de raíz mata a la planta entera — el extremo dietético más estricto revisado." },
+
+    { "id": "p1-113", "subtema": "2.3", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué institución alimentaria del sikhismo ofrece alimento gratuito sin distinción de religión, casta, género o condición económica?",
+      "opciones": ["El langar", "El hamín", "El iftar", "El grand couvert"], "correcta": 0,
+      "explicacion": "El langar es la cocina comunitaria presente en cada templo sikh (gurdwara), que encarna el principio de igualdad radical entre todos los seres humanos." },
+
+    { "id": "p1-114", "subtema": "2.3", "tipo": "verdadero_falso",
+      "pregunta": "El hamín sefardí es un ejemplo de cómo una restricción religiosa (no cocinar en sabbat) puede dar origen a toda una tradición culinaria propia.",
+      "opciones": ["Verdadero", "Falso"], "correcta": 0,
+      "explicacion": "El hamín se cocina lentamente antes del sabbat precisamente porque está prohibido encender fuego durante ese día — la restricción generó la técnica." },
+
+    { "id": "p1-120", "subtema": "2.4", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué tienen en común la nouvelle cuisine, la cocina de fusión, la molecular y el manifiesto New Nordic, según el compendio?",
+      "opciones": [
+        "Son corrientes de ruptura de los siglos XX y XXI que se definieron, en distintos grados, en oposición a la tradición clásica francesa",
+        "Las cuatro corrientes fueron fundadas por la misma persona",
+        "Ninguna de las cuatro tiene relación con la codificación de Escoffier",
+        "Todas prohíben el uso de cualquier técnica de cocción tradicional"
+      ], "correcta": 0,
+      "explicacion": "Todas surgieron, en algún grado, como reacción u oposición a la cocina clásica francesa codificada por Escoffier." },
+
+    { "id": "p1-121", "subtema": "2.4", "tipo": "opcion_multiple",
+      "pregunta": "¿Por qué se fundó el movimiento Slow Food en Italia en 1989, según el compendio?",
+      "opciones": [
+        "Como respuesta directa a la apertura de un restaurante de comida rápida junto a la Plaza de España en Roma",
+        "Como celebración del aniversario de la cocina clásica de Escoffier",
+        "Por iniciativa del gobierno italiano para promover el turismo",
+        "Como protesta contra el uso de especias importadas"
+      ], "correcta": 0,
+      "explicacion": "Carlo Petrini fundó Slow Food como protesta directa contra la apertura de un restaurante de comida rápida junto a una de las escalinatas más emblemáticas de Roma." },
+
+    { "id": "p1-122", "subtema": "2.4", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué pregunta sin resolver plantea la carne cultivada en laboratorio, según el cierre del Tema 2?",
+      "opciones": [
+        "Si sigue siendo \"carne\" en el sentido religioso de las normas de kashrut o halal, y a qué corriente gastronómica pertenece",
+        "Si su sabor es idéntico al de la carne convencional en todos los casos",
+        "Si Singapur seguirá siendo el único país que la permite",
+        "Si reemplazará por completo a la agricultura en los próximos cinco años"
+      ], "correcta": 0,
+      "explicacion": "El compendio señala estas preguntas como todavía sin resolver de forma unánime, y como recordatorio de que la tipología de la cocina sigue ajustándose." },
+
+    { "id": "p1-123", "subtema": "2.4", "tipo": "relacionar",
+      "pregunta": "Relaciona cada corriente gastronómica con el hecho o persona que la originó.",
+      "pares": [
+        { "izquierda": "Slow Food", "derecha": "Carlo Petrini, Italia, 1989" },
+        { "izquierda": "Cocina nikkei", "derecha": "Migración japonesa al Perú a finales del siglo XIX" },
+        { "izquierda": "Cocina de fusión en EE.UU.", "derecha": "Wolfgang Puck, combinando técnica francesa con ingredientes de California y Asia" }
+      ],
+      "explicacion": "Cada corriente tiene un origen histórico documentado y distinto, aunque todas comparten la lógica de mezclar o reaccionar frente a una tradición previa." },
+
+    { "id": "p1-005", "subtema": "1.1", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué distingue el estilo de Álvaro Cunqueiro (La cocina cristiana de Occidente) del de María José García Soler (El arte de comer en la antigua Grecia)?",
+      "opciones": [
+        "Cunqueiro mezcla deliberadamente hechos reales con anécdotas inventadas; García Soler reconstruye con evidencia arqueológica, literaria y papirológica",
+        "Ambos autores escriben exactamente con el mismo método académico riguroso",
+        "García Soler es quien mezcla ficción con historia; Cunqueiro es el historiador riguroso",
+        "Ninguno de los dos trata temas relacionados con la historia de la cocina"
+      ], "correcta": 0,
+      "explicacion": "Son los dos estilos legítimos de escribir historia de la gastronomía descritos en el compendio: el literario (\"realismo fantástico\") y el académico riguroso." },
+
+    { "id": "p1-051", "subtema": "1.3", "tipo": "verdadero_falso",
+      "pregunta": "En México, las cocinas económicas como negocio tienen raíces documentadas en redes de mujeres organizadas desde finales del siglo XIX.",
+      "opciones": ["Verdadero", "Falso"], "correcta": 0,
+      "explicacion": "El compendio documenta esta raíz histórica específica como origen del negocio de las cocinas económicas populares en México." },
+
+    { "id": "p1-071", "subtema": "1.5", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué distingue a la cocina de autor de la cocina institucional o de colectividad, según los seis tipos de cocina vistos en clase?",
+      "opciones": [
+        "La de autor se construye en torno a la visión personal de un chef; la institucional prioriza volumen, costo y cumplimiento de normas nutricionales",
+        "Ambas son exactamente lo mismo con nombres distintos",
+        "La institucional siempre tiene mayor presupuesto que la de autor",
+        "La de autor solo existe en restaurantes de comida rápida"
+      ], "correcta": 0,
+      "explicacion": "Cada uno de los seis tipos de cocina tiene un criterio de éxito propio; de autor persigue una visión personal, institucional prioriza volumen y normas." },
+
+    { "id": "p1-082", "subtema": "1.6", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué papel jugaron las redes sociales en la difusión de técnicas culinarias, según el cierre del Tema 1?",
+      "opciones": [
+        "Democratizaron el acceso al conocimiento, pero también pueden simplificar en exceso procesos que cargan siglos de historia",
+        "Eliminaron por completo la necesidad de estudiar gastronomía de forma profesional",
+        "Solo han tenido efectos negativos, sin ningún beneficio documentado",
+        "No han tenido ningún impacto medible en la difusión de la cocina"
+      ], "correcta": 0,
+      "explicacion": "El compendio reconoce un efecto doble: democratización del acceso, junto con el riesgo de simplificar procesos complejos." },
+
+    { "id": "p1-115", "subtema": "2.3", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué caracteriza a la dieta Ital del movimiento rastafari?",
+      "opciones": [
+        "Alimentos naturales y mínimamente procesados, evitando cerdo, alcohol y sal añadida en su versión más estricta",
+        "El consumo exclusivo de carne roja como fuente principal de proteína",
+        "Una dieta idéntica a las leyes de kashrut judías",
+        "El uso obligatorio de especias importadas de Asia"
+      ], "correcta": 0,
+      "explicacion": "\"Ital\" deriva de \"vital\" y designa una alimentación natural bajo el principio de mantener el cuerpo cercano a un estado natural." },
+
+    { "id": "p1-116", "subtema": "2.3", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué distingue al hinduismo y al budismo en materia alimentaria, según el compendio?",
+      "opciones": [
+        "Ambos orientan hacia dietas predominantemente vegetarianas, aunque el budismo incluye ramas como el Theravāda que permiten carne bajo ciertas condiciones",
+        "Ambas religiones prohíben absolutamente cualquier alimento de origen vegetal",
+        "El budismo es más estricto que el jainismo en todos los casos documentados",
+        "El hinduismo no tiene ninguna relación con el consumo de carne de res"
+      ], "correcta": 0,
+      "explicacion": "Ambos orientan hacia el vegetarianismo con matices: el budismo Theravāda permite carne bajo condiciones, a diferencia de corrientes más estrictas." },
+
+    { "id": "p1-131", "subtema": "2.1", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué función cumple el iftar dentro del régimen festivo, según el compendio?",
+      "opciones": [
+        "Marca el fin de cada jornada de ayuno durante el Ramadán, con dátiles, sopas y platillos más ricos que el resto del año",
+        "Es una comida exclusiva de la tradición judía asociada al Éxodo",
+        "Se celebra una sola vez al año, nunca de forma diaria",
+        "No tiene ninguna relación con el calendario religioso islámico"
+      ], "correcta": 0,
+      "explicacion": "El iftar rompe el ayuno diario de Ramadán, y es un ejemplo de régimen festivo diario dentro de un período de restricción mayor." },
+
+    { "id": "p1-132", "subtema": "2.2", "tipo": "verdadero_falso",
+      "pregunta": "Clasificar la cocina por época es exactamente lo mismo que el recorrido cronológico del Tema 1, sin ningún matiz distinto.",
+      "opciones": ["Verdadero", "Falso"], "correcta": 1,
+      "explicacion": "El matiz es que aquí interesa menos el orden cronológico y más identificar la \"firma\" reconocible que una época deja, rastreable en platillos actuales." }
+  ]
+}
