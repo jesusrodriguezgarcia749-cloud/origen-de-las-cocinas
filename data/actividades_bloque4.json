@@ -1,0 +1,488 @@
+{
+ "bloque": 4,
+ "reactivos": [
+  {
+   "id": "oc-157",
+   "subtema": "4.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "Según Brillat-Savarin, el gusto es una experiencia que combina:",
+   "opciones": [
+    "Solo lo físico",
+    "Lo físico, lo psicológico y lo social",
+    "Únicamente lo social",
+    "Solo la nutrición"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: Lo físico, lo psicológico y lo social."
+  },
+  {
+   "id": "oc-158",
+   "subtema": "4.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "La necesidad de alimentarse se ha limitado siempre, a lo largo de la historia, a un asunto puramente nutricional.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "se ha entrelazado con la identidad, la religión, la economía y el vínculo social."
+  },
+  {
+   "id": "oc-159",
+   "subtema": "4.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "La historiadora _______ conecta la comida con la política, la economía y la religión como hilo conductor de la historia de la gastronomía.",
+   "opciones": [
+    "Rachel Laudan",
+    "Massimo Montanari",
+    "Jeffrey Pilcher",
+    "Paul Freedman"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: Rachel Laudan."
+  },
+  {
+   "id": "oc-161",
+   "subtema": "4.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué hambruna histórica menciona el libro relacionada con la pérdida de cosechas de papa?",
+   "opciones": [
+    "La hambruna de Bengala",
+    "La gran hambruna irlandesa",
+    "La hambruna de la Rusia soviética",
+    "La hambruna del Sahel"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: La gran hambruna irlandesa."
+  },
+  {
+   "id": "oc-162",
+   "subtema": "4.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "El refinamiento gastronómico documentado en la mayor parte del libro ha sido, históricamente, un privilegio de quienes ya tenían la necesidad básica resuelta.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 0,
+   "explicacion": "Verdadero, según el compendio."
+  },
+  {
+   "id": "oc-163",
+   "subtema": "4.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Por qué se considera a Roma el primer gran antecedente de una cocina refinada, según el Tema 4?",
+   "opciones": [
+    "Porque fue la civilización con más territorio",
+    "Porque trató el comer como una disciplina documentada por escrito",
+    "Porque inventó la agricultura",
+    "Porque prohibió el consumo de carne"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: Porque trató el comer como una disciplina documentada por escrito."
+  },
+  {
+   "id": "oc-164",
+   "subtema": "4.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "La expansión del Imperio romano difundió técnicas de conservación, como la elaboración del _______, por todo el Mediterráneo.",
+   "opciones": [
+    "garum",
+    "el kétchup",
+    "la salsa de soya",
+    "el vinagre"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: garum."
+  },
+  {
+   "id": "oc-165",
+   "subtema": "4.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "La influencia romana se limitó exclusivamente al banquete de las clases altas, sin ningún efecto en la población general.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "la expansión del Imperio difundió técnicas de conservación y cultivos a lo largo de todo el Mediterráneo y Europa occidental."
+  },
+  {
+   "id": "oc-167",
+   "subtema": "4.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "Le Viandier de Taillevent, visto en el Tema 1, documenta la cocina medieval que se construyó sobre la base difundida por el Imperio _______.",
+   "opciones": [
+    "romano",
+    "otomano",
+    "mogol",
+    "bizantino"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: romano."
+  },
+  {
+   "id": "oc-168",
+   "subtema": "4.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cómo se llama la comida pública del rey en la corte de Versalles?",
+   "opciones": [
+    "El grand couvert",
+    "El iftar real",
+    "El banquete imperial",
+    "La secunda mensa"
+   ],
+   "correcta": 0,
+   "explicacion": "Correcto: El grand couvert."
+  },
+  {
+   "id": "oc-169",
+   "subtema": "4.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "El consumo ostentoso de especias en la Baja Edad Media, visto en el Tema 1, es un ejemplo de la misma lógica de poder que se repite en el Tema 4.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 0,
+   "explicacion": "Verdadero, según el compendio."
+  },
+  {
+   "id": "oc-170",
+   "subtema": "4.3",
+   "tipo": "relacionar",
+   "pregunta": "Relaciona cada corte con la forma en que comunicaba poder mediante la comida.",
+   "pares": [
+    {
+     "izquierda": "Versalles (Francia)",
+     "derecha": "Grand couvert público"
+    },
+    {
+     "izquierda": "Corte otomana",
+     "derecha": "Cientos de cocineros especializados por técnica"
+    },
+    {
+     "izquierda": "China (Ciudad Prohibida)",
+     "derecha": "Banquetes de más de cien platillos, protocolo estricto"
+    },
+    {
+     "izquierda": "Imperio mogol",
+     "derecha": "Fusión de cocina persa e india (biryani)"
+    }
+   ],
+   "explicacion": "Revisa el compendio de este subtema si tuviste dudas."
+  },
+  {
+   "id": "oc-171",
+   "subtema": "4.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué corte se organizaba en el palacio de Topkapi, en Estambul?",
+   "opciones": [
+    "La corte francesa",
+    "La corte otomana",
+    "La corte china",
+    "La corte inca"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: La corte otomana."
+  },
+  {
+   "id": "oc-172",
+   "subtema": "4.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "El _______ es un plato de arroz especiado con carne, fusión de la cocina persa e india propia de la corte mogol.",
+   "opciones": [
+    "biryani",
+    "el kebab",
+    "el plov",
+    "el tagine"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: biryani."
+  },
+  {
+   "id": "oc-174",
+   "subtema": "4.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "Los banquetes de la Ciudad Prohibida en China podían incluir más de cien platillos distintos en una sola sesión.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 0,
+   "explicacion": "Verdadero, según el compendio."
+  },
+  {
+   "id": "oc-175",
+   "subtema": "4.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué llevó la lógica de \"la mesa como poder\" a un nuevo nivel de sofisticación en el Renacimiento, según el Tema 4?",
+   "opciones": [
+    "La llegada de Catalina de Médici a la corte francesa",
+    "La invención del microondas",
+    "El manifiesto New Nordic",
+    "La fundación de Le Cordon Bleu"
+   ],
+   "correcta": 0,
+   "explicacion": "Correcto: La llegada de Catalina de Médici a la corte francesa."
+  },
+  {
+   "id": "oc-177",
+   "subtema": "4.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿En qué año se considera que abrió el primer restaurante moderno, atribuido a Boulanger?",
+   "opciones": [
+    "1651",
+    "1765",
+    "1803",
+    "1837"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: 1765."
+  },
+  {
+   "id": "oc-178",
+   "subtema": "4.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "Se dice que la palabra \"restaurante\" deriva de la promesa de _______ el estómago cansado del cliente.",
+   "opciones": [
+    "restaurar",
+    "alimentar",
+    "servir",
+    "saciar"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: restaurar."
+  },
+  {
+   "id": "oc-179",
+   "subtema": "4.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Quién publicó L'Almanach des gourmands, considerada la primera crítica gastronómica sistemática de la historia?",
+   "opciones": [
+    "Boulanger",
+    "Grimod de La Reynière",
+    "Antoine Beauvilliers",
+    "Auguste Escoffier"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: Grimod de La Reynière."
+  },
+  {
+   "id": "oc-180",
+   "subtema": "4.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "Antes de 1765, quien quería comer fuera de casa podía elegir libremente entre varios platillos a cualquier hora en cualquier posada.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "dependía de posadas y casas de comidas que servían a una hora fija lo que el establecimiento decidiera, sin posibilidad de elegir."
+  },
+  {
+   "id": "oc-181",
+   "subtema": "4.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "La Revolución Francesa de _______ multiplicó el número de restaurantes en París al dejar sin empleo a los cocineros de la aristocracia.",
+   "opciones": [
+    "1789",
+    "1765",
+    "1799",
+    "1804"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: 1789."
+  },
+  {
+   "id": "oc-182",
+   "subtema": "4.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿En qué ciudad y año abrió Delmonico's, el primer restaurante de lujo de Estados Unidos?",
+   "opciones": [
+    "Boston, 1820",
+    "Nueva York, 1837",
+    "Chicago, 1850",
+    "Filadelfia, 1800"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: Nueva York, 1837."
+  },
+  {
+   "id": "oc-184",
+   "subtema": "4.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué chef del Porfiriato cocinó para 1,700 invitados en el Centenario de la Independencia de 1910?",
+   "opciones": [
+    "Sylvain Daumont",
+    "Auguste Escoffier",
+    "Charles Ranhofer",
+    "Grimod de La Reynière"
+   ],
+   "correcta": 0,
+   "explicacion": "Correcto: Sylvain Daumont."
+  },
+  {
+   "id": "oc-185",
+   "subtema": "4.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "Durante el Porfiriato, la élite mexicana despreciaba en público los frijoles y la tortilla, aunque los consumía en privado.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 0,
+   "explicacion": "Verdadero, según el compendio."
+  },
+  {
+   "id": "oc-186",
+   "subtema": "4.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "Las _______ y figones sostenían la alimentación popular en México durante el Porfiriato, en paralelo a los restaurantes afrancesados.",
+   "opciones": [
+    "fondas",
+    "las tabernas",
+    "los mesones",
+    "las cantinas"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: fondas."
+  },
+  {
+   "id": "oc-188",
+   "subtema": "4.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué relación existe entre los thermopolia romanos (Tema 1) y las fondas mexicanas del Porfiriato (Tema 4)?",
+   "opciones": [
+    "Ninguna relación",
+    "Ambos son circuitos de alimentación popular que existieron en paralelo a la alta cocina de su época",
+    "Ambos son instituciones religiosas",
+    "Ambos fueron inventados por Escoffier"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: Ambos son circuitos de alimentación popular que existieron en paralelo a la alta cocina de su época."
+  },
+  {
+   "id": "oc-189",
+   "subtema": "4.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿A quién se atribuye la creación de la brigada de cocina?",
+   "opciones": [
+    "Bartolomeo Scappi",
+    "Auguste Escoffier",
+    "François de La Varenne",
+    "Marco Gavio Apicio"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: Auguste Escoffier."
+  },
+  {
+   "id": "oc-190",
+   "subtema": "4.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "Le Cordon Bleu fue fundada en París en el año _______ por la periodista Marthe Distel.",
+   "opciones": [
+    "1895",
+    "1946",
+    "1900",
+    "1910"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: 1895."
+  },
+  {
+   "id": "oc-191",
+   "subtema": "4.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Quién estudió en Le Cordon Bleu en 1950 y después popularizó la cocina francesa en la televisión estadounidense?",
+   "opciones": [
+    "Julia Child",
+    "Marthe Distel",
+    "Catalina de Médici",
+    "Rachel Laudan"
+   ],
+   "correcta": 0,
+   "explicacion": "Correcto: Julia Child."
+  },
+  {
+   "id": "oc-192",
+   "subtema": "4.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "El Culinary Institute of America se fundó antes que Le Cordon Bleu.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "Le Cordon Bleu se fundó en 1895 y el CIA en 1946, más de cinco décadas después."
+  },
+  {
+   "id": "oc-193",
+   "subtema": "4.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "El chef Paul Bocuse fundó en 1987 el _______, considerado el campeonato mundial de cocina más prestigioso.",
+   "opciones": [
+    "Bocuse d'Or",
+    "la Guía Michelin",
+    "el Culinary Institute",
+    "Le Cordon Bleu"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: Bocuse d'Or."
+  },
+  {
+   "id": "oc-194",
+   "subtema": "4.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿En qué año fue declarada la cocina tradicional mexicana Patrimonio Cultural Inmaterial de la Humanidad por la UNESCO?",
+   "opciones": [
+    "2000",
+    "2010",
+    "2013",
+    "2020"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: 2010."
+  },
+  {
+   "id": "oc-196",
+   "subtema": "4.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "La cocina profesional tuvo, a lo largo de su historia, una apertura inmediata e igualitaria hacia las mujeres.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "tuvo una historia de exclusión de las mujeres que se abrió progresivamente en la segunda mitad del siglo XX."
+  },
+  {
+   "id": "oc-197",
+   "subtema": "4.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "El noble francés y antiguo crítico teatral _______ es considerado el primer crítico gastronómico sistemático de la historia.",
+   "opciones": [
+    "Grimod de La Reynière",
+    "Antoine Beauvilliers",
+    "Boulanger",
+    "Charles Ranhofer"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: Grimod de La Reynière."
+  },
+  {
+   "id": "oc-198",
+   "subtema": "4.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué idea general resume mejor el Tema 4 completo, según el propio libro?",
+   "opciones": [
+    "Que la cocina es solo una cuestión de sabor personal",
+    "Que el poder político tiende a expresarse en la sofisticación de la mesa, y que ese oficio terminó profesionalizándose",
+    "Que todas las cocinas del mundo son idénticas",
+    "Que la tecnología es lo único que ha cambiado en la historia de la cocina"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: Que el poder político tiende a expresarse en la sofisticación de la mesa, y que ese oficio terminó profesionalizándose."
+  }
+ ]
+}
