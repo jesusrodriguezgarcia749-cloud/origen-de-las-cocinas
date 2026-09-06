@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biblioteca — Origen de las Cocinas</title>
+<meta name="description" content="Las fuentes que sustentan el compendio de Origen de las Cocinas: de Apicio y Brillat-Savarin a los historiadores contemporáneos de la gastronomía.">
+<link rel="canonical" href="https://jesusrodriguezgarcia749-cloud.github.io/origen-de-las-cocinas/biblioteca.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/biblioteca.css">
+<link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">OC</span>
+      <span class="brand-text">Origen de las Cocinas</span>
+    </a>
+    <nav class="main-nav" aria-label="Navegación principal">
+      <a href="compendio.html">Compendio</a>
+      <a href="actividades.html">Actividades</a>
+      <a href="biblioteca.html" aria-current="page">Biblioteca</a>
+      <a href="examen.html">Examen</a>
+      <a href="mi-progreso.html">Mi progreso</a>
+      <a href="admin.html" class="nav-admin">Panel docente</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<section class="biblio-hero">
+  <div class="wrap">
+    <p class="eyebrow">Biblioteca</p>
+    <h1>Las fuentes detrás del compendio</h1>
+    <p class="biblio-hero-sub">Cada afirmación histórica del compendio se apoya en alguna de estas obras — desde el primer recetario de Occidente hasta la crónica de un maestro campechano contemporáneo. Consulta aquí de dónde viene lo que estudias.</p>
+  </div>
+</section>
+
+<main class="wrap biblioteca-main">
+  <div class="biblio-filtros" id="biblio-filtros">
+    <!-- se rellena por JS -->
+  </div>
+  <div id="biblio-root"><!-- se rellena por JS --></div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>Aula Virtual · Origen de las Cocinas · LudoMente Studio</p>
+  </div>
+</footer>
+
+<audio id="bg-music" loop preload="none">
+  <source src="https://commons.wikimedia.org/wiki/Special:FilePath/Gymnopedie_No._1..ogg" type="audio/ogg">
+</audio>
+<button id="bg-music-toggle" class="music-toggle" aria-label="Activar música de fondo" aria-pressed="false">🎵</button>
+
+<script src="js/app.js"></script>
+<script src="js/biblioteca.js"></script>
+</body>
+</html>
