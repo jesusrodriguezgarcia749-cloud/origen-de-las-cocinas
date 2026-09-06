@@ -1,0 +1,732 @@
+{
+ "bloque": 3,
+ "reactivos": [
+  {
+   "id": "oc-99",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuál es el ingrediente emblemático del Magreb, de origen amazigh (bereber)?",
+   "opciones": [
+    "El teff",
+    "El cuscús",
+    "El ñame",
+    "El injera"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: El cuscús."
+  },
+  {
+   "id": "oc-100",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "El comercio _______ conectó el Magreb con los imperios de Ghana, Malí y Songhay durante siglos.",
+   "opciones": [
+    "transahariano",
+    "transatlántico",
+    "mediterráneo",
+    "otomano"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: transahariano."
+  },
+  {
+   "id": "oc-101",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "El comercio transahariano fue solo un intercambio de mercancías, sin ninguna relación con la expansión del islam en África occidental.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "fue también el canal por el que el islam llegó al África occidental."
+  },
+  {
+   "id": "oc-102",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué grano es la base del injera, pan fermentado de Etiopía y Eritrea?",
+   "opciones": [
+    "El teff",
+    "El mijo",
+    "El sorgo",
+    "El arroz"
+   ],
+   "correcta": 0,
+   "explicacion": "Correcto: El teff."
+  },
+  {
+   "id": "oc-103",
+   "subtema": "3.1",
+   "tipo": "relacionar",
+   "pregunta": "Relaciona cada región africana con un rasgo distintivo.",
+   "pares": [
+    {
+     "izquierda": "Magreb",
+     "derecha": "Cuscús y comercio transahariano"
+    },
+    {
+     "izquierda": "África Occidental",
+     "derecha": "Granos ancestrales, ñame y aceite de palma"
+    },
+    {
+     "izquierda": "Cuerno de África",
+     "derecha": "Teff e injera"
+    },
+    {
+     "izquierda": "África Austral",
+     "derecha": "Bobotie y braai (cocina del Cabo Malayo)"
+    }
+   ],
+   "explicacion": "Revisa el compendio de este subtema si tuviste dudas."
+  },
+  {
+   "id": "oc-104",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué técnica social es equivalente al asado del Cono Sur en el sur de África?",
+   "opciones": [
+    "El braai",
+    "El pib",
+    "El hangi",
+    "El tsebhi"
+   ],
+   "correcta": 0,
+   "explicacion": "Correcto: El braai."
+  },
+  {
+   "id": "oc-106",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "La gastronomía africana puede describirse correctamente como una sola cocina homogénea.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "es un mosaico de tradiciones distintas que comparten ingredientes de fondo pero se expresan de forma muy distinta según la región."
+  },
+  {
+   "id": "oc-107",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué documento histórico es la fuente más completa sobre la alimentación mexica?",
+   "opciones": [
+    "El Popol Vuh",
+    "La Historia general de las cosas de Nueva España (Códice Florentino), de Sahagún",
+    "De re coquinaria",
+    "El Chilam Balam"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: La Historia general de las cosas de Nueva España (Códice Florentino), de Sahagún."
+  },
+  {
+   "id": "oc-108",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "En el Códice Florentino se documentan _______ especies distintas de insectos comestibles.",
+   "opciones": [
+    "96",
+    "50",
+    "150",
+    "30"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: 96."
+  },
+  {
+   "id": "oc-109",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuál es el sistema agrícola mexica que consistía en islas artificiales de cultivo en los lagos del Valle de México?",
+   "opciones": [
+    "El pet kot",
+    "Las chinampas",
+    "La milpa",
+    "El pib"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: Las chinampas."
+  },
+  {
+   "id": "oc-110",
+   "subtema": "3.2",
+   "tipo": "relacionar",
+   "pregunta": "Relaciona cada elemento con la cultura prehispánica correspondiente (mexica o maya).",
+   "pares": [
+    {
+     "izquierda": "Xocolatl",
+     "derecha": "Mexica"
+    },
+    {
+     "izquierda": "Pib",
+     "derecha": "Maya"
+    },
+    {
+     "izquierda": "Chinampas",
+     "derecha": "Mexica"
+    },
+    {
+     "izquierda": "Achiote",
+     "derecha": "Maya"
+    }
+   ],
+   "explicacion": "Revisa el compendio de este subtema si tuviste dudas."
+  },
+  {
+   "id": "oc-111",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "El xocolatl mexica era una bebida dulce y espumosa muy parecida al chocolate actual.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "era una bebida amarga y espumosa, muy distinta al chocolate dulce actual."
+  },
+  {
+   "id": "oc-112",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "El sistema agrícola maya, basado en huertos-jardín forestales de piedra, se llama _______.",
+   "opciones": [
+    "pet kot",
+    "las chinampas",
+    "la milpa",
+    "el pib"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: pet kot."
+  },
+  {
+   "id": "oc-113",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué técnica de cocción es distintiva de la cocina maya de la península de Yucatán?",
+   "opciones": [
+    "El comal",
+    "El pib (horno de tierra)",
+    "El garum",
+    "El grand couvert"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: El pib (horno de tierra)."
+  },
+  {
+   "id": "oc-115",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "La cocina mexicana actual se describe en el libro como una \"herencia de _______ mundos\".",
+   "opciones": [
+    "dos",
+    "tres",
+    "cuatro",
+    "un"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: dos."
+  },
+  {
+   "id": "oc-116",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuántos ataques piratas de consideración sufrió Campeche entre 1558 y 1685?",
+   "opciones": [
+    "Menos de 10",
+    "Más de 20",
+    "Exactamente 5",
+    "Ninguno documentado"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: Más de 20."
+  },
+  {
+   "id": "oc-117",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿De qué país europeo provenía el queso que dio origen al queso relleno campechano?",
+   "opciones": [
+    "España",
+    "Francia",
+    "Holanda",
+    "Portugal"
+   ],
+   "correcta": 2,
+   "explicacion": "Correcto: Holanda."
+  },
+  {
+   "id": "oc-118",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "El pirata holandés Laurens de Graaf, apodado \"_______\", protagonizó el saqueo más devastador de Campeche en 1685.",
+   "opciones": [
+    "Lorencillo",
+    "Pata de Palo",
+    "Barbanegra",
+    "El Draque"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: Lorencillo."
+  },
+  {
+   "id": "oc-119",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "Las murallas hexagonales de Campeche se construyeron para proteger a la ciudad de invasiones terrestres, no de piratas.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "se construyeron específicamente como respuesta a los ataques piratas marítimos."
+  },
+  {
+   "id": "oc-120",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuántas influencias documenta el maestro Rafael Enrique Meneses López en la cocina campechana?",
+   "opciones": [
+    "Cinco",
+    "Seis",
+    "Siete",
+    "Diez"
+   ],
+   "correcta": 2,
+   "explicacion": "Correcto: Siete."
+  },
+  {
+   "id": "oc-122",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué técnica de conservación andina consistía en ciclos de congelación nocturna y secado solar diurno de la papa?",
+   "opciones": [
+    "El charqui",
+    "El chuño",
+    "El garum",
+    "El braai"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: El chuño."
+  },
+  {
+   "id": "oc-123",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "El _______ es carne de llama o alpaca secada al sol y al viento, de donde deriva la palabra \"jerky\".",
+   "opciones": [
+    "charqui",
+    "el chuño",
+    "el garum",
+    "la cecina"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: charqui."
+  },
+  {
+   "id": "oc-124",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué región americana se describe como \"el crisol de tres continentes\" por la confluencia de tradiciones indígena, europea y africana en un espacio reducido?",
+   "opciones": [
+    "La región andina",
+    "El Caribe",
+    "Centroamérica",
+    "El Cono Sur"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: El Caribe."
+  },
+  {
+   "id": "oc-125",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "El asado del Cono Sur tiene su origen en una tradición ganadera prehispánica, anterior a la llegada de los españoles.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "la ganadería que dio origen al asado fue introducida por los colonizadores españoles."
+  },
+  {
+   "id": "oc-126",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cómo se le conoce en español al ingrediente indígena tupí-guaraní que en Brasil se llama mandioca, y del que derivan la farofa y el beiju?",
+   "opciones": [
+    "El maíz",
+    "La yuca",
+    "El trigo",
+    "La papa"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: La yuca."
+  },
+  {
+   "id": "oc-127",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "El sistema agrícola indígena de Norteamérica conocido como las \"Tres Hermanas\" combina maíz, frijol y _______.",
+   "opciones": [
+    "calabaza",
+    "el chile",
+    "el tomate",
+    "el cacao"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: calabaza."
+  },
+  {
+   "id": "oc-129",
+   "subtema": "3.3",
+   "tipo": "relacionar",
+   "pregunta": "Relaciona cada estilo regional con su rasgo distintivo dentro de la cocina china.",
+   "pares": [
+    {
+     "izquierda": "Cantonesa",
+     "derecha": "Sabores suaves, salteado rápido"
+    },
+    {
+     "izquierda": "Sichuanesa",
+     "derecha": "Picante intenso, pimienta de Sichuan"
+    },
+    {
+     "izquierda": "De Shanghái",
+     "derecha": "Más dulce, uso extendido de salsa de soya"
+    }
+   ],
+   "explicacion": "Revisa el compendio de este subtema si tuviste dudas."
+  },
+  {
+   "id": "oc-130",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Desde qué dinastía se documenta el pato pekinés, asociado a la cocina de palacio?",
+   "opciones": [
+    "Han",
+    "Yuan",
+    "Qing",
+    "Ming"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: Yuan."
+  },
+  {
+   "id": "oc-131",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "En la cocina coreana, la fermentación se ejemplifica con el _______.",
+   "opciones": [
+    "kimchi",
+    "el miso",
+    "el dashi",
+    "el gochujang"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: kimchi."
+  },
+  {
+   "id": "oc-132",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué herencia histórica explica el mayor uso de lácteos y panes de trigo en el norte de India?",
+   "opciones": [
+    "La herencia mogol (persa y centroasiática)",
+    "La colonización británica",
+    "La influencia china",
+    "El comercio con Rusia"
+   ],
+   "correcta": 0,
+   "explicacion": "Correcto: La herencia mogol (persa y centroasiática)."
+  },
+  {
+   "id": "oc-133",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "El adobo filipino es idéntico en preparación al adobo español o mexicano, solo cambia el nombre.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "es una preparación distinta desarrollada de forma independiente en el archipiélago, pese a compartir el nombre."
+  },
+  {
+   "id": "oc-134",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué caracteriza a la cocina de Medio Oriente en relación con las normas alimentarias?",
+   "opciones": [
+    "Sigue las normas halal del islam",
+    "Sigue las normas kashrut del judaísmo",
+    "No tiene normas alimentarias religiosas",
+    "Sigue el ahimsa jainista"
+   ],
+   "correcta": 0,
+   "explicacion": "Correcto: Sigue las normas halal del islam."
+  },
+  {
+   "id": "oc-135",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "El plato representativo de Asia Central, resultado del cruce de la Ruta de la Seda, es el _______ (arroz con carne, zanahoria y cebolla).",
+   "opciones": [
+    "plov",
+    "el kumis",
+    "el tandoor",
+    "la dolma"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: plov."
+  },
+  {
+   "id": "oc-136",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué bebida tradicional de los pueblos nómadas de Asia Central se elabora con leche de yegua fermentada?",
+   "opciones": [
+    "El kumis",
+    "El kah",
+    "El balché",
+    "El garum"
+   ],
+   "correcta": 0,
+   "explicacion": "Correcto: El kumis."
+  },
+  {
+   "id": "oc-138",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "Turquía, heredera de la cocina de palacio del Imperio otomano, dejó huella culinaria que se extiende hasta el Magreb y los Balcanes.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 0,
+   "explicacion": "Verdadero, según el compendio."
+  },
+  {
+   "id": "oc-139",
+   "subtema": "3.4",
+   "tipo": "relacionar",
+   "pregunta": "Relaciona cada bloque gastronómico europeo con su rasgo distintivo.",
+   "pares": [
+    {
+     "izquierda": "Mediterránea",
+     "derecha": "Aceite de oliva, trigo, vino, pescado"
+    },
+    {
+     "izquierda": "Centroeuropa y Balcanes",
+     "derecha": "Carne, mantequilla, fermentados; huella otomana en los Balcanes"
+    },
+    {
+     "izquierda": "Nórdica",
+     "derecha": "Revalorización de ingredientes locales (manifiesto New Nordic)"
+    },
+    {
+     "izquierda": "Islas Británicas",
+     "derecha": "Preparaciones sencillas de carne, pescado y papa; fuerte tradición de horneado"
+    }
+   ],
+   "explicacion": "Revisa el compendio de este subtema si tuviste dudas."
+  },
+  {
+   "id": "oc-140",
+   "subtema": "3.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué platillos de los Balcanes muestran el legado del Imperio otomano?",
+   "opciones": [
+    "Burek y cevapi",
+    "Fish and chips y pastel de carne",
+    "Blini y borscht",
+    "Paella y gazpacho"
+   ],
+   "correcta": 0,
+   "explicacion": "Correcto: Burek y cevapi."
+  },
+  {
+   "id": "oc-141",
+   "subtema": "3.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "La bebida rusa de huevas de esturión, reservada históricamente a la nobleza zarista, se llama _______.",
+   "opciones": [
+    "caviar",
+    "el blini",
+    "el kumis",
+    "el borscht"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: caviar."
+  },
+  {
+   "id": "oc-142",
+   "subtema": "3.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "La cocina italiana ha sido siempre homogénea en todo el país, sin diferencias regionales significativas.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "varía radicalmente entre el norte (mantequilla, arroz, polenta) y el sur (aceite de oliva, tomate, pasta seca)."
+  },
+  {
+   "id": "oc-143",
+   "subtema": "3.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué evento del Tema 1 confirma que la cocina francesa \"clásica\" no se desarrolló en aislamiento?",
+   "opciones": [
+    "La llegada de Catalina de Médici desde Italia",
+    "El descubrimiento del microondas",
+    "La fundación de Le Cordon Bleu",
+    "El manifiesto New Nordic"
+   ],
+   "correcta": 0,
+   "explicacion": "Correcto: La llegada de Catalina de Médici desde Italia."
+  },
+  {
+   "id": "oc-145",
+   "subtema": "3.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "La cocina judía _______ se formó entre comunidades asentadas en Alemania, Polonia y Rusia, distinta de la sefardí mediterránea.",
+   "opciones": [
+    "asquenazí",
+    "sefardí",
+    "mizrají",
+    "ortodoxa"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: asquenazí."
+  },
+  {
+   "id": "oc-146",
+   "subtema": "3.5",
+   "tipo": "relacionar",
+   "pregunta": "Relaciona cada nombre del horno de tierra con su isla o cultura.",
+   "pares": [
+    {
+     "izquierda": "Hangi",
+     "derecha": "Nueva Zelanda (maorí)"
+    },
+    {
+     "izquierda": "Umu",
+     "derecha": "Samoa"
+    },
+    {
+     "izquierda": "Lovo",
+     "derecha": "Fiyi"
+    }
+   ],
+   "explicacion": "Revisa el compendio de este subtema si tuviste dudas."
+  },
+  {
+   "id": "oc-147",
+   "subtema": "3.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué tubérculo polinesio se adaptó bien al clima de Nueva Zelanda y se convirtió en alimento básico?",
+   "opciones": [
+    "El kumara",
+    "La papa",
+    "El taro únicamente",
+    "El maíz"
+   ],
+   "correcta": 0,
+   "explicacion": "Correcto: El kumara."
+  },
+  {
+   "id": "oc-148",
+   "subtema": "3.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "La comida tradicional aborigen de Australia, basada en ingredientes silvestres nativos, se conoce como _______.",
+   "opciones": [
+    "bushfood",
+    "el kumara",
+    "el hangi",
+    "el umu"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: bushfood."
+  },
+  {
+   "id": "oc-149",
+   "subtema": "3.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "La cocina de Hawái combina base polinesia con migración de trabajadores japoneses, chinos, filipinos y coreanos en las plantaciones de azúcar.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 0,
+   "explicacion": "Verdadero, según el compendio."
+  },
+  {
+   "id": "oc-150",
+   "subtema": "3.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué técnica ancestral comparten culturas de Oceanía separadas por miles de kilómetros de océano?",
+   "opciones": [
+    "El horno de tierra",
+    "El comal",
+    "El garum",
+    "El grand couvert"
+   ],
+   "correcta": 0,
+   "explicacion": "Correcto: El horno de tierra."
+  },
+  {
+   "id": "oc-152",
+   "subtema": "3.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "La \"cocina de plato combinado\" (plate lunch) de Hawái mezcla arroz japonés, ensalada de macarrón y carnes adobadas de origen _______ o coreano.",
+   "opciones": [
+    "filipino",
+    "chino",
+    "indonesio",
+    "vietnamita"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: filipino."
+  },
+  {
+   "id": "oc-153",
+   "subtema": "3.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuál de las siguientes regiones NO forma parte de las 5 grandes regiones estudiadas en el Tema 3?",
+   "opciones": [
+    "África",
+    "América",
+    "Asia",
+    "La Antártida"
+   ],
+   "correcta": 3,
+   "explicacion": "Correcto: La Antártida."
+  },
+  {
+   "id": "oc-154",
+   "subtema": "3.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "Casi ninguna cocina regional del mundo se desarrolló en total aislamiento; todas son, en mayor o menor medida, resultado de comercio, migración y conquista.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 0,
+   "explicacion": "Verdadero, según el compendio."
+  },
+  {
+   "id": "oc-156",
+   "subtema": "3.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "El libro reconoce a la cocina tradicional mexicana como Patrimonio Cultural Inmaterial de la Humanidad, declarado por la _______ en 2010.",
+   "opciones": [
+    "UNESCO",
+    "la OMS",
+    "la FAO",
+    "la ONU"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: UNESCO."
+  }
+ ]
+  }
