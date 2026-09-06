@@ -1,0 +1,148 @@
+{
+  "fuentes": [
+    {
+      "autor": "Apicio (atribuido a Marco Gavio Apicio)",
+      "titulo": "De re coquinaria",
+      "anio": "Siglo I d.C. (compilación final: siglos IV-V)",
+      "tipo": "Recetario histórico",
+      "tema": "1.2.1",
+      "descripcion": "El primer gran testimonio culinario de Occidente que se conserva casi completo: once libros con más de 400 recetas de la mesa romana, desde el garum hasta los lirones rellenos."
+    },
+    {
+      "autor": "Jean-Anthelme Brillat-Savarin",
+      "titulo": "Fisiología del gusto",
+      "anio": "1825",
+      "tipo": "Ensayo fundacional",
+      "tema": "1.1",
+      "descripcion": "El libro que convirtió el acto de comer en objeto de reflexión filosófica. De aquí viene el célebre aforismo \"Dime lo que comes y te diré lo que eres\"."
+    },
+    {
+      "autor": "Álvaro Cunqueiro",
+      "titulo": "La cocina cristiana de Occidente",
+      "anio": "1969",
+      "tipo": "Crónica literaria",
+      "tema": "1.1",
+      "descripcion": "Más de cincuenta artículos periodísticos que mezclan erudición histórica real con anécdotas inventadas — el estilo del \"realismo fantástico\" aplicado a la historia de la cocina."
+    },
+    {
+      "autor": "María José García Soler",
+      "titulo": "El arte de comer en la antigua Grecia",
+      "anio": "2001",
+      "tipo": "Investigación académica",
+      "tema": "1.1",
+      "descripcion": "Reconstruye la dieta griega cruzando evidencia arqueológica, literaria, epigráfica y papirológica — el modelo de investigación rigurosa frente al estilo literario de Cunqueiro."
+    },
+    {
+      "autor": "Rachel Laudan",
+      "titulo": "Gastronomía e imperio",
+      "anio": "2021",
+      "tipo": "Historia académica",
+      "tema": "1.1",
+      "descripcion": "Conecta la cocina con imperios, religión y tecnología a lo largo de 20,000 años. La idea central de este libro —que la comida se explica por su relación con el poder— viene de aquí."
+    },
+    {
+      "autor": "Massimo Montanari",
+      "titulo": "Historia de la alimentación",
+      "anio": "—",
+      "tipo": "Historia académica",
+      "tema": "1.1",
+      "descripcion": "Historiador medievalista italiano; estudia la construcción de la identidad nacional a través de la cocina."
+    },
+    {
+      "autor": "Felipe Fernández-Armesto",
+      "titulo": "Historia de la comida",
+      "anio": "—",
+      "tipo": "Historia académica",
+      "tema": "1.1",
+      "descripcion": "Organiza la historia culinaria mundial en ocho grandes etapas."
+    },
+    {
+      "autor": "Paul Freedman",
+      "titulo": "Historia del paladar",
+      "anio": "—",
+      "tipo": "Historia académica",
+      "tema": "1.1",
+      "descripcion": "Historia del gusto: cómo y por qué cambian las preferencias sensoriales de una época a otra."
+    },
+    {
+      "autor": "Jeffrey Pilcher",
+      "titulo": "¡Que vivan los tamales!",
+      "anio": "—",
+      "tipo": "Historia académica",
+      "tema": "1.1",
+      "descripcion": "La construcción histórica de la identidad culinaria mexicana como proyecto nacional."
+    },
+    {
+      "autor": "Guillaume Tirel, \"Taillevent\" (atribuido)",
+      "titulo": "Le Viandier",
+      "anio": "Manuscrito más antiguo: finales del siglo XIII",
+      "tipo": "Recetario histórico",
+      "tema": "1.2.2",
+      "descripcion": "El recetario medieval en francés más citado: más de 130 recetas con la especiería y las combinaciones agridulces típicas de la mesa noble medieval."
+    },
+    {
+      "autor": "Bartolomeo Scappi",
+      "titulo": "Opera dell'arte del cucinare",
+      "anio": "1570",
+      "tipo": "Tratado de cocina",
+      "tema": "1.2.3",
+      "descripcion": "La \"Biblia de la cocina renacentista\": más de mil recetas en seis libros, con las primeras ilustraciones de la historia sobre la organización de una cocina profesional."
+    },
+    {
+      "autor": "François Pierre de La Varenne",
+      "titulo": "Le Cuisinier François",
+      "anio": "1651",
+      "tipo": "Tratado de cocina",
+      "tema": "1.2.4",
+      "descripcion": "El primer texto europeo dedicado por completo a instruir a otros cocineros en el oficio, no a la dietética. Más de 250 ediciones hasta 1815."
+    },
+    {
+      "autor": "Bernardino de Sahagún",
+      "titulo": "Historia general de las cosas de Nueva España (Códice Florentino)",
+      "anio": "Siglo XVI",
+      "tipo": "Crónica histórica",
+      "tema": "3.2",
+      "descripcion": "El documento más completo para reconstruir la alimentación mexica, con la colaboración directa de informantes indígenas. Documenta 96 especies de insectos comestibles."
+    },
+    {
+      "autor": "L. Jacinto García",
+      "titulo": "Un banquete por Sefarad",
+      "anio": "—",
+      "tipo": "Investigación histórica",
+      "tema": "2.3",
+      "descripcion": "Documenta cómo la cocina de los judíos sefardíes se convirtió en una \"cocina ensimismada\", capaz de conservar sus rasgos esenciales a través de generaciones y de distintos países de acogida."
+    },
+    {
+      "autor": "Rafael Enrique Meneses López",
+      "titulo": "La Cocina Campechana: un mar de aromas y sabores",
+      "anio": "2016",
+      "tipo": "Investigación regional",
+      "tema": "3.2",
+      "descripcion": "Maestro de la Escuela de Gastronomía del Instituto Campechano. Documenta las siete influencias de la cocina de Campeche: maya, española, árabe, francesa, holandesa, africana y caribeña."
+    },
+    {
+      "autor": "Faustina Lavalle",
+      "titulo": "Cocina campechana",
+      "anio": "Mediados del siglo XX",
+      "tipo": "Recetario regional",
+      "tema": "3.2",
+      "descripcion": "Cocinera campechana radicada en la Ciudad de México; escribió este libro porque sus vecinas capitalinas no conocían la cocina de su estado natal — un antecedente temprano de documentación regional."
+    },
+    {
+      "autor": "Henri Gault y Christian Millau",
+      "titulo": "Manifiesto de la nouvelle cuisine (\"los diez mandamientos\")",
+      "anio": "1973",
+      "tipo": "Manifiesto",
+      "tema": "1.6",
+      "descripcion": "El texto que le puso nombre y reglas al movimiento de ruptura contra el exceso de la cocina clásica francesa."
+    },
+    {
+      "autor": "René Redzepi y Claus Meyer (encabezando a doce chefs nórdicos)",
+      "titulo": "Manifiesto de la Nueva Cocina Nórdica",
+      "anio": "2004",
+      "tipo": "Manifiesto",
+      "tema": "1.6",
+      "descripcion": "El manifiesto fundacional del movimiento New Nordic: pureza, estacionalidad e ingredientes propios del clima nórdico, como reacción a la hegemonía francesa."
+    }
+  ]
+}
