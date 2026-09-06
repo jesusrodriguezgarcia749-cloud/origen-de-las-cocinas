@@ -1,0 +1,739 @@
+{
+ "bloque": 1,
+ "reactivos": [
+  {
+   "id": "oc-1",
+   "subtema": "1.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Quién es considerado el fundador de la literatura gastronómica moderna?",
+   "opciones": [
+    "Auguste Escoffier",
+    "Jean-Anthelme Brillat-Savarin",
+    "Marco Gavio Apicio",
+    "Bartolomeo Scappi"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: Jean-Anthelme Brillat-Savarin."
+  },
+  {
+   "id": "oc-2",
+   "subtema": "1.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "El libro de Brillat-Savarin, publicado en 1825, se titula _______.",
+   "opciones": [
+    "Fisiología del gusto",
+    "El arte de comer",
+    "La cocina refinada",
+    "El banquete perpetuo"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: Fisiología del gusto."
+  },
+  {
+   "id": "oc-3",
+   "subtema": "1.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuál de los siguientes es un aforismo real de Brillat-Savarin?",
+   "opciones": [
+    "\"El buen cocinero nunca revela sus secretos\"",
+    "\"Dime lo que comes y te diré lo que eres\"",
+    "\"La cocina es amor hecho visible\"",
+    "\"Quien no arriesga, no cocina\""
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: \"Dime lo que comes y te diré lo que eres\"."
+  },
+  {
+   "id": "oc-4",
+   "subtema": "1.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "Las recetas escritas más antiguas del mundo, encontradas en tablillas de arcilla de Mesopotamia, incluyen medidas exactas de cada ingrediente.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "no incluían medidas exactas porque estaban dirigidas a cocineros ya expertos."
+  },
+  {
+   "id": "oc-5",
+   "subtema": "1.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "Las tablillas culinarias de Mesopotamia datan de alrededor del año _______ a.C.",
+   "opciones": [
+    "1750",
+    "3000",
+    "500",
+    "950"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: 1750."
+  },
+  {
+   "id": "oc-6",
+   "subtema": "1.1",
+   "tipo": "relacionar",
+   "pregunta": "Relaciona a cada historiador con su enfoque principal.",
+   "pares": [
+    {
+     "izquierda": "Massimo Montanari",
+     "derecha": "Identidad nacional a través de la cocina italiana"
+    },
+    {
+     "izquierda": "Rachel Laudan",
+     "derecha": "Cocina, imperios y religión a lo largo de 20,000 años"
+    },
+    {
+     "izquierda": "Jeffrey Pilcher",
+     "derecha": "Identidad culinaria mexicana"
+    },
+    {
+     "izquierda": "Paul Freedman",
+     "derecha": "Historia del gusto y las preferencias sensoriales"
+    }
+   ],
+   "explicacion": "Revisa el compendio de este subtema si tuviste dudas."
+  },
+  {
+   "id": "oc-7",
+   "subtema": "1.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué estilo de escritura gastronómica representa Álvaro Cunqueiro en La cocina cristiana de Occidente?",
+   "opciones": [
+    "Académico riguroso",
+    "Literario, mezcla hechos reales con anécdotas inventadas",
+    "Técnico-culinario",
+    "Periodístico de investigación"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: Literario, mezcla hechos reales con anécdotas inventadas."
+  },
+  {
+   "id": "oc-9",
+   "subtema": "1.2.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿A quién se atribuye tradicionalmente el recetario romano De re coquinaria?",
+   "opciones": [
+    "Marco Gavio Apicio",
+    "Julio César",
+    "Cicerón",
+    "Plinio el Viejo"
+   ],
+   "correcta": 0,
+   "explicacion": "Correcto: Marco Gavio Apicio."
+  },
+  {
+   "id": "oc-10",
+   "subtema": "1.2.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "De re coquinaria se organiza en _______ libros temáticos, con más de 400 recetas.",
+   "opciones": [
+    "11 (once)",
+    "8",
+    "15",
+    "6"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: 11 (once)."
+  },
+  {
+   "id": "oc-11",
+   "subtema": "1.2.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cómo se llamaba la salsa de pescado fermentado, condimento universal de la Antigüedad romana?",
+   "opciones": [
+    "Garum",
+    "Liquamen dulce",
+    "Sápore",
+    "Muria"
+   ],
+   "correcta": 0,
+   "explicacion": "Correcto: Garum."
+  },
+  {
+   "id": "oc-12",
+   "subtema": "1.2.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "El banquete romano de las clases pudientes se estructuraba en tres fases: gustatio, prima mensa y secunda mensa.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 0,
+   "explicacion": "Verdadero, según el compendio."
+  },
+  {
+   "id": "oc-13",
+   "subtema": "1.2.1",
+   "tipo": "relacionar",
+   "pregunta": "Relaciona cada fase del banquete romano con su contenido típico.",
+   "pares": [
+    {
+     "izquierda": "Gustatio",
+     "derecha": "Huevos, aceitunas, ostras y vino dulce"
+    },
+    {
+     "izquierda": "Prima mensa",
+     "derecha": "Carnes, aves, pescados y legumbres"
+    },
+    {
+     "izquierda": "Secunda mensa",
+     "derecha": "Frutas y dulces"
+    }
+   ],
+   "explicacion": "Revisa el compendio de este subtema si tuviste dudas."
+  },
+  {
+   "id": "oc-14",
+   "subtema": "1.2.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué eran los thermopolia en la Antigua Roma?",
+   "opciones": [
+    "Templos dedicados a la diosa Ceres",
+    "Mostradores de comida callejera con tinajas empotradas",
+    "Escuelas de cocina para la élite",
+    "Mercados de especias importadas"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: Mostradores de comida callejera con tinajas empotradas."
+  },
+  {
+   "id": "oc-15",
+   "subtema": "1.2.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "Las excavaciones de _______ conservan decenas de thermopolia casi intactos, incluyendo pinturas murales decorativas.",
+   "opciones": [
+    "Pompeya",
+    "Herculano",
+    "Roma",
+    "Ostia"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: Pompeya."
+  },
+  {
+   "id": "oc-17",
+   "subtema": "1.2.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿A quién se atribuye el recetario medieval Le Viandier?",
+   "opciones": [
+    "Guillaume Tirel, \"Taillevent\"",
+    "Bartolomeo Scappi",
+    "François de La Varenne",
+    "Marco Gavio Apicio"
+   ],
+   "correcta": 0,
+   "explicacion": "Correcto: Guillaume Tirel, \"Taillevent\"."
+  },
+  {
+   "id": "oc-18",
+   "subtema": "1.2.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "El consumo masivo de especias en la mesa noble medieval respondía principalmente a la necesidad de conservar los alimentos.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "era, ante todo, una forma de exhibir riqueza y estatus social."
+  },
+  {
+   "id": "oc-19",
+   "subtema": "1.2.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "El manuscrito Le Viandier recopila más de _______ recetas.",
+   "opciones": [
+    "130",
+    "50",
+    "300",
+    "80"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: 130."
+  },
+  {
+   "id": "oc-20",
+   "subtema": "1.2.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuál de las siguientes NO es una especia mencionada como símbolo de estatus en la Edad Media?",
+   "opciones": [
+    "Pimienta",
+    "Azafrán",
+    "Vainilla",
+    "Clavo"
+   ],
+   "correcta": 2,
+   "explicacion": "Correcto: Vainilla."
+  },
+  {
+   "id": "oc-22",
+   "subtema": "1.2.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "Los _______ funcionaron como centros de innovación agrícola y de técnicas de conservación como la salazón y el ahumado durante la Edad Media.",
+   "opciones": [
+    "monasterios",
+    "los mercados",
+    "los palacios",
+    "los gremios"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: monasterios."
+  },
+  {
+   "id": "oc-23",
+   "subtema": "1.2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué obra se conoce como la \"Biblia de la cocina renacentista\"?",
+   "opciones": [
+    "Le Viandier",
+    "Opera dell'arte del cucinare de Bartolomeo Scappi",
+    "De re coquinaria",
+    "Le Cuisinier François"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: Opera dell'arte del cucinare de Bartolomeo Scappi."
+  },
+  {
+   "id": "oc-24",
+   "subtema": "1.2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "Bartolomeo Scappi publicó su obra en el año _______.",
+   "opciones": [
+    "1570",
+    "1533",
+    "1651",
+    "1610"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: 1570."
+  },
+  {
+   "id": "oc-25",
+   "subtema": "1.2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "A Catalina de Médici se le atribuye tradicionalmente la popularización del tenedor en Francia.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 0,
+   "explicacion": "Verdadero, según el compendio."
+  },
+  {
+   "id": "oc-26",
+   "subtema": "1.2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿En qué año llegó Catalina de Médici a la corte francesa desde Florencia?",
+   "opciones": [
+    "1492",
+    "1533",
+    "1651",
+    "1789"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: 1533."
+  },
+  {
+   "id": "oc-28",
+   "subtema": "1.2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "La obra de Scappi incluye las primeras _______ de una cocina profesional real, mostrando su organización y utensilios.",
+   "opciones": [
+    "ilustraciones",
+    "recetas escritas",
+    "listas de precios",
+    "mapas de rutas comerciales"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: ilustraciones."
+  },
+  {
+   "id": "oc-29",
+   "subtema": "1.2.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿En qué año inicia el intercambio colombino?",
+   "opciones": [
+    "1453",
+    "1492",
+    "1521",
+    "1550"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: 1492."
+  },
+  {
+   "id": "oc-30",
+   "subtema": "1.2.4",
+   "tipo": "relacionar",
+   "pregunta": "Relaciona cada ingrediente con su dirección en el intercambio colombino.",
+   "pares": [
+    {
+     "izquierda": "Maíz",
+     "derecha": "América → resto del mundo"
+    },
+    {
+     "izquierda": "Trigo",
+     "derecha": "Resto del mundo → América"
+    },
+    {
+     "izquierda": "Cacao",
+     "derecha": "América → resto del mundo"
+    },
+    {
+     "izquierda": "Ganado vacuno",
+     "derecha": "Resto del mundo → América"
+    }
+   ],
+   "explicacion": "Revisa el compendio de este subtema si tuviste dudas."
+  },
+  {
+   "id": "oc-31",
+   "subtema": "1.2.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Quién publicó en 1651 Le Cuisinier François, marcando el abandono de las especias exóticas medievales?",
+   "opciones": [
+    "François Pierre de La Varenne",
+    "Bartolomeo Scappi",
+    "Auguste Escoffier",
+    "Antoine Parmentier"
+   ],
+   "correcta": 0,
+   "explicacion": "Correcto: François Pierre de La Varenne."
+  },
+  {
+   "id": "oc-32",
+   "subtema": "1.2.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "La Varenne reemplazó las especias exóticas por hierbas locales frescas como el perejil, el tomillo, el laurel y el _______.",
+   "opciones": [
+    "estragón",
+    "azafrán",
+    "comino",
+    "jengibre"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: estragón."
+  },
+  {
+   "id": "oc-33",
+   "subtema": "1.2.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "La comida pública del rey en Versalles, conocida como grand couvert, era un evento privado sin espectadores.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "era un espectáculo público observado por cortesanos y visitantes."
+  },
+  {
+   "id": "oc-34",
+   "subtema": "1.2.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué logró sobrevivir Antoine Parmentier alimentándose de ella como prisionero de guerra?",
+   "opciones": [
+    "La papa",
+    "El maíz",
+    "El trigo",
+    "La calabaza"
+   ],
+   "correcta": 0,
+   "explicacion": "Correcto: La papa."
+  },
+  {
+   "id": "oc-37",
+   "subtema": "1.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuáles son los dos significados del término \"cocina económica\" explicados en el libro?",
+   "opciones": [
+    "Un tipo de restaurante y un electrodoméstico",
+    "Un fogón doméstico de leña y un comedor popular de bajo costo",
+    "Una técnica de cocción y un ingrediente barato",
+    "Un estilo de menú y una receta tradicional"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: Un fogón doméstico de leña y un comedor popular de bajo costo."
+  },
+  {
+   "id": "oc-38",
+   "subtema": "1.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "La Cocina Económica de La Coruña, España, fue fundada en el año _______.",
+   "opciones": [
+    "1886",
+    "1900",
+    "1850",
+    "1920"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: 1886."
+  },
+  {
+   "id": "oc-39",
+   "subtema": "1.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "En México, las cocinas económicas como negocio tienen raíces documentadas en redes de mujeres organizadas desde finales del siglo XIX.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 0,
+   "explicacion": "Verdadero, según el compendio."
+  },
+  {
+   "id": "oc-41",
+   "subtema": "1.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "La primera patente de un electro-calentador de cocina, registrada por George B. Simpson, data del año _______.",
+   "opciones": [
+    "1859",
+    "1892",
+    "1897",
+    "1907"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: 1859."
+  },
+  {
+   "id": "oc-42",
+   "subtema": "1.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Quién descubrió el efecto del microondas de forma accidental en 1945?",
+   "opciones": [
+    "Thomas Edison",
+    "Percy Spencer",
+    "Nikola Tesla",
+    "Michael Faraday"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: Percy Spencer."
+  },
+  {
+   "id": "oc-43",
+   "subtema": "1.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "Percy Spencer trabajaba con tubos de radar para la empresa Raytheon cuando descubrió el efecto del microondas.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 0,
+   "explicacion": "Verdadero, según el compendio."
+  },
+  {
+   "id": "oc-45",
+   "subtema": "1.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "La cocina de inducción se popularizó comercialmente en la década de _______, de la mano de la empresa Westinghouse.",
+   "opciones": [
+    "1970",
+    "1950",
+    "1980",
+    "1990"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: 1970."
+  },
+  {
+   "id": "oc-47",
+   "subtema": "1.5",
+   "tipo": "relacionar",
+   "pregunta": "Relaciona cada tipo de cocina con su criterio definitorio.",
+   "pares": [
+    {
+     "izquierda": "De autor",
+     "derecha": "Visión personal del chef por encima de la tradición"
+    },
+    {
+     "izquierda": "Institucional",
+     "derecha": "Volumen, costo y cumplimiento nutricional"
+    },
+    {
+     "izquierda": "De calle",
+     "derecha": "Inversión mínima, consumo inmediato"
+    },
+    {
+     "izquierda": "De mercado/temporada",
+     "derecha": "Disponibilidad estacional del ingrediente"
+    }
+   ],
+   "explicacion": "Revisa el compendio de este subtema si tuviste dudas."
+  },
+  {
+   "id": "oc-48",
+   "subtema": "1.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuál es el antecedente arqueológico documentado más antiguo de la cocina de calle?",
+   "opciones": [
+    "Los mercados griegos",
+    "Los thermopolia romanos",
+    "Las ferias medievales",
+    "Los bazares árabes"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: Los thermopolia romanos."
+  },
+  {
+   "id": "oc-49",
+   "subtema": "1.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "La cocina de banquetes y eventos se organiza sin conocer de antemano el número de comensales.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "se organiza en función de un número de comensales conocido de antemano."
+  },
+  {
+   "id": "oc-51",
+   "subtema": "1.6",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿En qué año se publicó el manifiesto de los diez mandamientos de la nouvelle cuisine?",
+   "opciones": [
+    "1963",
+    "1973",
+    "1989",
+    "2004"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: 1973."
+  },
+  {
+   "id": "oc-52",
+   "subtema": "1.6",
+   "tipo": "opcion_multiple",
+   "pregunta": "El manifiesto de la Nueva Cocina Nórdica (New Nordic) se firmó en el año _______.",
+   "opciones": [
+    "2004",
+    "1989",
+    "1973",
+    "2010"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: 2004."
+  },
+  {
+   "id": "oc-53",
+   "subtema": "1.6",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué chef y restaurante son sinónimo de gastronomía molecular, con técnicas como la esferificación?",
+   "opciones": [
+    "Auguste Escoffier y Le Grand Véfour",
+    "Ferran Adrià y El Bulli",
+    "Paul Bocuse y su restaurante en Lyon",
+    "René Redzepi y Noma"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: Ferran Adrià y El Bulli."
+  },
+  {
+   "id": "oc-54",
+   "subtema": "1.6",
+   "tipo": "opcion_multiple",
+   "pregunta": "El Bulli cerró sus puertas como restaurante en 2011 por falta de clientes.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "cerró deliberadamente para evitar la repetición y convertirse en una fundación de investigación culinaria."
+  },
+  {
+   "id": "oc-56",
+   "subtema": "1.6",
+   "tipo": "opcion_multiple",
+   "pregunta": "Carlo Petrini fundó el movimiento _______ en Italia en 1989, como protesta contra la comida rápida.",
+   "opciones": [
+    "Slow Food",
+    "New Nordic",
+    "Nouvelle Cuisine",
+    "Slow Life"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: Slow Food."
+  },
+  {
+   "id": "oc-57",
+   "subtema": "1.6",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuál de las siguientes NO es mencionada en el libro como una fuerza detrás de las cocinas actuales?",
+   "opciones": [
+    "La tecnología disponible",
+    "La conectividad global",
+    "La preocupación ambiental y de salud",
+    "La disponibilidad de telégrafo"
+   ],
+   "correcta": 3,
+   "explicacion": "Correcto: La disponibilidad de telégrafo."
+  },
+  {
+   "id": "oc-58",
+   "subtema": "1.6",
+   "tipo": "opcion_multiple",
+   "pregunta": "El turismo gastronómico se apoya en listas como _______ y en la Guía Michelin para orientar a los viajeros.",
+   "opciones": [
+    "The World's 50 Best Restaurants",
+    "la Guía Repsol",
+    "el ranking James Beard",
+    "el índice Zagat"
+   ],
+   "correcta": 0,
+   "explicacion": "La respuesta es: The World's 50 Best Restaurants."
+  },
+  {
+   "id": "oc-59",
+   "subtema": "1.6",
+   "tipo": "opcion_multiple",
+   "pregunta": "Las redes sociales han democratizado el acceso al conocimiento técnico culinario, aunque también pueden simplificar en exceso procesos con siglos de historia detrás.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 0,
+   "explicacion": "Verdadero, según el compendio."
+  },
+  {
+   "id": "oc-36",
+   "subtema": "1.2.4",
+   "tipo": "relacionar",
+   "pregunta": "Ordena del más antiguo al más reciente: (ordena del más antiguo al más reciente, asignando la posición correcta a cada evento)",
+   "pares": [
+    {
+     "izquierda": "Inicio del intercambio colombino",
+     "derecha": "1º"
+    },
+    {
+     "izquierda": "La Varenne publica Le Cuisinier François",
+     "derecha": "2º"
+    },
+    {
+     "izquierda": "Antoine Parmentier promueve el consumo de la papa en Francia",
+     "derecha": "3º"
+    }
+   ],
+   "explicacion": "Orden correcto: Inicio del intercambio colombino → La Varenne publica Le Cuisinier François → Antoine Parmentier promueve el consumo de la papa en Francia."
+  },
+  {
+   "id": "oc-44",
+   "subtema": "1.4",
+   "tipo": "relacionar",
+   "pregunta": "Ordena estos hitos de la electrificación de la cocina. (ordena del más antiguo al más reciente, asignando la posición correcta a cada evento)",
+   "pares": [
+    {
+     "izquierda": "Patente de George B. Simpson",
+     "derecha": "1º"
+    },
+    {
+     "izquierda": "Primera estufa eléctrica doméstica (Crompton y Dowsing)",
+     "derecha": "2º"
+    },
+    {
+     "izquierda": "Descubrimiento del microondas por Percy Spencer",
+     "derecha": "3º"
+    }
+   ],
+   "explicacion": "Orden correcto: Patente de George B. Simpson → Primera estufa eléctrica doméstica (Crompton y Dowsing) → Descubrimiento del microondas por Percy Spencer."
+  }
+ ]
+}
