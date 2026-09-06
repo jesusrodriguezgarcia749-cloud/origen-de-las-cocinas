@@ -1,0 +1,220 @@
+{
+  "bloque": 1,
+  "nombre": "Introducción",
+  "descripcion": "Antes de recorrer las cocinas del mundo, conviene detenerse en una pregunta que parece obvia pero rara vez se responde con cuidado: ¿por qué la forma de cocinar de una época o de un lugar es la que es, y no otra? La respuesta casi nunca está en el gusto por sí solo — está en la tecnología disponible para producir calor, en las rutas comerciales, en las creencias religiosas, y en el poder económico de quien podía darse el lujo de comer bien. Este tema construye ese marco general: de dónde viene el oficio de estudiar la historia de la cocina, qué libros documentan cada época decisiva de Occidente, y cómo la propia fuente de calor —de la leña al fuego eléctrico— ha ido redibujando lo que es posible cocinar.",
+  "subtemas": [
+    {
+      "id": "1.1",
+      "titulo": "Introducción a la historia de la cocina",
+      "contenido": [
+        "Estudiar gastronomía sin conocer su historia es aprender un oficio sin saber de dónde vienen sus reglas. La historia de la cocina no es un catálogo de curiosidades sobre lo que comían los antiguos: es la explicación de por qué existen hoy las técnicas, los horarios de comida, los ingredientes considerados básicos en cada región y hasta los prejuicios sobre qué es \"comida elegante\" y qué no lo es.",
+        "§ ¿Por qué estudiar la historia de la cocina?",
+        "El francés Jean-Anthelme Brillat-Savarin, autor de Fisiología del gusto (1825), es considerado el fundador de la literatura gastronómica moderna: antes de él existían libros de cocina y memorias sueltas sobre banquetes, pero nadie había construido una verdadera filosofía del acto de comer. Para él, sentarse a la mesa era, ante todo, un acto de convivencia. Su libro abre con una serie de \"aforismos del profesor\" que se han citado durante dos siglos, como el célebre \"Dime lo que comes y te diré lo que eres\".",
+        "RECUERDA: Brillat-Savarin (1825) es el fundador de la literatura gastronómica moderna — convirtió el acto de comer en objeto de reflexión filosófica, no solo en un instructivo de recetas.",
+        "§ Las escuelas contemporáneas de historia de la gastronomía",
+        "La historia de la comida como disciplina académica es sorprendentemente reciente: se consolidó apenas desde la década de 1980. Conviene conocer a los autores de referencia de este campo, porque son ellos quienes sostienen con investigación seria buena parte de lo que se explica en los siguientes temas.",
+        "• Massimo Montanari (Italia) — Historia de la alimentación — historiador medievalista, estudia la identidad nacional a través de la cocina italiana.",
+        "• Rachel Laudan (Reino Unido/México) — Gastronomía e imperio (2021) — conecta la cocina con imperios, religión y tecnología a lo largo de 20,000 años.",
+        "• Felipe Fernández-Armesto (España/Reino Unido) — Historia de la comida — organiza la historia culinaria en ocho grandes etapas.",
+        "• Paul Freedman (Estados Unidos) — Historia del paladar — historia del gusto y de cómo cambian las preferencias sensoriales.",
+        "• Jeffrey Pilcher (Estados Unidos) — ¡Que vivan los tamales! — la construcción de la identidad culinaria mexicana.",
+        "Rachel Laudan ofrece una idea que atraviesa este libro: la cocina de una civilización no se explica solo por su geografía o sus gustos, sino por su relación con el poder político — los imperios, las religiones y las jerarquías sociales que han decidido, a lo largo de la historia, qué se cultiva, qué se comercia y qué se sirve en la mesa de quién.",
+        "§ Las fuentes del historiador de la cocina",
+        "Reconstruir qué y cómo se comía en el pasado combina varias disciplinas: la arqueología (restos de alimentos, utensilios, basureros domésticos), la filología (recetarios y textos antiguos), la iconografía (pinturas y mosaicos de banquetes) y la historia económica y social. Un ejemplo notable es El arte de comer en la antigua Grecia (2001), de la helenista María José García Soler, que reconstruye qué comían los griegos cruzando evidencia arqueológica, literaria, epigráfica y papirológica.",
+        "§ Las recetas más antiguas del mundo: las tablillas de Mesopotamia",
+        "Antes incluso de Roma y de Grecia, la evidencia escrita más antigua que se conserva sobre cocina proviene de Mesopotamia. En la Colección Babilónica de la Universidad de Yale se conservan cuatro tablillas de arcilla con escritura cuneiforme de alrededor de 1750 a.C. —casi dos mil años antes que el recetario de Apicio del subtema 1.2.1—, descifradas apenas en la década de 1980 por el historiador francés Jean Bottéro. En conjunto suman unas 25 recetas y 350 líneas de texto.",
+        "Un rasgo notable: estas recetas no incluyen cantidades ni proporciones precisas, lo que sugiere que estaban dirigidas a cocineros profesionales ya experimentados —los nuhatimmu, \"embellecedores\"— capaces de interpretar instrucciones generales y adaptar cada preparación según su propio criterio. Según la curadora de la colección, Agnete Lassen, de cientos de miles de documentos cuneiformes conservados, estas son las únicas recetas de comida que existen.",
+        "§ Cronistas, memorialistas y eruditos: otra forma de escribir sobre cocina",
+        "No toda la historia de la gastronomía se escribe como tratado académico. El escritor gallego Álvaro Cunqueiro, en La cocina cristiana de Occidente (1969), optó por un estilo muy distinto: una colección de más de cincuenta artículos periodísticos, sin orden cronológico, que mezcla erudición histórica real con anécdotas inventadas y humor deliberado — un estilo conocido como \"realismo fantástico\". Cunqueiro sostenía que el ser humano civilizado ha puesto más imaginación en la cocina que en el amor o en la guerra.",
+        "NOTA: Cunqueiro nunca pretendió que su libro fuera una historia exacta: mezclaba deliberadamente hechos documentados con escenas inventadas como parte de su estilo literario.",
+        "Ambos estilos —el riguroso de García Soler y el literario de Cunqueiro— son legítimos y se complementan: uno da precisión, el otro da la textura humana de la comida a través de los siglos.",
+        "§ Puntos clave",
+        "• Brillat-Savarin (1825) es el fundador de la literatura gastronómica moderna.",
+        "• La historia de la comida como disciplina académica es un campo joven, consolidado apenas desde los años ochenta.",
+        "• Montanari, Laudan, Fernández-Armesto, Freedman y Pilcher son los autores de referencia actuales.",
+        "• El historiador de la cocina combina arqueología, filología, iconografía e historia económica.",
+        "• Existen dos estilos legítimos de escribir historia de la gastronomía: el académico riguroso y el literario."
+      ]
+    },
+    {
+      "id": "1.2",
+      "titulo": "La cocina",
+      "contenido": [
+        "Esta sección recorre cuatro momentos que marcaron un antes y un después en la manera de cocinar y de comer en Occidente: la Antigua Roma, la Edad Media, el Renacimiento y la Edad Moderna. En cada uno se revisa, además de los hechos generales, al menos un libro o documento real que permite estudiar esa época con fuentes primarias o casi primarias, siguiendo el mismo método explicado en el subtema 1.1."
+      ]
+    },
+    {
+      "id": "1.2.1",
+      "titulo": "Antigua Roma",
+      "contenido": [
+        "La cocina romana heredó y transformó la tradición mediterránea previa —sobre todo la griega— e incorporó también influencias germánicas conforme el Imperio se expandía hacia el norte de Europa.",
+        "§ De re coquinaria: el primer libro de cocina de Occidente",
+        "El testimonio culinario más antiguo que se conserva de forma casi completa es De re coquinaria (Sobre la materia de la cocina), atribuido a Marco Gavio Apicio, gastrónomo que vivió en el siglo I bajo el reinado de Tiberio. Los historiadores actuales coinciden en que la compilación que hoy conocemos no se hizo hasta los siglos IV o V, varios siglos después de la muerte de Apicio, por lo que probablemente reúne recetas de generaciones distintas bajo un mismo nombre prestigioso.",
+        "El libro se organiza en once secciones dedicadas a un tipo de alimento o preparación, con más de 400 recetas en total, incluyendo aves como grulla, avestruz, flamenco y pavo real, y hasta caza como venado, jabalí y ratón de campo — reflejo de una dieta patricia mucho más variada que la de la plebe romana, que subsistía sobre todo de gachas de cereal, legumbres y salazones.",
+        "• Estructura: 11 libros organizados por tipo de alimento; más de 400 recetas.",
+        "• Salsa emblemática: el garum, salsa de pescado fermentado, comparable al actual nam pla asiático.",
+        "• Ingrediente de lujo: el laser, resina del silfio, planta hoy extinta.",
+        "• Curiosidad documentada: recetas de lirones rellenos de carne de cerdo, endulzados con miel y semillas de amapola.",
+        "§ El banquete romano: estructura, clases sociales y curiosidades",
+        "El banquete romano de las clases pudientes (la cena) se estructuraba en tres momentos: la gustatio (entrada ligera con huevos, aceitunas, hongos, ostras y pescados en salmuera, con vino dulce), la prima mensa (el plato fuerte, con carnes, aves, pescados, verduras y legumbres) y la secunda mensa (el postre, con frutas y dulces). Esta secuencia tripartita es, en esencia, el antecesor directo de la estructura de menú que sigue usándose hoy en cualquier restaurante.",
+        "Estos banquetes se celebraban recostados en divanes dentro del triclinio, comiendo con la mano derecha ya que el tenedor todavía no existía; el vino casi siempre se bebía mezclado con agua, y en ocasiones se servía caliente con especias.",
+        "§ Los thermopolia: el antecedente romano de la comida rápida",
+        "Buena parte de los habitantes de las ciudades, que vivían en departamentos (insulae) sin cocina propia, dependía de los thermopolia: mostradores de comida callejera con grandes tinajas empotradas donde se servían guisos calientes, legumbres y vino para comer de pie o para llevar. Las excavaciones de Pompeya han conservado decenas de estos establecimientos casi intactos — el antecedente arqueológico más antiguo y mejor documentado del negocio de comida rápida tal como se conoce hoy.",
+        "RECUERDA: la secuencia romana gustatio–prima mensa–secunda mensa es, en esencia, el antecesor directo de nuestra estructura moderna de entrada, plato fuerte y postre.",
+        "§ Puntos clave",
+        "• De re coquinaria, atribuido a Apicio, es el primer gran testimonio culinario de Occidente.",
+        "• El garum fue el condimento universal de la Antigüedad mediterránea.",
+        "• El banquete romano es el antecesor directo del menú moderno de tres tiempos.",
+        "• La dieta patricia y la dieta popular romanas eran radicalmente distintas entre sí."
+      ]
+    },
+    {
+      "id": "1.2.2",
+      "titulo": "Edad Media",
+      "contenido": [
+        "La cocina medieval europea estuvo profundamente marcada por dos fuerzas: la jerarquía social y la religión. En la cima estaba la nobleza, que hacía de los banquetes un instrumento político; en la base estaba el campesinado, cuya dieta giraba en torno al pan y a preparaciones sencillas de cereales y legumbres.",
+        "§ Le Viandier: el primer gran recetario en lengua francesa",
+        "El testimonio más citado de la alta cocina medieval es Le Viandier, atribuido a Guillaume Tirel, apodado Taillevent (\"corta viento\"), cocinero real que sirvió casi cincuenta años a varios monarcas franceses. El manuscrito más antiguo que se conserva data de finales del siglo XIII —anterior incluso al nacimiento de Taillevent—, lo que indica una historia de compilación y reescritura a lo largo de generaciones, práctica habitual en los recetarios medievales.",
+        "El manuscrito recopila más de 130 recetas con carnes de caza, pescados, aves —hasta pavo real, cisne y águila—, vinagre, vino, hierbas y especias importadas de Oriente. Un rasgo distintivo es la frecuencia de preparaciones agridulces, combinando ingredientes salados con miel, frutas y vinos especiados (el hipocrás), común en toda Europa en esa época.",
+        "§ Especias, ostentación y la mesa noble",
+        "El elemento más característico de la cocina noble medieval fue el uso masivo de especias importadas de Oriente: pimienta, canela, clavo, jengibre, azafrán, nuez moscada, galanga y grano del paraíso. Este consumo no respondía principalmente a conservar los alimentos, como suele creerse, sino a una lógica de ostentación: cuantas más especias exóticas y caras se servían, mayor era el estatus proyectado. Esta demanda europea de especias fue uno de los motores de las grandes rutas comerciales hacia Oriente.",
+        "La Iglesia católica también regulaba qué se podía comer y cuándo: los períodos de vigilia y ayuno prohibían carne y, a veces, lácteos, impulsando creatividad en pescados, verduras y legumbres. Los monasterios funcionaron como centros de innovación agrícola y de técnicas de conservación como la salazón y el ahumado.",
+        "RECUERDA: el consumo desmedido de especias en la mesa noble medieval no era, ante todo, un método de conservación — era una forma de exhibir riqueza.",
+        "§ Puntos clave",
+        "• Le Viandier, atribuido a Taillevent, es el recetario medieval en francés más citado.",
+        "• La cocina noble medieval usaba especias exóticas como símbolo de estatus, no principalmente como conservador.",
+        "• La religión regulaba directamente qué se podía comer y cuándo.",
+        "• Los monasterios fueron centros de innovación agrícola y de conservación de alimentos."
+      ]
+    },
+    {
+      "id": "1.2.3",
+      "titulo": "Renacimiento",
+      "contenido": [
+        "El Renacimiento llevó el arte de la mesa a un nivel de sofisticación sin precedentes, sobre todo en las cortes italianas de Florencia y Venecia, donde los banquetes se convirtieron en espectáculos artísticos con la colaboración de pintores, escultores y artesanos.",
+        "§ Bartolomeo Scappi y la \"Biblia de la cocina renacentista\"",
+        "La obra más importante de este período es Opera dell'arte del cucinare (1570), del cocinero Bartolomeo Scappi, quien sirvió a varios cardenales venecianos antes de convertirse en cocinero privado de los papas Pío IV y Pío V. Su tratado se divide en seis libros: consejos sobre el oficio, conservación y recetas generales, el pescado, la organización de grandes banquetes, la pastelería, y la alimentación para enfermos.",
+        "La Opera de Scappi incluye más de mil recetas y, por primera vez en la historia editorial de la cocina, ilustraciones detalladas de la organización de una cocina real. Scappi documenta también el banquete de 1536 para 780 comensales en honor del emperador Carlos V, y los pormenores logísticos del cónclave papal de 1549-1550.",
+        "• Maestro Martino, Libro de arte coquinaria (c. 1450) — uno de los primeros recetarios italianos organizados por técnica.",
+        "• Bartolomeo Scappi, Opera dell'arte del cucinare (1570) — más de mil recetas; primeras ilustraciones de cocina.",
+        "• Marx Rumpolt, Ein new Kochbuch (1581) — recetario alemán influyente del mismo período.",
+        "§ Catalina de Médici y la corte francesa",
+        "Uno de los episodios más citados de este período es la llegada a Francia, en 1533, de Catalina de Médici, joven noble florentina casada con el futuro rey Enrique II. Con ella viajó un séquito de cocineros, pasteleros y panaderos italianos, además de ingredientes hasta entonces desconocidos en la corte francesa: alcachofas, brócoli, espárragos y postres fríos, entre ellos una preparación helada antecesora del helado moderno. A ella también se le atribuye tradicionalmente la popularización del tenedor en Francia, aunque algunos historiadores matizan qué tanto es leyenda posterior.",
+        "El matrimonio de Catalina con Enrique II sentó las bases de lo que se convertiría en la gastronomía francesa como referente mundial de refinamiento, proceso que se completaría un siglo después con La Varenne.",
+        "NOTA: en Francia se imprimió apenas en 1516 el Epulario de Giovanni Rosselli, y para 1585 ya circulaba Ouverture de cuisine de Lancelot de Casteau — el Renacimiento vivió una auténtica explosión editorial de libros de cocina en toda Europa.",
+        "§ Puntos clave",
+        "• La Opera de Scappi (1570) es la \"Biblia de la cocina renacentista\": más de mil recetas en seis libros.",
+        "• Scappi documentó por primera vez, con ilustraciones, la organización física de una cocina profesional.",
+        "• Catalina de Médici (1533) introdujo ingredientes y utensilios italianos en la corte francesa.",
+        "• El Renacimiento vivió una explosión editorial de recetarios en toda Europa occidental."
+      ]
+    },
+    {
+      "id": "1.2.4",
+      "titulo": "Edad Moderna",
+      "contenido": [
+        "La Edad Moderna trae dos procesos paralelos: la transformación radical de los ingredientes disponibles en el mundo a partir del intercambio colombino, y la codificación técnica de la cocina francesa en la corte de Luis XIV, que sentaría las bases de la profesión tal como se conoce hoy.",
+        "§ El intercambio colombino",
+        "A partir de 1492, el contacto entre Europa y América puso en circulación, en ambas direcciones, ingredientes hoy indispensables pero desconocidos antes de ese momento. El maíz, la papa, el tomate, el chile, el cacao, la vainilla y el frijol viajaron de América a Europa, Asia y África; a la inversa, el trigo, el arroz, la caña de azúcar, el ganado vacuno, porcino y ovino, y numerosas especias asiáticas llegaron a América.",
+        "Este intercambio no fue instantáneo: muchos ingredientes tardaron generaciones en integrarse a las cocinas locales, y su llegada estuvo casi siempre atada a procesos de conquista, colonización y, en muchos casos, de esclavitud. En el virreinato de la Nueva España se gestó un mestizaje culinario que fusionó ingredientes y técnicas indígenas —maíz, chile, frijol, cacao— con productos traídos por los españoles, origen de buena parte de la cocina mexicana actual. Este proceso se retoma con detalle, país por país, en el Tema 3.",
+        "• América → resto del mundo: maíz, papa, tomate, chile, cacao, vainilla, frijol, aguacate, piña, calabaza.",
+        "• Resto del mundo → América: trigo, arroz, caña de azúcar, ganado vacuno/porcino/ovino, café, cítricos, especias asiáticas.",
+        "§ La Varenne y la codificación de la cocina francesa (siglo XVII)",
+        "Un siglo después de Catalina de Médici, el cocinero borgoñón François Pierre de La Varenne publicó en 1651 Le Cuisinier François, considerado el texto fundacional de la cocina francesa moderna y el primer texto europeo dedicado por completo a instruir a otros cocineros en el oficio —a diferencia de los libros anteriores, centrados en la dietética y la comida como medicina.",
+        "El gran aporte de La Varenne fue abandonar las especias exóticas medievales en favor de hierbas locales (perejil, tomillo, laurel, estragón) y verduras entonces novedosas (coliflor, espárrago, chícharo, alcachofa). Su libro llegó a imprimirse en más de 250 ediciones distintas y permaneció en circulación hasta 1815. Su traducción al inglés de 1653 introdujo términos hoy estándar como à la mode, au bleu o au naturel.",
+        "§ Parmentier y la aceptación tardía de la papa en Europa",
+        "Aunque la papa llegó a Europa desde los Andes en el siglo XVI, tardó cerca de dos siglos en ser aceptada como alimento humano: se consideraba venenosa o indigna del consumo humano. El farmacéutico francés Antoine-Augustin Parmentier, prisionero en Prusia durante la Guerra de los Siete Años, sobrevivió alimentándose casi exclusivamente de papa y comprobó que era nutritiva e inofensiva.",
+        "De regreso en Francia, Parmentier promovió el cultivo de la papa como respuesta a las hambrunas por malas cosechas de trigo, organizando cenas de degustación y obteniendo el apoyo simbólico de María Antonieta. El plato hachis Parmentier se popularizó en el siglo XIX en su honor. Un estudio económico de Harvard, Northwestern y la Universidad de Colorado ha llegado a vincular la adopción de la papa en Europa con una reducción medible de conflictos asociados al hambre entre 1400 y 1900.",
+        "§ La mesa de Versalles",
+        "Luis XIV convirtió la etiqueta de la mesa en un componente central de la vida cortesana en Versalles: la comida real (el grand couvert) se servía como espectáculo público, donde la colocación de cada plato y el protocolo de quién podía sentarse cerca del rey comunicaban jerarquía social. Este refinamiento —que se retoma en el Tema 4 al hablar de la realeza— es la culminación de un proceso iniciado con Catalina de Médici y sistematizado técnicamente por La Varenne.",
+        "RECUERDA: el intercambio colombino no fue un simple trueque de ingredientes — fue una reorganización completa de la dieta mundial. Y La Varenne no solo cambió recetas: escribió el primer manual europeo pensado para enseñar el oficio, no solo para servir a la medicina.",
+        "§ Puntos clave",
+        "• El intercambio colombino (desde 1492) transformó la dieta mundial en ambos sentidos del Atlántico.",
+        "• Le Cuisinier François (1651) de La Varenne es el primer texto europeo dedicado por completo a instruir el oficio.",
+        "• La Varenne reemplazó las especias exóticas medievales por hierbas locales y verduras novedosas.",
+        "• La mesa de Versalles convirtió la etiqueta de la comida real en un instrumento de poder."
+      ]
+    },
+    {
+      "id": "1.3",
+      "titulo": "La cocina económica",
+      "contenido": [
+        "El término \"cocina económica\" tiene dos significados que conviene distinguir. El primero, más antiguo, es un tipo de fogón doméstico: la cocina de leña o \"chapa\", que sustituyó al fuego bajo tradicional con una superficie plana, un horno incorporado y un depósito de agua caliente, alimentado por un único tiro de chimenea. En Inglaterra, el inventor John Sibthorpe patentó ya en 1630 una versión metálica que funcionaba con carbón.",
+        "El segundo significado —el que da nombre a establecimientos populares en países de habla hispana— se refiere a comedores de bajo costo con comida abundante y sencilla, muchas veces con menú fijo. En México, este negocio tiene raíces documentadas en grupos de mujeres que, a finales del siglo XIX y principios del XX, se organizaban para cocinar y ofrecer comida a trabajadores de la zona, como fuente adicional de ingreso familiar.",
+        "§ Un caso documentado: la Cocina Económica de La Coruña",
+        "Un ejemplo institucional bien documentado, fuera de México, es la Cocina Económica de La Coruña, España, fundada el 1 de mayo de 1886 por Teodoro Baró en una antigua tahona, para ofrecer alimento a precio simbólico a la población de escasos recursos. Para 1986, año de su centenario, distribuía más de 850,000 raciones anuales. El caso muestra que la lógica de la \"cocina económica\" como institución de asistencia alimentaria no es exclusiva de México, sino un modelo repetido en distintos países hispanos durante los siglos XIX y XX.",
+        "RECUERDA: \"cocina económica\" nombra dos cosas distintas pero relacionadas: el fogón doméstico de leña que precedió a la estufa moderna, y el comedor popular de bajo costo.",
+        "§ Puntos clave",
+        "• \"Cocina económica\" tiene dos significados: el fogón doméstico de leña y el comedor popular de bajo costo.",
+        "• En México, las cocinas económicas como negocio tienen raíces en redes de mujeres organizadas desde finales del siglo XIX.",
+        "• La Cocina Económica de La Coruña (1886) es un ejemplo institucional documentado del mismo modelo fuera de México."
+      ]
+    },
+    {
+      "id": "1.4",
+      "titulo": "La cocina eléctrica",
+      "contenido": [
+        "La sustitución del fuego de leña o carbón por la electricidad como fuente de calor fue un proceso lento, de más de medio siglo. La primera patente relevante data de 1859, del estadounidense George B. Simpson, con un \"electro-calentador\" de superficie. En 1892, los británicos R. E. Crompton y J. H. Dowsing patentaron la primera estufa eléctrica pensada para uso doméstico. En 1897, William Hadaway patentó un horno eléctrico con control automático de temperatura.",
+        "A pesar de estos avances, la cocina eléctrica tardó décadas en volverse popular: el costo de la electricidad era más alto que el de la leña o el gas, el suministro eléctrico doméstico era limitado, y los primeros elementos calefactores tenían vida útil corta. Las aleaciones de nicromo (níquel-cromo) fueron decisivas para superar estos problemas. En 1907, H. Nora Curle Smith publicó Thermo-Electrical Cooking Made Easy, el primer recetario del mundo escrito específicamente para estufas eléctricas.",
+        "No fue sino hasta la década de 1930 que la estufa eléctrica comenzó a reemplazar de forma sostenida a la de gas, y su adopción masiva llegó con el auge del Estado de bienestar de mediados del siglo XX.",
+        "§ De la inducción al microondas: la segunda ola eléctrica",
+        "El descubrimiento de la inducción electromagnética —estudiada originalmente por Michael Faraday en el siglo XIX— dio lugar a la cocina de inducción, que calienta directamente el recipiente por magnetismo. Su popularización comercial llegó apenas en la década de 1970, de la mano de Westinghouse.",
+        "El horno de microondas fue descubierto de manera accidental en 1945 por el ingeniero Percy Spencer, quien trabajaba con tubos de radar para Raytheon y notó que una barra de chocolate se había derretido en su bolsillo mientras probaba un magnetrón. Raytheon lanzó en 1947 el primer horno de microondas comercial, enorme y costoso; la versión doméstica no llegaría al mercado masivo sino hasta la década de 1970.",
+        "RECUERDA: la cocina eléctrica se inventó en el siglo XIX, pero tardó más de sesenta años en volverse cotidiana — la tecnología llega antes que su adopción masiva, que depende también de infraestructura y costo.",
+        "§ Puntos clave",
+        "• La primera patente de un calentador eléctrico de cocina data de 1859 (George B. Simpson).",
+        "• La adopción masiva de la estufa eléctrica llegó hasta la década de 1930.",
+        "• El microondas nació de un descubrimiento accidental de Percy Spencer en 1945, durante investigación militar sobre radares.",
+        "• La cocina de inducción no se popularizó comercialmente hasta la década de 1970."
+      ]
+    },
+    {
+      "id": "1.5",
+      "titulo": "Otros tipos de cocinas",
+      "contenido": [
+        "Más allá de la fuente de calor, existen formas de clasificar la cocina que no dependen del combustible ni de la época, sino del propósito o del contexto en que se cocina. Reconocerlas ayuda a entender que \"cocinar\" no es una sola actividad homogénea, sino un conjunto de prácticas con lógicas propias.",
+        "La cocina de subsistencia es la más antigua: se organiza en torno a la disponibilidad inmediata de ingredientes locales. La cocina de mercado o de temporada organiza sus preparaciones alrededor de lo disponible en cada época del año —lógica que hoy recupera buena parte de la alta cocina como sello de calidad—. La cocina de autor se construye alrededor de la visión personal de un chef, con un estilo reconocible.",
+        "También existen las cocinas institucionales o de colectividad —hospitales, escuelas, comedores industriales—, que priorizan el volumen, el costo y el cumplimiento de normas nutricionales; y la cocina de banquetes y eventos, organizada en función de un número de comensales conocido de antemano.",
+        "Un tipo transversal a casi todas las regiones del Tema 3 es la cocina de calle o ambulante: puestos y carritos con inversión mínima y ciclo de preparación rápido. Los thermopolia romanos del subtema 1.2.1 son el antecedente arqueológico más antiguo de esta misma lógica — los taco stands mexicanos, los puestos de noodles del sureste asiático y los food trucks contemporáneos comparten la misma función social.",
+        "• Subsistencia — ingredientes locales disponibles, sin mayor pretensión — ej. comunidades rurales aisladas.",
+        "• De mercado/temporada — disponibilidad estacional — ej. menús que cambian según cosecha.",
+        "• De autor — visión personal del chef sobre la tradición regional — ej. restaurantes de alta cocina firmados.",
+        "• Institucional/de colectividad — volumen, costo, cumplimiento nutricional — ej. hospitales, escuelas.",
+        "• De banquetes y eventos — menú fijo, comensales conocidos de antemano — ej. bodas, congresos.",
+        "• De calle/ambulante — inversión mínima, consumo inmediato — ej. taco stands, food trucks.",
+        "RECUERDA: no existe una sola forma de \"cocinar bien\" — la cocina de subsistencia, la de autor y la institucional persiguen objetivos distintos, cada una con su propio criterio de éxito.",
+        "§ Puntos clave",
+        "• Existen al menos seis tipos de cocina según su propósito.",
+        "• Cada tipo de cocina tiene su propio criterio de éxito.",
+        "• La cocina de calle tiene un antecedente documentado desde la Antigua Roma (los thermopolia)."
+      ]
+    },
+    {
+      "id": "1.6",
+      "titulo": "Cocinas actuales",
+      "contenido": [
+        "La gastronomía contemporánea se caracteriza por la convivencia simultánea de tendencias que en otros momentos habrían resultado contradictorias: la globalización ha vuelto accesibles ingredientes y técnicas de cualquier región del mundo, mientras que, a la par, existe un movimiento igualmente fuerte de revalorización de lo local y de temporada.",
+        "§ La nouvelle cuisine: el primer gran movimiento de ruptura",
+        "El primer gran movimiento contemporáneo de ruptura frente a la codificación clásica de Escoffier fue la nouvelle cuisine, lanzada en 1973 por los críticos franceses Henri Gault y Christian Millau en forma de un manifiesto de \"diez mandamientos\". El manifiesto no inventó un estilo desde cero: le puso nombre a lo que ya practicaban chefs como Paul Bocuse, Michel Guérard y los hermanos Troisgros, formados bajo el legendario Fernand Point.",
+        "• No cocerás demasiado; utilizarás productos frescos; aligerarás tu carta.",
+        "• Te servirás de las nuevas técnicas; evitarás adobos y fermentaciones prolongadas.",
+        "• Eliminarás las salsas pesadas (bechamel y española); no ignorarás la dietética; serás inventivo.",
+        "Paul Bocuse, con el tiempo, matizó su relación con el movimiento que ayudó a fundar, comentando con humor que la nouvelle cuisine \"no tenía nada en el plato, todo en la cuenta\" — una crítica a los excesos de porciones diminutas de algunos imitadores.",
+        "§ New Nordic Cuisine: el manifiesto del siglo XXI",
+        "En noviembre de 2004, doce chefs nórdicos encabezados por René Redzepi y Claus Meyer —fundadores del restaurante Noma en Copenhague— firmaron el Manifiesto de la Nueva Cocina Nórdica: una cocina basada en pureza, estacionalidad, ética productiva e ingredientes propios del clima nórdico, en parte como rechazo deliberado a la hegemonía de la gramática culinaria francesa.",
+        "Noma llegó a ocupar el primer lugar de The World's 50 Best Restaurants durante varios años, y el movimiento inspiró restaurantes centrados en ingredientes recolectados y técnicas vikingas de conservación, en paralelo con el movimiento Slow Food fundado en Italia por Carlo Petrini en 1989.",
+        "RECUERDA: cada gran movimiento gastronómico contemporáneo nace como reacción a lo que lo precede — la nouvelle cuisine reaccionó contra el exceso clásico, y el manifiesto nórdico reaccionó contra la hegemonía francesa.",
+        "§ Otras corrientes actuales",
+        "La gastronomía molecular o de vanguardia estudia con rigor los procesos físicos y químicos detrás de una preparación. Su exponente más influyente fue el chef catalán Ferran Adrià, quien al frente de El Bulli desarrolló técnicas como la esferificación y las espumas con sifón. El Bulli, que llegó a recibir más de dos millones de solicitudes de reserva al año para apenas 8,000 plazas, cerró en 2011 para convertirse en una fundación de investigación culinaria.",
+        "La creciente presencia de dietas alternativas —vegetarianismo, veganismo, cocina sin gluten—, revisadas con detalle en el Tema 2, responde tanto a salud como a inquietudes éticas y ambientales.",
+        "§ El turismo gastronómico y la difusión digital",
+        "El turismo gastronómico —viajar con el propósito explícito de comer en un lugar concreto— se ha consolidado como segmento propio de la industria turística, apoyado en listas como The World's 50 Best Restaurants y en la Guía Michelin (Tema 4). Las redes sociales han cambiado cómo se transmite el conocimiento culinario: para bien, democratizando el acceso; para mal, simplificando en exceso procesos que cargan siglos de historia detrás.",
+        "§ Puntos clave",
+        "• La nouvelle cuisine (1973) y el manifiesto New Nordic (2004) son los dos grandes movimientos de ruptura contemporáneos.",
+        "• Cada movimiento gastronómico reciente nace como reacción a la corriente que lo precede.",
+        "• La gastronomía molecular estudia con rigor científico los procesos detrás de una preparación.",
+        "• Las dietas alternativas responden tanto a salud como a ética y sostenibilidad."
+      ]
+    }
+  ]
+}
