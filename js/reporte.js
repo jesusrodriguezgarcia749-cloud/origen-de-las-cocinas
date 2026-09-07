@@ -8,7 +8,7 @@ export const ESCUELA = {
   carrera: 'Licenciatura en Artes Culinarias y Negocios Gastronómicos',
   asignatura: 'Origen de las Cocinas · Clave 0102 · Primer cuatrimestre',
   docente: 'Jesús Rodríguez García',
-  logo: 'assets/escudo.png',
+  logo: 'https://jesusrodriguezgarcia749-cloud.github.io/assets/escudo.png',
 };
 
 const ETIQUETA_TIPO_REACTIVO = { opcion_multiple: 'Opción múltiple', verdadero_falso: 'Verdadero o falso', relacionar: 'Relaciona columnas' };
