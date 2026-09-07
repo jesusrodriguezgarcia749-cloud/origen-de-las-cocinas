@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Actividades — Origen de las Cocinas</title>
+<meta name="description" content="Zona de repaso y estudio de Origen de las Cocinas, con retroalimentación inmediata. No tiene valor en tu calificación oficial.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/actividades.css">
+<link rel="stylesheet" href="css/examen.css">
+<link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">OC</span>
+      <span class="brand-text">Origen de las Cocinas</span>
+    </a>
+    <nav class="main-nav" aria-label="Navegación principal">
+      <a href="compendio.html">Compendio</a>
+      <a href="actividades.html" aria-current="page">Actividades</a>
+      <a href="biblioteca.html">Biblioteca</a>
+      <a href="examen.html">Examen</a>
+      <a href="mi-progreso.html">Mi progreso</a>
+      <a href="admin.html" class="nav-admin">Panel docente</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main class="wrap actividades-main">
+
+  <section id="act-selector">
+    <p class="eyebrow">Zona de estudio</p>
+    <h1>Actividades de repaso</h1>
+    <p class="field-hint">Practica libremente. Esto <strong>no tiene valor</strong> en tu calificación oficial — es solo para prepararte.</p>
+
+    <div id="act-lista-temas" class="act-temas-grid"><!-- se rellena por JS --></div>
+  </section>
+
+  <section id="act-curso" hidden>
+    <div class="act-barra-top">
+      <button id="btn-salir-act" class="btn-ghost-dark btn-small">← Elegir otro tema</button>
+      <span id="act-avance"></span>
+    </div>
+    <div id="act-reactivo-root"></div>
+    <div class="act-nav-botones">
+      <button id="btn-act-anterior" class="btn btn-ghost-dark" disabled>← Anterior</button>
+      <button id="btn-act-siguiente" class="btn btn-primary">Siguiente →</button>
+    </div>
+  </section>
+
+  <section id="act-resumen" hidden></section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>Aula Virtual · Origen de las Cocinas · LudoMente Studio</p>
+  </div>
+</footer>
+
+<audio id="bg-music" loop preload="none">
+  <source src="https://commons.wikimedia.org/wiki/Special:FilePath/Gymnopedie_No._1..ogg" type="audio/ogg">
+</audio>
+<button id="bg-music-toggle" class="music-toggle" aria-label="Activar música de fondo" aria-pressed="false">🎵</button>
+
+<script src="js/app.js"></script>
+<script src="js/actividades.js"></script>
+</body>
+</html>
