@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi progreso — Origen de las Cocinas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/admin.css">
+<link rel="stylesheet" href="css/progreso.css">
+<link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">OC</span>
+      <span class="brand-text">Origen de las Cocinas</span>
+    </a>
+    <nav class="main-nav" aria-label="Navegación principal">
+      <a href="compendio.html">Compendio</a>
+      <a href="actividades.html">Actividades</a>
+      <a href="biblioteca.html">Biblioteca</a>
+      <a href="examen.html">Examen</a>
+      <a href="mi-progreso.html" aria-current="page">Mi progreso</a>
+      <a href="admin.html" class="nav-admin">Panel docente</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<section id="prog-login" class="admin-wrap">
+  <div class="login-card">
+    <h1>Mi progreso</h1>
+    <p class="login-sub">Entra con los mismos datos que usa tu docente para registrarte.</p>
+    <form id="form-login-prog">
+      <label for="pg-grupo" class="sr-only">Grupo</label>
+      <select id="pg-grupo"><option value="">— Elige tu grupo —</option></select>
+      <label for="pg-nombre" class="sr-only">Nombre</label>
+      <input id="pg-nombre" type="text" placeholder="Tu nombre completo" required>
+      <label for="pg-pin" class="sr-only">PIN</label>
+      <input id="pg-pin" type="text" inputmode="numeric" placeholder="PIN (4 dígitos)" required>
+      <button type="submit" class="btn btn-primary">Entrar</button>
+      <p id="pg-error" class="login-error" hidden></p>
+    </form>
+  </div>
+</section>
+
+<section id="prog-app" class="admin-wrap" hidden>
+  <div class="admin-topbar">
+    <span id="pg-whoami" style="font-family:'Fraunces',serif; font-weight:600; font-size:1.1rem;"></span>
+    <button id="pg-salir" class="btn-logout">Salir</button>
+  </div>
+
+  <div id="prog-avisos"></div>
+
+  <h2 class="section-title">Calificación por parcial</h2>
+  <div id="prog-parciales"></div>
+
+  <h2 class="section-title">Resumen del cuatrimestre</h2>
+  <div id="prog-resumen"></div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap"><p>Aula Virtual · Origen de las Cocinas · LudoMente Studio</p></div>
+</footer>
+
+<audio id="bg-music" loop preload="none">
+  <source src="https://commons.wikimedia.org/wiki/Special:FilePath/Gymnopedie_No._1..ogg" type="audio/ogg">
+</audio>
+<button id="bg-music-toggle" class="music-toggle" aria-label="Activar música de fondo" aria-pressed="false">🎵</button>
+
+<script src="js/app.js"></script>
+<script type="module" src="js/mi-progreso.js"></script>
+</body>
+</html>
