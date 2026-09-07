@@ -1,0 +1,355 @@
+{
+  "parcial": "p2",
+  "titulo": "Examen Parcial 2 — Cocinas en el mundo y Necesidades e influencias (hasta 4.4)",
+  "config": { "preguntasPorExamen": 38, "minutos": 60 },
+  "reactivos": [
+
+    { "id": "p2-001", "subtema": "3.1", "tipo": "opcion_multiple",
+      "pregunta": "Un alumno describe al Magreb como una región \"puramente árabe, sin ninguna otra influencia\". ¿Qué corrige el compendio sobre esta idea?",
+      "opciones": [
+        "Combina rasgos mediterráneos, bereberes (amazigh), árabes y, en menor medida, otomanos — su ingrediente emblemático, el cuscús, es de origen bereber",
+        "Es correcto: el Magreb nunca tuvo ninguna influencia distinta a la árabe",
+        "El Magreb es una región exclusivamente subsahariana sin relación con el norte de África",
+        "El cuscús es de origen otomano, no bereber"
+      ], "correcta": 0,
+      "explicacion": "El cuscús es de origen amazigh (bereber); el Magreb combina múltiples capas de influencia, incluida la otomana en dolmas y baclavas." },
+
+    { "id": "p2-002", "subtema": "3.1", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué conectó el comercio transahariano, además de mercancías, según el compendio?",
+      "opciones": [
+        "Fue el canal por el que el islam llegó a África occidental, y por el que circularon especias y saberes culinarios",
+        "Conectó exclusivamente a Europa con Asia, sin ninguna relación con África",
+        "Sirvió únicamente para el comercio de esclavos, sin ningún otro propósito",
+        "Fue una ruta marítima, no terrestre, operada por barcos europeos"
+      ], "correcta": 0,
+      "explicacion": "El comercio transahariano, basado en oro y sal, fue también el canal de difusión del islam y de saberes culinarios entre ambas orillas del desierto." },
+
+    { "id": "p2-003", "subtema": "3.1", "tipo": "relacionar",
+      "pregunta": "Relaciona cada región africana con su rasgo culinario distintivo.",
+      "pares": [
+        { "izquierda": "Cuerno de África", "derecha": "El teff y el injera como base de la cocina cotidiana" },
+        { "izquierda": "África Austral", "derecha": "El braai y la cocina del Cabo Malayo (bobotie)" },
+        { "izquierda": "África Occidental", "derecha": "Granos ancestrales (mijo, sorgo), ñame y aceite de palma" }
+      ],
+      "explicacion": "Cada región africana desarrolló, dentro del mosaico continental, una identidad culinaria propia y distinta de las demás." },
+
+    { "id": "p2-010", "subtema": "3.2", "tipo": "opcion_multiple",
+      "pregunta": "Un alumno afirma que Sahagún escribió su obra completamente solo, sin ninguna colaboración indígena. ¿Qué corrige el compendio?",
+      "opciones": [
+        "La escribió con la colaboración directa de informantes indígenas, lo que le da su valor documental sobre la alimentación mexica",
+        "Es correcto: fue un trabajo enteramente individual del fraile",
+        "En realidad la obra fue escrita íntegramente por los propios mexicas sin ninguna intervención española",
+        "Sahagún nunca documentó nada relacionado con la alimentación"
+      ], "correcta": 0,
+      "explicacion": "La Historia general de las cosas de Nueva España se escribió con la colaboración directa de informantes indígenas, lo que la vuelve la fuente más completa sobre la alimentación mexica." },
+
+    { "id": "p2-011", "subtema": "3.2", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué distingue técnicamente al pib maya de la cocina mexica del Valle de México?",
+      "opciones": [
+        "El pib es un horno excavado en la tierra, similar en lógica al hangi de Oceanía pero desarrollado de forma independiente; la mexica usaba comal de barro y cocción al vapor",
+        "Ambas culturas usaban exactamente la misma técnica de cocción, sin ninguna diferencia",
+        "El pib es una técnica introducida por los españoles tras la conquista",
+        "El comal es una técnica exclusiva de la cultura maya, no de la mexica"
+      ], "correcta": 0,
+      "explicacion": "El pib (horno de tierra maya) y el comal/vapor (mexica) son técnicas distintas dentro del mismo tronco mesoamericano, cada una con su propia lógica." },
+
+    { "id": "p2-012", "subtema": "3.2", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué explica el origen del queso relleno campechano, según el compendio?",
+      "opciones": [
+        "Barcos que traían quesos holandeses enteros como lastre; las familias consumían solo el interior y los cocineros rellenaban la cáscara con picadillo mestizo",
+        "Es una receta prehispánica maya sin ninguna influencia europea",
+        "Fue inventado por Sylvain Daumont durante el Porfiriato",
+        "Se originó como imitación de un platillo francés servido en Versalles"
+      ], "correcta": 0,
+      "explicacion": "El queso relleno combina un queso literalmente traído en barco desde Holanda con técnicas y condimentos de raíz mestiza, en el contexto del puerto de Campeche." },
+
+    { "id": "p2-013", "subtema": "3.2", "tipo": "opcion_multiple",
+      "pregunta": "¿Por qué se construyeron las murallas hexagonales de Campeche entre 1686 y 1710?",
+      "opciones": [
+        "Como respuesta a más de veinte ataques piratas de consideración sufridos entre 1558 y 1685",
+        "Para proteger a la ciudad de invasiones terrestres de pueblos indígenas",
+        "Como parte de un proyecto arquitectónico sin ninguna función defensiva real",
+        "Para conmemorar la llegada de Hernán Cortés a la península"
+      ], "correcta": 0,
+      "explicacion": "El saqueo de \"Lorencillo\" en 1685, el más devastador, fue el parteaguas que llevó a la Corona a amurallar por completo la ciudad." },
+
+    { "id": "p2-014", "subtema": "3.2", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué técnica de conservación andina permitía guardar la papa deshidratada durante diez a veinte años?",
+      "opciones": ["El chuño", "El charqui", "El garum", "El braai"], "correcta": 0,
+      "explicacion": "El chuño combina ciclos de congelación nocturna y deshidratación solar diurna, una tecnología de conservación extraordinaria para su época." },
+
+    { "id": "p2-015", "subtema": "3.2", "tipo": "opcion_multiple",
+      "pregunta": "¿Por qué se describe al Caribe como \"el crisol de tres continentes\"?",
+      "opciones": [
+        "Porque combina en un espacio reducido la base indígena taína, la herencia europea colonial y una fortísima presencia africana traída por la esclavitud",
+        "Porque ahí se fundó el primer restaurante de la historia",
+        "Porque es la única región americana sin ninguna influencia indígena",
+        "Porque concentra exclusivamente inmigración asiática reciente"
+      ], "correcta": 0,
+      "explicacion": "El Caribe confluye tres vertientes —indígena, europea y africana— en un espacio geográfico reducido, más claramente que cualquier otra región americana." },
+
+    { "id": "p2-016", "subtema": "3.2", "tipo": "verdadero_falso",
+      "pregunta": "El asado del Cono Sur tiene su origen en una tradición ganadera prehispánica, anterior a la llegada de los españoles.",
+      "opciones": ["Verdadero", "Falso"], "correcta": 1,
+      "explicacion": "La ganadería que dio origen al asado fue introducida por los colonizadores españoles; no existía ganado mayor domesticado en América antes de la conquista." },
+
+    { "id": "p2-017", "subtema": "3.2", "tipo": "relacionar",
+      "pregunta": "Relaciona cada país o región americana con su rasgo gastronómico distintivo.",
+      "pares": [
+        { "izquierda": "Brasil", "derecha": "Herencia tupí-guaraní (mandioca) + portuguesa + africana (feijoada, dendê)" },
+        { "izquierda": "Costa Rica", "derecha": "Colonización con menor mano de obra indígena y economía cafetalera; el gallo pinto como plato nacional" },
+        { "izquierda": "Estados Unidos (sur)", "derecha": "El soul food, desarrollado por comunidades afroamericanas esclavizadas" }
+      ],
+      "explicacion": "Cada región americana combina, en proporción distinta, las tres vertientes indígena, europea y africana descritas en el Tema 3.2." },
+
+    { "id": "p2-020", "subtema": "3.3", "tipo": "opcion_multiple",
+      "pregunta": "¿Por qué es impreciso hablar de \"cocina asiática\" como si fuera una sola cosa, según el compendio?",
+      "opciones": [
+        "Porque Asia es el continente más extenso y poblado del mundo, con subregiones (Oriental, del Sur, Sureste, Medio Oriente, Central) con lógicas propias",
+        "Porque en realidad toda Asia comparte exactamente los mismos ingredientes y técnicas",
+        "Porque Asia tiene menos diversidad culinaria que Europa",
+        "Porque el término \"cocina asiática\" no existe en ningún texto especializado"
+      ], "correcta": 0,
+      "explicacion": "El compendio lo compara con hablar de \"cocina europea\" sin distinguir Italia de Escandinavia — cada subregión asiática tiene una lógica propia." },
+
+    { "id": "p2-021", "subtema": "3.3", "tipo": "opcion_multiple",
+      "pregunta": "El adobo filipino comparte nombre con el adobo español o mexicano. ¿Qué aclara el compendio sobre esta coincidencia?",
+      "opciones": [
+        "Es una preparación distinta desarrollada de forma independiente en el archipiélago filipino, pese al nombre compartido",
+        "Es exactamente la misma receta, llevada por los españoles sin ningún cambio",
+        "El adobo filipino fue inventado primero y después copiado en México",
+        "No existe ningún adobo en la gastronomía filipina"
+      ], "correcta": 0,
+      "explicacion": "Aunque comparte nombre por la herencia colonial española, el adobo filipino (vinagre, ajo, salsa de soya) es una preparación distinta e independiente." },
+
+    { "id": "p2-022", "subtema": "3.3", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué plato representativo surgió del cruce de caminos de la Ruta de la Seda en Asia Central?",
+      "opciones": ["El plov (o pilaf)", "El sushi", "El kimchi", "El biryani"], "correcta": 0,
+      "explicacion": "El plov —arroz con zanahoria, cebolla y cordero o res— ilustra la fusión cultural típica de las rutas comerciales de Asia Central." },
+
+    { "id": "p2-023", "subtema": "3.3", "tipo": "verdadero_falso",
+      "pregunta": "La cocina del norte de India tiende a usar más lácteos y panes de trigo, mientras que el sur privilegia el arroz, el coco y sabores más ácidos y picantes.",
+      "opciones": ["Verdadero", "Falso"], "correcta": 0,
+      "explicacion": "El compendio documenta esta diferencia regional, ligada en parte a la mayor influencia histórica del hinduismo brahmánico en el sur." },
+
+    { "id": "p2-030", "subtema": "3.4", "tipo": "opcion_multiple",
+      "pregunta": "Un alumno afirma que \"la cocina italiana siempre fue una sola tradición nacional unificada\". ¿Qué corrige el compendio?",
+      "opciones": [
+        "Hasta bien entrado el siglo XX no existía una única \"cocina italiana\", sino un mosaico de cocinas regionales que la identidad nacional unificó después de forma retrospectiva",
+        "Es correcto: Italia siempre tuvo una sola cocina nacional desde la Antigüedad",
+        "La cocina italiana fue unificada por decreto de Escoffier en el siglo XIX",
+        "No existe ninguna diferencia entre la cocina del norte y del sur de Italia"
+      ], "correcta": 0,
+      "explicacion": "El norte (mantequilla, arroz, polenta) y el sur (aceite de oliva, tomate, pasta seca) son tan distintos que la identidad nacional se construyó de forma retrospectiva." },
+
+    { "id": "p2-031", "subtema": "3.4", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué distingue a la cocina judía asquenazí de la sefardí, según el compendio?",
+      "opciones": [
+        "Ambas cumplen las mismas leyes de kashrut, pero con repertorios de ingredientes completamente distintos según su geografía (centroeuropea vs. mediterránea)",
+        "La asquenazí no sigue ninguna norma religiosa, a diferencia de la sefardí",
+        "Son exactamente la misma tradición con dos nombres distintos",
+        "La sefardí se desarrolló en Rusia y la asquenazí en España"
+      ], "correcta": 0,
+      "explicacion": "Es un excelente ejemplo de cómo una misma norma religiosa produce tradiciones culinarias muy distintas según la geografía en la que se desarrolla." },
+
+    { "id": "p2-032", "subtema": "3.4", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué explica la huella otomana en platillos balcánicos como el burek y el cevapi?",
+      "opciones": [
+        "Cinco siglos de dominio del Imperio otomano en la región, cuya cocina de palacio dejó huella incluso siglos después de su desaparición política",
+        "Son platillos inventados por colonizadores austrohúngaros en el siglo XX",
+        "No tienen ninguna relación histórica con el Imperio otomano",
+        "Fueron creados por Escoffier durante su codificación de la cocina clásica"
+      ], "correcta": 0,
+      "explicacion": "La cocina de un imperio, una vez desaparecido políticamente, puede seguir viva durante siglos en la mesa de los territorios que gobernó." },
+
+    { "id": "p2-040", "subtema": "3.5", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué tienen en común el hangi, el umu y el lovo?",
+      "opciones": [
+        "Son nombres distintos, según la isla, de la misma técnica de horno de tierra usada en Oceanía",
+        "Son tres religiones distintas practicadas en el Pacífico",
+        "Son tres ingredientes exclusivos de Nueva Zelanda",
+        "Son tres restaurantes fundados por chefs neozelandeses"
+      ], "correcta": 0,
+      "explicacion": "Hangi (maorí), umu (samoano) y lovo (fiyiano) son la misma técnica de cocción lenta en horno de tierra, con nombres distintos según la isla." },
+
+    { "id": "p2-041", "subtema": "3.5", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué ilustra el caso de Hawái dentro de la gastronomía de Oceanía?",
+      "opciones": [
+        "La lógica de capas históricas: sobre la base polinesia (poi, luau) se superpuso la cocina de los trabajadores migrantes de las plantaciones (japoneses, chinos, filipinos, coreanos)",
+        "Que Hawái nunca tuvo ninguna influencia externa a la cultura polinesia original",
+        "Que el horno de tierra es una técnica exclusiva de Hawái, no compartida con otras islas",
+        "Que la cocina hawaiana es idéntica a la cocina japonesa sin ninguna diferencia"
+      ], "correcta": 0,
+      "explicacion": "El \"plate lunch\" combina arroz japonés, ensalada de macarrón estadounidense y carnes filipinas o coreanas — una fusión migrante tan legítima como la nikkei." },
+
+    { "id": "p2-050", "subtema": "4.1", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué idea central sobre la necesidad de alimentarse plantea Rachel Laudan, retomada en el Tema 4?",
+      "opciones": [
+        "Que la comida se conecta con la política, la economía y la religión como hilo conductor de toda historia seria de la gastronomía",
+        "Que la alimentación humana se ha limitado siempre a lo estrictamente nutricional",
+        "Que solo la nobleza históricamente necesitó alimentarse de forma refinada",
+        "Que la gastronomía no tiene ninguna relación con la identidad cultural"
+      ], "correcta": 0,
+      "explicacion": "La comida es un vehículo para la identidad, la religión, la economía y el vínculo social — nunca se ha limitado a la nutrición." },
+
+    { "id": "p2-051", "subtema": "4.1", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué reverso de la historia gastronómica señala el compendio al hablar de las grandes hambrunas históricas?",
+      "opciones": [
+        "Que el refinamiento gastronómico documentado ha sido, históricamente, un privilegio de quienes ya tenían la necesidad básica resuelta",
+        "Que las hambrunas nunca han afectado a ninguna región estudiada en este libro",
+        "Que la cocina popular siempre ha tenido los mismos recursos que la cocina de la nobleza",
+        "Que el refinamiento culinario surgió exclusivamente de la escasez de alimentos"
+      ], "correcta": 0,
+      "explicacion": "La cocina popular ha operado casi siempre bajo una lógica de escasez y aprovechamiento, mientras el refinamiento fue privilegio de la nobleza y la corte." },
+
+    { "id": "p2-060", "subtema": "4.2", "tipo": "opcion_multiple",
+      "pregunta": "¿Por qué se considera a Roma la primera gran civilización occidental en tratar el acto de comer como una \"disciplina\"?",
+      "opciones": [
+        "Porque sujetó el comer a reglas y jerarquías, documentándolo por escrito para las generaciones siguientes, a diferencia de tradiciones puramente orales previas",
+        "Porque fue la primera civilización en cultivar trigo en la historia humana",
+        "Porque prohibió cualquier tipo de banquete festivo entre sus ciudadanos",
+        "Porque inventó el concepto de restaurante público"
+      ], "correcta": 0,
+      "explicacion": "Roma documentó por escrito su refinamiento culinario (De re coquinaria), estableciendo el antecedente de que el poder se expresa en la sofisticación de la mesa." },
+
+    { "id": "p2-070", "subtema": "4.3", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué anticipó la cocina de palacio del Imperio otomano en el Topkapi de Estambul, según el compendio?",
+      "opciones": [
+        "Una organización por estaciones (cientos de cocineros especializados por tipo de preparación) que anticipa, siglos antes, la brigada de cocina de Escoffier",
+        "El sistema de menú à la carte que después popularizaría Delmonico's",
+        "La técnica de conservación del chuño andino",
+        "El manifiesto de la nouvelle cuisine de 1973"
+      ], "correcta": 0,
+      "explicacion": "El compendio señala explícitamente que esta organización por estaciones anticipó, siglos antes, la brigada que Escoffier formalizaría en Francia." },
+
+    { "id": "p2-071", "subtema": "4.3", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué fusión culinaria dio origen la corte del Imperio mogol en el subcontinente indio?",
+      "opciones": [
+        "El biryani, combinando técnicas persas de cocción del arroz con especias e ingredientes propios del subcontinente indio",
+        "El pato pekinés, de origen chino",
+        "El cuscús magrebí",
+        "El plov de Asia Central"
+      ], "correcta": 0,
+      "explicacion": "El biryani es una de las fusiones culinarias más influyentes de Asia, nacida de la corte mogol de origen persa y centroasiático." },
+
+    { "id": "p2-072", "subtema": "4.3", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué comunicaba exactamente el grand couvert de Versalles, según el compendio?",
+      "opciones": [
+        "Jerarquía social: la secuencia de platos, la vajilla y el protocolo de acercamiento a la mesa real funcionaban como un título nobiliario",
+        "Era una comida privada, sin ningún espectador ni protocolo",
+        "Fue una institución exclusiva de la corte china, no francesa",
+        "No tenía ninguna relación con el poder político de Luis XIV"
+      ], "correcta": 0,
+      "explicacion": "El grand couvert convertía cada comida real en un espectáculo público que comunicaba jerarquía social con la misma claridad que un título nobiliario." },
+
+    { "id": "p2-073", "subtema": "4.3", "tipo": "relacionar",
+      "pregunta": "Relaciona cada corte con la forma en que comunicaba poder mediante la comida.",
+      "pares": [
+        { "izquierda": "Versalles (Francia)", "derecha": "Grand couvert público, observado por cortesanos" },
+        { "izquierda": "Corte otomana (Topkapi)", "derecha": "Cientos de cocineros especializados por tipo de preparación" },
+        { "izquierda": "China (Ciudad Prohibida)", "derecha": "Banquetes de más de cien platillos, bajo protocolo estricto" },
+        { "izquierda": "Imperio mogol", "derecha": "Fusión de cocina persa e india, origen del biryani" }
+      ],
+      "explicacion": "Cada corte imperial desarrolló su propia forma de usar la mesa como instrumento de poder, documentada de forma distinta en cada caso." },
+
+    { "id": "p2-080", "subtema": "4.4", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué novedad introdujo específicamente Boulanger en 1765, según el compendio?",
+      "opciones": [
+        "La posibilidad de elegir libremente entre varios platillos a cualquier hora, en lugar de depender de un menú fijo servido por posadas o traiteurs",
+        "El primer sistema de reservaciones telefónicas para restaurantes",
+        "La primera guía de restaurantes con sistema de estrellas",
+        "El primer menú escrito completamente en francés"
+      ], "correcta": 0,
+      "explicacion": "Antes de Boulanger, comer fuera de casa significaba depender de una hora fija y un menú decidido por el establecimiento, sin posibilidad real de elegir." },
+
+    { "id": "p2-081", "subtema": "4.4", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué relación tiene la Revolución Francesa de 1789 con la multiplicación de restaurantes en París?",
+      "opciones": [
+        "Dejó sin empleo a un enorme número de cocineros de la aristocracia y el clero, muchos de los cuales abrieron sus propios establecimientos",
+        "Prohibió por completo la apertura de nuevos restaurantes durante una década",
+        "No tuvo ninguna relación con el número de restaurantes de la ciudad",
+        "Redujo el número de restaurantes de varios miles a menos de cien"
+      ], "correcta": 0,
+      "explicacion": "De menos de cien restaurantes antes de la Revolución, la cifra pasó a varios miles hacia finales de la primera década del siglo XIX." },
+
+    { "id": "p2-082", "subtema": "4.4", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué invierte deliberadamente el modelo de McDonald's (1940) respecto al restaurante clásico?",
+      "opciones": [
+        "En vez de un menú extenso y un chef con nombre propio, ofrece un menú mínimo y fijo operable por cualquier trabajador tras entrenamiento breve",
+        "Ofrece exactamente el mismo servicio de mesa que Delmonico's",
+        "Se especializa en menús degustación de varios tiempos",
+        "Fue fundado por el mismo chef que codificó la nouvelle cuisine"
+      ], "correcta": 0,
+      "explicacion": "El \"Speedee Service System\" invierte casi todos los principios del restaurante de autor: menú mínimo, sistema estandarizado, autoservicio o entrega." },
+
+    { "id": "p2-083", "subtema": "4.4", "tipo": "opcion_multiple",
+      "pregunta": "¿Por qué nació originalmente la Guía Michelin en 1900, según el compendio?",
+      "opciones": [
+        "Como estrategia de mercadotecnia de una empresa de neumáticos, para animar a la gente a viajar y desgastar más llantas",
+        "Como iniciativa de un grupo de chefs franceses para evaluarse entre sí",
+        "Como encargo directo del gobierno francés para promover el turismo",
+        "Como continuación del trabajo de Grimod de La Reynière"
+      ], "correcta": 0,
+      "explicacion": "Nació como estrategia de Michelin, la empresa de neumáticos, en un país con menos de 3,000 automóviles en ese momento." },
+
+    { "id": "p2-084", "subtema": "4.4", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué papel jugó Grimod de La Reynière en la historia de la restauración, según el compendio?",
+      "opciones": [
+        "Es considerado el primer crítico gastronómico sistemático de la historia, con L'Almanach des gourmands (1803-1812)",
+        "Fue el cocinero que fundó Delmonico's en Nueva York",
+        "Inventó el sistema de estrellas de la Guía Michelin",
+        "Fue el primer chef en trabajar para la corte de Luis XIV"
+      ], "correcta": 0,
+      "explicacion": "Grimod de La Reynière es la bisagra histórica entre la cocina como privilegio de corte y la cocina como bien de consumo sujeto a crítica pública." },
+
+    { "id": "p2-085", "subtema": "4.4", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué novedades introdujo Delmonico's (1837) en la restauración estadounidense?",
+      "opciones": [
+        "El menú impreso à la carte, una carta de vinos separada, comedores privados y un chef con nombre propio (Charles Ranhofer)",
+        "El primer sistema de comida rápida de Estados Unidos",
+        "El primer restaurante con menú exclusivamente vegetariano",
+        "La primera guía de restaurantes con sistema de estrellas"
+      ], "correcta": 0,
+      "explicacion": "Delmonico's introdujo prácticas hasta entonces desconocidas en Estados Unidos, incluyendo el menú à la carte en lugar del table d'hôte." },
+
+    { "id": "p2-086", "subtema": "4.4", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué tensión social vivió México durante el Porfiriato en materia gastronómica, según el compendio?",
+      "opciones": [
+        "La élite despreciaba en público la comida cotidiana (frijoles, tortilla, chile) mientras la consumía en privado, y usaba la cocina francesa como símbolo de estatus",
+        "Toda la población mexicana comía exactamente el mismo tipo de menú, sin distinción de clase",
+        "Se prohibió por completo la cocina francesa durante ese período",
+        "Las fondas y figones desaparecieron por completo durante el Porfiriato"
+      ], "correcta": 0,
+      "explicacion": "El propio Porfirio Díaz encarnaba esta doble vida: disfrutaba en privado los tamales oaxaqueños mientras sus banquetes oficiales se servían en francés." },
+
+    { "id": "p2-087", "subtema": "4.4", "tipo": "verdadero_falso",
+      "pregunta": "Cuando cayó el régimen porfirista en 1911, los restaurantes franceses de la capital desaparecieron de inmediato junto con el antiguo régimen.",
+      "opciones": ["Verdadero", "Falso"], "correcta": 1,
+      "explicacion": "El compendio señala la ironía de que los revolucionarios simplemente ocuparon las mismas mesas — el poder político cambia de manos más rápido que los hábitos de la mesa." },
+
+    { "id": "p2-088", "subtema": "4.4", "tipo": "relacionar",
+      "pregunta": "Relaciona cada hito de la historia del restaurante con su año o período aproximado.",
+      "pares": [
+        { "izquierda": "Boulanger abre su establecimiento en París", "derecha": "1765" },
+        { "izquierda": "Multiplicación de restaurantes tras la Revolución Francesa", "derecha": "A partir de 1789" },
+        { "izquierda": "Apertura de Delmonico's en Nueva York", "derecha": "1837" },
+        { "izquierda": "Fundación del restaurante Sylvain en la Ciudad de México", "derecha": "1903" }
+      ],
+      "explicacion": "Cada hito marca una etapa distinta en la evolución del restaurante moderno, desde su origen parisino hasta su versión porfirista mexicana." },
+
+    { "id": "p2-090", "subtema": "3.2", "tipo": "opcion_multiple",
+      "pregunta": "¿Cuántas influencias documenta el maestro Rafael Enrique Meneses López en la cocina campechana?",
+      "opciones": ["Siete: maya, española, árabe, francesa, holandesa, africana y caribeña", "Solo dos: maya y española", "Cinco, sin incluir ninguna influencia europea", "Ninguna: afirma que es una cocina completamente pura"], "correcta": 0,
+      "explicacion": "El maestro Meneses documenta siete influencias, confirmando que ninguna cocina regional se explica por una sola herencia." },
+
+    { "id": "p2-091", "subtema": "3.4", "tipo": "opcion_multiple",
+      "pregunta": "¿Qué papel jugó la llegada de Catalina de Médici y la codificación de La Varenne en el prestigio actual de la cocina francesa, según el Tema 3?",
+      "opciones": [
+        "Confirman que ninguna gran tradición culinaria europea, ni siquiera la más \"clásica\", se desarrolló en aislamiento total de sus vecinos",
+        "Demuestran que Francia nunca recibió ninguna influencia externa",
+        "Prueban que la cocina francesa nació completamente en el siglo XX",
+        "Indican que Italia copió por completo su gastronomía de Francia"
+      ], "correcta": 0,
+      "explicacion": "La cocina francesa, hoy vista como la más \"clásica\", se enriqueció con aportes italianos del Renacimiento antes de codificarse técnicamente en el siglo XVII." }
+  ]
+}
