@@ -31,3 +31,54 @@
 mark{background:rgba(201,138,44,0.35); color:inherit; border-radius:2px;}
 
 .no-results{padding:60px 20px; text-align:center; color:var(--ink-soft);}
+
+/* ============ TARJETAS DE SUBTEMA (usadas por compendio.js) ============ */
+
+.tema-block{margin-bottom:56px;}
+
+.tema-block-label{
+  font-family:var(--font-display); font-style:italic; font-weight:500;
+  color:var(--saffron); text-transform:uppercase; letter-spacing:.04em;
+  font-size:.85rem; margin:0 0 4px;
+}
+
+.tema-block h2{
+  font-size:clamp(1.5rem,3.5vw,2rem); margin:0 0 10px;
+}
+
+.tema-block-desc{
+  color:var(--ink-soft); max-width:70ch; font-size:.95rem; margin:0 0 20px;
+}
+
+.subtema-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+  gap:14px;
+}
+
+.subtema-card{
+  display:flex; flex-direction:column; gap:6px;
+  background:var(--cream); border-radius:10px; box-shadow:var(--shadow-card);
+  padding:16px 18px; text-decoration:none; color:var(--ink);
+  border-left:4px solid var(--card-accent, var(--saffron));
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.subtema-card:hover, .subtema-card:active{
+  background:#FFFDF8; transform:translateY(-2px);
+}
+.subtema-card-exacta{
+  outline:2px solid var(--saffron); outline-offset:2px;
+}
+
+.subtema-id{
+  font-family:var(--font-display); font-style:italic; font-weight:500;
+  color:var(--card-accent, var(--saffron)); font-size:.9rem;
+}
+
+.subtema-titulo{
+  font-size:.98rem; font-weight:500; line-height:1.35;
+}
+
+.cargando-msg, .subtema-retry-msg{
+  padding:60px 20px; text-align:center; color:var(--ink-soft);
+}
