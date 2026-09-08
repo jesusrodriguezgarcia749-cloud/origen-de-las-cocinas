@@ -1,101 +1,76 @@
-// compendio.js — pantalla principal del compendio: carga los 4 archivos de
-// datos (uno por Tema), dibuja cada Tema con sus subtemas como tarjetas que
-// llevan a tema.html?id=X, y filtra en vivo según lo que se escriba en el buscador.
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compendio — Origen de las Cocinas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/compendio.css">
+<link rel="stylesheet" href="css/index.css">
+</head>
+<body>
 
-const DATA_FILES = [
-  'data/bloque1.json', 'data/bloque2.json', 'data/bloque3.json', 'data/bloque4.json',
-];
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">OC</span>
+      <span class="brand-text">Origen de las Cocinas</span>
+    </a>
+    <nav class="main-nav" aria-label="Navegación principal">
+      <a href="compendio.html" aria-current="page">Compendio</a>
+      <a href="actividades.html">Actividades</a>
+      <a href="biblioteca.html">Biblioteca</a>
+      <a href="examen.html">Examen</a>
+      <a href="mi-progreso.html">Mi progreso</a>
+      <a href="admin.html" class="nav-admin">Panel docente</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
 
-function escaparHTML(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
+<section class="comp-hero">
+  <div class="wrap">
+    <p class="eyebrow">Compendio</p>
+    <h1>Elige un subtema</h1>
+    <p class="hero-sub-light">Toca cualquier subtema para abrir su contenido completo en una página aparte.</p>
+  </div>
+</section>
 
-function normalizar(str) {
-  return (str || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-}
+<section class="search-band">
+  <div class="wrap">
+    <form class="search-form" id="tema-search-form" role="search" aria-label="Buscar en el compendio">
+      <label for="tema-search-input" class="sr-only">Buscar subtema</label>
+      <input id="tema-search-input" type="search" placeholder="Buscar: tipología, cocina mexica, especias…" autocomplete="off">
+      <button type="submit">Buscar</button>
+    </form>
+    <p class="search-hint">Busca por subtema exacto del programa o por palabra clave.</p>
+  </div>
+</section>
 
-let bloques = [];
+<main class="wrap comp-main">
+  <div id="compendio-vacio" class="no-results" hidden>
+    <p>No encontramos coincidencias. Prueba con otra palabra.</p>
+  </div>
+  <div id="compendio-root"><!-- se rellena por JS --></div>
+</main>
 
-function tarjetaSubtema(s, bloqueNum, termino) {
-  const coincideId = termino && s.id.toLowerCase() === termino.toLowerCase();
-  return `
-    <a class="subtema-card${coincideId ? ' subtema-card-exacta' : ''}" href="tema.html?id=${encodeURIComponent(s.id)}${termino ? `&buscar=${encodeURIComponent(termino)}` : ''}">
-      <span class="subtema-id">${escaparHTML(s.id)}</span>
-      <span class="subtema-titulo">${escaparHTML(s.titulo)}</span>
-    </a>`;
-}
+<footer class="site-footer">
+  <div class="wrap">
+    <p>Aula Virtual · Origen de las Cocinas · LudoMente Studio</p>
+  </div>
+</footer>
 
-function renderTodo(termino) {
-  const root = document.getElementById('compendio-root');
-  const vacio = document.getElementById('compendio-vacio');
-  const norm = normalizar(termino);
+<audio id="bg-music" loop preload="none">
+  <source src="https://commons.wikimedia.org/wiki/Special:FilePath/Gymnopedie_No._1..ogg" type="audio/ogg">
+</audio>
+<button id="bg-music-toggle" class="music-toggle" aria-label="Activar música de fondo" aria-pressed="false">🎵</button>
 
-  let huboResultado = false;
-  let html = '';
-
-  bloques.forEach(b => {
-    let subtemas = b.subtemas;
-    if (norm) {
-      subtemas = subtemas.filter(s =>
-        s.id.toLowerCase() === termino.toLowerCase() ||
-        normalizar(s.titulo).includes(norm) ||
-        (s.contenido || []).some(linea => normalizar(linea).includes(norm))
-      );
-    }
-    if (subtemas.length === 0) return;
-    huboResultado = true;
-
-    html += `
-      <section class="tema-block">
-        <p class="tema-block-label">Tema ${b.bloque}</p>
-        <h2>${escaparHTML(b.nombre)}</h2>
-        ${!norm && b.descripcion ? `<p class="tema-block-desc">${escaparHTML(b.descripcion)}</p>` : ''}
-        <div class="subtema-grid">
-          ${subtemas.map(s => tarjetaSubtema(s, b.bloque, termino)).join('')}
-        </div>
-      </section>`;
-  });
-
-  root.innerHTML = html;
-  vacio.hidden = huboResultado;
-}
-
-function conectarBuscador() {
-  const form = document.getElementById('tema-search-form');
-  const input = document.getElementById('tema-search-input');
-  const params = new URLSearchParams(window.location.search);
-  const inicial = params.get('buscar') || '';
-  if (inicial) input.value = inicial;
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    renderTodo(input.value.trim());
-  });
-  input.addEventListener('input', () => {
-    renderTodo(input.value.trim());
-  });
-
-  return inicial;
-}
-
-async function init() {
-  const root = document.getElementById('compendio-root');
-  root.innerHTML = '<p class="cargando-msg">Cargando compendio…</p>';
-
-  try {
-    bloques = await Promise.all(DATA_FILES.map(url => fetch(url).then(r => {
-      if (!r.ok) throw new Error(`HTTP ${r.status} al pedir ${url}`);
-      return r.json();
-    })));
-  } catch (err) {
-    root.innerHTML = `<p class="subtema-retry-msg">No se pudo cargar el compendio.<br>Motivo: ${escaparHTML(err.message)}</p>`;
-    return;
-  }
-
-  const terminoInicial = conectarBuscador();
-  renderTodo(terminoInicial);
-}
-
-document.addEventListener('DOMContentLoaded', init);
+<script src="js/app.js"></script>
+<script src="js/compendio.js"></script>
+</body>
+</html>
