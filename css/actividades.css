@@ -3,6 +3,7 @@
 .act-hero .hero-sub{color:#D8D0BE; max-width:60ch;}
 
 .act-main{padding:44px 24px 100px;}
+.actividades-main{padding:44px 24px 100px;}
 
 .quiz-tabs{
   display:flex; gap:10px; margin-bottom:32px; flex-wrap:wrap;
@@ -130,3 +131,77 @@
 .progreso-nombre{min-width:78px; font-size:.85rem; font-weight:600; color:var(--ink-soft);}
 .progreso-fila .progreso-bar-track{flex:1; min-width:120px;}
 .progreso-stat{font-size:.8rem; color:var(--ink-soft); min-width:88px; text-align:right;}
+
+/* ================================================================== */
+/* ===== NUEVO: clases que realmente genera actividades.js aquí ===== */
+/* ================================================================== */
+
+.empty-inline{padding:30px 0; color:var(--ink-soft); text-align:center;}
+
+/* Selector de Tema (pantalla inicial) */
+.act-temas-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+  gap:14px; margin-top:28px;
+}
+.act-tema-card{
+  display:flex; flex-direction:column; gap:6px; text-align:left;
+  background:var(--cream); border-radius:10px; box-shadow:var(--shadow-card);
+  padding:18px 20px; border:none; border-left:4px solid var(--saffron);
+  cursor:pointer; font-family:var(--font-body);
+}
+.act-tema-card:hover, .act-tema-card:active{
+  background:#FFFDF8; transform:translateY(-2px);
+}
+.act-tema-num{
+  font-family:var(--font-display); font-style:italic; font-weight:500;
+  color:var(--saffron); font-size:.85rem;
+}
+.act-tema-nombre{font-size:1rem; font-weight:600; color:var(--ink);}
+
+/* Barra superior dentro de un Tema en curso */
+.act-barra-top{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:20px; flex-wrap:wrap; gap:10px;
+}
+#act-avance{font-size:.85rem; color:var(--ink-soft); font-weight:600;}
+
+/* Tarjeta de cada reactivo */
+.reactivo-card{
+  background:var(--cream); border-radius:var(--radius); box-shadow:var(--shadow-card);
+  padding:26px 28px; margin-bottom:20px;
+}
+.reactivo-head{margin-bottom:8px;}
+.reactivo-tipo{
+  font-size:.78rem; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.06em;
+}
+.reactivo-pregunta{font-size:1.1rem; margin:0 0 16px;}
+
+.opcion-correcta-act{border-color:var(--sage) !important; background:rgba(107,122,94,0.12) !important;}
+.opcion-elegida-mal-act{border-color:var(--paprika) !important; background:rgba(166,61,47,0.08) !important;}
+
+/* Retroalimentación tras responder */
+.act-feedback{
+  margin-top:16px; padding:14px 16px; border-radius:8px; font-size:.9rem; line-height:1.5;
+}
+.act-feedback-ok{background:rgba(107,122,94,0.12); color:var(--ink);}
+.act-feedback-mal{background:rgba(166,61,47,0.08); color:var(--ink);}
+.act-feedback-titulo{font-weight:700; margin:0 0 4px;}
+
+/* Navegación anterior/siguiente */
+.act-nav-botones{
+  display:flex; justify-content:space-between; gap:12px; margin-top:8px;
+}
+
+/* Resumen final */
+.resultado-hero{
+  padding:32px 26px; border-radius:var(--radius); text-align:center; margin-bottom:20px;
+}
+.res-etq{
+  font-family:var(--font-display); font-style:italic; font-size:.95rem; margin:0 0 6px;
+}
+.res-calif{font-size:2.4rem; font-weight:700; margin:0 0 6px;}
+.res-sub{font-size:.85rem; margin:0; opacity:.85;}
+.res-ok{background:var(--sage); color:#fff;}
+.res-riesgo{background:var(--saffron); color:#fff;}
+.res-bajo{background:var(--paprika); color:#fff;}
