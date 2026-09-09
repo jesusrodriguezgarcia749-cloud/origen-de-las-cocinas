@@ -13,7 +13,7 @@
   max-width:62ch; margin-bottom:26px;
 }
 
-/* --- Ficha de fuente --- */
+/* --- Ficha de fuente (esquema manual, no usado por biblioteca.js) --- */
 .fuente-card{
   background:var(--cream); border-radius:var(--radius); box-shadow:var(--shadow-card);
   padding:26px 28px; margin-bottom:18px; position:relative;
@@ -81,4 +81,61 @@
 .nota-cierre{
   color:var(--saffron); font-weight:600; font-style:italic;
   padding-top:14px; border-top:1px solid rgba(255,255,255,0.15); margin-bottom:0 !important;
+}
+
+/* ================================================================ */
+/* ===== NUEVO: clases que realmente genera biblioteca.js aquí ===== */
+/* ================================================================ */
+
+.biblio-hero{background:var(--charcoal); color:var(--cream); padding:64px 0 48px;}
+.biblio-hero h1{color:var(--cream); font-size:clamp(2.2rem,5vw,3rem);}
+.biblio-hero-sub{color:#D8D0BE; max-width:60ch;}
+
+.biblioteca-main{padding:44px 24px 100px;}
+
+.biblio-filtros{
+  display:flex; gap:10px; flex-wrap:wrap; margin-bottom:32px;
+}
+.biblio-filtro-btn{
+  padding:10px 20px; border-radius:999px; border:1.5px solid var(--line);
+  background:var(--cream); font-weight:600; font-size:.9rem; cursor:pointer;
+  color:var(--ink-soft); font-family:var(--font-body);
+}
+.biblio-filtro-btn.activo{
+  background:var(--charcoal); color:var(--cream); border-color:var(--charcoal);
+}
+
+.biblio-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+  gap:18px;
+}
+
+.biblio-card{
+  background:var(--cream); border-radius:var(--radius); box-shadow:var(--shadow-card);
+  padding:24px 26px; display:flex; flex-direction:column;
+  border-left:4px solid var(--saffron);
+}
+.biblio-card-top{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:10px;
+}
+.biblio-tipo{
+  font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em;
+  color:var(--saffron-dark);
+}
+.biblio-anio{font-size:.8rem; color:var(--ink-soft);}
+.biblio-titulo{font-size:1.1rem; margin:0 0 4px; line-height:1.3;}
+.biblio-autor{
+  font-size:.85rem; color:var(--ink-soft); font-style:italic; margin:0 0 12px;
+}
+.biblio-desc{font-size:.92rem; line-height:1.6; margin:0 0 14px; flex-grow:1;}
+.biblio-link{
+  font-size:.88rem; font-weight:600; color:var(--saffron-dark); text-decoration:none;
+  padding-top:12px; border-top:1px solid var(--line);
+}
+.biblio-link:hover{color:var(--paprika);}
+
+.cargando-msg, .subtema-retry-msg{
+  padding:60px 20px; text-align:center; color:var(--ink-soft);
 }
