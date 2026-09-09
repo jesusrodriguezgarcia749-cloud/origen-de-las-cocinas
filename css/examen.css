@@ -1,12 +1,13 @@
 /* ============ EXAMEN EN LÍNEA ============ */
 
-.examen-main{max-width:720px; margin:0 auto; padding:40px 20px 100px;}
+.examen-main, .examen-wrap{max-width:720px; margin:0 auto; padding:40px 20px 100px;}
 
 /* --- Tarjetas de la sala de espera --- */
 .examen-card{
   background:var(--cream); border-radius:var(--radius); box-shadow:var(--shadow-card);
   padding:26px 28px; margin-bottom:16px;
 }
+.examen-card h1{font-size:1.6rem; margin:0 0 12px;}
 .examen-card h2{font-size:1.4rem; margin:0 0 12px;}
 .examen-card h3{font-size:1.15rem; margin:0 0 10px;}
 .examen-card p{font-size:.94rem; line-height:1.6; margin:0 0 10px;}
@@ -20,15 +21,40 @@
 .examen-bloqueado-card{border-left:4px solid var(--paprika); background:#FBF3F1;}
 .examen-detalle{font-size:.85rem; color:var(--ink-soft);}
 
+.empty-inline{padding:20px 0; color:var(--ink-soft); text-align:center;}
+
+/* --- Formulario de login --- */
+.field-label{
+  display:block; font-size:.82rem; font-weight:600; color:var(--ink-soft);
+  margin:16px 0 6px;
+}
+.field-label:first-of-type{margin-top:20px;}
+#form-login input, #form-login select{
+  width:100%; padding:12px 14px; border-radius:8px;
+  border:1.5px solid var(--line); font-size:.95rem; font-family:var(--font-body);
+  background:#fff; color:var(--ink); margin-bottom:4px;
+}
+.login-error{
+  background:rgba(166,61,47,0.08); color:var(--paprika); font-size:.85rem;
+  padding:12px 14px; border-radius:8px; margin-top:14px;
+}
+
+/* --- Barra superior de la sala de espera --- */
+.examen-top-bar{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:20px;
+}
+
 /* --- Barra fija con cronómetro --- */
-.examen-barra{
+.examen-barra, .examen-barra-fija{
   position:sticky; top:0; z-index:50;
   background:var(--charcoal); color:var(--cream);
   display:flex; align-items:center; justify-content:space-between; gap:14px;
   padding:14px 18px; border-radius:12px; margin-bottom:14px;
   box-shadow:0 4px 14px rgba(0,0,0,.18);
 }
-.barra-info{display:flex; flex-direction:column; gap:2px; min-width:0;}
+.barra-info, .examen-barra-info{display:flex; flex-direction:column; gap:2px; min-width:0;}
+.examen-barra-derecha{display:flex; align-items:center; gap:10px; flex-shrink:0;}
 .barra-alumno{font-size:.82rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
 .barra-avance{font-size:.72rem; color:#B8AF9C;}
 .cronometro{
@@ -38,6 +64,13 @@
 .cronometro.urgente{color:#E8B24A;}
 .cronometro.critico{color:#FF8A72; animation:pulso 1s ease-in-out infinite;}
 @keyframes pulso{0%,100%{opacity:1;} 50%{opacity:.5;}}
+
+.estado-conexion{
+  font-size:.66rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em;
+  padding:2px 9px; border-radius:999px;
+}
+.estado-conexion.con-ok{background:rgba(107,122,94,.35); color:#CFE0BE;}
+.estado-conexion.con-mal{background:rgba(255,138,114,.25); color:#FFB3A0;}
 
 .aviso-vigilancia{
   background:rgba(166,61,47,.1); border-left:4px solid var(--paprika);
@@ -63,6 +96,29 @@
 }
 .reactivo-pregunta{font-size:1rem; line-height:1.45; margin:0 0 16px;}
 .reactivo-instruccion{font-size:.84rem; color:var(--ink-soft); margin:0 0 10px;}
+
+/* --- Opción múltiple (usado por examen.js) --- */
+.quiz-options{display:flex; flex-direction:column; gap:10px;}
+.quiz-option{
+  display:flex; align-items:center; gap:10px;
+  padding:12px 14px; border-radius:8px; border:1.5px solid var(--line);
+  cursor:pointer; font-size:.95rem; background:#fff;
+}
+.quiz-option:hover{border-color:var(--saffron);}
+.quiz-option input{accent-color:var(--saffron);}
+.quiz-option.selected{border-color:var(--saffron); background:rgba(201,138,44,0.08);}
+
+/* --- Relacionar columnas (usado por examen.js) --- */
+.relacionar-list{display:flex; flex-direction:column; gap:10px;}
+.relacionar-row{display:flex; align-items:center; gap:12px; flex-wrap:wrap;}
+.relacionar-izq{
+  flex:1; min-width:140px; font-size:.92rem; font-weight:600;
+  background:var(--parchment); padding:10px 12px; border-radius:8px;
+}
+.relacionar-select{
+  flex:1; min-width:180px; padding:10px 12px; border-radius:8px;
+  border:1.5px solid var(--line); font-size:.9rem; background:#fff; color:var(--ink);
+}
 
 /* --- Ordenar --- */
 .ordenar-list{display:flex; flex-direction:column; gap:8px;}
@@ -124,12 +180,6 @@
 }
 
 /* ===== Añadido: indicador de conexión y títulos de reglas ===== */
-.estado-conexion{
-  font-size:.66rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em;
-  padding:2px 9px; border-radius:999px; margin-top:3px; align-self:flex-start;
-}
-.estado-conexion.con-ok{background:rgba(107,122,94,.35); color:#CFE0BE;}
-.estado-conexion.con-mal{background:rgba(255,138,114,.25); color:#FFB3A0;}
 .reglas-titulo{
   font-weight:700; font-size:.88rem; margin:16px 0 6px !important; color:var(--ink);
 }
