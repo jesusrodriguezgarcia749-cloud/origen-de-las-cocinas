@@ -99,3 +99,56 @@
 .cal-dia.cal-justificado{background:#4A7FA5;}
 .cal-dia.cal-retardo{background:#C9A22C;}
 .cal-dia.cal-falta{background:var(--paprika);}
+
+/* ============================================================== */
+/* ===== NUEVO: clases que realmente genera mi-progreso.js aquí == */
+/* ============================================================== */
+
+.section-title{
+  font-size:1.2rem; margin:32px 0 14px;
+}
+.section-title:first-of-type{margin-top:12px;}
+
+.empty-inline{padding:14px 0; color:var(--ink-soft); font-size:.9rem;}
+
+/* --- Avisos --- */
+.aviso-card{
+  background:rgba(201,138,44,0.1); border-left:4px solid var(--saffron);
+  border-radius:8px; padding:14px 16px; margin-bottom:12px;
+}
+.aviso-card-top{margin-bottom:6px;}
+.aviso-card-titulo{font-weight:700; font-size:.95rem;}
+.aviso-card-texto{font-size:.9rem; color:var(--ink); white-space:pre-wrap; line-height:1.5;}
+
+/* --- Tarjeta de calificación por parcial --- */
+.res-card{
+  background:var(--cream); border-radius:var(--radius); box-shadow:var(--shadow-card);
+  padding:24px 26px; margin-bottom:20px;
+}
+.res-card h4{font-size:1.1rem; margin:0 0 14px; font-family:var(--font-display);}
+
+.res-row{
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+  padding:10px 0; border-bottom:1px solid var(--line); font-size:.92rem;
+}
+.res-row:last-of-type{border-bottom:none;}
+.res-extra{color:var(--ink-soft); font-weight:400; font-size:.82em;}
+.res-total{
+  margin-top:8px; padding-top:14px; border-top:2px solid var(--charcoal);
+  font-weight:700; font-size:1rem;
+}
+.res-total strong{color:var(--saffron-dark);}
+
+.prog-detalle-bloque{
+  margin-top:10px; font-size:.88rem;
+}
+.prog-detalle-bloque summary{
+  cursor:pointer; color:var(--saffron-dark); font-weight:600; font-size:.86rem;
+}
+
+/* --- Resumen del cuatrimestre --- */
+.score-display{
+  background:var(--charcoal); color:var(--cream); border-radius:var(--radius);
+  padding:24px 26px; text-align:center; font-size:1.15rem; font-weight:700;
+  margin-bottom:8px;
+}
