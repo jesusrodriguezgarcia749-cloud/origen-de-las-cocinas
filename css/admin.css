@@ -325,3 +325,12 @@
   color:var(--paprika) !important;
   padding:10px 12px !important;
 }
+
+/* ===== Añadido: el formulario de login de Mi progreso usa un id distinto
+   (#form-login-prog) al de #login-form — sin esta regla, el select, los
+   inputs y el botón se amontonaban sin espacio entre ellos. ===== */
+#form-login-prog{display:flex; flex-direction:column; gap:12px;}
+#form-login-prog input, #form-login-prog select{
+  padding:13px 14px; border-radius:10px; border:1.5px solid var(--line);
+  font-family:var(--font-body); font-size:1rem; background:#fff; color:var(--ink);
+}
