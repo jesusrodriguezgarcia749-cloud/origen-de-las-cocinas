@@ -3,6 +3,12 @@
 // ESCRITO (20 de los 40 puntos del rubro Examen/Proyecto de ese parcial).
 // El examen PRACTICO (los otros 20 puntos) lo captura el docente manualmente
 // en el panel docente, porque no puede evaluarse con un cuestionario en línea.
+//
+// El examen "diag" (Diagnóstico) es una evaluación SIN VALOR OFICIAL: se
+// guarda únicamente en "intentos" para que el alumno vea su resultado y el
+// docente pueda consultarlo, pero NUNCA se escribe en la colección
+// "examenes" (la que usa calculo.js para las calificaciones). Por diseño,
+// no puede afectar ningún cálculo de calificación existente.
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
@@ -18,11 +24,12 @@ const db = getFirestore(app);
 const SESSION_KEY = 'oc_sesion_alumno';
 
 const PARCIALES_INFO = {
+  diag:  { nombre: 'Examen Diagnóstico', archivo: 'data/examen_diagnostico.json', minutosDefault: 40, tope: null, sinValorOficial: true },
   p1:    { nombre: 'Examen Parcial 1', archivo: 'data/examen_p1.json',    minutosDefault: 60, tope: TOPES.p1.examen },
   p2:    { nombre: 'Examen Parcial 2 (parte escrita)', archivo: 'data/examen_p2.json', minutosDefault: 60, tope: TOPES.p2.examenEscrito },
   final: { nombre: 'Examen Final',     archivo: 'data/examen_final.json', minutosDefault: 60, tope: TOPES.final.examen },
 };
-const PARCIALES = ['p1', 'p2', 'final'];
+const PARCIALES = ['diag', 'p1', 'p2', 'final'];
 
 let sesion = null;
 let parcialActivo = null;
@@ -157,13 +164,16 @@ async function estadoIntento(parcial) {
 function tarjetaExamen(parcial, est) {
   const info = PARCIALES_INFO[parcial];
   const notaP2 = parcial === 'p2' ? '<p class="field-hint">Este cuestionario solo califica la parte escrita (20% del rubro). La parte práctica se evalúa aparte, en la cocina.</p>' : '';
+  const notaDiag = info.sinValorOficial ? '<p class="field-hint"><strong>Esta actividad no tiene valor en tu calificación oficial.</strong> Sirve para que tu docente conozca tu punto de partida.</p>' : '';
+  const vale = info.sinValorOficial ? '' : ` · vale ${info.tope} puntos de este parcial`;
 
   if (!est) {
     return `
       <div class="examen-card">
         <h3>${info.nombre}</h3>
-        <p>${info.minutosDefault} minutos · vale ${info.tope} puntos de este parcial.</p>
+        <p>${info.minutosDefault} minutos${vale}.</p>
         ${notaP2}
+        ${notaDiag}
         <p class="reglas-titulo">Antes de comenzar, prepara tu teléfono:</p>
         <ul class="examen-reglas">
           <li>Silencia el timbre y cierra las demás apps que tengas abiertas.</li>
@@ -186,6 +196,7 @@ function tarjetaExamen(parcial, est) {
       <div class="examen-card examen-hecho">
         <h3>${info.nombre}</h3>
         <p class="examen-calif-mini">Tu calificación: <strong>${calif} / 10</strong></p>
+        ${notaDiag}
         <button class="btn btn-ghost-dark btn-small" data-ver="${parcial}">Ver mis respuestas</button>
       </div>`;
   }
@@ -263,6 +274,18 @@ function reactivoPorId(id) { return banco.reactivos.find(r => r.id === id); }
 function renderReactivos() {
   const root = document.getElementById('reactivos-root');
   root.innerHTML = '';
+
+  // El texto de lectura (si el banco lo trae, como el Diagnóstico) se
+  // muestra una sola vez al inicio, antes de los reactivos.
+  if (banco.texto_lectura) {
+    const lectura = document.createElement('div');
+    lectura.className = 'reactivo-card';
+    lectura.innerHTML = `
+      <div class="reactivo-head"><span class="reactivo-tipo">Lectura</span></div>
+      <p class="reactivo-pregunta" style="font-weight:400; line-height:1.6;">${esc(banco.texto_lectura)}</p>`;
+    root.appendChild(lectura);
+  }
+
   intento.ids.forEach((id, i) => {
     const r = reactivoPorId(id);
     if (!r) return;
@@ -508,14 +531,20 @@ async function entregar(automatico) {
   intento.automatico = !!automatico;
 
   guardarLocal();
+  const info = PARCIALES_INFO[parcialActivo];
   const base = ['grupos', sesion.grupoId, 'alumnos', sesion.alumnoId];
   const barra = document.getElementById('estado-conexion');
   let guardado = false;
   for (let i = 0; i < 10 && !guardado; i++) {
     try {
       await setDoc(doc(db, ...base, 'intentos', parcialActivo), { ...intento, actualizado: serverTimestamp() });
-      await setDoc(doc(db, ...base, 'examenes', parcialActivo),
-        { calificacion, origen: 'examen en línea', pinVerificado: sesion.pin, actualizado: serverTimestamp() });
+      // El Diagnóstico NUNCA se escribe en "examenes": esa colección es la
+      // que usa calculo.js para las calificaciones oficiales, y esta
+      // actividad no debe tener ningún valor en ellas.
+      if (!info.sinValorOficial) {
+        await setDoc(doc(db, ...base, 'examenes', parcialActivo),
+          { calificacion, origen: 'examen en línea', pinVerificado: sesion.pin, actualizado: serverTimestamp() });
+      }
       guardado = true;
       marcarConexion(true);
     } catch (e) {
@@ -566,15 +595,19 @@ function mostrarResultado() {
       </div>`;
   }).join('');
 
-  const ptsEquivalentes = (intento.calificacion / 10 * info.tope).toFixed(1);
+  // El "equivale a X puntos" solo aplica a exámenes con valor oficial.
+  const ptsEquivalentes = info.sinValorOficial ? null : (intento.calificacion / 10 * info.tope).toFixed(1);
   const notaP2 = intento.parcial === 'p2' ? `<p class="res-pts" style="margin-top:4px;">Recuerda: la parte práctica (otros 20 puntos) se evalúa aparte, en la cocina.</p>` : '';
+  const lineaPuntos = info.sinValorOficial
+    ? `<p class="res-pts">Esta actividad no tiene valor en tu calificación oficial.</p>`
+    : `<p class="res-pts">Equivale a ${ptsEquivalentes} de los ${info.tope} puntos de esta parte del parcial</p>`;
 
   document.getElementById('examen-resultado').innerHTML = `
     <div class="resultado-hero ${clase}">
       <p class="res-etq">${info.nombre}</p>
       <p class="res-calif">${intento.calificacion.toFixed(1)}</p>
       <p class="res-sub">${intento.aciertos} de ${intento.total} correctas${intento.automatico ? ' · entregado por tiempo agotado' : ''}</p>
-      <p class="res-pts">Equivale a ${ptsEquivalentes} de los ${info.tope} puntos de esta parte del parcial</p>
+      ${lineaPuntos}
       ${notaP2}
     </div>
     ${fallos.length === 0
