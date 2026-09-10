@@ -210,13 +210,14 @@
   <div id="tab-enlinea" class="tab-panel">
     <div class="bloques-activos-card">
       <h3 class="section-title" style="margin-top:0;">Exámenes abiertos</h3>
-      <p class="field-hint">Mientras un examen esté cerrado, los alumnos no pueden abrirlo. En el Parcial 2 este cuestionario solo cubre la parte escrita (20%).</p>
+      <p class="field-hint">Mientras un examen esté cerrado, los alumnos no pueden abrirlo. El Diagnóstico no tiene valor oficial en la calificación. En el Parcial 2 este cuestionario solo cubre la parte escrita (20%).</p>
       <div id="examenes-abiertos-lista" class="asis-list"></div>
       <button id="btn-guardar-examenes-abiertos" class="btn btn-primary btn-block">Guardar</button>
       <p id="abiertos-msg" class="save-msg" hidden></p>
     </div>
     <label for="enlinea-parcial" class="field-label">Ver intentos de</label>
     <select id="enlinea-parcial">
+      <option value="diag">Examen Diagnóstico</option>
       <option value="p1">Parcial 1</option>
       <option value="p2">Parcial 2 (escrito)</option>
       <option value="final">Examen Final</option>
