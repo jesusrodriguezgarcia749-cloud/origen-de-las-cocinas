@@ -1,0 +1,332 @@
+{
+  "config": {
+    "minutos": 40,
+    "preguntasPorExamen": 30
+  },
+  "texto_lectura": "Durante la Edad Media, especias como la pimienta, la canela y el clavo llegaban a Europa después de recorrer miles de kilómetros por rutas terrestres y marítimas controladas por comerciantes árabes e italianos. Su escasez y el largo trayecto que debían recorrer hacían que su precio fuera extremadamente alto, al grado de que en algunas ciudades se usaban como forma de pago o incluso como parte de dotes matrimoniales. Esta situación cambió a finales del siglo XV, cuando distintos reinos europeos financiaron expediciones marítimas con el objetivo de encontrar una ruta directa hacia Asia que evitara a los intermediarios. Estas expediciones, lejos de simplificar el comercio, terminaron por transformar por completo el mapa del mundo conocido hasta entonces, al toparse con territorios y culturas que los europeos desconocían.",
+  "reactivos": [
+    {
+      "id": "diag-a1",
+      "tipo": "opcion_multiple",
+      "pregunta": "Cuando un chef dice que un platillo tiene buen \"balance\", se refiere principalmente a:",
+      "opciones": [
+        "El equilibrio entre distintos sabores (dulce, salado, ácido, amargo)",
+        "La temperatura exacta a la que se sirve",
+        "La textura crujiente que debe tener",
+        "La cantidad de ingredientes que lleva"
+      ],
+      "correcta": 0,
+      "explicacion": "El \"balance\" en cocina se refiere al equilibrio entre sabores, no a temperatura, textura o cantidad de ingredientes."
+    },
+    {
+      "id": "diag-a2",
+      "tipo": "verdadero_falso",
+      "pregunta": "La gastronomía de un lugar depende únicamente de los ingredientes disponibles ahí, sin influencia de otras culturas.",
+      "opciones": ["Verdadero", "Falso"],
+      "correcta": 1,
+      "explicacion": "Falso: la gastronomía se forma también por el intercambio cultural, el comercio y la migración, no solo por los ingredientes locales."
+    },
+    {
+      "id": "diag-a3",
+      "tipo": "opcion_multiple",
+      "pregunta": "¿Cuál de estas cocinas es conocida principalmente por el uso de pasta, aceite de oliva y tomate como base de muchos platillos?",
+      "opciones": ["Italiana", "Española", "Griega", "Portuguesa"],
+      "correcta": 0,
+      "explicacion": "Aunque las cuatro cocinas usan aceite de oliva, la pasta como base distintiva de muchos platillos es un rasgo característico de la cocina italiana."
+    },
+    {
+      "id": "diag-a4",
+      "tipo": "opcion_multiple",
+      "pregunta": "El término \"gastronomía\" abarca, además de la cocina, aspectos como:",
+      "opciones": [
+        "La historia, la cultura y las costumbres asociadas a la alimentación",
+        "Únicamente las técnicas de cocción utilizadas",
+        "Solo los ingredientes disponibles en la región",
+        "Exclusivamente la presentación visual del platillo"
+      ],
+      "correcta": 0,
+      "explicacion": "La gastronomía es un concepto amplio que integra historia, cultura y costumbres, no solo un aspecto técnico aislado."
+    },
+    {
+      "id": "diag-a5",
+      "tipo": "verdadero_falso",
+      "pregunta": "Que un platillo sea antiguo significa que su receta jamás se ha modificado desde su origen.",
+      "opciones": ["Verdadero", "Falso"],
+      "correcta": 1,
+      "explicacion": "Falso: las recetas evolucionan con el tiempo por disponibilidad de ingredientes, intercambio cultural y gustos cambiantes, aunque el platillo sea antiguo."
+    },
+    {
+      "id": "diag-a6",
+      "tipo": "opcion_multiple",
+      "pregunta": "¿Cuál de estos elementos NO forma parte típicamente del concepto de \"experiencia gastronómica\" en un restaurante?",
+      "opciones": [
+        "El servicio y la atención al cliente",
+        "El ambiente y la decoración del lugar",
+        "El sabor y presentación de los platillos",
+        "La marca del coche en que llegó el cliente"
+      ],
+      "correcta": 3,
+      "explicacion": "La experiencia gastronómica involucra servicio, ambiente y comida — no tiene relación con el vehículo del cliente."
+    },
+    {
+      "id": "diag-b1",
+      "tipo": "opcion_multiple",
+      "pregunta": "¿Cuál de los siguientes eventos ocurrió primero en la historia?",
+      "opciones": [
+        "La caída de Constantinopla",
+        "El descubrimiento de América",
+        "La Revolución Francesa",
+        "La Independencia de México"
+      ],
+      "correcta": 0,
+      "explicacion": "La caída de Constantinopla (1453) ocurrió antes que el descubrimiento de América (1492), la Revolución Francesa (1789) y la Independencia de México (1810)."
+    },
+    {
+      "id": "diag-b2",
+      "tipo": "relacionar",
+      "pregunta": "Relaciona cada civilización con la región donde se desarrolló:",
+      "pares": [
+        { "izquierda": "Imperio Inca", "derecha": "Sudamérica" },
+        { "izquierda": "Dinastía Ming", "derecha": "China" },
+        { "izquierda": "Imperio Otomano", "derecha": "Medio Oriente / Turquía" },
+        { "izquierda": "Imperio Egipcio", "derecha": "Norte de África" }
+      ],
+      "explicacion": "Cada civilización se desarrolló en una región geográfica distinta: Sudamérica, China, Medio Oriente y Norte de África respectivamente."
+    },
+    {
+      "id": "diag-b3",
+      "tipo": "verdadero_falso",
+      "pregunta": "El Renacimiento ocurrió antes que la Edad Media.",
+      "opciones": ["Verdadero", "Falso"],
+      "correcta": 1,
+      "explicacion": "Falso: el orden correcto es Edad Media primero, y el Renacimiento después, marcando su transición hacia la Edad Moderna."
+    },
+    {
+      "id": "diag-b4",
+      "tipo": "opcion_multiple",
+      "pregunta": "¿Cuál de estas civilizaciones se desarrolló en Mesoamérica antes de la llegada de los europeos?",
+      "opciones": ["Los mexicas", "Los sumerios", "Los persas", "Los fenicios"],
+      "correcta": 0,
+      "explicacion": "Los mexicas (aztecas) se desarrollaron en Mesoamérica; las otras tres civilizaciones pertenecen a Medio Oriente/Mediterráneo antiguo."
+    },
+    {
+      "id": "diag-b5",
+      "tipo": "opcion_multiple",
+      "pregunta": "¿Qué significa que dos regiones tengan una \"ruta comercial\" entre ellas?",
+      "opciones": [
+        "Un camino o vía establecida para intercambiar mercancías",
+        "Un acuerdo diplomático para resolver conflictos fronterizos",
+        "Una alianza militar entre reinos vecinos",
+        "Un tratado que fija los límites territoriales entre ambas"
+      ],
+      "correcta": 0,
+      "explicacion": "Una ruta comercial es específicamente una vía para el intercambio de mercancías, distinta de acuerdos diplomáticos, militares o territoriales."
+    },
+    {
+      "id": "diag-b6",
+      "tipo": "verdadero_falso",
+      "pregunta": "El comercio de especias entre Europa y Asia impulsó la exploración de nuevas rutas marítimas.",
+      "opciones": ["Verdadero", "Falso"],
+      "correcta": 0,
+      "explicacion": "Verdadero: la búsqueda de rutas directas para el comercio de especias fue una de las motivaciones principales de las grandes expediciones marítimas."
+    },
+    {
+      "id": "diag-c1",
+      "tipo": "opcion_multiple",
+      "pregunta": "Según el texto, ¿por qué las especias tenían un precio tan alto?",
+      "opciones": [
+        "Por su escasez y por el largo y costoso trayecto que recorrían hasta Europa",
+        "Porque solo los reyes tenían permiso legal para consumirlas",
+        "Porque su sabor era desagradable",
+        "Porque estaban prohibidas en la mayoría de los países"
+      ],
+      "correcta": 0,
+      "explicacion": "El texto indica que la escasez y el largo trayecto elevaban su precio, no una prohibición o permiso especial."
+    },
+    {
+      "id": "diag-c2",
+      "tipo": "opcion_multiple",
+      "pregunta": "¿Cuál fue la motivación de los reinos europeos para financiar expediciones marítimas, según el texto?",
+      "opciones": [
+        "Encontrar una ruta directa a Asia que evitara a los intermediarios",
+        "Conquistar nuevas tierras para aumentar su ejército",
+        "Escapar de una epidemia",
+        "Buscar oro para pagar deudas de guerra"
+      ],
+      "correcta": 0,
+      "explicacion": "El texto señala explícitamente que buscaban una ruta directa a Asia para evitar intermediarios en el comercio de especias."
+    },
+    {
+      "id": "diag-c3",
+      "tipo": "opcion_multiple",
+      "pregunta": "El texto sugiere que el resultado de las expediciones marítimas fue:",
+      "opciones": [
+        "Distinto e incluso más significativo de lo que se buscaba originalmente",
+        "Limitado únicamente al comercio de especias, sin más consecuencias",
+        "Nulo, no lograron ningún cambio",
+        "Negativo únicamente para los comerciantes árabes"
+      ],
+      "correcta": 0,
+      "explicacion": "El texto dice que las expediciones \"transformaron por completo el mapa del mundo conocido\", un resultado mayor al buscado originalmente."
+    },
+    {
+      "id": "diag-c4",
+      "tipo": "verdadero_falso",
+      "pregunta": "Según el texto, las especias en algunas ciudades se usaban como parte de dotes matrimoniales.",
+      "opciones": ["Verdadero", "Falso"],
+      "correcta": 0,
+      "explicacion": "Verdadero: el texto lo menciona explícitamente como una de las formas en que se usaban las especias por su alto valor."
+    },
+    {
+      "id": "diag-c5",
+      "tipo": "opcion_multiple",
+      "pregunta": "En el texto, la palabra \"intermediarios\" se refiere a:",
+      "opciones": [
+        "Personas o grupos que participan en una transacción entre el productor y el comprador final",
+        "Los agricultores que cultivan directamente la mercancía",
+        "Los consumidores finales que adquieren el producto",
+        "Los fabricantes que producen la mercancía original"
+      ],
+      "correcta": 0,
+      "explicacion": "Un intermediario participa entre el origen y el destino final de una mercancía, no es quien la produce ni quien la consume."
+    },
+    {
+      "id": "diag-c6",
+      "tipo": "opcion_multiple",
+      "pregunta": "¿Cuál de las siguientes especias NO se menciona en el texto?",
+      "opciones": ["El jengibre", "La pimienta", "La canela", "El clavo"],
+      "correcta": 0,
+      "explicacion": "El texto menciona pimienta, canela y clavo; el jengibre no aparece mencionado."
+    },
+    {
+      "id": "diag-d1",
+      "tipo": "opcion_multiple",
+      "pregunta": "Si cocinas pollo crudo y después vas a cortar verduras que no se cocinarán, lo correcto es:",
+      "opciones": [
+        "Lavar bien la tabla y el cuchillo entre un alimento y otro, o usar utensilios distintos",
+        "Usar la misma tabla sin lavarla porque el sabor no cambia",
+        "Cortar las verduras primero y el pollo después, sin lavar entre pasos",
+        "Enjuagar la tabla solo con agua fría, sin jabón"
+      ],
+      "correcta": 0,
+      "explicacion": "La contaminación cruzada se evita lavando bien los utensilios entre alimentos crudos y los que no se cocinarán, o usando utensilios separados."
+    },
+    {
+      "id": "diag-d2",
+      "tipo": "verdadero_falso",
+      "pregunta": "Cocinar un alimento a altas temperaturas elimina cualquier riesgo, sin importar cómo se manejó antes de cocinarlo.",
+      "opciones": ["Verdadero", "Falso"],
+      "correcta": 1,
+      "explicacion": "Falso: algunas toxinas generadas por mal manejo previo no se eliminan solo con cocción; la higiene antes de cocinar también importa."
+    },
+    {
+      "id": "diag-d3",
+      "tipo": "opcion_multiple",
+      "pregunta": "¿Cuál es la diferencia principal entre \"hervir\" y \"cocer al vapor\"?",
+      "opciones": [
+        "Hervir sumerge el alimento en agua hirviendo; cocer al vapor lo cocina con el vapor generado por agua hirviendo, sin sumergirlo",
+        "Hervir usa agua fría que se calienta gradualmente; cocer al vapor usa agua ya hirviendo desde el inicio",
+        "Ambas técnicas sumergen el alimento en agua, solo cambia la temperatura",
+        "Cocer al vapor consiste en sumergir el alimento en aceite caliente en lugar de agua"
+      ],
+      "correcta": 0,
+      "explicacion": "La diferencia clave es que hervir sumerge el alimento en agua, mientras que cocer al vapor lo cocina con vapor sin sumergirlo."
+    },
+    {
+      "id": "diag-d4",
+      "tipo": "opcion_multiple",
+      "pregunta": "Si una receta indica \"a fuego lento\", se refiere a:",
+      "opciones": [
+        "Cocinar con una llama baja, por más tiempo",
+        "Cocinar a temperatura media, por poco tiempo",
+        "Subir y bajar la llama de forma alternada durante la cocción",
+        "Cocinar sin tapa a temperatura alta"
+      ],
+      "correcta": 0,
+      "explicacion": "\"Fuego lento\" indica una llama baja durante un periodo prolongado, no temperatura media, alternancia ni temperatura alta."
+    },
+    {
+      "id": "diag-d5",
+      "tipo": "opcion_multiple",
+      "pregunta": "¿Por qué se recomienda dejar reposar una carne después de cocinarla y antes de cortarla?",
+      "opciones": [
+        "Para que los jugos internos se redistribuyan y no se pierdan al cortar",
+        "Para que se enfríe lo suficiente y sea más fácil cortarla",
+        "Para que absorba más sazón del líquido de cocción",
+        "Para reducir su tamaño antes de servir"
+      ],
+      "correcta": 0,
+      "explicacion": "El reposo permite que los jugos internos se redistribuyan; no se trata de temperatura, sazón adicional ni tamaño."
+    },
+    {
+      "id": "diag-d6",
+      "tipo": "verdadero_falso",
+      "pregunta": "Todos los aceites para cocinar soportan las mismas temperaturas antes de quemarse.",
+      "opciones": ["Verdadero", "Falso"],
+      "correcta": 1,
+      "explicacion": "Falso: cada aceite tiene un \"punto de humo\" distinto, la temperatura a la que empieza a quemarse y degradarse."
+    },
+    {
+      "id": "diag-e1",
+      "tipo": "relacionar",
+      "pregunta": "Une cada técnica con su definición correcta:",
+      "pares": [
+        { "izquierda": "Blanquear", "derecha": "Sumergir brevemente en agua hirviendo y luego en agua fría" },
+        { "izquierda": "Saltear", "derecha": "Cocinar rápido a fuego alto con poca grasa, moviendo constantemente" },
+        { "izquierda": "Escalfar", "derecha": "Cocinar en líquido caliente sin que hierva" },
+        { "izquierda": "Gratinar", "derecha": "Dorar la superficie con calor directo, con queso o pan molido" }
+      ],
+      "explicacion": "Cada técnica tiene un procedimiento específico distinto: blanquear, saltear, escalfar y gratinar no son intercambiables."
+    },
+    {
+      "id": "diag-e2",
+      "tipo": "opcion_multiple",
+      "pregunta": "¿Cuál es la diferencia entre \"macerar\" y \"marinar\"?",
+      "opciones": [
+        "Macerar suele usarse con frutas y no siempre lleva líquido ácido; marinar casi siempre usa ácido o especias para carnes o vegetales",
+        "Macerar se usa solo con carnes; marinar solo con frutas",
+        "Ambas son exactamente la misma técnica con distinto nombre según el país",
+        "Macerar requiere cocción previa; marinar se hace siempre después de cocinar"
+      ],
+      "correcta": 0,
+      "explicacion": "Macerar se asocia más con frutas y no siempre requiere ácido; marinar casi siempre usa ácido o especias, típicamente en carnes o vegetales."
+    },
+    {
+      "id": "diag-e3",
+      "tipo": "verdadero_falso",
+      "pregunta": "\"Mise en place\" se refiere a tener todos los ingredientes preparados y organizados antes de cocinar.",
+      "opciones": ["Verdadero", "Falso"],
+      "correcta": 0,
+      "explicacion": "Verdadero: \"mise en place\" es un término francés que significa tener todo listo y organizado antes de empezar a cocinar."
+    },
+    {
+      "id": "diag-e4",
+      "tipo": "opcion_multiple",
+      "pregunta": "Si una receta pide \"reducir\" una salsa, esto significa:",
+      "opciones": [
+        "Cocinarla para evaporar líquido y concentrar su sabor",
+        "Colarla para quitarle todos los sólidos",
+        "Mezclarla con más grasa para espesarla",
+        "Guardarla en el refrigerador antes de servir"
+      ],
+      "correcta": 0,
+      "explicacion": "\"Reducir\" significa evaporar líquido mediante cocción para concentrar sabor y espesar, no colar, agregar grasa ni refrigerar."
+    },
+    {
+      "id": "diag-e5",
+      "tipo": "opcion_multiple",
+      "pregunta": "¿Cuál técnica implica cocinar un alimento completamente cubierto de aceite caliente?",
+      "opciones": ["Freír por inmersión", "Saltear", "Gratinar", "Escalfar"],
+      "correcta": 0,
+      "explicacion": "Freír por inmersión cubre completamente el alimento en aceite caliente; las otras técnicas usan poca o nada de grasa, o no usan aceite."
+    },
+    {
+      "id": "diag-e6",
+      "tipo": "verdadero_falso",
+      "pregunta": "\"Emulsionar\" significa mezclar dos líquidos que normalmente no se combinan bien (como aceite y vinagre) hasta lograr una mezcla uniforme.",
+      "opciones": ["Verdadero", "Falso"],
+      "correcta": 0,
+      "explicacion": "Verdadero: emulsionar es precisamente lograr que dos líquidos no miscibles, como aceite y vinagre, formen una mezcla estable y uniforme."
+    }
+  ]
+}
