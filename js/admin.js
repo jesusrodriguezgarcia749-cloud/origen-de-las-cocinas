@@ -594,6 +594,72 @@ async function cargarIntentos() {
     filas.push({ alumno: a, est, examenDoc });
   }
 
+  // Concentrado grupal por sección — solo para el Examen Diagnóstico.
+  // Usa las mismas categorías codificadas en el id de cada reactivo
+  // (diag-a1..a6 = Cultura gastronómica, diag-b.. = Historia/geografía,
+  // diag-c.. = Comprensión lectora, diag-d.. = Experiencia práctica,
+  // diag-e.. = Vocabulario y técnicas).
+  if (parcial === 'diag') {
+    let contConcentrado = document.getElementById('concentrado-diag-grupal');
+    if (!contConcentrado) {
+      contConcentrado = document.createElement('div');
+      contConcentrado.id = 'concentrado-diag-grupal';
+      contConcentrado.className = 'res-card';
+      contConcentrado.style.marginBottom = '14px';
+      cont.parentNode.insertBefore(contConcentrado, cont);
+    }
+    contConcentrado.innerHTML = '<p class="empty-inline">Calculando concentrado grupal…</p>';
+    try {
+      const bancoDiag = await cargarBancoExamen('diag');
+      const NOMBRE_CATEGORIA = {
+        a: 'Cultura gastronómica general',
+        b: 'Historia y geografía general',
+        c: 'Comprensión lectora',
+        d: 'Experiencia práctica en cocina',
+        e: 'Vocabulario y técnicas culinarias',
+      };
+      const categoriaDe = {};
+      bancoDiag.reactivos.forEach(r => { categoriaDe[r.id] = (r.id.split('-')[1] || '')[0]; });
+
+      const correctasPorCat = { a: 0, b: 0, c: 0, d: 0, e: 0 };
+      const totalPorCat = { a: 0, b: 0, c: 0, d: 0, e: 0 };
+      let entregados = 0, sumaCalif = 0;
+
+      filas.forEach(({ est }) => {
+        if (est && est.estado === 'entregado' && Array.isArray(est.detalle)) {
+          entregados++;
+          sumaCalif += Number(est.calificacion) || 0;
+          est.detalle.forEach(d => {
+            const cat = categoriaDe[d.id];
+            if (!cat || !(cat in totalPorCat)) return;
+            totalPorCat[cat]++;
+            if (d.correcto) correctasPorCat[cat]++;
+          });
+        }
+      });
+
+      if (entregados === 0) {
+        contConcentrado.innerHTML = '<h4>Concentrado grupal — Examen Diagnóstico</h4><p class="empty-inline">Todavía nadie ha entregado este examen.</p>';
+      } else {
+        const filasCategoria = Object.keys(NOMBRE_CATEGORIA).map(cat => {
+          const pct = totalPorCat[cat] ? (correctasPorCat[cat] / totalPorCat[cat] * 100) : 0;
+          return `<div class="res-row"><span>${NOMBRE_CATEGORIA[cat]}</span><strong>${pct.toFixed(0)}% de aciertos</strong></div>`;
+        }).join('');
+        contConcentrado.innerHTML = `
+          <h4>Concentrado grupal — Examen Diagnóstico</h4>
+          <div class="res-row"><span>Alumnos que entregaron</span><strong>${entregados} de ${alumnosCache.length}</strong></div>
+          <div class="res-row"><span>Promedio general del grupo</span><strong>${(sumaCalif / entregados).toFixed(1)} / 10</strong></div>
+          ${filasCategoria}
+          <p class="field-hint" style="margin-top:10px;">Porcentaje de aciertos promedio por sección, considerando solo a quienes ya entregaron.</p>`;
+      }
+    } catch (err) {
+      contConcentrado.innerHTML = `<p class="empty-inline">No se pudo calcular el concentrado: ${err.message || err}</p>`;
+    }
+  } else {
+    const existente = document.getElementById('concentrado-diag-grupal');
+    if (existente) existente.remove();
+  }
+
   cont.innerHTML = '';
   filas.forEach(({ alumno, est, examenDoc }) => {
     const div = document.createElement('div');
