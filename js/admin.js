@@ -17,7 +17,17 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// PARCIALES: usado únicamente para todo lo que depende de calculo.js
+// (Historial, exportar CSV, resumen del alumno) — el Diagnóstico NO
+// participa en ningún cálculo de calificación, así que NO va aquí.
 const PARCIALES = ['p1', 'p2', 'final'];
+
+// PARCIALES_EXAMEN: usado solo en la sección "Examen en línea" del panel,
+// donde SÍ debe aparecer el Diagnóstico como una opción más para
+// abrir/cerrar y revisar intentos — pero sin calificación oficial.
+const PARCIALES_EXAMEN = ['diag', 'p1', 'p2', 'final'];
+const ETIQUETAS_EXAMEN = { diag: 'Examen Diagnóstico', ...NOMBRES_PARCIAL };
+
 const ETIQUETA_ESTADO = { presente: 'Presente', retardo: 'Retardo', justificado: 'Justificado', falta: 'Falta' };
 const CICLO_ESTADO = { presente: 'retardo', retardo: 'justificado', justificado: 'falta', falta: 'presente' };
 
@@ -538,11 +548,11 @@ async function cargarExamenesAbiertos() {
 function renderExamenesAbiertos() {
   const cont = document.getElementById('examenes-abiertos-lista');
   cont.innerHTML = '';
-  PARCIALES.forEach(p => {
+  PARCIALES_EXAMEN.forEach(p => {
     const abierto = examenesAbiertos.includes(p);
     const row = document.createElement('button');
     row.type = 'button'; row.className = 'asis-row ' + (abierto ? 'asis-presente' : 'asis-falta');
-    row.innerHTML = `<span class="asis-dot"></span><span class="student-name">${NOMBRES_PARCIAL[p]}</span><span class="asis-estado-label">${abierto ? 'Abierto' : 'Cerrado'}</span>`;
+    row.innerHTML = `<span class="asis-dot"></span><span class="student-name">${ETIQUETAS_EXAMEN[p]}</span><span class="asis-estado-label">${abierto ? 'Abierto' : 'Cerrado'}</span>`;
     row.addEventListener('click', () => { examenesAbiertos = abierto ? examenesAbiertos.filter(x => x !== p) : [...examenesAbiertos, p]; renderExamenesAbiertos(); });
     cont.appendChild(row);
   });
@@ -571,7 +581,7 @@ async function cargarIntentos() {
     btnTodos.id = 'btn-descargar-examenes-grupo'; btnTodos.type = 'button'; btnTodos.className = 'btn btn-ghost-dark btn-small'; btnTodos.style.marginBottom = '14px';
     cont.parentNode.insertBefore(btnTodos, cont);
   }
-  btnTodos.textContent = `Descargar todos los exámenes de ${NOMBRES_PARCIAL[parcial]} (PDF)`;
+  btnTodos.textContent = `Descargar todos los exámenes de ${ETIQUETAS_EXAMEN[parcial]} (PDF)`;
   btnTodos.onclick = () => descargarExamenesGrupo(parcial);
 
   cont.innerHTML = '<p class="empty-inline">Cargando…</p>';
@@ -606,11 +616,15 @@ async function cargarIntentos() {
         <div class="intento-acciones"><button class="btn btn-ghost-dark btn-small" data-extra="${alumno.id}">+ tiempo</button></div>`;
     }
 
-    const ajusteInfo = document.createElement('div');
-    ajusteInfo.className = 'intento-acciones'; ajusteInfo.style.marginTop = '6px';
-    const esAjusteManual = examenDoc && examenDoc.origen && examenDoc.origen !== 'examen en línea';
-    ajusteInfo.innerHTML = `${esAjusteManual ? `<p class="intento-detalle">Calificación ajustada manualmente: <strong>${Number(examenDoc.calificacion).toFixed(1)} / 10</strong></p>` : ''}<button class="btn btn-ghost-dark btn-small" data-ajustar-examen="${alumno.id}">Ajustar calificación</button>`;
-    div.appendChild(ajusteInfo);
+    // El Diagnóstico no tiene calificación oficial que ajustar — se omite
+    // el bloque de "Ajustar calificación" solo para ese parcial.
+    if (parcial !== 'diag') {
+      const ajusteInfo = document.createElement('div');
+      ajusteInfo.className = 'intento-acciones'; ajusteInfo.style.marginTop = '6px';
+      const esAjusteManual = examenDoc && examenDoc.origen && examenDoc.origen !== 'examen en línea';
+      ajusteInfo.innerHTML = `${esAjusteManual ? `<p class="intento-detalle">Calificación ajustada manualmente: <strong>${Number(examenDoc.calificacion).toFixed(1)} / 10</strong></p>` : ''}<button class="btn btn-ghost-dark btn-small" data-ajustar-examen="${alumno.id}">Ajustar calificación</button>`;
+      div.appendChild(ajusteInfo);
+    }
     cont.appendChild(div);
   });
 
@@ -623,8 +637,11 @@ async function cargarIntentos() {
 let bancosExamenCache = {};
 async function cargarBancoExamen(parcial) {
   if (bancosExamenCache[parcial]) return bancosExamenCache[parcial];
-  const res = await fetch(`data/examen_${parcial}.json`, { cache: 'no-store' });
-  if (!res.ok) throw new Error(`No se encontró el banco de reactivos de ${NOMBRES_PARCIAL[parcial]} (HTTP ${res.status})`);
+  // El Diagnóstico vive en un archivo con nombre distinto al patrón
+  // examen_{parcial}.json de los demás parciales.
+  const archivo = parcial === 'diag' ? 'data/examen_diagnostico.json' : `data/examen_${parcial}.json`;
+  const res = await fetch(archivo, { cache: 'no-store' });
+  if (!res.ok) throw new Error(`No se encontró el banco de reactivos de ${ETIQUETAS_EXAMEN[parcial]} (HTTP ${res.status})`);
   const banco = await res.json();
   bancosExamenCache[parcial] = banco;
   return banco;
@@ -697,7 +714,7 @@ async function ajustarCalificacionExamen(alumnoId, parcial) {
   let actual = null;
   try { const snap = await getDoc(actualRef); actual = snap.exists() ? snap.data() : null; } catch { /* nada */ }
   const sugerido = actual && actual.calificacion !== undefined ? actual.calificacion : '';
-  const etiquetaParcial = parcial === 'p2' ? `${NOMBRES_PARCIAL[parcial]} (solo la parte escrita)` : NOMBRES_PARCIAL[parcial];
+  const etiquetaParcial = parcial === 'p2' ? `${ETIQUETAS_EXAMEN[parcial]} (solo la parte escrita)` : ETIQUETAS_EXAMEN[parcial];
   const val = prompt(`Calificación de examen para ${alumno?.nombre || 'este alumno'} — ${etiquetaParcial} (0-10).`, sugerido !== '' ? String(sugerido) : '');
   if (val === null) return;
   const calificacion = parseFloat(val);
