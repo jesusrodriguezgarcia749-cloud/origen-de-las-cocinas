@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Diapositivas · Origen de las Cocinas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:wght@700;800&family=Alegreya+Sans:wght@400;500;700&display=swap">
+<style>
+  :root{--maiz-azul:#1F2F4D;--chile:#B3261E;--maiz:#E9B44C;--nopal:#5E7A34;--masa:#FFFDF7;--piedra:#5B5B66}
+  *{box-sizing:border-box}
+  html{scroll-padding-top:env(safe-area-inset-top,0px)}
+  body{margin:0;background:var(--masa);color:var(--maiz-azul);font-family:"Alegreya Sans",Georgia,serif;
+       padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+  .franja{height:12px;background:repeating-linear-gradient(135deg,var(--chile) 0 12px,var(--maiz) 12px 24px,var(--nopal) 24px 36px,var(--maiz-azul) 36px 48px)}
+  main{max-width:760px;margin:0 auto;padding:28px 20px 48px}
+  .volver{display:inline-block;color:var(--maiz-azul);border:2px solid var(--maiz-azul);padding:6px 12px;text-decoration:none;font-weight:500}
+  .volver:focus-visible,.clase:focus-visible{outline:3px solid var(--chile);outline-offset:2px}
+  h1{font-family:"Alegreya",Georgia,serif;font-weight:800;font-size:clamp(2rem,6vw,3rem);line-height:1.05;margin:28px 0 6px}
+  .intro{color:var(--piedra);margin:0 0 28px;font-size:1.1rem;line-height:1.5}
+  ol{list-style:none;margin:0;padding:0;counter-reset:u}
+  .clase{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:baseline;padding:18px 4px;border-top:2px solid var(--maiz-azul);text-decoration:none;color:inherit}
+  li:last-child .clase{border-bottom:2px solid var(--maiz-azul)}
+  .clase:hover .titulo{color:var(--chile)}
+  .unidad{grid-row:span 2;font-family:"Alegreya",serif;font-weight:800;font-size:2.2rem;color:var(--maiz);-webkit-text-stroke:1px var(--maiz-azul);min-width:1.6em}
+  .titulo{font-family:"Alegreya",serif;font-weight:700;font-size:1.4rem;line-height:1.2}
+  .desc{color:var(--piedra);line-height:1.45}
+  .vacia{border:3px dashed var(--piedra);color:var(--piedra);padding:24px;text-align:center}
+</style>
+</head>
+<body>
+<div class="franja"></div>
+<main>
+  <a class="volver" href="../index.html">Volver a Origen de las Cocinas</a>
+  <h1>Diapositivas de clase</h1>
+  <p class="intro">Elige una clase para repasar el tema. Avanza con las flechas o deslizando el dedo.</p>
+  <ol id="lista"></ol>
+</main>
+
+<!-- =====================================================================
+     LISTA DE PRESENTACIONES — agrega una línea por cada clase nueva
+     ===================================================================== -->
+<script>
+const CLASES = [
+  { unidad: 1, archivo: "unidad-1.html",
+    titulo: "La cocina mesoamericana",
+    descripcion: "La milpa, el maíz y la nixtamalización." }
+];
+</script>
+
+<script>
+(function () {
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const ol = document.getElementById("lista");
+  if (!CLASES.length) {
+    ol.outerHTML = '<p class="vacia">Todavía no hay presentaciones. Agrega la primera en la lista CLASES de este archivo.</p>';
+    return;
+  }
+  ol.innerHTML = CLASES.map(c => `
+    <li><a class="clase" href="${esc(c.archivo)}">
+      <span class="unidad">${esc(c.unidad)}</span>
+      <span class="titulo">${esc(c.titulo)}</span>
+      <span class="desc">${esc(c.descripcion)}</span>
+    </a></li>`).join("");
+})();
+</script>
+</body>
+</html>
