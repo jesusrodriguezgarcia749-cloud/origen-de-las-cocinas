@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Diapositivas · Origen de las Cocinas</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:wght@500;700;800&family=Alegreya+Sans:wght@400;500;700&display=swap">
+
+<!-- =====================================================================
+     1) CONTENIDO DE LA PRESENTACIÓN — LO ÚNICO QUE SE EDITA
+     ---------------------------------------------------------------------
+     Tipos de diapositiva disponibles:
+       portada   → titulo, subtitulo
+       tema      → titulo, puntos[ ], pasoAPaso (true = aparecen uno por uno)
+       imagen    → titulo, imagen (ruta), pie
+       video     → titulo, youtube (solo el ID del video), pie
+       pregunta  → pregunta, respuesta (aparece con un clic)
+       cita      → texto, autor
+       cierre    → titulo, texto
+     Cualquier diapositiva puede llevar:
+       notas     → lo que ves tú al presionar la tecla S
+       subtemas  → lista de diapositivas que se recorren hacia ABAJO
+     ===================================================================== -->
+<script>
+const PRESENTACION = {
+  materia: "Origen de las Cocinas",
+  enlaceAulaVirtual: "../index.html",
+
+  diapositivas: [
+    { tipo: "portada",
+      titulo: "La cocina mesoamericana",
+      subtitulo: "Unidad 1 · Las raíces de la cocina mexicana",
+      notas: "Preguntar al grupo qué platillo de su casa creen que tiene origen prehispánico." },
+
+    { tipo: "tema",
+      titulo: "La milpa: un sistema, no un cultivo",
+      puntos: [
+        "Maíz, frijol y calabaza se siembran juntos y se ayudan entre sí.",
+        "El chile completa la base de la alimentación.",
+        "La milpa sostuvo a los pueblos mesoamericanos por miles de años."
+      ],
+      pasoAPaso: true,
+      notas: "Explicar cómo el frijol aporta nitrógeno al suelo y la calabaza conserva la humedad.",
+      subtemas: [
+        { tipo: "tema",
+          titulo: "¿Por qué funcionan juntos?",
+          puntos: [
+            "El maíz da soporte para que el frijol trepe.",
+            "El frijol fertiliza la tierra.",
+            "Las hojas de la calabaza cubren el suelo y frenan la maleza."
+          ] }
+      ] },
+
+    { tipo: "imagen",
+      titulo: "El metate",
+      imagen: "img/metate.jpg",
+      pie: "Herramienta de piedra para moler el maíz nixtamalizado." },
+
+    { tipo: "tema",
+      titulo: "La nixtamalización",
+      puntos: [
+        "Se cuece el maíz con agua y cal.",
+        "Se deja reposar y se lava.",
+        "Se muele para obtener la masa."
+      ],
+      pasoAPaso: true,
+      notas: "Resaltar que el proceso hace más nutritivo el maíz." },
+
+    { tipo: "video",
+      titulo: "Así se nixtamaliza el maíz",
+      youtube: "",
+      pie: "Video de apoyo para repasar en casa." },
+
+    { tipo: "pregunta",
+      pregunta: "¿Qué ingrediente se agrega al agua para nixtamalizar el maíz?",
+      respuesta: "La cal." },
+
+    { tipo: "cita",
+      texto: "Sin maíz no hay país.",
+      autor: "Dicho popular mexicano" },
+
+    { tipo: "cierre",
+      titulo: "Para la próxima clase",
+      texto: "Investiga un platillo de tu familia que lleve maíz y tráelo para compartir." }
+  ]
+};
+</script>
+
+<style>
+  :root{
+    --maiz-azul:#1F2F4D;   /* tinta principal */
+    --chile:#B3261E;       /* acento */
+    --maiz:#E9B44C;        /* resaltado */
+    --nopal:#5E7A34;       /* secundario */
+    --masa:#FFFDF7;        /* fondo */
+    --piedra:#5B5B66;      /* texto suave */
+  }
+  html,body{height:100%;margin:0;background:var(--masa)}
+  .reveal{font-family:"Alegreya Sans",Georgia,"Times New Roman",serif;color:var(--maiz-azul);font-size:38px}
+  .reveal .slides{text-align:left}
+  .reveal .slides section{padding:0 1.2em;box-sizing:border-box}
+  .reveal h1,.reveal h2,.reveal h3{font-family:"Alegreya",Georgia,serif;color:var(--maiz-azul);margin:0 0 .6em;line-height:1.1;letter-spacing:-.01em}
+  .reveal h1{font-size:2.6em;font-weight:800}
+  .reveal h2{font-size:1.7em;font-weight:700}
+  .reveal p{line-height:1.45;margin:.4em 0}
+  /* Franja tejida al pie de cada diapositiva: el sello visual */
+  .reveal .backgrounds .slide-background{background:
+      repeating-linear-gradient(135deg,var(--chile) 0 14px,var(--maiz) 14px 28px,var(--nopal) 28px 42px,var(--maiz-azul) 42px 56px)
+      bottom/100% 14px no-repeat, var(--masa)}
+  /* Portada */
+  .d-portada h1{max-width:13em}
+  .d-portada .sub{font-size:.9em;color:var(--piedra);border-left:6px solid var(--chile);padding-left:.6em}
+  .d-portada .materia{font-family:"Alegreya",serif;font-size:.7em;color:var(--nopal);margin-bottom:1.2em}
+  /* Puntos */
+  .reveal ul.puntos{list-style:none;margin:0;padding:0}
+  .reveal ul.puntos li{position:relative;padding-left:1.3em;margin:.55em 0;line-height:1.35}
+  .reveal ul.puntos li::before{content:"";position:absolute;left:0;top:.42em;width:.55em;height:.55em;background:var(--maiz);border:3px solid var(--maiz-azul);border-radius:50%;box-sizing:border-box}
+  /* Imagen */
+  .d-imagen figure{margin:0;text-align:center}
+  .d-imagen img{max-height:55vh;max-width:100%;border:6px solid #fff;box-shadow:0 0 0 2px var(--maiz-azul);margin:0}
+  .d-imagen figcaption,.d-video .pie{font-size:.65em;color:var(--piedra);margin-top:.6em;text-align:center}
+  .vacio{border:3px dashed var(--piedra);color:var(--piedra);padding:2em 1em;text-align:center;font-size:.6em;line-height:1.5}
+  /* Video */
+  .marco-video{position:relative;width:100%;max-width:960px;margin:0 auto;aspect-ratio:16/9;background:#000}
+  .marco-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  /* Pregunta */
+  .d-pregunta{text-align:center}
+  .d-pregunta .preg{font-family:"Alegreya",serif;font-size:1.5em;font-weight:700;max-width:16em;margin:0 auto .8em}
+  .d-pregunta .resp{display:inline-block;background:var(--maiz-azul);color:var(--masa);padding:.35em .9em;font-weight:700;font-size:1.1em}
+  .d-pregunta .pista{font-size:.5em;color:var(--piedra)}
+  /* Cita */
+  .d-cita blockquote{font-family:"Alegreya",serif;font-size:2em;font-weight:800;color:var(--chile);margin:0;box-shadow:none;width:auto;background:none;padding:0;font-style:normal}
+  .d-cita .autor{color:var(--piedra);font-size:.7em;margin-top:.8em}
+  /* Cierre */
+  .d-cierre h2{color:var(--chile)}
+  /* Botón de regreso al Aula Virtual */
+  .volver{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:12px;z-index:30;font:500 15px "Alegreya Sans",sans-serif;color:var(--maiz-azul);background:var(--masa);border:2px solid var(--maiz-azul);padding:6px 12px;text-decoration:none}
+  .volver:focus-visible{outline:3px solid var(--chile);outline-offset:2px}
+  .reveal .progress{color:var(--chile);height:5px}
+  .reveal .controls{color:var(--maiz-azul)}
+  .reveal .slide-number{background:transparent;color:var(--piedra);font-family:"Alegreya Sans",sans-serif;bottom:22px}
+  @media (prefers-reduced-motion:reduce){.reveal .slides section{transition:none!important}}
+</style>
+</head>
+<body>
+<a class="volver" id="volver" href="#">Volver al Aula Virtual</a>
+<div class="reveal"><div class="slides" id="slides"></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+
+<!-- =====================================================================
+     2) MOTOR — NO SE EDITA. Convierte los datos de arriba en diapositivas.
+     ===================================================================== -->
+<script>
+(function () {
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+  const plantillas = {
+    portada: d => `
+      <div class="materia">${esc(PRESENTACION.materia)}</div>
+      <h1>${esc(d.titulo)}</h1>
+      ${d.subtitulo ? `<p class="sub">${esc(d.subtitulo)}</p>` : ""}`,
+
+    tema: d => `
+      <h2>${esc(d.titulo)}</h2>
+      <ul class="puntos">${(d.puntos || []).map(p =>
+        `<li${d.pasoAPaso ? ' class="fragment"' : ""}>${esc(p)}</li>`).join("")}</ul>`,
+
+    imagen: d => `
+      <h2>${esc(d.titulo)}</h2>
+      <figure>
+        <img data-src="${esc(d.imagen)}" alt="${esc(d.pie || d.titulo)}"
+             onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'vacio',textContent:'Aquí va la imagen: ${esc(d.imagen)}. Súbela a la carpeta img/ de tu repositorio.'}))">
+        ${d.pie ? `<figcaption>${esc(d.pie)}</figcaption>` : ""}
+      </figure>`,
+
+    video: d => `
+      <h2>${esc(d.titulo)}</h2>
+      ${d.youtube
+        ? `<div class="marco-video"><iframe data-src="https://www.youtube-nocookie.com/embed/${esc(d.youtube)}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="${esc(d.titulo)}"></iframe></div>`
+        : `<div class="vacio">Aquí va el video. Sube tu video a YouTube como “No listado” y escribe su ID en el campo youtube.</div>`}
+      ${d.pie ? `<p class="pie">${esc(d.pie)}</p>` : ""}`,
+
+    pregunta: d => `
+      <p class="preg">${esc(d.pregunta)}</p>
+      <p class="fragment"><span class="resp">${esc(d.respuesta)}</span></p>
+      <p class="pista">Avanza para ver la respuesta.</p>`,
+
+    cita: d => `
+      <blockquote>“${esc(d.texto)}”</blockquote>
+      ${d.autor ? `<p class="autor">${esc(d.autor)}</p>` : ""}`,
+
+    cierre: d => `
+      <h2>${esc(d.titulo)}</h2>
+      ${d.texto ? `<p>${esc(d.texto)}</p>` : ""}`
+  };
+
+  function crear(d) {
+    const sec = document.createElement("section");
+    const fn = plantillas[d.tipo];
+    sec.className = "d-" + (fn ? d.tipo : "tema");
+    sec.innerHTML = fn ? fn(d) : `<div class="vacio">Tipo de diapositiva desconocido: “${esc(d.tipo)}”. Usa portada, tema, imagen, video, pregunta, cita o cierre.</div>`;
+    if (d.notas) {
+      const n = document.createElement("aside");
+      n.className = "notes";
+      n.textContent = d.notas;
+      sec.appendChild(n);
+    }
+    return sec;
+  }
+
+  const cont = document.getElementById("slides");
+  PRESENTACION.diapositivas.forEach(d => {
+    if (d.subtemas && d.subtemas.length) {
+      const pila = document.createElement("section");
+      pila.appendChild(crear(d));
+      d.subtemas.forEach(s => pila.appendChild(crear(s)));
+      cont.appendChild(pila);
+    } else {
+      cont.appendChild(crear(d));
+    }
+  });
+
+  document.title = PRESENTACION.diapositivas[0]?.titulo + " · " + PRESENTACION.materia;
+  const volver = document.getElementById("volver");
+  if (PRESENTACION.enlaceAulaVirtual) volver.href = PRESENTACION.enlaceAulaVirtual; else volver.remove();
+
+  if (window.Reveal) {
+    Reveal.initialize({
+      hash: true,
+      slideNumber: "c/t",
+      transition: "slide",
+      center: true,
+      width: 1280,
+      height: 720,
+      preloadIframes: false,
+      plugins: window.RevealNotes ? [RevealNotes] : []
+    });
+  }
+})();
+</script>
+</body>
+</html>
