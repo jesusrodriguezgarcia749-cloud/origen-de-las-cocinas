@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>3.5 Cocinas de Oceanía · Origen de las Cocinas</title>
+</head>
+<body>
+<!-- =====================================================================
+     SESIÓN: Jueves 12 de noviembre · 3.5 Cocinas de Oceanía · 3 horas
+     CIERRE DEL TEMA 3 — incluye repaso general dirigido
+     Fuente: libro de texto Origen de las Cocinas, Tema 3.5
+     ===================================================================== -->
+<script>
+const PRESENTACION = {
+  materia: "Origen de las Cocinas",
+
+  diapositivas: [
+    { tipo: "portadaDia",
+      tema: "Tema 3 · Cocinas en el mundo · Cierre",
+      dia: "Jueves 12 de noviembre",
+      titulo: "3.5 Cocinas de Oceanía",
+      subtitulo: "El horno de tierra que unió al Pacífico",
+      duracion: "3 horas",
+      imagen: "img/hangi_maori.jpg" },
+
+    { tipo: "objetivos",
+      intro: "Hoy cerramos el recorrido por el mundo con el continente más joven en su forma actual, pero con técnicas milenarias.",
+      puntos: [
+        "Vas a conocer el horno de tierra: hangi, umu y lovo.",
+        "Vas a distinguir las capas históricas de Nueva Zelanda y Australia.",
+        "Vas a descubrir cómo Hawái convirtió la migración en un platillo.",
+        "Vas a repasar el Tema 3 completo antes del examen."
+      ] },
+
+    { tipo: "tema",
+      titulo: "Oceanía: joven y milenaria a la vez",
+      minutos: "0-10", evaluacion: "Formativo",
+      notas: "Encuadre. Recuerda que hoy también cerramos el Tema 3 con repaso general.",
+      puntos: [
+        "Incluye **Australia, Nueva Zelanda** y las islas de la **Polinesia, Melanesia y Micronesia**.",
+        "En su forma actual es **relativamente joven**, comparada con las tradiciones milenarias de otros continentes.",
+        "Pero se apoya en **técnicas ancestrales de gran antigüedad**.",
+        "**El hilo de hoy:** una misma técnica une a culturas separadas por miles de kilómetros de océano."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "El horno de tierra",
+      minutos: "11-40", evaluacion: "Formativo",
+      puntos: [
+        "Es la técnica **más representativa de toda la región**.",
+        "Se llama **hangi** entre los maoríes de Nueva Zelanda, **umu** en Samoa y **lovo** en Fiyi.",
+        "Se cava un hoyo, se calientan **piedras volcánicas** al fuego y sobre ellas se cocinan carnes, pescados y tubérculos envueltos en hojas.",
+        "**Varias horas** de cocción dan una textura melosa y un característico sabor ahumado."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "Levantar el hangi",
+          imagen: "img/hangi_maori.jpg",
+          notas: "Pregunta: ¿qué técnica mexicana se parece a esta? (El pib maya y la barbacoa). Dato: las canastas de alambre se empezaron a usar en el siglo XIX; antes todo iba envuelto en hojas y cortezas.",
+          puntos: [
+            "**Las piedras volcánicas** del fondo se calientan con leña hasta quedar al rojo vivo.",
+            "**Las canastas** con carne, kumara y verduras se bajan sobre las piedras.",
+            "**Se cubre con hojas, telas húmedas y tierra**, y se deja cocer de 3 a 4 horas.",
+            "**Es comunitario:** se necesita gente para cavar, cargar y destapar; por eso se hace en ocasiones especiales.",
+            "**Un pariente lejano:** el **pib maya** que vimos en la clase del 23 de octubre usa exactamente el mismo principio, a 12,000 km de distancia."
+          ] }
+      ] },
+
+    { tipo: "pregunta",
+      pregunta: "¿Por qué culturas tan lejanas inventaron la misma técnica?",
+      respuesta: "Porque responde a las mismas condiciones: **sin ollas de metal ni hornos**, la tierra y las piedras calientes son el recurso disponible. El **pib** maya, el **hangi** maorí, el **curanto** chileno y la **barbacoa** mexicana son respuestas paralelas al mismo problema." },
+
+    { tipo: "tema",
+      titulo: "Nueva Zelanda: tres capas",
+      minutos: "41-60", evaluacion: "Formativo",
+      puntos: [
+        "**Capa 1, polinesia:** los primeros pobladores llegaron desde la Polinesia hace **más de mil años** y trajeron el **kumara** (camote), que se conservaba bien durante el invierno.",
+        "**Capa 2, británica:** la colonización del **siglo XIX** sumó el cordero asado, el fish and chips y las tartas de carne.",
+        "**Capa 3, migrante:** comunidades asiáticas y europeas más recientes.",
+        "El resultado es una **cocina de “borde pacífico”**: joven y cosmopolita, pero anclada en técnicas indígenas como el hangi."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Australia: del bushfood a la ciudad",
+      puntos: [
+        "**Bushfood:** la comida tradicional de los pueblos **aborígenes**, basada en ingredientes silvestres nativos.",
+        "**Herencia británica e irlandesa** de los primeros colonos: el pastel de carne (meat pie) es un ejemplo.",
+        "**Influencias asiáticas y mediterráneas** llegadas tras la **Segunda Guerra Mundial**.",
+        "La **carne de canguro**, valorada por su bajo contenido graso, convive hoy con la escena gastronómica de Sídney y Melbourne."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "Bushfood: la despensa nativa",
+          imagen: "img/bush_tucker.jpg",
+          notas: "Pregunta: ¿qué ingrediente de aquí han comido sin saber que es australiano? (La macadamia).",
+          puntos: [
+            "**Macadamia:** nuez originaria de Australia. Hoy se cultiva en todo el mundo, pero es un ingrediente **nativo**.",
+            "**Quandong:** fruto rojo del desierto, ácido, usado en postres y salsas.",
+            "**Ciruela kakadu:** de las frutas con mayor concentración de vitamina C que se conocen.",
+            "**Semillas de acacia (wattleseed):** se tuestan y muelen; saben a café con chocolate.",
+            "**Un conocimiento de más de 60,000 años:** los pueblos aborígenes identificaron qué era comestible en uno de los territorios más áridos del planeta."
+          ] },
+        { tipo: "observa",
+          titulo: "La barbie australiana",
+          imagen: "img/australia_bbq.jpg",
+          notas: "Pregunta: ¿a qué tradición que ya vimos se parece esto? (Al braai sudafricano y al asado del Cono Sur).",
+          puntos: [
+            "**La barbie:** así le dicen a la parrillada. Reunirse alrededor de ella es tan importante como la comida.",
+            "**Camarones y carne a la parrilla:** el mar y el ganado, las dos despensas de Australia.",
+            "**Pavlova** de postre: merengue con crema y fruta, el postre más discutido entre Australia y Nueva Zelanda.",
+            "**Otra vez el fuego comunitario:** igual que el **braai** sudafricano y el **asado** del Cono Sur. Tres continentes, la misma función social."
+          ] },
+        { tipo: "observa",
+          titulo: "La pavlova: un postre en disputa",
+          imagen: "img/pavlova.jpg",
+          notas: "Pregunta antes del último punto: ¿de quién creen que es? Después conecta: lo mismo pasa con el arroz jollof entre Nigeria y Ghana, o con el queso relleno entre Campeche y Yucatán.",
+          puntos: [
+            "**Merengue por fuera, suave por dentro:** clara de huevo y azúcar horneadas a baja temperatura, sin harina.",
+            "**Encima, crema batida y fruta fresca:** fresa, kiwi y maracuyá, frutas de la temporada de verano austral.",
+            "**Se come en Navidad:** en diciembre allá es verano, así que el postre navideño es frío y ligero.",
+            "**Lleva el nombre de Anna Pávlova**, bailarina rusa que visitó ambos países en los años veinte.",
+            "**Australia y Nueva Zelanda se pelean su autoría** desde hace casi un siglo. Igual que Nigeria y Ghana con el arroz jollof: cuando un platillo se vuelve identidad, su origen se disputa."
+          ] }
+      ] },
+
+    { tipo: "pausa",
+      titulo: "¡Pausa activa!",
+      duracion: "5 minutos",
+      minutos: "61-66",
+      texto: "**Vuelta al mundo en 5 esquinas.** Cada esquina del salón es un continente: África, América, Asia, Europa y Oceanía. Al escuchar un platillo o técnica (injera, pib, plov, chucrut, hangi, jollof, samovar, mezze, chuño), corre a la esquina correcta." },
+
+    { tipo: "tema",
+      titulo: "Polinesia, Melanesia y Micronesia",
+      minutos: "67-85", evaluacion: "Formativo",
+      puntos: [
+        "Comparten el **horno de tierra**, el **kumara** y otros tubérculos como el **taro**.",
+        "Fuerte tradición de **pesca** y aprovechamiento total del **coco**.",
+        "Aunque están menos documentadas en los libros de historia culinaria, representan uno de los ejemplos **más antiguos de adaptación** a un entorno insular con recursos limitados.",
+        "Nada se desperdicia: del coco se usan el agua, la pulpa, la leche, el aceite e incluso la cáscara como recipiente."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "Una mesa del Pacífico",
+          imagen: "img/islas_pacifico.jpg",
+          notas: "Pregunta: ¿qué platillo mexicano se parece al pescado marinado en limón? (El ceviche, aunque el ceviche es de raíz peruana).",
+          puntos: [
+            "**Pescado crudo marinado** en limón y **leche de coco**: se llama ika mata o poisson cru según la isla.",
+            "**Taro morado y kumara:** los tubérculos que sostuvieron a estas islas durante siglos.",
+            "**El coco entero:** agua para beber, pulpa para comer, leche para cocinar y cáscara como tazón.",
+            "**Hojas de plátano como mantel y plato:** igual que en el pib maya y en la injera etíope, el envoltorio es parte de la comida.",
+            "**La canoa al fondo** explica todo: estas islas se poblaron navegando miles de kilómetros de océano abierto."
+          ] }
+      ] },
+
+    { tipo: "tema",
+      titulo: "Hawái: la migración en un plato",
+      puntos: [
+        "**Base polinesia:** el **poi**, pasta fermentada de taro, y el **luau**, banquete festivo cocinado en horno de tierra, pariente del hangi.",
+        "A partir del **siglo XIX** llegaron trabajadores migrantes a las plantaciones de azúcar y piña: **japoneses, chinos, filipinos, portugueses y coreanos**.",
+        "De ahí nació el **plate lunch**, o cocina de plato combinado.",
+        "En un mismo plato: **arroz al estilo japonés**, **ensalada de macarrón** de raíz estadounidense y **carnes adobadas** al estilo filipino o coreano."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "pregunta",
+      pregunta: "¿Qué cocina que ya vimos tiene exactamente la misma lógica que el plate lunch?",
+      respuesta: "La **cocina nikkei** del Tema 2: migrantes japoneses en Perú. En los dos casos, la migración por trabajo crea una cocina nueva que no existía en ninguno de los dos países de origen." },
+
+    { tipo: "video",
+      titulo: "El hangi maorí",
+      youtube: "https://www.youtube.com/watch?v=sC1EGzuieQA",
+      pie: "Video en español sobre la cultura maorí de Rotorua, Nueva Zelanda.",
+      notas: "Revísalo antes de clase y ubica el fragmento del hangi. Si no sirve, busca en YouTube “hangi maorí” y elige uno en español." },
+
+    { tipo: "tarea",
+      titulo: "Investigación: un platillo de fusión",
+      minutos: "86-110", evaluacion: "Sumativo · Rúbrica de Tarea",
+      puntos: [
+        "Investiga **un platillo de fusión australiano o neozelandés**.",
+        "Identifica sus **tres influencias históricas**: indígena (aborigen o maorí), británica y migrante reciente.",
+        "Explica **qué aportó cada una**: ingrediente, técnica o forma de servir.",
+        "Media cuartilla, citando tus fuentes."
+      ] },
+
+    { tipo: "tema",
+      titulo: "Repaso general del Tema 3",
+      minutos: "111-150", evaluacion: "Participación",
+      notas: "Repaso dirigido. Haz que el grupo reconstruya la tabla antes de mostrarla.",
+      puntos: [
+        "Hemos recorrido **cinco regiones del mundo** en seis sesiones.",
+        "Antes de la tabla, reconstruyamos juntos: **¿qué recuerdan de cada continente?**",
+        "Después revisaremos región por región."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tabla",
+      titulo: "El mundo en una tabla",
+      columnas: ["Región", "Técnica o rasgo", "Lo que no hay que olvidar"],
+      filas: [
+        ["África", "Cuscús al vapor, injera fermentada, braai", "El comercio transahariano y la diáspora hacia América"],
+        ["América", "Nixtamalización, pib, chinampas, chuño", "La herencia de dos mundos: prehispánico y colonial"],
+        ["Asia", "Fermentación, mezclas de especias, equilibrio de sabores", "El Galeón de Manila y la ruta de las especias"],
+        ["Europa", "Aceite de oliva frente a manteca; conservas y horneados", "Ninguna cocina europea se hizo en aislamiento"],
+        ["Oceanía", "Horno de tierra: hangi, umu, lovo", "Capas históricas: indígena, colonial y migrante"]
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Lo que aprendimos en todo el Tema 3",
+      puntos: [
+        "**Ninguna cocina es pura.** Todas nacen del comercio, la migración, la conquista y la adaptación al entorno.",
+        "**La geografía manda:** el clima y los recursos explican por qué se come lo que se come.",
+        "**Las mismas soluciones aparecen lejos:** hornos de tierra en Yucatán, Nueva Zelanda y Chile.",
+        "**Los ingredientes viajan y se vuelven “de siempre”:** el chile en Corea y en la India, el jitomate en Italia, la papa en Inglaterra, el mango en México."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "repaso",
+      notas: "Unos 10 minutos. Es el repaso de cierre del Tema 3 completo: lanza cada pregunta al grupo.",
+      preguntas: [
+        { pregunta: "¿Cómo se llama el horno de tierra maorí?", respuesta: "El **hangi**. En Samoa, **umu**; en Fiyi, **lovo**." },
+        { pregunta: "¿Qué tubérculo trajeron los polinesios a Nueva Zelanda?", respuesta: "El **kumara** (camote)." },
+        { pregunta: "¿Cómo se llama la comida tradicional aborigen australiana?", respuesta: "**Bushfood**, de ingredientes silvestres nativos." },
+        { pregunta: "¿Qué cocina hawaiana nació de los trabajadores migrantes?", respuesta: "El **plate lunch** o cocina de plato combinado." },
+        { pregunta: "¿Qué tienen en común el pib, el hangi y la barbacoa?", respuesta: "Son **hornos de tierra**: piedras calientes bajo tierra, en tres continentes distintos." }
+      ] },
+
+    { tipo: "proyecto",
+      minutos: "151-172",
+      notas: "Es la última sesión del Tema 3: destina tiempo real a que avancen su proyecto y resuelve dudas.",
+      preguntas: [
+        { numero: 20, texto: "Con todo lo visto en el Tema 3, ¿qué rutas y capas históricas explican mi platillo?" },
+        { numero: "·", texto: "Revisa tus respuestas anteriores: ¿cambiarías alguna ahora que conoces las cinco regiones del mundo?" }
+      ] },
+
+    { tipo: "cierre",
+      minutos: "173-180",
+      evidencia: "La investigación identifica correctamente las tres influencias históricas del platillo de fusión elegido.",
+      materiales: "Libro de texto, Tema 3 completo.",
+      proxima: "Comienza el **Tema 4**. Entregar la investigación del platillo de fusión y traer al día el borrador de Mi Plato, Mi Historia." }
+  ]
+};
+</script>
+<script src="motor.js"></script>
+</body>
+</html>
