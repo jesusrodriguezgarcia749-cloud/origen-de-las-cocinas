@@ -17,7 +17,7 @@
   const css = `
   :root{--marino:#252734;--marino2:#2E3140;--rojo:#AA2F2F;--beige:#F4F2ED;--arena:#DDD6C8;--tinta:#1A1A1A;--gris:#5C5A55;--blanco:#FFFFFF}
   html,body{height:100%;margin:0;background:var(--beige)}
-  .reveal{font-family:"Public Sans",Calibri,Arial,sans-serif;color:var(--tinta);font-size:32px}
+  .reveal{font-family:"Public Sans",Calibri,Arial,sans-serif;color:var(--tinta);font-size:36px}
   .reveal .slides{text-align:left}
   .reveal .slides section{padding:0 56px;box-sizing:border-box}
   .reveal h1,.reveal h2,.reveal h3{font-family:"Fraunces",Cambria,Georgia,serif;color:var(--marino);text-transform:none;letter-spacing:-.01em;line-height:1.12;margin:0 0 .55em}
@@ -33,63 +33,65 @@
   .reveal ul.puntos li::before{content:"";position:absolute;left:0;top:.5em;width:.42em;height:.42em;background:var(--rojo)}
   .reveal ul.puntos li b{color:var(--marino)}
   /* Dos columnas con imagen */
-  .con-imagen{display:grid;grid-template-columns:1.25fr 1fr;gap:44px;align-items:center}
+  .con-imagen{display:grid;grid-template-columns:1.6fr 1fr;gap:36px;align-items:center}
+  .con-imagen ul.puntos{font-size:.92em}
+  .con-imagen.sin-imagen{grid-template-columns:1fr}
   .con-imagen img,.d-imagen img{width:100%;max-height:520px;object-fit:cover;margin:0;border:0;box-shadow:0 0 0 1px var(--arena)}
-  .etiqueta{display:inline-block;width:fit-content;background:var(--rojo);color:#fff;font:600 .5em "Public Sans",sans-serif;padding:.3em .8em;margin-bottom:.8em}
+  .etiqueta{display:inline-block;width:fit-content;background:var(--rojo);color:#fff;font:600 .6em "Public Sans",sans-serif;padding:.3em .8em;margin-bottom:.8em}
   /* Portada del día */
   .d-portadaDia{color:#fff}
   .d-portadaDia .pd{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center}
   .d-portadaDia .pd.sola{grid-template-columns:1fr}
-  .d-portadaDia .tema{font-size:.55em;color:var(--arena);margin-bottom:1.6em}
-  .d-portadaDia .dia{font-size:.6em;color:#E7A3A3;font-weight:600;margin-bottom:.3em}
+  .d-portadaDia .tema{font-size:.68em;color:var(--arena);margin-bottom:1.6em}
+  .d-portadaDia .dia{font-size:.75em;color:#E7A3A3;font-weight:600;margin-bottom:.3em}
   .d-portadaDia h1{color:#fff;font-size:1.9em}
   .d-portadaDia .sub{color:var(--arena);font-size:.85em;margin-top:.2em}
-  .d-portadaDia .duracion{display:inline-block;margin-top:1.4em;background:var(--rojo);color:#fff;font-weight:600;font-size:.55em;padding:.45em 1.3em;border-radius:999px}
+  .d-portadaDia .duracion{display:inline-block;margin-top:1.4em;background:var(--rojo);color:#fff;font-weight:600;font-size:.68em;padding:.45em 1.3em;border-radius:999px}
   .d-portadaDia img{width:100%;height:auto;max-height:560px;object-fit:contain;margin:0;border:0;box-shadow:0 18px 40px rgba(0,0,0,.35)}
   /* Objetivos */
-  .d-objetivos .banda{background:var(--rojo);color:#fff;font:600 .62em "Public Sans",sans-serif;padding:.7em 1.2em;margin:0 -56px 1.1em}
+  .d-objetivos .banda{background:var(--rojo);color:#fff;font:600 .8em "Public Sans",sans-serif;padding:.7em 1.2em;margin:0 -56px 1.1em}
   .d-objetivos .intro{font-style:italic;color:var(--gris);margin-bottom:.8em}
   /* Dato */
   .d-dato{text-align:center}
   .d-dato .cifra{font-family:"Fraunces",serif;font-weight:700;color:var(--rojo);font-size:4.2em;line-height:1;margin:0 0 .2em}
   .d-dato .texto{font-size:1.05em;max-width:24em;margin:0 auto;color:var(--marino)}
-  .d-dato .fuente{font-size:.45em;color:var(--gris);margin-top:1.2em}
+  .d-dato .fuente{font-size:.6em;color:var(--gris);margin-top:1.2em}
   /* Tabla */
-  .reveal table.tabla{width:100%;border-collapse:collapse;font-size:.66em;margin:0}
+  .reveal table.tabla{width:100%;border-collapse:collapse;font-size:.78em;margin:0}
   .reveal table.tabla th{background:var(--marino);color:#fff;text-align:left;padding:.55em .8em;border:0;font-weight:600}
   .reveal table.tabla td{padding:.6em .8em;border:0;border-bottom:1px solid var(--arena);vertical-align:top;line-height:1.35}
   .reveal table.tabla tr:nth-child(even) td{background:#ECE8DF}
   .reveal table.tabla td:first-child{font-weight:600;color:var(--marino)}
-  .pista-abajo{font-size:.42em;color:var(--gris);margin-top:.9em}
+  .pista-abajo{font-size:.6em;color:var(--gris);margin-top:.9em}
   /* Pausa activa */
   .d-pausa{color:#fff}
   .d-pausa h2{color:#fff;font-size:1.7em}
-  .d-pausa .dur{font-size:.55em;color:#F3CFCF;margin-bottom:1em}
+  .d-pausa .dur{font-size:.7em;color:#F3CFCF;margin-bottom:1em}
   .d-pausa .caja{background:rgba(255,255,255,.12);padding:.9em 1.1em;line-height:1.45}
   /* Imagen y video */
   .d-imagen figure{margin:0}
-  .d-imagen figcaption,.d-video .pie{font-size:.5em;color:var(--gris);margin-top:.6em}
-  .vacio{border:3px dashed var(--gris);color:var(--gris);padding:2em 1em;text-align:center;font-size:.55em;line-height:1.5}
-  .marco-video{position:relative;width:100%;max-width:1000px;margin:0 auto;aspect-ratio:16/9;background:#000}
+  .d-imagen figcaption,.d-video .pie{font-size:.65em;color:var(--gris);margin-top:.6em}
+  .vacio{border:3px dashed var(--gris);color:var(--gris);padding:2em 1em;text-align:center;font-size:.7em;line-height:1.5}
+  .marco-video{position:relative;width:100%;max-width:920px;margin:0 auto;aspect-ratio:16/9;background:#000}
   .marco-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
   /* Pregunta */
   .d-pregunta{text-align:center}
   .d-pregunta .preg{font-family:"Fraunces",serif;font-size:1.4em;font-weight:600;color:var(--marino);max-width:18em;margin:0 auto .9em;line-height:1.2}
-  .d-pregunta .resp{display:inline-block;background:var(--marino);color:#fff;padding:.5em 1em;font-size:.8em;line-height:1.4;max-width:30em;text-align:left}
-  .d-pregunta .pista{font-size:.45em;color:var(--gris);margin-top:1em}
+  .d-pregunta .resp{display:inline-block;background:var(--marino);color:#fff;padding:.55em 1em;font-size:.95em;line-height:1.4;max-width:30em;text-align:left}
+  .d-pregunta .pista{font-size:.6em;color:var(--gris);margin-top:1em}
   /* Cita */
   .d-cita blockquote{font-family:"Fraunces",serif;font-size:1.35em;font-weight:500;color:var(--marino);margin:0;padding:0 0 0 .8em;border-left:8px solid var(--rojo);box-shadow:none;width:auto;background:none;font-style:normal;line-height:1.3}
-  .d-cita .autor{color:var(--gris);font-size:.55em;margin-top:1em;padding-left:1.5em}
+  .d-cita .autor{color:var(--gris);font-size:.68em;margin-top:1em;padding-left:1.5em}
   /* Mi Plato, Mi Historia */
   .d-proyecto{color:#fff}
-  .d-proyecto .marca{font-size:.55em;color:var(--arena);margin-bottom:.4em}
+  .d-proyecto .marca{font-size:.7em;color:var(--arena);margin-bottom:.4em}
   .d-proyecto h2{color:#fff}
   .d-proyecto .pr{display:grid;grid-template-columns:auto 1fr;gap:.2em 1em;margin:.7em 0;align-items:baseline}
-  .d-proyecto .num{font:600 .55em "Public Sans",sans-serif;background:var(--rojo);padding:.35em .8em;white-space:nowrap}
+  .d-proyecto .num{font:600 .68em "Public Sans",sans-serif;background:var(--rojo);padding:.35em .8em;white-space:nowrap}
   .d-proyecto .txt{font-family:"Fraunces",serif;font-size:1.05em;line-height:1.3}
   /* Cierre */
   .d-cierre .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-  .d-cierre .col{background:#fff;padding:.8em .9em;border-top:6px solid var(--rojo);font-size:.7em;line-height:1.45}
+  .d-cierre .col{background:#fff;padding:.8em .9em;border-top:6px solid var(--rojo);font-size:.82em;line-height:1.45}
   .d-cierre .col h3{font-family:"Public Sans",sans-serif;font-size:.85em;color:var(--rojo);font-weight:700;margin:0 0 .5em}
   /* Botón volver y controles */
   .volver{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:12px;z-index:30;font:600 14px "Public Sans",sans-serif;color:var(--marino);background:var(--beige);border:2px solid var(--marino);padding:6px 12px;text-decoration:none}
@@ -245,6 +247,13 @@
 
     cont.querySelectorAll("img[data-ruta]").forEach(im => {
       im.addEventListener("error", () => {
+        const doble = im.closest(".con-imagen, .pd");
+        if (doble) {                       // en diapositivas de texto + imagen, la imagen faltante simplemente no se muestra
+          im.parentElement.remove();
+          doble.classList.add(doble.classList.contains("pd") ? "sola" : "sin-imagen");
+          console.warn("Falta la imagen: " + im.dataset.ruta);
+          return;
+        }
         const v = document.createElement("div");
         v.className = "vacio";
         v.textContent = "Falta la imagen: " + im.dataset.ruta + ". Súbela a la carpeta diapositivas/img/.";
