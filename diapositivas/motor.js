@@ -38,6 +38,7 @@
   .con-imagen.sin-imagen{grid-template-columns:1fr}
   .obs{display:grid;grid-template-columns:1fr 1.3fr;gap:36px;align-items:center}
   .obs img{width:100%;height:600px;object-fit:cover;object-position:var(--encuadre,50% 50%);margin:0;border:0}
+  .obs .completa img{height:auto;max-height:600px;object-fit:contain}
   .obs ul.puntos{font-size:.74em}
   .obs ul.puntos li{margin:.38em 0}
   .obs h2{font-size:1.15em;margin-bottom:.35em}
@@ -164,7 +165,7 @@
     // Imagen grande a la izquierda y lo que hay que observar en ella a la derecha
     observa: d => `
       <div class="obs">
-        <div${d.encuadre ? ` style="--encuadre:${esc(d.encuadre)}"` : ""}>${img(d.imagen, d.titulo)}</div>
+        <div${d.completa ? ' class="completa"' : ""}${d.encuadre ? ` style="--encuadre:${esc(d.encuadre)}"` : ""}>${img(d.imagen, d.titulo)}</div>
         <div><span class="etiqueta">${esc(d.etiqueta || "Observa la imagen")}</span>
           <h2>${esc(d.titulo)}</h2>${lista(d.puntos, d.pasoAPaso !== false)}</div>
       </div>`,
