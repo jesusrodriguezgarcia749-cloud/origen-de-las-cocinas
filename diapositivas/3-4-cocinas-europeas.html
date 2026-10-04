@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>3.4 Cocinas europeas · Origen de las Cocinas</title>
+</head>
+<body>
+<!-- =====================================================================
+     SESIÓN: Viernes 6 de noviembre · 3.4 Cocinas europeas · 2 horas
+     Fuente: libro de texto Origen de las Cocinas, Tema 3.4
+     Lo que va en "minutos", "evaluacion" y "notas" solo lo ve el docente.
+     ===================================================================== -->
+<script>
+const PRESENTACION = {
+  materia: "Origen de las Cocinas",
+
+  diapositivas: [
+    { tipo: "portadaDia",
+      tema: "Tema 3 · Cocinas en el mundo",
+      dia: "Viernes 6 de noviembre",
+      titulo: "3.4 Cocinas europeas",
+      subtitulo: "Cuatro bloques, ninguna cocina aislada",
+      duracion: "2 horas",
+      imagen: "img/mediterranea.jpg" },
+
+    { tipo: "objetivos",
+      intro: "Hoy vas a comprobar que ninguna cocina europea se hizo sola: todas se construyeron con lo que les llegó de sus vecinos.",
+      puntos: [
+        "Vas a distinguir los 4 grandes bloques gastronómicos de Europa.",
+        "Vas a descubrir por qué la cocina francesa le debe tanto a Italia.",
+        "Vas a construir un mapa de Europa por equipos.",
+        "Vas a analizar cómo un ingrediente marca la frontera entre dos bloques."
+      ] },
+
+    { tipo: "tema",
+      titulo: "Cuatro bloques, muchas cocinas",
+      minutos: "0-10", evaluacion: "Formativo",
+      notas: "Encuadre. Repaso rápido de Asia: pide a dos alumnos una especia y su subregión.",
+      puntos: [
+        "Para estudiarla con orden, la cocina europea suele agruparse en **4 grandes bloques**.",
+        "**Mediterránea**, **Centroeuropa y Europa del Este**, **Nórdica** y **las Islas Británicas**.",
+        "Es una simplificación: dentro de cada bloque hay enormes diferencias regionales.",
+        "**El hilo de hoy:** ningún país europeo cocina en aislamiento. Todos se influyeron entre sí."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "La cocina mediterránea",
+      minutos: "11-30", evaluacion: "Formativo",
+      puntos: [
+        "**Italia, España, Grecia y el sur de Francia.**",
+        "Su base: **aceite de oliva, trigo, vino, pescado y verduras de sol**.",
+        "Junto con la cocina francesa clásica, es la tradición europea con **mayor reconocimiento internacional**.",
+        "Pero ni Italia ni España son homogéneas: cada una es un **mosaico de cocinas regionales**."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "Una mesa mediterránea",
+          imagen: "img/mediterranea.jpg",
+          notas: "Pregunta: ¿qué tienen en común estos tres platillos de tres países distintos?",
+          puntos: [
+            "**Pasta con jitomate y albahaca (Italia):** el jitomate es **americano**; antes del siglo XVI la pasta italiana no llevaba salsa roja.",
+            "**Paella (España):** el arroz llegó a la península con los **árabes**; el azafrán también.",
+            "**Ensalada griega** con queso feta, aceitunas y pepino.",
+            "**Aceite de oliva, pan y vino:** la trilogía mediterránea que comparten los tres países.",
+            "**La lección:** tres cocinas distintas construidas sobre la **misma despensa** y con ingredientes que llegaron de fuera."
+          ] },
+        { tipo: "tema",
+          titulo: "España e Italia por dentro",
+          puntos: [
+            "**España:** la **cocina vasca** del norte, de pescados y salsas elaboradas, tiene una altísima concentración de restaurantes con reconocimiento internacional.",
+            "Frente a ella, la cultura de **tapas y raciones compartidas** del centro y el sur.",
+            "**Italia:** el **norte** usa mantequilla, arroz y polenta; el **sur**, aceite de oliva, tomate y pasta seca.",
+            "**Dato que sorprende:** hasta bien entrado el **siglo XX** no existía una única “cocina italiana”, sino un mosaico de cocinas regionales que la identidad nacional unificó después."
+          ],
+          pasoAPaso: true }
+      ] },
+
+    { tipo: "pregunta",
+      pregunta: "¿Qué tenía la pasta italiana antes de 1492?",
+      respuesta: "**No llevaba salsa de jitomate.** El jitomate es americano y tardó siglos en aceptarse en Europa: al principio se creía venenoso." },
+
+    { tipo: "tema",
+      titulo: "Centroeuropa y Europa del Este",
+      minutos: "31-50", evaluacion: "Formativo",
+      puntos: [
+        "Más orientada a la **carne, la mantequilla, la manteca y los lácteos**.",
+        "Gran tradición de **conservas fermentadas**, como el chucrut.",
+        "Es una respuesta al **clima frío** y a temporadas de cultivo más cortas que en el sur.",
+        "En los **Balcanes** se nota la huella de **cinco siglos** de dominio otomano: el **burek** (hojaldre relleno) y el **cevapi** (salchichas a la parrilla) son parientes de las dolmas y el baclava del Magreb."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "Comer en invierno",
+          imagen: "img/europa_este.jpg",
+          notas: "Pregunta: ¿por qué casi todo en esta mesa es conservado o cocido por horas?",
+          puntos: [
+            "**Guiso en olla de hierro:** carne, papa y zanahoria cocidas lentamente. El **goulash** húngaro lleva pimentón, hecho con **chile americano**.",
+            "**Chucrut:** col fermentada en sal. Se conserva meses y aporta vitamina C en invierno.",
+            "**Salchichas:** otra forma de conservar la carne del cerdo sacrificado en otoño.",
+            "**Pan de centeno:** el centeno resiste el frío mejor que el trigo.",
+            "**La chimenea** no es decoración: toda esta cocina gira en torno a **generar calor y conservar**."
+          ] },
+        { tipo: "tema",
+          titulo: "La cocina judía asquenazí",
+          notas: "Enlaza con el Tema 2: las mismas leyes de kashrut, otra geografía.",
+          puntos: [
+            "Se formó en las comunidades judías de **Alemania, Polonia y Rusia**, frente a la **sefardí** del Mediterráneo, vista en el Tema 2.",
+            "Aplica las mismas leyes de **kashrut**, pero con ingredientes de climas fríos: papa, remolacha, pescado de agua dulce y centeno.",
+            "**Gefilte fish:** pescado desmenuzado y reformado, cocido en su propio caldo. **Knish:** empanada de papa. **Borscht:** sopa de remolacha.",
+            "**La lección:** una misma norma religiosa produce **tradiciones culinarias muy distintas** según la geografía."
+          ],
+          pasoAPaso: true }
+      ] },
+
+    { tipo: "tema",
+      titulo: "Rusia: samovar, caviar y estepa",
+      puntos: [
+        "Inviernos extremos y una extensión enorme que la conecta, en su límite asiático, con **Asia Central**.",
+        "El **centeno** y otros cereales resistentes al frío dieron origen a los **blini** y a una repostería densa en mantequilla.",
+        "El **caviar**, huevas de esturión del mar Caspio, fue artículo de lujo de la nobleza zarista, **igual que el cacao entre los mexicas**.",
+        "El **samovar** mantiene el agua caliente durante horas, pensado para las larguísimas veladas de invierno."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "Una mesa rusa de invierno",
+          imagen: "img/rusia_samovar.jpg",
+          notas: "Pregunta: ¿qué objeto de esta mesa resume mejor el clima de Rusia? (El samovar).",
+          puntos: [
+            "**El samovar:** recipiente de metal con brasas en su interior; mantiene el agua caliente durante horas para servir té sin parar.",
+            "**Blini:** panqueques delgados de fermentación lenta, servidos con crema agria y **caviar**.",
+            "**Borsch:** sopa de remolacha con eneldo y crema agria. Da color, calor y se conserva bien.",
+            "**Pan de centeno negro:** denso y oscuro, hecho con el cereal que resiste el frío.",
+            "**La estufa de azulejos:** en las casas rusas servía para cocinar y calentar la vivienda al mismo tiempo."
+          ] }
+      ] },
+
+    { tipo: "tema",
+      titulo: "La cocina nórdica",
+      puntos: [
+        "**Dinamarca, Suecia, Noruega, Finlandia e Islandia.**",
+        "Clima duro y temporada de cultivo corta: por siglos se vivió de **conservar**, curar, ahumar y encurtir.",
+        "En las últimas décadas ganó enorme prestigio internacional con el movimiento de **revalorización de ingredientes locales, silvestres y de temporada**.",
+        "Su documento fundacional es el **manifiesto New Nordic de 2004**, visto en el Tema 1."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "La despensa del norte",
+          imagen: "img/nordica.jpg",
+          notas: "Pregunta: ¿qué técnicas de conservación reconocen en esta mesa? (Curado, encurtido, ahumado).",
+          puntos: [
+            "**Salmón curado (gravlax):** se cura con sal, azúcar y eneldo, sin cocinarlo con fuego.",
+            "**Arenque encurtido** en vinagre con cebolla: otra forma de conservar pescado durante meses.",
+            "**Bayas silvestres:** arándanos, grosellas y mora ártica, recolectadas en el corto verano.",
+            "**Pan de centeno** y hierbas frescas como el eneldo.",
+            "**El fiordo al fondo** explica la cocina: un clima que obliga a conservar y a aprovechar lo que da la naturaleza."
+          ] }
+      ] },
+
+    { tipo: "pausa",
+      titulo: "¡Pausa activa!",
+      duracion: "5 minutos",
+      minutos: "51-55",
+      texto: "**El mapa humano de Europa.** Cada esquina del salón es un bloque: Mediterráneo, Centroeuropa y Este, Nórdico e Islas Británicas. Al escuchar un platillo o ingrediente (paella, chucrut, fish and chips, gravlax, goulash, feta), corre a la esquina correcta." },
+
+    { tipo: "tema",
+      titulo: "Las Islas Británicas",
+      minutos: "56-70", evaluacion: "Formativo",
+      puntos: [
+        "**Inglaterra e Irlanda** como principales exponentes.",
+        "Preparaciones sencillas de **carne, pescado y papa**.",
+        "Gusto marcado por el contraste entre **lo salado y lo dulce**.",
+        "Fuerte tradición de **horneado**: pasteles, tartas y budines. Vía colonización, exportó buena parte de su repertorio a **Australia y Norteamérica**."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "La comida del pub",
+          imagen: "img/reino_unido.jpg",
+          notas: "Pregunta: ¿qué ingrediente de este plato llegó de América? (La papa, de los Andes).",
+          puntos: [
+            "**Sunday roast:** rosbif con papas asadas, verduras y salsa **gravy**, la comida familiar del domingo.",
+            "**Pudín de Yorkshire:** masa de harina, huevo y leche horneada en la grasa del asado; se sirve como guarnición, aunque se llame “pudín”.",
+            "**Fish and chips:** pescado rebozado con papas, tradicionalmente servido en papel. La **papa** es americana, de los Andes.",
+            "**El pub** es el equivalente británico de la cantina o la taquería: el lugar donde esta comida se volvió popular."
+          ] }
+      ] },
+
+    { tipo: "tema",
+      titulo: "Francia: el caso aparte",
+      minutos: "71-85", evaluacion: "Formativo",
+      puntos: [
+        "Es el **referente histórico de la cocina profesional codificada**, con **Escoffier** y la corriente clásica vista en el Tema 2.",
+        "Pero esa cocina no nació sola: se enriqueció con la llegada de **Catalina de Médici** desde Italia en el **siglo XVI**.",
+        "En el **siglo XVII**, **La Varenne** sistematizó sus técnicas por escrito.",
+        "Es decir: la cocina hoy vista como la más “clásica” de Europa se construyó con **aportes italianos** y se codificó apenas hace unos siglos."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "Una gran cocina del siglo XVII",
+          imagen: "img/francia_cocina.jpg",
+          notas: "Pregunta: ¿cuántas personas están trabajando aquí, y cada quien en qué? Es el antecedente de la brigada de cocina de Escoffier.",
+          puntos: [
+            "**Cada quien en su tarea:** uno corta verduras, otro vigila los asados, otro hornea. Es el antecedente de la **brigada de cocina** que Escoffier codificaría siglos después.",
+            "**Cazos de cobre:** conducen el calor de forma pareja; eran carísimos y se heredaban.",
+            "**El asador frente al fuego** con aves ensartadas: la técnica dominante antes del horno moderno.",
+            "**Las salsas al fuego:** aquí nace la tradición que La Varenne pondría por escrito en el siglo XVII.",
+            "**Sin refrigeración:** por eso el fondo de la cocina es despensa, y por eso las técnicas de conservación eran parte del oficio."
+          ] }
+      ] },
+
+    { tipo: "cita",
+      texto: "Ningún país europeo cocina en aislamiento total: la propia cocina francesa, hoy vista como la más “clásica” de todas, se construyó con aportes italianos del Renacimiento y su propia codificación técnica llegó apenas en el siglo XVII.",
+      autor: "Origen de las Cocinas, Tema 3.4",
+      notas: "Léela en voz alta y enlázala con la tarea: todo bloque europeo tiene fronteras porosas." },
+
+    { tipo: "video",
+      titulo: "Historia de la cocina francesa",
+      youtube: "https://www.youtube.com/watch?v=1ENA_9bW-vI",
+      pie: "Video en español sobre el desarrollo de la cocina francesa.",
+      notas: "Revísalo antes de clase. Alternativa en español: “De soldado a leyenda: cómo Escoffier inventó la gastronomía moderna”, https://www.youtube.com/watch?v=bDIx0593Rps" },
+
+    { tipo: "tarea",
+      titulo: "Mapa de Europa por equipos",
+      minutos: "86-105", evaluacion: "Sumativo · Rúbrica de Tarea",
+      notas: "Proyecta o reparte el mapa de Europa. Revisa que cada bloque tenga al menos un país, un ingrediente y un platillo.",
+      puntos: [
+        "En equipos, elaboren un **mapa de Europa** dividido en los **4 bloques** gastronómicos.",
+        "Para cada bloque anoten al menos **un país**, **un ingrediente base** y **un platillo** representativo.",
+        "Extra: marquen con una flecha **una influencia** que haya viajado de un bloque a otro.",
+        "Al terminar, cada equipo explica su mapa en un minuto."
+      ] },
+
+    { tipo: "tabla",
+      titulo: "Europa en una tabla",
+      columnas: ["Bloque", "Base", "Platillos"],
+      filas: [
+        ["Mediterráneo", "Aceite de oliva, trigo, vino, pescado, verduras de sol", "Pasta, paella, ensalada griega, tapas"],
+        ["Centroeuropa y Este", "Carne, manteca, lácteos, fermentados", "Goulash, chucrut, burek, borscht"],
+        ["Nórdico", "Pescado curado, centeno, bayas silvestres", "Gravlax, arenque encurtido"],
+        ["Islas Británicas", "Carne, pescado, papa y horneados", "Sunday roast, fish and chips, budines"]
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tarea",
+      titulo: "El ingrediente que marca la frontera",
+      evaluacion: "Sumativo · Rúbrica de Tarea",
+      puntos: [
+        "Elige **un ingrediente** y explica cómo marca la frontera entre dos bloques europeos.",
+        "Ideas: **aceite de oliva** frente a **mantequilla**; **trigo** frente a **centeno**; **vino** frente a **cerveza**.",
+        "Explica **por qué** está esa frontera ahí: clima, religión, comercio o historia.",
+        "Media cuartilla, citando tus fuentes."
+      ] },
+
+    { tipo: "repaso",
+      notas: "Unos 5 minutos. Lanza cada pregunta al grupo y espera respuestas antes de mostrarla.",
+      preguntas: [
+        { pregunta: "¿Qué ingrediente americano transformó la pasta italiana?", respuesta: "El **jitomate**." },
+        { pregunta: "¿Qué imperio dejó el burek y el cevapi en los Balcanes?", respuesta: "El **Imperio otomano**, tras cinco siglos de dominio." },
+        { pregunta: "¿Qué recipiente ruso mantiene el agua caliente durante horas?", respuesta: "El **samovar**." },
+        { pregunta: "¿Qué italiana influyó en la cocina francesa en el siglo XVI?", respuesta: "**Catalina de Médici**." }
+      ] },
+
+    { tipo: "proyecto",
+      minutos: "106-115",
+      preguntas: [
+        { numero: 18, texto: "Si mi platillo tiene alguna raíz europea, ¿de qué bloque viene y qué aportó?" },
+        { numero: 19, texto: "¿Qué ingrediente de mi platillo cambió de significado al cruzar de un continente a otro?" }
+      ] },
+
+    { tipo: "cierre",
+      minutos: "116-120",
+      evidencia: "El mapa de cada equipo ubica correctamente los 4 bloques, con al menos un país, un ingrediente y un platillo en cada uno.",
+      materiales: "Mapa de Europa (impreso o proyectado), cartulina o pizarrón, libro de texto, Tema 3.4.",
+      proxima: "Leer el subtema 3.5, **Cocinas de Oceanía**. Entregar la media cuartilla sobre el ingrediente que marca la frontera." }
+  ]
+};
+</script>
+<script src="motor.js"></script>
+</body>
+</html>
