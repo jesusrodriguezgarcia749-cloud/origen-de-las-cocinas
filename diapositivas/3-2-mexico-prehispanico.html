@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>3.2 México prehispánico y mestizo · Origen de las Cocinas</title>
+</head>
+<body>
+<!-- =====================================================================
+     SESIÓN: Viernes 23 de octubre · 3.2 Cocinas americanas, Parte 1 · 2 horas
+     Fuente: libro de texto Origen de las Cocinas, Tema 3.2 (prehispánica y mestiza)
+     Lo que va en "minutos", "evaluacion" y "notas" solo lo ve el docente.
+     ===================================================================== -->
+<script>
+const PRESENTACION = {
+  materia: "Origen de las Cocinas",
+
+  diapositivas: [
+    { tipo: "portadaDia",
+      tema: "Tema 3 · Cocinas en el mundo",
+      dia: "Viernes 23 de octubre",
+      titulo: "3.2 Cocinas americanas",
+      subtitulo: "Parte 1: México prehispánico y mestizo",
+      duracion: "2 horas",
+      imagen: "img/mercado_tlatelolco.jpg" },
+
+    { tipo: "objetivos",
+      intro: "Hoy vas a entender que la cocina mexicana es, literalmente, una herencia de dos mundos.",
+      puntos: [
+        "Vas a conocer lo que Sahagún documentó sobre la mesa de Moctezuma.",
+        "Vas a comparar la cocina mexica con la cocina maya.",
+        "Vas a distinguir qué es prehispánico y qué llegó tras la conquista.",
+        "Vas a leer un platillo mexicano como si fuera un documento histórico."
+      ] },
+
+    { tipo: "tema",
+      titulo: "Las tres raíces de América",
+      minutos: "0-5", evaluacion: "Formativo",
+      notas: "Enlaza con la clase anterior: la raíz africana ya la vimos. Hoy empezamos por casa.",
+      puntos: [
+        "La cocina americana nace de tres vertientes: los **pueblos originarios**, los **colonizadores europeos** y las **poblaciones africanas** traídas por la fuerza.",
+        "Cada país las mezcla en proporciones distintas.",
+        "En Mesoamérica, el **maíz** era tan central que el **Popol Vuh** cuenta que el ser humano fue formado con masa de maíz blanco y amarillo."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Sahagún y el Códice Florentino",
+      minutos: "6-25", evaluacion: "Formativo",
+      puntos: [
+        "En el siglo XVI, el fraile franciscano **Bernardino de Sahagún** escribió la *Historia general de las cosas de Nueva España*, con ayuda directa de **informantes indígenas**.",
+        "Su versión más completa se conoce como **Códice Florentino**.",
+        "Casi no hay apartado sin comida: distingue qué se ofrecía a los **dioses**, qué comían los **señores** y qué comía el **pueblo**.",
+        "Describe técnicas, ingredientes, utensilios y **mercados**."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "dato",
+      cifra: "96",
+      texto: "especies de insectos comestibles y más de 70 hierbas de cocina documenta el Códice Florentino. La dieta prehispánica no era pobre ni limitada.",
+      fuente: "Libro de texto, Tema 3.2" },
+
+    { tipo: "cita",
+      texto: "Le tenían sus cocineros sobre treinta maneras de guisados, y teníanlos puestos en braseros de barro, porque no se enfriasen (...) traían en unas como a manera de copas de oro fino, cierta bebida hecha del cacao.",
+      autor: "Fray Bernardino de Sahagún, sobre la mesa de Moctezuma, siglo XVI",
+      notas: "Léela en voz alta con calma. Pregunta: ¿qué nos dice esto sobre la cocina de la nobleza mexica?" },
+
+    { tipo: "tema",
+      titulo: "Los ingredientes propios",
+      puntos: [
+        "**Las Tres Hermanas:** maíz, frijol y calabaza sembrados juntos, completados con el **chile** en sus muchas variedades.",
+        "**Chía y huauhtli (amaranto):** semillas muy nutritivas; con amaranto y miel se hacían figuras para ofrendar a los dioses.",
+        "**Quelites:** hierbas y hojas comestibles, silvestres o cultivadas.",
+        "**Maguey:** de él se obtiene el aguamiel, que fermentado da el **pulque**.",
+        "**Insectos:** chapulines, escamoles, jumiles y gusanos de maguey, una proteína aprovechada con lógica sostenible."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "El gran mercado de Tlatelolco",
+          imagen: "img/mercado_tlatelolco.jpg",
+          notas: "Antes de mostrar el último punto, reta al grupo: hay un ingrediente en la imagen que no podía estar ahí. ¿Cuál es?",
+          puntos: [
+            "**El mercado más grande de Mesoamérica:** Hernán Cortés escribió que acudían más de 60,000 personas al día a comprar y vender.",
+            "**Cada producto tenía su lugar:** maíz, frijoles, chiles secos, calabazas, cacao, aves y hierbas.",
+            "**El guajolote:** junto con el perro, uno de los pocos animales domésticos de Mesoamérica.",
+            "**Encuentra el intruso:** las **sandías** no podían estar ahí. Llegaron de África con los europeos, después de la conquista."
+          ] }
+      ] },
+
+    { tipo: "tema",
+      titulo: "El cacao: moneda y bebida de élite",
+      puntos: [
+        "Era tan valioso que se usaba como **moneda**: un puñado de granos podía comprar un pavo o pagar una jornada de trabajo.",
+        "Casi siempre estaba reservado a la **nobleza**.",
+        "Se bebía **espumoso y amargo**, condimentado con chile, vainilla, achiote o miel. Nada que ver con el chocolate dulce de hoy.",
+        "Sahagún cuenta que a Moctezuma se lo servían en **copas de oro**."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "Cómo se preparaba el cacao",
+          imagen: "img/cacao_xocolatl.jpg",
+          encuadre: "40% 50%",
+          notas: "La vestimenta y la pintura facial de la imagen son una recreación artística; enfócate en el proceso.",
+          puntos: [
+            "**Las mazorcas:** sus granos se fermentan, se secan y se tuestan antes de usarse.",
+            "**El metate:** en él se molían los granos tostados hasta formar una pasta.",
+            "**La espuma** era lo más apreciado. Se lograba vertiendo la bebida desde lo alto de una vasija a otra, como muestra el Códice Tudela.",
+            "**Sin azúcar:** el chocolate dulce nació después, cuando se le agregó el azúcar de caña que trajeron los europeos."
+          ] }
+      ] },
+
+    { tipo: "video",
+      titulo: "La historia del chocolate",
+      youtube: "https://www.youtube.com/watch?v=SYAbYuhoieE",
+      pie: "Documental en español sobre el origen del cacao en Mesoamérica.",
+      notas: "Revisa antes la duración y elige el fragmento que vas a proyectar. Alternativa en español: “El chocolate azteca: amargo, frío y sagrado”, https://www.youtube.com/watch?v=zyOlCxultLE" },
+
+    { tipo: "observa",
+      titulo: "Las chinampas",
+      imagen: "img/chinampas.jpg",
+      encuadre: "45% 50%",
+      notas: "Pregunta: ¿por qué creen que los mexicas cultivaban sobre el agua?",
+      puntos: [
+        "**Islas artificiales de cultivo** en los lagos del Valle de México, hechas con capas de lodo y vegetación.",
+        "**Los árboles de las orillas** (ahuejotes) sujetan la tierra con sus raíces.",
+        "**Los canales** eran las calles: por ahí se movían las canoas con la cosecha hacia los mercados.",
+        "**Maíz, flores de cempasúchil y amaranto** crecían todo el año gracias a la humedad del lago.",
+        "**Siguen vivas:** hoy se cultivan chinampas en Xochimilco y Tláhuac, con los volcanes al fondo."
+      ] },
+
+    { tipo: "tema",
+      titulo: "La cocina maya: el pib y el achiote",
+      notas: "Aquí conecta con su identidad: esta licenciatura está en el corazón de la tradición maya peninsular.",
+      puntos: [
+        "La península de **Yucatán y Campeche** desarrolló, dentro del mismo tronco mesoamericano, una tradición propia.",
+        "**El pib:** horno excavado en la tierra. De él vienen los **chachakuahes**, tamales rellenos de carne con achiote, y el **pibil nal**, elote cocido bajo tierra.",
+        "**El achiote:** semilla de color rojizo y sabor terroso; es el condimento del **recado rojo** y del **tikin xic**.",
+        "**Kah:** bebida maya de cacao con maíz, pimienta de Tabasco y achiote. **Balché:** bebida ritual fermentada de corteza de árbol y miel."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "Así se cocina en el pib",
+          imagen: "img/pib.jpg",
+          encuadre: "58% 50%",
+          notas: "Dato extra: hoy se envuelve en hoja de plátano, que también llegó después de la conquista; antes se usaban otras hojas de la región. La imagen es una escena actual (pala de metal, casa con techo de huano).",
+          puntos: [
+            "**El hoyo en la tierra:** al fondo se calientan piedras con leña hasta que quedan al rojo.",
+            "**Los paquetes** envueltos en hojas se acomodan sobre las piedras calientes.",
+            "**Se tapa con hojas y tierra** y se deja cocer lentamente durante horas.",
+            "**La cochinita pibil** es una adaptación posterior: los mayas prehispánicos **no conocían el cerdo**.",
+            "**Sigue vivo:** en Hanal Pixán se prepara el **mucbipollo**, cuyo nombre en maya significa “pollo enterrado”."
+          ] }
+      ] },
+
+    { tipo: "tarea",
+      titulo: "Cuadro comparativo: mexica y maya",
+      minutos: "26-50", evaluacion: "Sumativo · Rúbrica de Tarea",
+      notas: "Deja que los equipos lo llenen primero. Después avanza a la diapositiva siguiente para revisar fila por fila.",
+      puntos: [
+        "En equipos, comparen la cocina **mexica** del Valle de México y la **maya** de Yucatán y Campeche.",
+        "Usen cuatro rasgos: **técnica de cocción**, **condimento identitario**, **bebida ritual de cacao** y **sistema agrícola**.",
+        "Tienen 20 minutos. Después revisamos juntos."
+      ] },
+
+    { tipo: "tabla",
+      titulo: "Mexica y maya: dos cocinas, un mismo tronco",
+      columnas: ["Rasgo", "Cocina mexica", "Cocina maya"],
+      filas: [
+        ["Técnica de cocción", "Comal de barro; vapor (tamales)", "Pib (horno de tierra); vapor envuelto en hojas"],
+        ["Condimento identitario", "Chile en moles y salsas de molcajete", "Achiote (recado rojo)"],
+        ["Bebida ritual de cacao", "Xocolatl, en copas de oro para la nobleza", "Kah, con maíz, pimienta de Tabasco y achiote"],
+        ["Sistema agrícola", "Chinampas (islas de cultivo en lagos)", "Pet kot (huertos-jardín rodeados de piedra)"]
+      ],
+      pasoAPaso: true },
+
+    { tipo: "pausa",
+      titulo: "¡Pausa activa!",
+      duracion: "5 minutos",
+      minutos: "51-55",
+      texto: "**¿Mexica o maya?** De pie. Cuando escuches una técnica o ingrediente (chinampas, pib, xocolatl, kah, achiote, comal), levanta la **mano derecha si es mexica** y la **izquierda si es maya**." },
+
+    { tipo: "tema",
+      titulo: "Lo que llegó con la conquista",
+      minutos: "56-80", evaluacion: "Formativo",
+      puntos: [
+        "**Nuevos cereales:** el trigo y el arroz.",
+        "**Ganado y lácteos:** cerdo, res, pollo de corral, leche, queso y crema. En Mesoamérica no se domesticaba ganado mayor.",
+        "**Azúcar de caña:** transformó por completo la repostería.",
+        "**Especias del Viejo Mundo:** canela, clavo y pimienta negra, que hoy se combinan con el achiote y el chile como si siempre hubieran estado ahí."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tabla",
+      titulo: "Una herencia de dos mundos",
+      columnas: ["Dirección del intercambio", "Ingredientes"],
+      filas: [
+        ["México aportó al mundo", "Maíz, frijol, calabaza, chile, cacao, jitomate, vainilla, aguacate, chía, amaranto, nopal, camote y guajolote"],
+        ["Llegaron a México (desde 1521)", "Trigo, arroz, caña de azúcar, cerdo, res, oveja, cabra, leche y quesos, cítricos, ajo, cebolla, garbanzo, canela, clavo, pimienta negra, aceite de oliva y vid"]
+      ],
+      subtemas: [
+        { tipo: "observa",
+          titulo: "Dos mundos en una mesa",
+          imagen: "img/dos_mundos.jpg",
+          etiqueta: "Encuentra el error",
+          notas: "Deja que el grupo busque el error antes de avanzar al último punto.",
+          puntos: [
+            "**A la izquierda, lo americano:** maíz, frijol, chiles, calabaza, jitomate, cacao, semillas de calabaza y tortillas.",
+            "**A la derecha, lo que llegó:** trigo, pan, arroz, cerdo y embutidos, quesos, caña de azúcar y canela.",
+            "**El error:** el **cacahuate (maní)** está del lado equivocado. Es americano, originario de Sudamérica."
+          ] }
+      ] },
+
+    { tipo: "pregunta",
+      pregunta: "¿El mole es prehispánico o colonial?",
+      respuesta: "**Las dos cosas.** Los chiles, el cacao y el guajolote son prehispánicos; la canela, el clavo, las almendras y el ajonjolí llegaron después de la conquista. Es una herencia de dos mundos." },
+
+    { tipo: "tarea",
+      titulo: "Lee un platillo",
+      minutos: "81-105", evaluacion: "Participación",
+      puntos: [
+        "En equipos, elijan un platillo: **mole**, **pozole** o **cochinita pibil**.",
+        "Separen sus ingredientes y técnicas en dos columnas: **prehispánico** y **llegó con la conquista**.",
+        "Cada equipo explica en un minuto qué parte de su platillo viene de cada mundo."
+      ] },
+
+    { tipo: "proyecto",
+      minutos: "106-115",
+      notas: "Si el platillo de algún alumno no es mexicano, pídele que identifique qué ingredientes de su platillo son americanos.",
+      preguntas: [
+        { numero: 14, texto: "Si mi platillo es de México: ¿qué parte es herencia prehispánica y qué parte fue adoptada tras la conquista?" }
+      ] },
+
+    { tipo: "cierre",
+      minutos: "116-120",
+      evidencia: "El cuadro comparativo distingue correctamente al menos 3 rasgos entre la cocina mexica y la maya.",
+      materiales: "Libro de texto, Tema 3.2 (sección prehispánica y mestiza).",
+      proxima: "Repasar la tabla “México aportó al mundo / Llegaron a México”. El jueves 29 es la **Práctica de cocina 2**: uniforme completo y cuchillo propio." }
+  ]
+};
+</script>
+<script src="motor.js"></script>
+</body>
+</html>
