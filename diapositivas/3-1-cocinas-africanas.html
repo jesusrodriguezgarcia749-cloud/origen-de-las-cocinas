@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>3.1 Cocinas africanas · Origen de las Cocinas</title>
+</head>
+<body>
+<!-- =====================================================================
+     SESIÓN: Jueves 22 de octubre · 3.1 Cocinas africanas · 3 horas
+     Fuente: libro de texto Origen de las Cocinas, Tema 3.1
+     Lo que va en "minutos", "evaluacion" y "notas" solo lo ve el docente (tecla S).
+     ===================================================================== -->
+<script>
+const PRESENTACION = {
+  materia: "Origen de las Cocinas",
+
+  diapositivas: [
+    { tipo: "portadaDia",
+      tema: "Tema 3 · Cocinas en el mundo",
+      dia: "Jueves 22 de octubre",
+      titulo: "3.1 Cocinas africanas",
+      subtitulo: "Un continente, muchas cocinas",
+      duracion: "3 horas",
+      imagen: "img/imperios_africanos.jpg" },
+
+    { tipo: "objetivos",
+      intro: "Hoy empiezas el recorrido por las 5 regiones del mundo, y arrancamos con África.",
+      puntos: [
+        "Vas a conocer el Magreb y el comercio transahariano.",
+        "Vas a distinguir 4 regiones africanas y sus rasgos distintivos.",
+        "Vas a construir un mapa mural de África por equipos.",
+        "Vas a investigar el origen africano de un platillo afrolatinoamericano."
+      ] },
+
+    { tipo: "tema",
+      titulo: "Un continente, muchas cocinas",
+      minutos: "0-15", evaluacion: "Formativo",
+      notas: "Encuadre. Retoma las 3 suposiciones que cada equipo escribió sobre su región. Presenta el hilo conductor de todo el Tema 3.",
+      puntos: [
+        "África tiene **54 países** y cientos de tradiciones culinarias distintas.",
+        "No es una sola cocina: es un **mosaico** que comparte ingredientes de fondo como el sorgo, el mijo, el teff y el ñame.",
+        "Para estudiarla con orden la dividimos en **4 regiones**: Magreb, África Occidental, Cuerno de África y África Austral.",
+        "El hilo de todo el Tema 3: casi ninguna cocina es “pura”; todas nacen del **comercio, la migración, la conquista y la adaptación al entorno**."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "pregunta",
+      pregunta: "¿Qué ingrediente de origen africano crees que ya has comido sin saberlo?",
+      respuesta: "La **jamaica**, el **tamarindo** y el **café** son de origen africano. El **plátano macho** y el **ajonjolí** llegaron a América a través del comercio con África." },
+
+    { tipo: "tema",
+      titulo: "El Magreb: el norte de África",
+      minutos: "16-40", evaluacion: "Formativo",
+      notas: "Señala en el mapa: Marruecos, Argelia, Túnez y Libia. Baja con la flecha para ver el cuscús y los sabores del Magreb.",
+      puntos: [
+        "Países: **Marruecos, Argelia, Túnez y Libia**; en sentido amplio, también Mauritania y el Sáhara Occidental.",
+        "Su cocina mezcla una base **bereber (amazigh)** con influencias **árabes**, **mediterráneas** y, en menor medida, **otomanas**, visibles en las dolmas y las baclavas.",
+        "Su ingrediente emblemático es el **cuscús**."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "tema",
+          titulo: "El cuscús",
+          puntos: [
+            "Es de origen **amazigh (bereber)** y aparece en crónicas árabes desde la islamización del Magreb.",
+            "Tradicionalmente se hace **a mano**: la sémola se humedece y se enrolla hasta formar granitos.",
+            "Se cuece **al vapor** en la **cuscusera**, una olla de tres piezas que cocina el guiso abajo y el cuscús arriba.",
+            "En **2020** la UNESCO lo inscribió como patrimonio cultural inmaterial, en una candidatura conjunta de Argelia, Marruecos, Mauritania y Túnez."
+          ] },
+        { tipo: "tema",
+          titulo: "Sabores del Magreb",
+          puntos: [
+            "**Tajín:** olla de barro con tapa en forma de cono, y también el guiso que se cocina lentamente en ella.",
+            "**Ras el hanout:** mezcla de especias cuyo nombre significa “cabeza de la tienda”, es decir, lo mejor del especiero.",
+            "**Harissa:** pasta picante de chile, emblema de Túnez. Ojo: el chile es americano y llegó después de 1492. Una cocina “tradicional” también se hizo con ingredientes viajeros."
+          ],
+          pasoAPaso: true }
+      ] },
+
+    { tipo: "tema",
+      titulo: "El comercio transahariano",
+      notas: "Dibuja la ruta en el mapa: del Magreb, cruzando el Sahara, hasta el Sahel.",
+      puntos: [
+        "Red de caravanas que durante siglos unió el Magreb con los imperios del Sahel: **Ghana, Malí y Songhay**.",
+        "Rutas de **1,600 a 2,000 km** a través del desierto, guiadas por los **tuareg**, pueblo bereber nómada del Sahara central.",
+        "Se intercambiaba sobre todo **oro** del sur y **sal** del desierto.",
+        "No solo movió mercancías: por ahí llegó el **islam** al África occidental y circularon especias, técnicas de conservación y saberes culinarios."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "dato",
+      cifra: "30,000",
+      texto: "camellos podía reunir una sola caravana transahariana en su mejor época.",
+      fuente: "Libro de texto, Tema 3.1" },
+
+    { tipo: "tema",
+      titulo: "Mansa Musa, el rey del oro",
+      puntos: [
+        "Gobernó el **Imperio de Malí** entre 1312 y 1337, gracias a la riqueza del comercio de oro y sal.",
+        "En **1324** peregrinó a La Meca con una caravana enorme y repartió tanto oro en El Cairo que su valor bajó durante años.",
+        "**Tombuctú**, a orillas del río Níger, se volvió un centro de comercio y de saber.",
+        "Su historia muestra cómo el comercio transahariano convirtió pequeños reinos en imperios."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "cita",
+      texto: "El comercio transahariano fue el motor que convirtió pequeños reinos del Sahel en imperios, y la vía por la que el islam entró en África occidental.",
+      autor: "Síntesis documental sobre el comercio transahariano, citada en el libro de texto" },
+
+    { tipo: "video",
+      titulo: "Mansa Musa y el islam en África",
+      youtube: "https://youtu.be/jvnU0v6hcUo",
+      subtitulos: "es",
+      pie: "Curso Intensivo de Historia del Mundo #16 · 10 minutos · en inglés con subtítulos en español.",
+      notas: "Si los subtítulos no aparecen, actívalos con el botón CC del reproductor." },
+
+    { tipo: "tabla",
+      titulo: "Cuatro regiones de África",
+      minutos: "41-65", evaluacion: "Formativo",
+      notas: "Presenta la tabla completa y luego baja con la flecha a cada región.",
+      columnas: ["Región", "Ingredientes base", "Lo más representativo"],
+      filas: [
+        ["Magreb", "Sémola de trigo, especias, aceitunas, cítricos", "Cuscús, tajín y la herencia bereber, árabe y otomana"],
+        ["África Occidental", "Arroz, mijo, sorgo, ñame, yuca, plátano, maní, aceite de palma", "Guisos muy especiados; arroz jollof y fufu"],
+        ["Cuerno de África", "Teff", "La injera, pan fermentado que también sirve de cubierto"],
+        ["África Austral", "Carnes, especias del Cabo", "El braai y el bobotie de la cocina del Cabo Malayo"]
+      ],
+      subtemas: [
+        { tipo: "tema",
+          titulo: "África Occidental: los imperios del oro",
+          puntos: [
+            "Heredera directa de **Ghana, Malí y Songhay**.",
+            "Granos ancestrales: **arroz, mijo y sorgo**. Tubérculos: **ñame, yuca y plátano**.",
+            "Grasas locales: **aceite de palma** y **manteca de karité**. Los comerciantes árabes llevaron sal, especias y técnicas de conservación.",
+            "**Fufu:** masa de ñame, yuca o plátano cocidos y machacados. **Arroz jollof:** arroz cocido en salsa de tomate y chile, orgullo de Nigeria y Ghana.",
+            "Dato cruzado: la **yuca** y el **maní** son americanos; llegaron a África con los portugueses."
+          ],
+          pasoAPaso: true },
+        { tipo: "tema",
+          titulo: "El Cuerno de África: el teff y la injera",
+          puntos: [
+            "Etiopía y Eritrea, principalmente.",
+            "El **teff** es uno de los granos más pequeños del mundo y es muy nutritivo.",
+            "Con él se hace la **injera**: pan esponjoso y fermentado que es a la vez **plato, cubierto y alimento**.",
+            "Se acompaña de guisos estofados llamados **tsebhi**, o de otro pan plano, la **taita**.",
+            "Etiopía es la tierra de origen del **café**. Su cocina muestra influencias otomanas e italianas."
+          ],
+          pasoAPaso: true },
+        { tipo: "tema",
+          titulo: "África Austral: el braai y el Cabo",
+          puntos: [
+            "Tres capas históricas: la base de los pueblos **khoisan y bantúes**, la colonización **holandesa e inglesa** y la llegada de esclavos **malayos e indonesios** al Cabo desde el siglo XVII.",
+            "De esa última capa nace la **cocina del Cabo Malayo**, con especias y técnicas de curry.",
+            "**Bobotie:** carne especiada al horno, cubierta con una capa de huevo.",
+            "**Braai:** parrillada al aire libre, el ritual social más extendido de la región."
+          ],
+          pasoAPaso: true }
+      ] },
+
+    { tipo: "pregunta",
+      pregunta: "¿Qué tradición americana cumple la misma función social que el braai sudafricano?",
+      respuesta: "El **asado del Cono Sur** (Argentina y Uruguay): reunirse alrededor del fuego es tan importante como la carne. Lo veremos en el subtema 3.2." },
+
+    { tipo: "pausa",
+      titulo: "¡Pausa activa!",
+      duracion: "5 minutos",
+      minutos: "66-71",
+      texto: "**El mapa humano de África.** Cada esquina del salón es una región: Magreb, África Occidental, Cuerno de África y África Austral. Cuando escuches un ingrediente o platillo (teff, cuscús, braai, ñame, injera, bobotie), corre a la esquina correcta." },
+
+    { tipo: "tarea",
+      titulo: "Mapa mural por equipos",
+      minutos: "72-96", evaluacion: "Sumativo · Rúbrica de Tarea",
+      notas: "Proyecta o reparte el mapa de África. Revisa que cada región tenga al menos un ingrediente y un platillo.",
+      puntos: [
+        "En equipos, elaboren un **mapa de África** dividido en las **4 regiones** vistas.",
+        "Incluyan al menos **un ingrediente** y **un platillo** representativo de cada región.",
+        "Extra: tracen la **ruta transahariana** entre el Magreb y el Sahel.",
+        "Al terminar, cada equipo explica su mapa en un minuto."
+      ] },
+
+    { tipo: "tema",
+      titulo: "La diáspora forzada",
+      minutos: "97-121", evaluacion: "Formativo",
+      notas: "Trata este tema con la seriedad histórica que merece; no lo conviertas en un dato casual.",
+      puntos: [
+        "La colonización europea y la **trata transatlántica** llevaron por la fuerza a más de **12 millones de personas** africanas a América entre los siglos XVI y XIX.",
+        "Con ellas viajaron **ingredientes, técnicas y saberes** que hoy marcan las cocinas de Puerto Rico, Brasil, Colombia, el Caribe y el sur de Estados Unidos.",
+        "Fue una historia de **violencia y despojo** que no debe minimizarse; aun así, explica el parentesco entre muchos platillos africanos y afrolatinoamericanos."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tabla",
+      titulo: "Lo que cruzó el Atlántico",
+      columnas: ["Ingrediente o técnica", "Dónde lo encontramos hoy"],
+      filas: [
+        ["Quimbombó (okra)", "El gumbo de Luisiana y el caruru de Brasil"],
+        ["Aceite de palma (dendê)", "La cocina de Bahía, Brasil: acarajé y moqueca"],
+        ["Plátano cocido y machacado, como el fufu", "El mofongo de Puerto Rico y el machuco de la Costa Chica"],
+        ["Jamaica y tamarindo", "Las aguas frescas de México"]
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "La tercera raíz: África en México",
+      puntos: [
+        "Durante el virreinato llegaron a la Nueva España personas africanas esclavizadas que trabajaron en **plantaciones, minas y cocinas**.",
+        "En las cocinas, mujeres africanas, indígenas y españolas **intercambiaron saberes**.",
+        "Su huella sigue viva en **Veracruz** y en la **Costa Chica de Guerrero y Oaxaca**: plátano macho, ajonjolí, caldos con machuco de plátano.",
+        "En **2019** la Constitución reconoció a los pueblos y comunidades **afromexicanas**."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "video",
+      titulo: "Afrodescendientes en la historia de México",
+      youtube: "https://www.youtube.com/watch?v=1_3kfhgcAPo",
+      pie: "Video de apoyo para conocer la tercera raíz de México." },
+
+    { tipo: "tarea",
+      titulo: "Investigación guiada",
+      minutos: "122-160", evaluacion: "Sumativo · Rúbrica de Tarea",
+      puntos: [
+        "Elige un **platillo afrolatinoamericano**: del Caribe, Brasil, el sur de Estados Unidos o la Costa Chica de México.",
+        "Con apoyo del libro, rastrea su **posible origen africano**: ingredientes, técnica y ruta.",
+        "Redacta **media cuartilla** citando tus fuentes.",
+        "Ideas para empezar: acarajé, mofongo, gumbo, arroz con coco, caldo con machuco de plátano."
+      ] },
+
+    { tipo: "proyecto",
+      minutos: "161-170",
+      notas: "Pide que cada alumno anote su respuesta en el borrador del proyecto.",
+      preguntas: [
+        { numero: 13, texto: "¿A cuál de las 5 regiones del Tema 3 pertenece mi platillo?" },
+        { numero: 14, texto: "Si es de México, ¿qué parte es herencia prehispánica y qué parte fue adoptada?" }
+      ] },
+
+    { tipo: "cierre",
+      minutos: "171-180",
+      evidencia: "El mapa mural de cada equipo ubica correctamente al menos un ingrediente o platillo en cada una de las 4 regiones.",
+      materiales: "Mapa de África (impreso o proyectado), cartulina o pizarrón.",
+      proxima: "Leer el subtema 3.2 del libro de texto: la cocina prehispánica de México (mexica y maya)." }
+  ]
+};
+</script>
+<script src="motor.js"></script>
+</body>
+</html>

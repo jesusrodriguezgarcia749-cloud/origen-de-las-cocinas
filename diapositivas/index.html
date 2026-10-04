@@ -5,63 +5,71 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Diapositivas · Origen de las Cocinas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:wght@700;800&family=Alegreya+Sans:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600&display=swap">
 <style>
-  :root{--maiz-azul:#1F2F4D;--chile:#B3261E;--maiz:#E9B44C;--nopal:#5E7A34;--masa:#FFFDF7;--piedra:#5B5B66}
+  :root{--marino:#252734;--rojo:#AA2F2F;--beige:#F4F2ED;--arena:#DDD6C8;--tinta:#1A1A1A;--gris:#5C5A55}
   *{box-sizing:border-box}
   html{scroll-padding-top:env(safe-area-inset-top,0px)}
-  body{margin:0;background:var(--masa);color:var(--maiz-azul);font-family:"Alegreya Sans",Georgia,serif;
-       padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-  .franja{height:12px;background:repeating-linear-gradient(135deg,var(--chile) 0 12px,var(--maiz) 12px 24px,var(--nopal) 24px 36px,var(--maiz-azul) 36px 48px)}
-  main{max-width:760px;margin:0 auto;padding:28px 20px 48px}
-  .volver{display:inline-block;color:var(--maiz-azul);border:2px solid var(--maiz-azul);padding:6px 12px;text-decoration:none;font-weight:500}
-  .volver:focus-visible,.clase:focus-visible{outline:3px solid var(--chile);outline-offset:2px}
-  h1{font-family:"Alegreya",Georgia,serif;font-weight:800;font-size:clamp(2rem,6vw,3rem);line-height:1.05;margin:28px 0 6px}
-  .intro{color:var(--piedra);margin:0 0 28px;font-size:1.1rem;line-height:1.5}
-  ol{list-style:none;margin:0;padding:0;counter-reset:u}
-  .clase{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:baseline;padding:18px 4px;border-top:2px solid var(--maiz-azul);text-decoration:none;color:inherit}
-  li:last-child .clase{border-bottom:2px solid var(--maiz-azul)}
-  .clase:hover .titulo{color:var(--chile)}
-  .unidad{grid-row:span 2;font-family:"Alegreya",serif;font-weight:800;font-size:2.2rem;color:var(--maiz);-webkit-text-stroke:1px var(--maiz-azul);min-width:1.6em}
-  .titulo{font-family:"Alegreya",serif;font-weight:700;font-size:1.4rem;line-height:1.2}
-  .desc{color:var(--piedra);line-height:1.45}
-  .vacia{border:3px dashed var(--piedra);color:var(--piedra);padding:24px;text-align:center}
+  body{margin:0;background:var(--beige);color:var(--tinta);font-family:"Public Sans",Calibri,Arial,sans-serif;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+  header{background:var(--marino);color:#fff;border-bottom:8px solid var(--rojo)}
+  .wrap{max-width:780px;margin:0 auto;padding:0 20px}
+  header .wrap{padding-top:22px;padding-bottom:30px}
+  .volver{display:inline-block;color:#fff;border:2px solid var(--arena);padding:6px 12px;text-decoration:none;font-weight:500;font-size:.95rem}
+  .volver:focus-visible,.clase:focus-visible{outline:3px solid var(--rojo);outline-offset:2px}
+  h1{font-family:"Fraunces",Cambria,Georgia,serif;font-weight:700;font-size:clamp(2rem,6vw,2.8rem);line-height:1.05;margin:26px 0 8px}
+  header p{color:var(--arena);margin:0;line-height:1.5}
+  main{padding:28px 0 56px}
+  h2{font-family:"Fraunces",Cambria,Georgia,serif;font-weight:600;font-size:1.35rem;color:var(--marino);margin:30px 0 10px}
+  ol{list-style:none;margin:0;padding:0}
+  .clase{display:grid;grid-template-columns:7.2em 1fr;gap:4px 16px;padding:16px 6px;border-top:1px solid var(--arena);text-decoration:none;color:inherit}
+  li:last-child .clase{border-bottom:1px solid var(--arena)}
+  .clase:hover .titulo{color:var(--rojo)}
+  .fecha{grid-row:span 2;font-weight:600;color:var(--rojo);font-size:.9rem;padding-top:3px}
+  .titulo{font-family:"Fraunces",serif;font-weight:600;font-size:1.2rem;line-height:1.25;color:var(--marino)}
+  .desc{color:var(--gris);line-height:1.45;font-size:.95rem}
+  .vacia{border:3px dashed var(--gris);color:var(--gris);padding:24px;text-align:center}
+  @media (max-width:480px){.clase{grid-template-columns:1fr}.fecha{grid-row:auto}}
 </style>
 </head>
 <body>
-<div class="franja"></div>
-<main>
+<header><div class="wrap">
   <a class="volver" href="../index.html">Volver a Origen de las Cocinas</a>
   <h1>Diapositivas de clase</h1>
-  <p class="intro">Elige una clase para repasar el tema. Avanza con las flechas o deslizando el dedo.</p>
-  <ol id="lista"></ol>
-</main>
+  <p>Elige una sesión para repasar el tema. Avanza con las flechas o deslizando el dedo.</p>
+</div></header>
+<main class="wrap" id="lista"></main>
 
 <!-- =====================================================================
-     LISTA DE PRESENTACIONES — agrega una línea por cada clase nueva
+     LISTA DE SESIONES — agrega un renglón por cada presentación nueva
      ===================================================================== -->
 <script>
-const CLASES = [
-  { unidad: 1, archivo: "unidad-1.html",
-    titulo: "La cocina mesoamericana",
-    descripcion: "La milpa, el maíz y la nixtamalización." }
+const SESIONES = [
+  { tema: "Tema 3 · Cocinas en el mundo", fecha: "Jue 22 oct",
+    archivo: "3-1-cocinas-africanas.html",
+    titulo: "3.1 Cocinas africanas",
+    descripcion: "El Magreb, el comercio transahariano, las 4 regiones de África y la diáspora." }
 ];
 </script>
 
 <script>
 (function () {
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  const ol = document.getElementById("lista");
-  if (!CLASES.length) {
-    ol.outerHTML = '<p class="vacia">Todavía no hay presentaciones. Agrega la primera en la lista CLASES de este archivo.</p>';
-    return;
-  }
-  ol.innerHTML = CLASES.map(c => `
-    <li><a class="clase" href="${esc(c.archivo)}">
-      <span class="unidad">${esc(c.unidad)}</span>
-      <span class="titulo">${esc(c.titulo)}</span>
-      <span class="desc">${esc(c.descripcion)}</span>
-    </a></li>`).join("");
+  const cont = document.getElementById("lista");
+  if (!SESIONES.length) { cont.innerHTML = '<p class="vacia">Todavía no hay presentaciones.</p>'; return; }
+  const grupos = [];
+  SESIONES.forEach(s => {
+    let g = grupos.find(x => x.tema === s.tema);
+    if (!g) grupos.push(g = { tema: s.tema, items: [] });
+    g.items.push(s);
+  });
+  cont.innerHTML = grupos.map(g => `
+    <h2>${esc(g.tema)}</h2>
+    <ol>${g.items.map(s => `
+      <li><a class="clase" href="${esc(s.archivo)}">
+        <span class="fecha">${esc(s.fecha)}</span>
+        <span class="titulo">${esc(s.titulo)}</span>
+        <span class="desc">${esc(s.descripcion)}</span>
+      </a></li>`).join("")}</ol>`).join("");
 })();
 </script>
 </body>
