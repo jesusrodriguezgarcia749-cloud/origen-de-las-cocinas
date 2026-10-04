@@ -115,7 +115,7 @@
   /* ---------- 2. Utilidades ---------- */
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   // Permite **negritas** dentro del texto
-  const txt = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
+  const txt = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\*(.+?)\*/g, "<i>$1</i>");
   function idYoutube(v) {
     if (!v) return "";
     const m = String(v).match(/(?:youtu\.be\/|[?&]v=|embed\/|shorts\/|live\/)([\w-]{11})/);
