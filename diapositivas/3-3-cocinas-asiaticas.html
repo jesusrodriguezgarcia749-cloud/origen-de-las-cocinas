@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>3.3 Cocinas asiáticas · Origen de las Cocinas</title>
+</head>
+<body>
+<!-- =====================================================================
+     SESIÓN: Jueves 5 de noviembre · 3.3 Cocinas asiáticas · 3 horas
+     Fuente: libro de texto Origen de las Cocinas, Tema 3.3
+     Lo que va en "minutos", "evaluacion" y "notas" solo lo ve el docente.
+     ===================================================================== -->
+<script>
+const PRESENTACION = {
+  materia: "Origen de las Cocinas",
+
+  diapositivas: [
+    { tipo: "portadaDia",
+      tema: "Tema 3 · Cocinas en el mundo",
+      dia: "Jueves 5 de noviembre",
+      titulo: "3.3 Cocinas asiáticas",
+      subtitulo: "Cinco subregiones, un continente",
+      duracion: "3 horas",
+      imagen: "img/india_especias.jpg" },
+
+    { tipo: "objetivos",
+      intro: "Hoy vas a recorrer cinco subregiones de Asia y a descubrir qué las conecta entre sí, y con México.",
+      puntos: [
+        "Vas a conocer Asia Oriental, Asia del Sur, el Sureste asiático, Medio Oriente y Asia Central.",
+        "Vas a comparar especias e ingredientes clave de cada subregión.",
+        "Vas a descubrir la ruta que unió Asia con México durante 250 años.",
+        "Vas a investigar cómo el comercio de especias conectó Asia con Europa."
+      ] },
+
+    { tipo: "tema",
+      titulo: "Asia no es una sola cocina",
+      minutos: "0-10", evaluacion: "Formativo",
+      notas: "Encuadre. Antes, repaso rápido de la sesión de Campeche y América: pide a dos alumnos un dato que recuerden.",
+      puntos: [
+        "Asia es el continente **más extenso y más poblado** del mundo, y el de mayor diversidad culinaria.",
+        "Decir “cocina asiática” es tan impreciso como decir “cocina europea” sin distinguir Italia de Escandinavia.",
+        "La estudiaremos en **5 subregiones**: Asia Oriental, Asia del Sur, Sureste asiático, Medio Oriente y Asia Central.",
+        "Comparten algunos rasgos de fondo: el **arroz**, el **pescado** y la búsqueda de **equilibrio entre sabores**."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "pregunta",
+      pregunta: "¿Qué fruta que hoy parece muy mexicana llegó en barco desde Asia?",
+      respuesta: "El **mango**. Llegó por el **Galeón de Manila**, que durante 250 años unió las Filipinas con Acapulco. Por eso existe el “mango manila”." },
+
+    { tipo: "tema",
+      titulo: "Asia Oriental: las cocinas de China",
+      minutos: "11-35", evaluacion: "Formativo",
+      imagen: "img/china_regiones.jpg",
+      puntos: [
+        "**Cantonesa:** sabores suaves y cocción rápida, como el salteado; su especialidad son los **dim sum**.",
+        "**Sichuanesa:** picante intenso y el efecto que **entumece la lengua** de la pimienta de Sichuan.",
+        "**De Shanghái:** más dulce, con mucha **salsa de soya**.",
+        "**De Pekín:** el famoso **pato laqueado**."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "tema",
+          titulo: "El pato pekinés",
+          notas: "Conecta con el Tema 4: la cocina de palacio de la Ciudad Prohibida.",
+          puntos: [
+            "Se documenta desde la **dinastía Yuan**, en los siglos XIII y XIV.",
+            "Se **infla aire** entre la piel y la carne, se deja **secar colgado** y se hornea hasta que la piel queda crujiente.",
+            "Por siglos estuvo ligado a la **cocina de palacio** de los emperadores.",
+            "Hoy se sirve en rebanadas finas, con tortitas delgadas, cebollín y salsa dulce."
+          ],
+          pasoAPaso: true }
+      ] },
+
+    { tipo: "tema",
+      titulo: "Japón y Corea",
+      imagen: "img/japon_washoku.jpg",
+      puntos: [
+        "**Japón:** elegancia, precisión y respeto por la **frescura del producto**; el **sushi** es su embajador.",
+        "En **2013** la UNESCO reconoció el **washoku**, la cocina tradicional japonesa, como patrimonio inmaterial.",
+        "**Corea:** marcada por la **fermentación** (el **kimchi**) y el equilibrio entre picante, ácido y umami.",
+        "**Dato cruzado:** el kimchi es rojo gracias al **chile americano**, que llegó a Corea siglos después."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Asia del Sur: India y el mundo del curry",
+      minutos: "36-60", evaluacion: "Formativo",
+      puntos: [
+        "Su cocina se construye sobre **mezclas de especias**: cúrcuma, comino, cilantro, cardamomo, clavo, canela y más.",
+        "Tiene una fuerte **tradición vegetariana**, ligada al hinduismo, al jainismo y al budismo, como vimos en el Tema 2.",
+        "**El norte** usa más lácteos y panes de trigo, como el **naan** y el **roti**, en parte herencia de la corte **mogol** (el biryani).",
+        "**El sur** prefiere el **arroz**, el **coco** y los sabores ácidos y picantes, con una tradición vegetariana aún más extendida."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "pregunta",
+      pregunta: "¿Existe una especia que se llame curry?",
+      respuesta: "**No como mezcla única.** “Curry” es el nombre que los europeos dieron a muchos guisos especiados de la India. Allá cada mezcla tiene su nombre, como el **garam masala**. Lo que sí existe es la **hoja de curry**, una planta aromática del sur de la India." },
+
+    { tipo: "tema",
+      titulo: "El Sureste asiático",
+      imagen: "img/sudeste_asiatico.jpg",
+      puntos: [
+        "**Tailandia** combina sabores **ácidos, dulces, amargos y salados** en un mismo platillo; el libro la describe como fusión de influencias japonesas, indias, francesas y portuguesas.",
+        "**Indonesia** y sus vecinos vivieron siglos de comercio con China y con potencias europeas.",
+        "**Pescado y arroz** son la base de casi toda la región, gracias a sus largas costas en el Índico y el Pacífico.",
+        "Aquí están las **Islas Molucas**, las “islas de las especias”, tierra de origen del **clavo** y la **nuez moscada**."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Filipinas: la cocina de dos colonizaciones",
+      notas: "Dato extra: los filipinos que llegaron en el galeón llevaron a Colima la tuba, bebida de la savia de la palma de coco.",
+      imagen: "img/galeon_manila.jpg",
+      puntos: [
+        "Más de **tres siglos bajo dominio español** y después bajo administración **estadounidense**.",
+        "**Adobo filipino:** cocido en vinagre, ajo y soya. Comparte nombre con el mexicano, pero es distinto.",
+        "**Lechón** (cerdo asado entero) y **pancit** (fideos salteados de raíz china).",
+        "**El Galeón de Manila** unió Manila con Acapulco: trajo seda, especias y el **mango**; llevó a Asia plata, **maíz, chile y cacao**."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "dato",
+          cifra: "250 años",
+          texto: "navegó el Galeón de Manila entre Asia y Acapulco, de 1565 a 1815. Fue una de las primeras rutas que conectaron de forma regular Asia, América y Europa.",
+          notas: "Pregunta: ¿qué otra cosa de Asia creen que llegó a México por esta ruta? (Telas, porcelana, biombos, el “chino poblano”...)." }
+      ] },
+
+    { tipo: "pausa",
+      titulo: "¡Pausa activa!",
+      duracion: "5 minutos",
+      minutos: "66-71",
+      texto: "**La especia viajera.** Si hay especias reales o fotografías, muéstralas una por una: canela, comino, cardamomo, pimienta de Sichuan, cúrcuma, clavo. De pie, adivinen **de qué subregión de Asia** viene cada una." },
+
+    { tipo: "tema",
+      titulo: "Medio Oriente: el mundo árabe, Persia y el Levante",
+      minutos: "72-96", evaluacion: "Formativo",
+      imagen: "img/mezze_levante.jpg",
+      puntos: [
+        "El mundo árabe del Golfo y del **Levante**, **Persia** (Irán) y **Turquía**, con las **normas halal** del islam (Tema 2).",
+        "Ingredientes clave: **cordero, arroz, yogur, berenjena**, y especias como **comino, cilantro y sumac**.",
+        "**Turquía**, heredera de la cocina de palacio **otomana**, dejó platillos como las **dolmas** y el **baclava**, que llegaron hasta el Magreb y los Balcanes."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "pregunta",
+      pregunta: "¿Qué taco muy mexicano tiene raíz en Medio Oriente?",
+      respuesta: "El **taco al pastor**. Inmigrantes **libaneses** llevaron a Puebla el shawarma de carne en trompo; de ahí nacieron los **tacos árabes**, y después el pastor, con cerdo adobado, piña y tortilla de maíz." },
+
+    { tipo: "tema",
+      titulo: "Asia Central: la Ruta de la Seda",
+      notas: "Países: Uzbekistán, Kazajistán, Kirguistán, Tayikistán y Turkmenistán, entre otros.",
+      imagen: "img/ruta_seda.jpg",
+      puntos: [
+        "Su cocina se formó como **cruce de caminos de la Ruta de la Seda**, la red de rutas que unió China con el Mediterráneo.",
+        "**Plov (pilaf):** arroz con zanahoria, cebolla y carne de cordero o res, distinto en cada región.",
+        "**Kumis:** leche de yegua fermentada, típica de los pueblos nómadas de la estepa.",
+        "**Pan plano** cocido en hornos de barro parecidos al **tandoor** de la India."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tarea",
+      titulo: "Comparación guiada de especias",
+      minutos: "97-135", evaluacion: "Sumativo · Rúbrica de Tarea",
+      notas: "Asigna una subregión por equipo. Si hay especias reales, que las huelan y describan.",
+      puntos: [
+        "Cada equipo recibe **una subregión** de Asia.",
+        "Elaboren una ficha con: **especia o ingrediente clave**, **técnica distintiva** y **platillo emblemático**.",
+        "Expliquen al grupo **por qué** esa especia o ingrediente se volvió central ahí: clima, religión, comercio.",
+        "Al final revisamos juntos la tabla."
+      ] },
+
+    { tipo: "tabla",
+      titulo: "Asia en una tabla",
+      columnas: ["Subregión", "Ingrediente o rasgo clave", "Platillo emblemático"],
+      filas: [
+        ["Asia Oriental", "Arroz, soya, fermentación, precisión técnica", "Dim sum, sushi, kimchi"],
+        ["Asia del Sur", "Mezclas de especias, tradición vegetariana", "Curry, dal, naan, biryani"],
+        ["Sureste asiático", "Equilibrio ácido-dulce-amargo-salado, pescado y arroz", "Tom yam, pad thai, nasi goreng, adobo filipino"],
+        ["Medio Oriente", "Cordero, yogur, especias cálidas, normas halal", "Kebab, hummus, dolmas"],
+        ["Asia Central", "Arroz con carne, lácteos fermentados", "Plov, kumis"]
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Las especias que movieron al mundo",
+      minutos: "136-160", evaluacion: "Formativo",
+      notas: "Retoma el Tema 1. Enlaza: la búsqueda de una ruta a las especias llevó a Colón a América.",
+      puntos: [
+        "**Pimienta** de la India, **canela** de Sri Lanka, **clavo y nuez moscada** de las Molucas: valían casi como el oro en Europa.",
+        "Durante siglos llegaron por rutas terrestres y marítimas controladas por intermediarios árabes y venecianos.",
+        "En **1498** Vasco da Gama llegó por mar a la India: Portugal abrió su propia ruta.",
+        "Buscar otro camino a las especias llevó a **Colón** a toparse con América en **1492**."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "video",
+      titulo: "La increíble historia de las especias",
+      youtube: "https://www.youtube.com/watch?v=EzoG2oSXAGw",
+      pie: "Documental completo en español sobre el origen y el comercio de las especias.",
+      notas: "Es largo: elige el fragmento de las rutas comerciales. Alternativa en español: “Documental: Historia de las especias”, https://www.youtube.com/watch?v=6_WGMLy6m4Y" },
+
+    { tipo: "tarea",
+      titulo: "Investigación: la ruta de una especia",
+      evaluacion: "Sumativo · Rúbrica de Tarea",
+      puntos: [
+        "Elige **una especia asiática**: pimienta, canela, clavo, nuez moscada, comino o cardamomo.",
+        "Investiga **cómo llegó de Asia a Europa** (y después a América): rutas, comerciantes, fechas.",
+        "Identifica **un platillo actual** donde se use y explica qué aporta.",
+        "Media cuartilla, citando tus fuentes."
+      ] },
+
+    { tipo: "repaso",
+      notas: "Unos 5 minutos. Lanza cada pregunta al grupo y espera respuestas antes de mostrarla.",
+      preguntas: [
+        { pregunta: "¿Qué pimienta china produce un efecto que entumece la lengua?", respuesta: "La **pimienta de Sichuan**." },
+        { pregunta: "¿Qué ruta unió Manila con Acapulco durante 250 años?", respuesta: "El **Galeón de Manila** (1565-1815)." },
+        { pregunta: "¿Cómo se llama el arroz con carne y zanahoria de Asia Central?", respuesta: "El **plov** o pilaf." },
+        { pregunta: "¿Qué taco mexicano nació del shawarma de inmigrantes libaneses?", respuesta: "El **taco árabe**, y de él, el **taco al pastor**." }
+      ] },
+
+    { tipo: "proyecto",
+      minutos: "161-172",
+      preguntas: [
+        { numero: 16, texto: "Aunque mi platillo no sea asiático, ¿qué ingrediente o técnica de Asia lo influyó?" },
+        { numero: 17, texto: "¿Existe más de una versión de mi platillo en distintos lugares? ¿En qué cambian, y por qué?" }
+      ] },
+
+    { tipo: "cierre",
+      minutos: "173-180",
+      evidencia: "La ficha de cada equipo identifica correctamente la especia o ingrediente clave, la técnica distintiva y un platillo emblemático de su subregión.",
+      materiales: "Especias reales o fotografías (opcional), libro de texto, Tema 3.3.",
+      proxima: "Leer el subtema 3.4, **Cocinas europeas**. Entregar la investigación sobre la ruta de una especia." }
+  ]
+};
+</script>
+<script src="motor.js"></script>
+</body>
+</html>
