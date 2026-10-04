@@ -23,7 +23,9 @@
   ol{list-style:none;margin:0;padding:0}
   .clase{display:grid;grid-template-columns:7.2em 1fr;gap:4px 16px;padding:16px 6px;border-top:1px solid var(--arena);text-decoration:none;color:inherit}
   li:last-child .clase{border-bottom:1px solid var(--arena)}
-  .clase:hover .titulo{color:var(--rojo)}
+  a.clase:hover .titulo{color:var(--rojo)}
+  .sin-enlace{background:#ECE8DF}
+  .sin-enlace .titulo::after{content:" · en cocina";font-family:"Public Sans",sans-serif;font-size:.8rem;font-weight:500;color:var(--gris)}
   .fecha{grid-row:span 2;font-weight:600;color:var(--rojo);font-size:.9rem;padding-top:3px}
   .titulo{font-family:"Fraunces",serif;font-weight:600;font-size:1.2rem;line-height:1.25;color:var(--marino)}
   .desc{color:var(--gris);line-height:1.45;font-size:.95rem}
@@ -51,7 +53,10 @@ const SESIONES = [
   { tema: "Tema 3 · Cocinas en el mundo", fecha: "Vie 23 oct",
     archivo: "3-2-mexico-prehispanico.html",
     titulo: "3.2 México prehispánico y mestizo",
-    descripcion: "Sahagún, el cacao, las chinampas, el pib maya y la herencia de dos mundos." }
+    descripcion: "Sahagún, el cacao, las chinampas, el pib maya y la herencia de dos mundos." },
+  { tema: "Tema 3 · Cocinas en el mundo", fecha: "Jue 29 oct",
+    titulo: "Práctica de cocina 2",
+    descripcion: "Cochinita pibil, mole poblano simplificado, pan de cazón o queso relleno. Grupo dividido en dos mitades. Uniforme completo y cuchillo propio." }
 ];
 </script>
 
@@ -69,11 +74,13 @@ const SESIONES = [
   cont.innerHTML = grupos.map(g => `
     <h2>${esc(g.tema)}</h2>
     <ol>${g.items.map(s => `
-      <li><a class="clase" href="${esc(s.archivo)}">
+      <li>${s.archivo
+        ? `<a class="clase" href="${esc(s.archivo)}">`
+        : `<div class="clase sin-enlace">`}
         <span class="fecha">${esc(s.fecha)}</span>
         <span class="titulo">${esc(s.titulo)}</span>
         <span class="desc">${esc(s.descripcion)}</span>
-      </a></li>`).join("")}</ol>`).join("");
+      ${s.archivo ? "</a>" : "</div>"}</li>`).join("")}</ol>`).join("");
 })();
 </script>
 </body>
