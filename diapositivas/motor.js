@@ -84,6 +84,12 @@
   .d-pregunta .preg{font-family:"Fraunces",serif;font-size:1.4em;font-weight:600;color:var(--marino);max-width:18em;margin:0 auto .9em;line-height:1.2}
   .d-pregunta .resp{display:inline-block;background:var(--marino);color:#fff;padding:.55em 1em;font-size:.95em;line-height:1.4;max-width:30em;text-align:left}
   .d-pregunta .pista{font-size:.6em;color:var(--gris);margin-top:1em}
+  /* Repaso relámpago */
+  .reveal ol.rep{list-style:none;margin:0;padding:0;counter-reset:r}
+  .reveal ol.rep li{counter-increment:r;position:relative;padding-left:1.9em;margin:0 0 .55em;font-size:.82em;line-height:1.3}
+  .reveal ol.rep li::before{content:counter(r);position:absolute;left:0;top:0;width:1.35em;height:1.35em;border-radius:50%;background:var(--rojo);color:#fff;font-weight:700;font-size:.85em;display:flex;align-items:center;justify-content:center}
+  .reveal ol.rep .q{display:block;font-weight:600;color:var(--marino)}
+  .reveal ol.rep .a{display:inline-block;margin-top:.2em;background:var(--marino);color:#fff;padding:.15em .6em;font-size:.9em}
   /* Cita */
   .d-cita blockquote{font-family:"Fraunces",serif;font-size:1.35em;font-weight:500;color:var(--marino);margin:0;padding:0 0 0 .8em;border-left:8px solid var(--rojo);box-shadow:none;width:auto;background:none;font-style:normal;line-height:1.3}
   .d-cita .autor{color:var(--gris);font-size:.68em;margin-top:1em;padding-left:1.5em}
@@ -196,6 +202,14 @@
         : `<div class="vacio">Aquí va el video. Copia el enlace del video de YouTube y pégalo en el campo youtube.</div>`}
       ${d.pie ? `<p class="pie">${esc(d.pie)}</p>` : ""}`;
     },
+
+    // Repaso relámpago: cada pregunta aparece con un clic y su respuesta con el siguiente
+    repaso: d => `
+      <span class="etiqueta">Repaso relámpago</span>
+      <h2>${esc(d.titulo || "¿Qué tanto recuerdas?")}</h2>
+      <ol class="rep">${(d.preguntas || []).map(p => `
+        <li class="fragment"><span class="q">${txt(p.pregunta)}</span>
+          <span class="a fragment">${txt(p.respuesta)}</span></li>`).join("")}</ol>`,
 
     pregunta: d => `
       <p class="preg">${esc(d.pregunta)}</p>

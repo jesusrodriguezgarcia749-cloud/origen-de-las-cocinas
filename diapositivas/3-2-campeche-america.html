@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>3.2 Campeche y el resto de América · Origen de las Cocinas</title>
+</head>
+<body>
+<!-- =====================================================================
+     SESIÓN: Viernes 30 de octubre · 3.2 Cocinas americanas, Parte 2 · 2 horas
+     Fuente: libro de texto Origen de las Cocinas, Tema 3.2 (Campeche y resto de América)
+     Lo que va en "minutos", "evaluacion" y "notas" solo lo ve el docente.
+     ===================================================================== -->
+<script>
+const PRESENTACION = {
+  materia: "Origen de las Cocinas",
+
+  diapositivas: [
+    { tipo: "portadaDia",
+      tema: "Tema 3 · Cocinas en el mundo",
+      dia: "Viernes 30 de octubre",
+      titulo: "3.2 Cocinas americanas",
+      subtitulo: "Parte 2: Campeche y el resto de América",
+      duracion: "2 horas",
+      imagen: "img/campeche_murallas.jpg" },
+
+    { tipo: "objetivos",
+      intro: "Hoy vas a conocer la historia de tu propio estado: piratas, murallas y un queso que llegó de Holanda.",
+      puntos: [
+        "Vas a conocer los ataques piratas y cómo dejaron huella en la cocina campechana.",
+        "Vas a identificar las influencias que documenta el maestro Meneses.",
+        "Vas a debatir qué platillo campechano representa mejor esa mezcla.",
+        "Vas a completar el recorrido por el resto de las cocinas de América."
+      ] },
+
+    { tipo: "pregunta",
+      minutos: "0-5", evaluacion: "Formativo",
+      pregunta: "¿Por qué decimos “campechana” cuando algo es una mezcla de varias cosas?",
+      respuesta: "Se cree que viene del **coctel campechano**, que mezcla camarón, ostión y jaiba. Una palabra que resume toda nuestra cocina: **mezcla**." },
+
+    { tipo: "tema",
+      titulo: "Campeche, un puerto codiciado",
+      minutos: "6-30", evaluacion: "Formativo",
+      puntos: [
+        "Durante la Colonia, Campeche fue el **segundo puerto más importante de la Nueva España**, después de Veracruz.",
+        "Exportaba el **palo de tinte**, una madera con la que en Europa se teñían las telas.",
+        "Por su puerto entraban y salían mercancías de Europa, el Caribe y otras colonias.",
+        "Tanto comercio atrajo a quienes querían robarlo: **los piratas**."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Más de 20 ataques piratas",
+      notas: "Pregunta: ¿alguno de estos nombres les suena? Varios dan nombre a calles, equipos y negocios de Campeche.",
+      puntos: [
+        "Entre **1558 y 1685**, San Francisco de Campeche sufrió más de veinte ataques de consideración.",
+        "Nombres casi legendarios: **Francis Drake**, **John Hawkins**, **Edward Mansvelt** y **Cornelis Jol, “Pata de Palo”**.",
+        "El más temido fue el holandés **Laurens de Graaf, “Lorencillo”**. Su saqueo de **1685** dejó a la villa con apenas una tercera parte de su población.",
+        "Ante esa amenaza, la Corona decidió **amurallar la ciudad**."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "dato",
+          cifra: "8 baluartes",
+          texto: "unidos por una muralla hexagonal de 2.5 km, construida entre 1686 y 1710. Hoy la ciudad fortificada es Patrimonio de la Humanidad.",
+          fuente: "Libro de texto, Tema 3.2 · UNESCO, 1999" },
+        { tipo: "observa",
+          titulo: "Un puerto en pie de guerra",
+          imagen: "img/campeche_murallas.jpg",
+          etiqueta: "Encuentra el error",
+          encuadre: "35% 50%",
+          notas: "Deja que busquen el error antes del último punto. La imagen es una recreación artística.",
+          puntos: [
+            "**Baluartes y cañones** apuntando al mar: la defensa estaba pensada contra ataques desde los barcos.",
+            "**Las garitas**, torrecillas de vigilancia en las esquinas de la muralla, siguen en pie hoy.",
+            "**La catedral y las casas de colores** quedaban protegidas dentro del recinto.",
+            "**Los galeones** en la bahía eran el comercio que atraía a los piratas.",
+            "**El error:** la bandera roja y amarilla de los barcos es la de España actual, adoptada en **1785**. En el siglo XVII los españoles usaban la **cruz de Borgoña**, un aspa roja sobre fondo blanco."
+          ] }
+      ] },
+
+    { tipo: "video",
+      titulo: "Los piratas que saquearon Campeche",
+      youtube: "https://www.youtube.com/watch?v=lABdAyOGZzY",
+      pie: "Video en español sobre los piratas que atacaron el puerto y el origen de las murallas.",
+      notas: "Revisa antes la duración. Alternativa en español: “Historia de las Murallas de Campeche”, https://www.youtube.com/watch?v=lx1wyVl2BsY" },
+
+    { tipo: "tema",
+      titulo: "La vida diaria bajo amenaza",
+      notas: "Pregunta al grupo si en sus casas todavía es el papá o el abuelo quien va al mercado los sábados.",
+      puntos: [
+        "En los años de mayor peligro, las mujeres preferían no salir de casa por temor a ser secuestradas.",
+        "Por eso eran **los hombres quienes iban al mercado** por las mañanas, una costumbre que muchas familias campechanas conservan.",
+        "De ahí viene que el **chocolomo**, guiso de carnes y vísceras, se cocine los **sábados por la tarde**, cuando el señor regresa del mercado."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "El queso relleno: lo que cuenta la tradición",
+      minutos: "31-45", evaluacion: "Formativo",
+      puntos: [
+        "Los barcos que llegaban de Europa, Estados Unidos y el Caribe traían como **lastre** tejas, mármol, muebles, vinos, jamones y **quesos holandeses Edam**: el “queso de bola”.",
+        "Cuenta la tradición oral que las familias pudientes comían el interior del queso.",
+        "Para no desperdiciar el casco, las cocineras empezaron a **rellenarlo con picadillo** y a cocerlo.",
+        "Así nació un platillo con un queso traído de otro continente y un relleno de raíz mestiza."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "tema",
+          titulo: "Lo que dicen los documentos",
+          notas: "Fuente: José Enrique Ortiz Lanz, citado en El Heraldo de México (2025). Úsalo para enseñar a distinguir tradición oral y fuente documental: las dos tienen valor.",
+          puntos: [
+            "Hay registros de **importación de queso de bola desde 1792**: llegaba a Veracruz y de ahí a Campeche y Yucatán.",
+            "Se le conocía como queso de Flandes, queso holandés o queso flamenco.",
+            "La **primera receta escrita** de queso relleno en la península aparece en un recetario de **1918**.",
+            "**La lección:** la tradición oral guarda la memoria de un pueblo; los documentos nos ayudan a fecharla. Un buen cocinero-investigador consulta las dos."
+          ],
+          pasoAPaso: true },
+        { tipo: "observa",
+          titulo: "Así se prepara el queso relleno",
+          imagen: "img/queso_relleno.jpg",
+          encuadre: "45% 50%",
+          notas: "Pregunta: ¿cuántas influencias distintas caben en este solo plato?",
+          puntos: [
+            "**La cera roja se retira antes de cocinar:** no se come. Después se vacía el queso dejando una pared delgada.",
+            "**El relleno:** picadillo de cerdo con pasitas, alcaparras, aceitunas, almendras, huevo cocido y especias como canela, clavo y pimienta.",
+            "**Se cuece** al vapor o al horno, envuelto para que conserve su forma.",
+            "**Dos salsas:** el **kol**, salsa blanca espesada con harina y caldo, y una salsa de jitomate.",
+            "**Un plato, muchas influencias:** queso holandés, especias y frutos secos de herencia árabe vía España, y técnica mestiza."
+          ] }
+      ] },
+
+    { tipo: "tema",
+      titulo: "Del mar: el recetario campechano",
+      puntos: [
+        "**El cazón**, un tiburón pequeño, es la estrella: pan de cazón, empanadas y tamales de cazón.",
+        "**Camarones al coco**, empanizados con coco rallado y servidos con salsas agridulces de mango o tamarindo.",
+        "**Pámpano en escabeche** y **manitas de cangrejo**.",
+        "**Coctel campechano** de camarón, ostión y jaiba."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "Una mesa frente al mar",
+          imagen: "img/mariscos_campeche.jpg",
+          notas: "Pregunta: ¿qué platillo de esta mesa tiene raíz maya? (El pan de cazón).",
+          puntos: [
+            "**Pan de cazón:** capas de tortilla con frijol colado y cazón, bañadas en salsa de jitomate y chile habanero. Se apoya en la técnica maya de las **tortillas apiladas**.",
+            "**Coctel campechano:** camarón y ostión con jitomate, cebolla y cilantro, acompañado de galletas saladas.",
+            "**Camarones al coco:** con salsa agridulce, arroz y ensalada. El coco y el mango llegaron de Asia en la época colonial.",
+            "**Al fondo, el malecón:** la cocina de un puerto mira siempre hacia el mar."
+          ] }
+      ] },
+
+    { tipo: "tema",
+      titulo: "Del monte y de la mesa mestiza",
+      puntos: [
+        "**Poc chuc:** carne de cerdo marinada en naranja agria y asada.",
+        "**Puchero campechano** y **chocolomo**, guisos de olla para compartir.",
+        "**Torta de jamón claveteado:** jamón con queso holandés, condimentado con pimienta, jerez, canela y clavo, otra huella del comercio marítimo.",
+        "**Dulces de convento** de raíz española, como el **bienmesabe** y los **frailes**.",
+        "A mediados del siglo XX, **Faustina Lavalle** escribió el libro *Cocina campechana* para que sus vecinas de la Ciudad de México conocieran la cocina de su estado."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "cita",
+      texto: "La gastronomía de Campeche no sólo es el conjunto del acervo culinario articulado de los encuentros culturales maya y español, además de aquellas aportaciones de la cocina árabe, francesa, holandesa, africana, asiática y caribeña, a lo largo de la evolución histórica de la misma.",
+      autor: "Rafael Enrique Meneses López, maestro de la Escuela de Gastronomía del Instituto Campechano",
+      notas: "Léela en voz alta. Pide que cuenten cuántas influencias menciona: maya, española, árabe, francesa, holandesa, africana, asiática y caribeña." },
+
+    { tipo: "tarea",
+      titulo: "Mesa de debate",
+      etiqueta: "Debate",
+      minutos: "46-65", evaluacion: "Sumativo · Rúbrica de Exposición/Debate",
+      notas: "Divide al grupo en dos posturas antes de mostrar la conclusión. Deja 30 a 60 segundos de reflexión.",
+      puntos: [
+        "**La pregunta:** ¿qué platillo campechano representa mejor la mezcla de influencias que documenta Meneses?",
+        "Cada postura elige un platillo y argumenta con **ingredientes y técnicas concretas**.",
+        "Ganan los argumentos, no la voz más fuerte: cada idea debe nombrar de dónde viene cada elemento."
+      ] },
+
+    { tipo: "tema",
+      titulo: "Puntos para guiar la conclusión",
+      puntos: [
+        "**El queso relleno:** queso holandés, picadillo con especias y frutos secos de herencia árabe vía España, y técnica mestiza.",
+        "**El pan de cazón:** técnica maya de tortillas apiladas, cazón del mar y salsa de jitomate con habanero.",
+        "**No hay una sola respuesta:** casi cualquier platillo campechano muestra al menos tres influencias distintas."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "pausa",
+      titulo: "¡Pausa activa!",
+      duracion: "5 minutos",
+      minutos: "66-70",
+      texto: "**¿Ya estaba aquí o llegó en barco?** De pie. Si el ingrediente ya estaba en América, da un paso **al frente**; si llegó en barco, da un paso **atrás**. Ingredientes: achiote, queso de bola, cazón, alcaparras, chile habanero, canela, maíz, cerdo." },
+
+    { tipo: "tabla",
+      titulo: "El resto de las Américas",
+      minutos: "71-105", evaluacion: "Formativo",
+      notas: "Presenta la tabla completa; luego baja a la región andina, Brasil y el Cono Sur.",
+      columnas: ["Región", "Lo que la distingue"],
+      filas: [
+        ["Región andina", "Papa y quinua; chuño y charqui, técnicas de conservación del Imperio inca"],
+        ["Caribe", "Tres tradiciones en un espacio reducido: congrí en Cuba, sofrito en Puerto Rico, jerk en Jamaica"],
+        ["Centroamérica", "El mismo tronco mesoamericano con variantes: pepián en Guatemala, gallo pinto en Costa Rica"],
+        ["Brasil", "Raíz tupí-guaraní, portuguesa y africana: feijoada, farofa y aceite de dendê"],
+        ["Norteamérica", "Las Tres Hermanas, el soul food afroamericano y el tex-mex de la frontera"],
+        ["Cono Sur", "El asado: identidad ganadera heredada de la colonización española"]
+      ],
+      subtemas: [
+        { tipo: "observa",
+          titulo: "El chuño: la papa que dura años",
+          imagen: "img/chuno_andes.jpg",
+          encuadre: "45% 50%",
+          notas: "Dato extra: la palabra “jerky”, carne seca, viene del quechua charqui. El chuño pesa varias veces menos que la papa fresca, por eso era fácil de transportar.",
+          puntos: [
+            "**Papas pequeñas extendidas sobre el pasto** en las noches de helada del invierno andino, en junio y julio.",
+            "**De noche se congelan y de día se descongelan al sol**, durante varios días seguidos.",
+            "**Después se pisan descalzos** para sacarles el agua y desprender la cáscara.",
+            "**Chuño negro o blanco:** el blanco (tunta o moraya) se remoja además en el agua helada de ríos y lagunas.",
+            "**Un seguro alimentario:** puede guardarse muchos años y sostuvo a los ejércitos y ciudades del Imperio inca."
+          ] },
+        { tipo: "video",
+          titulo: "Chuño, sabiduría alimentaria andina",
+          youtube: "https://www.youtube.com/watch?v=-RffZig0Agg",
+          pie: "Video en español sobre la elaboración tradicional del chuño." },
+        { tipo: "observa",
+          titulo: "La feijoada: tres raíces en una olla",
+          imagen: "img/feijoada.jpg",
+          encuadre: "40% 50%",
+          notas: "Usa el último punto para enseñar a dudar de los orígenes “demasiado bonitos”.",
+          puntos: [
+            "**Frijoles negros** cocidos lentamente con carnes y embutidos de cerdo.",
+            "**Farofa:** harina de **yuca (mandioca)** tostada, el gran aporte de los pueblos tupí-guaraníes.",
+            "**Arroz blanco, col salteada y rodajas de naranja**, los acompañantes clásicos.",
+            "**Su origen se discute:** muchos lo atribuyen a la cocina de las personas esclavizadas; varios historiadores lo relacionan con los cocidos portugueses. Lo seguro es que reúne las tres raíces de Brasil."
+          ] },
+        { tipo: "observa",
+          titulo: "El asado del Cono Sur",
+          imagen: "img/asado_cono_sur.jpg",
+          encuadre: "62% 50%",
+          notas: "Conecta con el braai sudafricano de la clase de África: dos continentes, la misma función social del fuego.",
+          puntos: [
+            "**Asado a la cruz:** cordero y costillar en cruces de hierro inclinadas alrededor de un fuego de leña, durante horas.",
+            "**El ganado llegó con los españoles** y se multiplicó libremente en la pampa. De ahí nace la identidad ganadera de Argentina y Uruguay.",
+            "**Los gauchos**, jinetes de la pampa, convirtieron esta forma rural de cocinar en símbolo nacional.",
+            "**El mate**, que se ve en sus manos, es herencia de los pueblos guaraníes."
+          ] }
+      ] },
+
+    { tipo: "tarea",
+      titulo: "Un platillo por región",
+      minutos: "106-112", evaluacion: "Sumativo · Rúbrica de Tarea",
+      puntos: [
+        "Investiga **un platillo representativo de cada subregión americana** vista: andina, Caribe, Centroamérica, Brasil, Norteamérica y Cono Sur.",
+        "Para cada uno anota: **ingredientes principales**, **técnica** y **qué raíz** (indígena, europea o africana) se nota más.",
+        "Prepárate para presentarlo en la próxima clase."
+      ] },
+
+    { tipo: "repaso",
+      notas: "Unos 5 minutos. Lanza cada pregunta al grupo y espera respuestas antes de mostrarla.",
+      preguntas: [
+        { pregunta: "¿Qué pirata holandés saqueó Campeche en 1685?", respuesta: "Laurens de Graaf, **“Lorencillo”**." },
+        { pregunta: "¿Qué se le retira al queso de bola antes de rellenarlo?", respuesta: "La **cera roja**." },
+        { pregunta: "¿En qué técnica maya se apoya el pan de cazón?", respuesta: "En las **tortillas apiladas** en capas." },
+        { pregunta: "¿Qué técnica andina conserva la papa con heladas y sol?", respuesta: "El **chuño**." }
+      ] },
+
+    { tipo: "proyecto",
+      minutos: "113-117",
+      preguntas: [
+        { numero: 15, texto: "¿Qué ruta de comercio, migración o conquista explica que mi platillo exista tal como lo conocemos hoy?" },
+        { numero: "15b", texto: "De mis ingredientes principales, ¿cuáles son nativos de mi región y cuáles llegaron de fuera? Cita al menos uno de cada tipo." }
+      ] },
+
+    { tipo: "cierre",
+      minutos: "118-120",
+      evidencia: "Cada postura del debate argumenta su platillo con al menos tres influencias identificadas correctamente.",
+      materiales: "Libro de texto, Tema 3.2 completo (sección de Campeche y resto de América).",
+      proxima: "Leer el subtema 3.3, **Cocinas asiáticas**, del libro de texto. Traer la investigación de un platillo por región americana." }
+  ]
+};
+</script>
+<script src="motor.js"></script>
+</body>
+</html>
