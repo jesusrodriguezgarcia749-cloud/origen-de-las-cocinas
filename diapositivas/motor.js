@@ -36,6 +36,11 @@
   .con-imagen{display:grid;grid-template-columns:1.6fr 1fr;gap:36px;align-items:center}
   .con-imagen ul.puntos{font-size:.92em}
   .con-imagen.sin-imagen{grid-template-columns:1fr}
+  .obs{display:grid;grid-template-columns:1fr 1.3fr;gap:36px;align-items:center}
+  .obs img{width:100%;height:600px;object-fit:cover;object-position:var(--encuadre,50% 50%);margin:0;border:0}
+  .obs ul.puntos{font-size:.74em}
+  .obs ul.puntos li{margin:.38em 0}
+  .obs h2{font-size:1.15em;margin-bottom:.35em}
   .con-imagen img,.d-imagen img{width:100%;max-height:520px;object-fit:cover;margin:0;border:0;box-shadow:0 0 0 1px var(--arena)}
   .etiqueta{display:inline-block;width:fit-content;background:var(--rojo);color:#fff;font:600 .6em "Public Sans",sans-serif;padding:.3em .8em;margin-bottom:.8em}
   /* Portada del día */
@@ -145,6 +150,14 @@
 
     tarea: d => plantillas.tema(Object.assign({ etiqueta: "Tarea" }, d)),
 
+    // Imagen grande a la izquierda y lo que hay que observar en ella a la derecha
+    observa: d => `
+      <div class="obs">
+        <div${d.encuadre ? ` style="--encuadre:${esc(d.encuadre)}"` : ""}>${img(d.imagen, d.titulo)}</div>
+        <div><span class="etiqueta">${esc(d.etiqueta || "Observa la imagen")}</span>
+          <h2>${esc(d.titulo)}</h2>${lista(d.puntos, d.pasoAPaso !== false)}</div>
+      </div>`,
+
     dato: d => `
       ${d.titulo ? `<h3>${esc(d.titulo)}</h3>` : ""}
       <p class="cifra">${esc(d.cifra)}</p>
@@ -247,10 +260,11 @@
 
     cont.querySelectorAll("img[data-ruta]").forEach(im => {
       im.addEventListener("error", () => {
-        const doble = im.closest(".con-imagen, .pd");
+        const doble = im.closest(".con-imagen, .pd, .obs");
         if (doble) {                       // en diapositivas de texto + imagen, la imagen faltante simplemente no se muestra
           im.parentElement.remove();
-          doble.classList.add(doble.classList.contains("pd") ? "sola" : "sin-imagen");
+          if (doble.classList.contains("obs")) doble.style.gridTemplateColumns = "1fr";
+          else doble.classList.add(doble.classList.contains("pd") ? "sola" : "sin-imagen");
           console.warn("Falta la imagen: " + im.dataset.ruta);
           return;
         }

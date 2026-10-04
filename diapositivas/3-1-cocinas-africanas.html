@@ -51,7 +51,6 @@ const PRESENTACION = {
 
     { tipo: "tema",
       titulo: "El Magreb: el norte de África",
-      imagen: "img/cuscus.jpg",
       minutos: "16-40", evaluacion: "Formativo",
       notas: "Señala en el mapa: Marruecos, Argelia, Túnez y Libia. Baja con la flecha para ver el cuscús y los sabores del Magreb.",
       puntos: [
@@ -69,20 +68,39 @@ const PRESENTACION = {
             "Se cuece **al vapor** en la **cuscusera**, una olla de tres piezas que cocina el guiso abajo y el cuscús arriba.",
             "En **2020** la UNESCO lo inscribió como patrimonio cultural inmaterial, en una candidatura conjunta de Argelia, Marruecos, Mauritania y Túnez."
           ] },
+        { tipo: "observa",
+          titulo: "Cuscús: lo tradicional y lo moderno",
+          imagen: "img/cuscus.jpg",
+          notas: "Pregunta antes de avanzar: ¿este platillo es tradicional o moderno? ¿Por qué?",
+          puntos: [
+            "**Los granitos** no son un cereal distinto: son sémola de trigo duro enrollada a mano, una especie de pasta diminuta.",
+            "**Esta versión es moderna:** ensalada con verduras asadas, almendras y hierbas.",
+            "**El tradicional** se cuece al vapor en la cuscusera y se sirve con un guiso de verduras y carne encima; en Marruecos es la comida familiar del viernes.",
+            "**Pimiento y jitomate** son americanos; **almendra y aceite de oliva**, mediterráneos. Un plato, varios continentes."
+          ] },
         { tipo: "tema",
           titulo: "Sabores del Magreb",
-          imagen: "img/tajin.jpg",
           puntos: [
             "**Tajín:** olla de barro con tapa en forma de cono, y también el guiso que se cocina lentamente en ella.",
             "**Ras el hanout:** mezcla de especias cuyo nombre significa “cabeza de la tienda”, es decir, lo mejor del especiero.",
             "**Harissa:** pasta picante de chile, emblema de Túnez. Ojo: el chile es americano y llegó después de 1492. Una cocina “tradicional” también se hizo con ingredientes viajeros."
           ],
-          pasoAPaso: true }
+          pasoAPaso: true },
+        { tipo: "observa",
+          titulo: "El tajín por dentro",
+          imagen: "img/tajin.jpg",
+          encuadre: "28% 50%",
+          notas: "Pregunta: ¿para qué creen que sirve la tapa en forma de cono?",
+          puntos: [
+            "**La tapa en cono:** el vapor sube, se enfría en la punta y escurre de regreso al guiso. Así se cocina lento y con poco líquido.",
+            "**Adentro:** garbanzos, zanahoria, carne y cilantro, un guiso típico de cocción lenta.",
+            "**Aceite de oliva y limón:** herencia mediterránea. En Marruecos se usa mucho el limón en conserva, curado en sal.",
+            "**Las piezas muy decoradas** suelen ser para servir; las de cocinar al fuego suelen ser de barro sencillo."
+          ] }
       ] },
 
     { tipo: "tema",
       titulo: "El comercio transahariano",
-      imagen: "img/caravana.jpg",
       notas: "Dibuja la ruta en el mapa: del Magreb, cruzando el Sahara, hasta el Sahel.",
       puntos: [
         "Red de caravanas que durante siglos unió el Magreb con los imperios del Sahel: **Ghana, Malí y Songhay**.",
@@ -90,7 +108,18 @@ const PRESENTACION = {
         "Se intercambiaba sobre todo **oro** del sur y **sal** del desierto.",
         "No solo movió mercancías: por ahí llegó el **islam** al África occidental y circularon especias, técnicas de conservación y saberes culinarios."
       ],
-      pasoAPaso: true },
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "Una caravana en el Sahara",
+          imagen: "img/caravana.jpg",
+          puntos: [
+            "**Los tuareg:** su turbante y su velo teñidos de índigo les ganaron el nombre de “hombres azules”. Los protegen del sol y la arena; entre ellos, son los hombres quienes se cubren el rostro.",
+            "**El dromedario** aguanta días sin beber y puede cargar más de 150 kilos.",
+            "**Los fardos** llevaban sal en bloques, oro, telas y especias.",
+            "**Viajaban en fila** de pozo en pozo y de oasis en oasis; cruzar el desierto tomaba varias semanas."
+          ] }
+      ] },
 
     { tipo: "dato",
       cifra: "30,000",
@@ -133,7 +162,6 @@ const PRESENTACION = {
       subtemas: [
         { tipo: "tema",
           titulo: "África Occidental: los imperios del oro",
-          imagen: "img/jollof.jpg",
           notas: "Agrega: los comerciantes árabes llevaron a la región sal, especias y técnicas de conservación.",
           puntos: [
             "Heredera directa de **Ghana, Malí y Songhay**.",
@@ -143,9 +171,19 @@ const PRESENTACION = {
             "Dato cruzado: la **yuca** y el **maní** son americanos; llegaron a África con los portugueses."
           ],
           pasoAPaso: true },
+        { tipo: "observa",
+          titulo: "Una mesa de África Occidental",
+          imagen: "img/jollof.jpg",
+          notas: "Pregunta: ¿qué ingrediente de esta mesa también es muy campechano? (El chile, pariente del habanero, y el plátano frito).",
+          puntos: [
+            "**Arroz jollof:** cocido en salsa de tomate, chile y cebolla. Nigeria y Ghana discuten en broma quién lo hace mejor: la “guerra del jollof”.",
+            "**El chile rojo** encima es de la misma especie que el **habanero**: un chile americano que hoy es básico en esta cocina.",
+            "**Fufu:** la masa blanca de ñame, yuca o plátano. Se pellizca un trozo con la mano derecha y se usa para tomar la sopa.",
+            "**Sopa egusi:** la del tazón, hecha con semillas molidas de una especie de melón y hojas verdes.",
+            "**Plátano frito** a los lados, igual que en muchas mesas de América."
+          ] },
         { tipo: "tema",
           titulo: "El Cuerno de África: el teff y la injera",
-          imagen: "img/injera.jpg",
           puntos: [
             "Etiopía y Eritrea, principalmente.",
             "El **teff** es uno de los granos más pequeños del mundo y es muy nutritivo.",
@@ -154,16 +192,38 @@ const PRESENTACION = {
             "Etiopía es la tierra de origen del **café**. Su cocina muestra influencias otomanas e italianas."
           ],
           pasoAPaso: true },
+        { tipo: "observa",
+          titulo: "La injera es el plato",
+          imagen: "img/injera.jpg",
+          notas: "Pregunta: ¿dónde están los platos y los cubiertos en esta mesa?",
+          puntos: [
+            "**La injera cubre la charola:** los guisos se sirven encima y los rollos se arrancan para tomar la comida con la mano derecha.",
+            "**Los agujeritos** se forman porque la masa fermentada suelta burbujas y la injera se cuece de un solo lado.",
+            "**Al centro, el guiso rojo con huevos** es el doro wat: pollo con berbere, una mezcla de chile y especias. Es un platillo de fiesta.",
+            "**Lentejas, garbanzos y hojas verdes:** abundan los guisos sin carne por los muchos días de ayuno de la Iglesia ortodoxa etíope.",
+            "**Las tacitas sin asa** son de la ceremonia del café: Etiopía es su tierra de origen."
+          ] },
         { tipo: "tema",
           titulo: "África Austral: el braai y el Cabo",
-          imagen: "img/braai.jpg",
           puntos: [
             "Tres capas históricas: la base de los pueblos **khoisan y bantúes**, la colonización **holandesa e inglesa** y la llegada de esclavos **malayos e indonesios** al Cabo desde el siglo XVII.",
             "De esa última capa nace la **cocina del Cabo Malayo**, con especias y técnicas de curry.",
             "**Bobotie:** carne especiada al horno, cubierta con una capa de huevo.",
             "**Braai:** parrillada al aire libre, el ritual social más extendido de la región."
           ],
-          pasoAPaso: true }
+          pasoAPaso: true },
+        { tipo: "observa",
+          titulo: "Así es un braai",
+          imagen: "img/braai.jpg",
+          encuadre: "68% 50%",
+          notas: "Pregunta antes de avanzar: ¿qué ven en la parrilla que no sea igual a una carne asada mexicana? Dato extra: el 24 de septiembre, Día del Patrimonio, se conoce popularmente como el Día Nacional del Braai.",
+          puntos: [
+            "**Fuego de leña o carbón:** esperar a que se formen las brasas ya es parte de la reunión.",
+            "**Las brochetas (sosaties):** carne marinada con especias de curry, herencia de la cocina del Cabo Malayo.",
+            "**Boerewors:** la salchicha en espiral, sobre todo de res, sazonada con cilantro tostado, clavo y nuez moscada. En Sudáfrica su composición está regulada.",
+            "**Una sola persona al fuego:** por costumbre, el anfitrión controla el fuego y los tiempos; los invitados no tocan la carne.",
+            "**Pap y chakalaka:** acompañantes típicos. El pap es una masa espesa de maíz blanco, un ingrediente que llegó de América."
+          ] }
       ] },
 
     { tipo: "pregunta",
@@ -211,14 +271,26 @@ const PRESENTACION = {
 
     { tipo: "tema",
       titulo: "La tercera raíz: África en México",
-      imagen: "img/costa_chica.jpg",
       puntos: [
         "Durante el virreinato llegaron a la Nueva España personas africanas esclavizadas que trabajaron en **plantaciones, minas y cocinas**.",
         "En las cocinas, mujeres africanas, indígenas y españolas **intercambiaron saberes**.",
         "Su huella sigue viva en **Veracruz** y en la **Costa Chica de Guerrero y Oaxaca**: plátano macho, ajonjolí, caldos con machuco de plátano.",
         "En **2019** la Constitución reconoció a los pueblos y comunidades **afromexicanas**."
       ],
-      pasoAPaso: true },
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "Una cocina de la Costa Chica",
+          imagen: "img/costa_chica.jpg",
+          notas: "Pregunta: en esta mesa, ¿qué es indígena, qué es español y qué es africano?",
+          puntos: [
+            "**Caldo de res con verduras:** la res llegó con los españoles; la calabaza y el chile, de Mesoamérica.",
+            "**Las bolitas verdes** representan el machuco: plátano verde cocido y machacado, pariente del fufu africano y del mofongo.",
+            "**Plátano macho frito:** uno de los sabores que la raíz africana dejó en las costas de México.",
+            "**Fogón de leña, ollas de barro y tortillas:** la base indígena que recibió todo lo demás.",
+            "**Tres raíces en una sola mesa:** la indígena, la española y la africana."
+          ] }
+      ] },
 
     { tipo: "video",
       titulo: "Afrodescendientes en la historia de México",
