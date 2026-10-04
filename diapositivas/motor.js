@@ -104,6 +104,11 @@
   .reveal .progress{color:var(--rojo);height:5px}
   .reveal .controls{color:var(--marino)}
   .reveal .slide-number{background:transparent;color:var(--gris);font-family:"Public Sans",sans-serif;bottom:16px}
+  .panel-docente{position:fixed;left:0;right:0;bottom:0;z-index:35;background:rgba(37,39,52,.94);color:#fff;font:400 15px/1.45 "Public Sans",sans-serif;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));max-height:38vh;overflow-y:auto;border-top:4px solid var(--rojo)}
+  .panel-docente b{color:#F3CFCF;font-weight:600}
+  .panel-docente.oculto{display:none}
+  .btn-notas{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:12px;z-index:36;font:600 14px "Public Sans",sans-serif;color:#fff;background:var(--rojo);border:0;padding:7px 12px;cursor:pointer}
+  .btn-notas:focus-visible{outline:3px solid var(--marino);outline-offset:2px}
   @media (prefers-reduced-motion:reduce){.reveal .slides section{transition:none!important}}`;
   const st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
 
@@ -279,6 +284,35 @@
     if (t) document.title = t.titulo + " · " + (P.materia || "Diapositivas");
   }
 
+  /* ---------- 5. Modo docente: notas visibles en celular con ?docente ---------- */
+  const DOCENTE = new URLSearchParams(location.search).has("docente");
+
+  function modoDocente() {
+    const panel = document.createElement("div");
+    panel.className = "panel-docente";
+    panel.setAttribute("aria-live", "polite");
+    const btn = document.createElement("button");
+    btn.className = "btn-notas";
+    btn.type = "button";
+    btn.textContent = "Ocultar notas";
+    btn.addEventListener("click", () => {
+      const oculto = panel.classList.toggle("oculto");
+      btn.textContent = oculto ? "Ver notas" : "Ocultar notas";
+    });
+    document.body.appendChild(panel);
+    document.body.appendChild(btn);
+
+    const actualizar = () => {
+      const actual = Reveal.getCurrentSlide();
+      const n = actual && actual.querySelector(":scope > aside.notes");
+      const num = "Diapositiva " + (Reveal.getSlidePastCount() + 1) + " de " + Reveal.getTotalSlides();
+      panel.innerHTML = "<b>" + num + "</b> · " + (n ? esc(n.textContent) : "Sin notas en esta diapositiva.");
+    };
+    Reveal.on("ready", actualizar);
+    Reveal.on("slidechanged", actualizar);
+    if (Reveal.isReady()) actualizar();
+  }
+
   function script(src) {
     return new Promise((ok, mal) => {
       const s = document.createElement("script");
@@ -297,6 +331,7 @@
           width: 1280, height: 720, margin: 0.04, preloadIframes: false,
           plugins: window.RevealNotes ? [RevealNotes] : []
         });
+        if (DOCENTE) modoDocente();
       })
       .catch(() => {
         const v = document.createElement("div");
