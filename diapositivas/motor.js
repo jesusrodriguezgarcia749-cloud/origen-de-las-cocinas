@@ -225,7 +225,7 @@
     proyecto: d => `
       <div class="marca">Proyecto del curso</div>
       <h2>${esc(d.titulo || "Mi Plato, Mi Historia")}</h2>
-      ${(d.preguntas || []).map(p => `<div class="pr"><span class="num">Pregunta ${esc(p.numero)}</span><span class="txt">${esc(p.texto)}</span></div>`).join("")}`,
+      ${(d.preguntas || []).map(p => `<div class="pr"><span class="num">${p.numero === "·" ? "Avance" : "Pregunta " + esc(p.numero)}</span><span class="txt">${esc(p.texto)}</span></div>`).join("")}`,
 
     cierre: d => `
       <h2>${esc(d.titulo || "Cierre de la sesión")}</h2>
