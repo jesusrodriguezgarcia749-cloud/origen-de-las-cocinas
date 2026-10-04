@@ -106,7 +106,8 @@
   .d-cierre .col{background:#fff;padding:.8em .9em;border-top:6px solid var(--rojo);font-size:.82em;line-height:1.45}
   .d-cierre .col h3{font-family:"Public Sans",sans-serif;font-size:.85em;color:var(--rojo);font-weight:700;margin:0 0 .5em}
   /* Botón volver y controles */
-  .volver{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:12px;z-index:30;font:600 14px "Public Sans",sans-serif;color:var(--marino);background:var(--beige);border:2px solid var(--marino);padding:6px 12px;text-decoration:none}
+  .volver{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:12px;z-index:30;font:600 12px "Public Sans",sans-serif;color:var(--marino);background:rgba(244,242,237,.9);border:1.5px solid var(--marino);padding:4px 10px;text-decoration:none;opacity:.85}
+  .volver:hover{opacity:1}
   .volver:focus-visible{outline:3px solid var(--rojo);outline-offset:2px}
   .reveal .progress{color:var(--rojo);height:5px}
   .reveal .controls{color:var(--marino)}

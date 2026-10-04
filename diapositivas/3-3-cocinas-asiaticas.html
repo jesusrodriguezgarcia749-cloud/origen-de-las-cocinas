@@ -52,7 +52,6 @@ const PRESENTACION = {
     { tipo: "tema",
       titulo: "Asia Oriental: las cocinas de China",
       minutos: "11-35", evaluacion: "Formativo",
-      imagen: "img/china_regiones.jpg",
       puntos: [
         "**Cantonesa:** sabores suaves y cocción rápida, como el salteado; su especialidad son los **dim sum**.",
         "**Sichuanesa:** picante intenso y el efecto que **entumece la lengua** de la pimienta de Sichuan.",
@@ -70,19 +69,41 @@ const PRESENTACION = {
             "Por siglos estuvo ligado a la **cocina de palacio** de los emperadores.",
             "Hoy se sirve en rebanadas finas, con tortitas delgadas, cebollín y salsa dulce."
           ],
-          pasoAPaso: true }
+          pasoAPaso: true },
+        { tipo: "observa",
+          titulo: "Tres Chinas en una mesa",
+          imagen: "img/china_regiones.jpg",
+          notas: "Pregunta: ¿cuál de los tres platillos creen que pica más? ¿Por qué?",
+          puntos: [
+            "**A la izquierda, Cantón:** dim sum en vaporeras de bambú, como bollos rellenos (bao) y empanaditas de camarón.",
+            "**Al centro, Sichuan:** mapo tofu, rojo de chile y con pimienta de Sichuan que entumece la lengua.",
+            "**A la derecha, Shanghái:** cerdo estofado en salsa de soya y azúcar, brillante y dulce.",
+            "**El té y el arroz** acompañan toda la comida; el té ayuda a limpiar el paladar entre bocados."
+          ] }
       ] },
 
     { tipo: "tema",
       titulo: "Japón y Corea",
-      imagen: "img/japon_washoku.jpg",
       puntos: [
         "**Japón:** elegancia, precisión y respeto por la **frescura del producto**; el **sushi** es su embajador.",
         "En **2013** la UNESCO reconoció el **washoku**, la cocina tradicional japonesa, como patrimonio inmaterial.",
         "**Corea:** marcada por la **fermentación** (el **kimchi**) y el equilibrio entre picante, ácido y umami.",
         "**Dato cruzado:** el kimchi es rojo gracias al **chile americano**, que llegó a Corea siglos después."
       ],
-      pasoAPaso: true },
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "Una sopa, tres guarniciones",
+          imagen: "img/japon_washoku.jpg",
+          notas: "Pregunta: ¿qué diferencia ven entre esta mesa y una comida mexicana? (Porciones pequeñas, cada cosa en su recipiente, nada mezclado).",
+          puntos: [
+            "**Ichiju sansai:** la estructura básica del washoku es arroz, una sopa y tres guarniciones.",
+            "**Sopa de miso** con tofu y alga wakame: el miso es pasta de soya fermentada.",
+            "**Pescado a la parrilla** con rábano rallado (daikon), que ayuda a digerir la grasa.",
+            "**Tofu frío** con hojuelas de bonito seco, jengibre y cebollín, y **encurtidos** (tsukemono) para equilibrar.",
+            "**Cada cosa en su recipiente:** porciones pequeñas y cerámica artesanal; en Japón se come también con los ojos."
+          ] }
+      ] },
 
     { tipo: "tema",
       titulo: "Asia del Sur: India y el mundo del curry",
@@ -93,7 +114,20 @@ const PRESENTACION = {
         "**El norte** usa más lácteos y panes de trigo, como el **naan** y el **roti**, en parte herencia de la corte **mogol** (el biryani).",
         "**El sur** prefiere el **arroz**, el **coco** y los sabores ácidos y picantes, con una tradición vegetariana aún más extendida."
       ],
-      pasoAPaso: true },
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "Un mercado de especias",
+          imagen: "img/india_especias.jpg",
+          encuadre: "60% 50%",
+          notas: "Los letreros de la imagen fueron generados por IA y mezclan idiomas; no los uses como referencia.",
+          puntos: [
+            "**Cúrcuma:** el polvo amarillo intenso; da color al curry y se usa también como medicina tradicional.",
+            "**Comino y cardamomo verde:** el cardamomo es una de las especias más caras del mundo porque se cosecha a mano.",
+            "**Garam masala:** mezcla “caliente” de especias como canela, clavo, comino y pimienta, distinta en cada casa.",
+            "**El chile en polvo es americano:** llegó con los portugueses en el siglo XVI, y hoy la India es el mayor productor de chile del mundo."
+          ] }
+      ] },
 
     { tipo: "pregunta",
       pregunta: "¿Existe una especia que se llame curry?",
@@ -101,19 +135,30 @@ const PRESENTACION = {
 
     { tipo: "tema",
       titulo: "El Sureste asiático",
-      imagen: "img/sudeste_asiatico.jpg",
       puntos: [
         "**Tailandia** combina sabores **ácidos, dulces, amargos y salados** en un mismo platillo; el libro la describe como fusión de influencias japonesas, indias, francesas y portuguesas.",
         "**Indonesia** y sus vecinos vivieron siglos de comercio con China y con potencias europeas.",
         "**Pescado y arroz** son la base de casi toda la región, gracias a sus largas costas en el Índico y el Pacífico.",
         "Aquí están las **Islas Molucas**, las “islas de las especias”, tierra de origen del **clavo** y la **nuez moscada**."
       ],
-      pasoAPaso: true },
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "Un mercado flotante en Tailandia",
+          imagen: "img/sudeste_asiatico.jpg",
+          notas: "Pregunta: ¿qué frutas de la lancha nacieron en América? (Piña y papaya).",
+          puntos: [
+            "**Se vende desde lanchas** en los canales: el agua ha sido la calle principal de muchas ciudades del sureste.",
+            "**Curry verde:** pasta de chile verde, hierba limón y galanga, cocida con **leche de coco** y albahaca tailandesa.",
+            "**Hierbas frescas:** hierba limón, cilantro y albahaca dan el aroma de la cocina tailandesa.",
+            "**Frutas tropicales:** rambután (rojo con “pelos”), mangostán (morado), mango y coco.",
+            "**Dato cruzado:** la **piña** y la **papaya** de la lancha son **americanas**; llegaron a Asia con los barcos europeos."
+          ] }
+      ] },
 
     { tipo: "tema",
       titulo: "Filipinas: la cocina de dos colonizaciones",
       notas: "Dato extra: los filipinos que llegaron en el galeón llevaron a Colima la tuba, bebida de la savia de la palma de coco.",
-      imagen: "img/galeon_manila.jpg",
       puntos: [
         "Más de **tres siglos bajo dominio español** y después bajo administración **estadounidense**.",
         "**Adobo filipino:** cocido en vinagre, ajo y soya. Comparte nombre con el mexicano, pero es distinto.",
@@ -125,7 +170,20 @@ const PRESENTACION = {
         { tipo: "dato",
           cifra: "250 años",
           texto: "navegó el Galeón de Manila entre Asia y Acapulco, de 1565 a 1815. Fue una de las primeras rutas que conectaron de forma regular Asia, América y Europa.",
-          notas: "Pregunta: ¿qué otra cosa de Asia creen que llegó a México por esta ruta? (Telas, porcelana, biombos, el “chino poblano”...)." }
+          notas: "Pregunta: ¿qué otra cosa de Asia creen que llegó a México por esta ruta? (Telas, porcelana, biombos...)." },
+        { tipo: "observa",
+          titulo: "La Nao de China llega a Acapulco",
+          imagen: "img/galeon_manila.jpg",
+          etiqueta: "Encuentra el error",
+          completa: true,
+          notas: "Los letreros de los costales los generó la IA. Deja que busquen el error antes del último punto.",
+          puntos: [
+            "**En México le decían la Nao de China**, aunque zarpaba de Manila. Su llegada a Acapulco abría una gran feria comercial.",
+            "**La carga:** sedas, porcelana china, especias como canela y clavo, y marfil.",
+            "**El viaje de Manila a Acapulco** podía durar de cuatro a seis meses.",
+            "**El barco sí lleva la bandera correcta:** la **cruz de Borgoña**, la de los españoles de la época.",
+            "**El error:** en el fuerte, arriba a la izquierda, ondea una bandera roja y amarilla, la de España actual, adoptada en 1785."
+          ] }
       ] },
 
     { tipo: "pausa",
@@ -137,13 +195,25 @@ const PRESENTACION = {
     { tipo: "tema",
       titulo: "Medio Oriente: el mundo árabe, Persia y el Levante",
       minutos: "72-96", evaluacion: "Formativo",
-      imagen: "img/mezze_levante.jpg",
       puntos: [
         "El mundo árabe del Golfo y del **Levante**, **Persia** (Irán) y **Turquía**, con las **normas halal** del islam (Tema 2).",
         "Ingredientes clave: **cordero, arroz, yogur, berenjena**, y especias como **comino, cilantro y sumac**.",
         "**Turquía**, heredera de la cocina de palacio **otomana**, dejó platillos como las **dolmas** y el **baclava**, que llegaron hasta el Magreb y los Balcanes."
       ],
-      pasoAPaso: true },
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "Una mesa de mezze",
+          imagen: "img/mezze_levante.jpg",
+          notas: "Pregunta: ¿cuántos platillos de esta mesa llevan garbanzo? (Hummus y falafel).",
+          puntos: [
+            "**Mezze:** muchos platos pequeños al centro para compartir, como nuestras botanas.",
+            "**Hummus:** puré de garbanzo con tahini (pasta de ajonjolí), limón y aceite de oliva. **Falafel:** croquetas de garbanzo o haba, fritas.",
+            "**Baba ganush:** puré de berenjena asada, aquí con granada. **Tabule:** ensalada de perejil, trigo bulgur y jitomate.",
+            "**Las especias de los cuencos:** **zaatar**, mezcla de tomillo y ajonjolí, y **sumac**, polvo rojo de sabor ácido.",
+            "**Pan pita** y aceitunas: el pan sirve para tomar la comida, igual que la injera o la tortilla."
+          ] }
+      ] },
 
     { tipo: "pregunta",
       pregunta: "¿Qué taco muy mexicano tiene raíz en Medio Oriente?",
@@ -152,14 +222,26 @@ const PRESENTACION = {
     { tipo: "tema",
       titulo: "Asia Central: la Ruta de la Seda",
       notas: "Países: Uzbekistán, Kazajistán, Kirguistán, Tayikistán y Turkmenistán, entre otros.",
-      imagen: "img/ruta_seda.jpg",
       puntos: [
         "Su cocina se formó como **cruce de caminos de la Ruta de la Seda**, la red de rutas que unió China con el Mediterráneo.",
         "**Plov (pilaf):** arroz con zanahoria, cebolla y carne de cordero o res, distinto en cada región.",
         "**Kumis:** leche de yegua fermentada, típica de los pueblos nómadas de la estepa.",
         "**Pan plano** cocido en hornos de barro parecidos al **tandoor** de la India."
       ],
-      pasoAPaso: true },
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "Un alto en la Ruta de la Seda",
+          imagen: "img/ruta_seda.jpg",
+          encuadre: "62% 50%",
+          notas: "Compara con la caravana del Sahara de la clase de África: ¿qué diferencia ven en los camellos?",
+          puntos: [
+            "**Camellos de dos jorobas** (bactrianos), adaptados al frío de las estepas. Los del Sahara eran dromedarios, de una joroba.",
+            "**El kazán:** caldero de hierro colgado sobre el fuego, donde se cocina el **plov** con arroz, zanahoria y carne.",
+            "**La yurta:** tienda redonda y desmontable de los pueblos nómadas, que se ve a la derecha.",
+            "**Montañas y estepa:** las caravanas cruzaban miles de kilómetros entre China y el Mediterráneo, llevando seda, especias e ideas."
+          ] }
+      ] },
 
     { tipo: "tarea",
       titulo: "Comparación guiada de especias",
@@ -197,10 +279,10 @@ const PRESENTACION = {
       pasoAPaso: true },
 
     { tipo: "video",
-      titulo: "La increíble historia de las especias",
-      youtube: "https://www.youtube.com/watch?v=EzoG2oSXAGw",
-      pie: "Documental completo en español sobre el origen y el comercio de las especias.",
-      notas: "Es largo: elige el fragmento de las rutas comerciales. Alternativa en español: “Documental: Historia de las especias”, https://www.youtube.com/watch?v=6_WGMLy6m4Y" },
+      titulo: "Historia de las especias",
+      youtube: "https://www.youtube.com/watch?v=6_WGMLy6m4Y",
+      pie: "Documental en español sobre el origen y el comercio de las especias.",
+      notas: "Elige el fragmento de las rutas comerciales. Alternativa en español: “Planeta Gastronómico: La historia de las especias”, https://www.youtube.com/watch?v=3yCx-nqX0nA" },
 
     { tipo: "tarea",
       titulo: "Investigación: la ruta de una especia",
