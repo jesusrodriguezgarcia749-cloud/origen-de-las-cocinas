@@ -89,7 +89,11 @@ async function cargarAvisos() {
 
 async function cargarDatos() {
   const base = ['grupos', sesion.grupoId, 'alumnos', sesion.alumnoId];
-  const [tareasSnap, partSnap, asisSnap, unifP1, unifP2, exaP1, exaP2, exaFinal, practicoP2, proyE1, proyE2, proyEF] = await Promise.all([
+  const [catalogoSnap, tareasSnap, partSnap, asisSnap, unifP1, unifP2, exaP1, exaP2, exaFinal, practicoP2, proyE1, proyE2, proyEF] = await Promise.all([
+    // Catálogo de tareas del grupo: define cuántas tareas existen en cada
+    // parcial. Es el denominador del promedio, para que una tarea no
+    // entregada cuente como cero y no se infle la calificación.
+    getDocs(collection(db, 'grupos', sesion.grupoId, 'tareas_catalogo')).catch(() => null),
     getDocs(collection(db, ...base, 'tareas')).catch(() => null),
     getDocs(collection(db, ...base, 'participaciones')).catch(() => null),
     getDocs(collection(db, ...base, 'asistencias')).catch(() => null),
@@ -105,8 +109,11 @@ async function cargarDatos() {
   ]);
 
   datosCache = {
-    tareas: tareasSnap ? tareasSnap.docs.map(d => d.data()) : [],
-    participaciones: partSnap ? partSnap.docs.map(d => d.data()) : [],
+    catalogoTareas: catalogoSnap ? catalogoSnap.docs.map(d => ({ id: d.id, ...d.data() })) : [],
+    // Se conserva el id del documento: es el mismo id que la tarea tiene en
+    // el catálogo, y es con lo que se emparejan entregadas contra esperadas.
+    tareas: tareasSnap ? tareasSnap.docs.map(d => ({ id: d.id, ...d.data() })) : [],
+    participaciones: partSnap ? partSnap.docs.map(d => ({ id: d.id, ...d.data() })) : [],
     asistencias: asisSnap ? asisSnap.docs.map(d => d.data()) : [],
     uniformes: {
       p1: unifP1 && unifP1.exists() ? unifP1.data() : null,
@@ -130,6 +137,30 @@ async function cargarDatos() {
 
 function filaRubro(nombre, pts, tope, extra) {
   return `<div class="res-row"><span>${nombre}${extra ? ` <small class="res-extra">${extra}</small>` : ''}</span><strong>${pts.toFixed(1)} / ${tope}</strong></div>`;
+}
+
+// Texto de apoyo del rubro Tareas: cuántas entregó de cuántas hay en el
+// parcial, y el promedio ya calculado sobre ese total.
+function textoTareas(r) {
+  if (!r.esperadas) return 'sin tareas registradas';
+  const prom = r.promedio === null ? 0 : r.promedio;
+  return `${r.entregadas} de ${r.esperadas} entregadas · prom. ${prom.toFixed(1)}/10`;
+}
+
+// Lista de tareas que marca explícitamente las no entregadas, para que el
+// alumno vea cuál le falta y no solo el número final.
+function renderListaTareas(entregadas, faltantes) {
+  const items = [
+    ...(entregadas || []).map(x => ({ ...x, entregada: true })),
+    ...(faltantes || []).map(x => ({ ...x, entregada: false })),
+  ];
+  if (items.length === 0) return `<p class="empty-inline">Sin tareas registradas.</p>`;
+  const filas = items.sort((a, b) => (a.fecha || '').localeCompare(b.fecha || ''))
+    .map(x => x.entregada
+      ? `<li>${esc(x.fecha || 'sin fecha')} — ${esc(x.nombre || '')}: <strong>${Number(x.calificacion).toFixed(1)}/10</strong></li>`
+      : `<li>${esc(x.fecha || 'sin fecha')} — ${esc(x.nombre || '')}: <strong>no entregada (0/10)</strong></li>`)
+    .join('');
+  return `<ul style="margin:6px 0 0; padding-left:18px; font-size:.9em;">${filas}</ul>`;
 }
 
 function renderListaActividades(lista, vacio) {
@@ -162,20 +193,21 @@ function renderParciales() {
       filasDetalle =
         filaRubro('Examen escrito', r.examenEscrito.pts, r.examenEscrito.tope, r.examenEscrito.calificacion !== null ? `${r.examenEscrito.calificacion}/10` : 'sin capturar') +
         filaRubro('Examen práctico', r.practico.pts, r.practico.tope, r.practico.calificacion !== null ? `${r.practico.calificacion}/10` : 'sin capturar') +
-        filaRubro('Tareas', r.tareas.pts, r.tareas.tope, r.tareas.promedio !== null ? `prom. ${r.tareas.promedio.toFixed(1)}/10` : 'sin capturar') +
+        filaRubro('Tareas', r.tareas.pts, r.tareas.tope, textoTareas(r.tareas)) +
         filaRubro('Participación', r.participacion.pts, r.participacion.tope, `${r.participacion.cantidad} de ${r.participacion.meta} participaciones`) +
         filaRubro('Asistencia', r.asistencia.pts, r.asistencia.tope, `${r.asistencia.presentes}/${r.asistencia.total} clases`) +
         filaRubro('Uniformes', r.uniformes.pts, r.uniformes.tope, `${r.uniformes.faltas} falta(s)`);
     } else {
       filasDetalle =
         filaRubro('Examen', r.examen.pts, r.examen.tope, r.examen.calificacion !== null ? `${r.examen.calificacion}/10` : 'sin capturar') +
-        filaRubro('Tareas', r.tareas.pts, r.tareas.tope, r.tareas.promedio !== null ? `prom. ${r.tareas.promedio.toFixed(1)}/10` : 'sin capturar') +
+        filaRubro('Tareas', r.tareas.pts, r.tareas.tope, textoTareas(r.tareas)) +
         filaRubro('Participación', r.participacion.pts, r.participacion.tope, `${r.participacion.cantidad} de ${r.participacion.meta} participaciones`) +
         filaRubro('Asistencia', r.asistencia.pts, r.asistencia.tope, `${r.asistencia.presentes}/${r.asistencia.total} clases`) +
         filaRubro('Uniformes', r.uniformes.pts, r.uniformes.tope, `${r.uniformes.faltas} falta(s)`);
     }
 
     const listaTareas = esFinal ? [...r.tareasParticipacion.lista] : r.tareas.lista;
+    const faltantesTareas = esFinal ? [] : (r.tareas.faltantes || []);
     const listaPart = esFinal ? null : r.participacion.lista;
 
     html += `
@@ -185,7 +217,7 @@ function renderParciales() {
         <details class="prog-detalle-bloque" style="margin-top:8px;">
           <summary>Ver fechas — Tareas${listaPart ? ' y Participación' : ''}</summary>
           <p class="field-hint" style="margin:8px 0 2px;">Tareas:</p>
-          ${renderListaActividades(listaTareas, 'Sin tareas capturadas.')}
+          ${esFinal ? renderListaActividades(listaTareas, 'Sin tareas capturadas.') : renderListaTareas(listaTareas, faltantesTareas)}
           ${listaPart ? `<p class="field-hint" style="margin:10px 0 2px;">Participación:</p>${renderListaActividades(listaPart, 'Sin participación capturada.')}` : ''}
         </details>
         <div class="res-row res-total"><span>Total</span><strong>${r.total.toFixed(1)} / 100 pts</strong></div>

@@ -17,6 +17,15 @@
 //       Entrega final (exposicion individual, 4 dic) -> 10 de los 40 puntos
 //   Cuatrimestre: Parcial 1 (25%) + Parcial 2 (25%) + Final (50%)
 //
+// IMPORTANTE -- como se califican las TAREAS:
+//   Las tareas NO se promedian sobre lo que el alumno entrego, sino sobre
+//   TODAS las tareas del catalogo de ese parcial. Una tarea no entregada
+//   cuenta como CERO. Si hay 2 tareas en el catalogo y el alumno entrego
+//   una con 10, su promedio es 5/10 => la mitad del tope (12.5 de 25).
+//   Por eso una tarea solo debe agregarse al catalogo cuando ya cuenta
+//   para la calificacion: en cuanto esta en el catalogo, le baja la
+//   calificacion a quien no la entregue.
+//
 // Estructura de datos esperada en Firestore, por alumno
 // (grupos/{grupoId}/alumnos/{alumnoId}/...):
 //   - tareas          (coleccion): { parcial, nombre, fecha, calificacion (0-10) }
@@ -26,6 +35,9 @@
 //   - examenes        (documentos 'p1', 'p2', 'final'): { calificacion } -- examen ESCRITO
 //   - practico        (documento 'p2'): { calificacion } -- examen PRACTICO del Parcial 2
 //   - proyecto        (documentos 'entrega1', 'entrega2', 'entregaFinal'): { calificacion }
+// Y a nivel de grupo (grupos/{grupoId}/...):
+//   - tareas_catalogo (coleccion): { parcial, nombre, fecha } -- define cuantas
+//     tareas existen en cada parcial, o sea el denominador del promedio.
 
 export const TOPES = {
   p1:    { examen: 40, tareas: 25, participacion: 25, asistencia: 5, uniformes: 5 },
@@ -76,6 +88,47 @@ function calcularRubroPromedio(lista, tope) {
   return { pts, tope, lista: lista || [], promedio: prom };
 }
 
+// Tareas: se promedia sobre TODAS las tareas del catalogo del parcial.
+// Lo no entregado cuenta como cero. Si todavia no hay catalogo cargado
+// (por ejemplo, en una vista que no lo consulto), se cae de regreso al
+// promedio simple de lo entregado para no romper nada.
+function calcularTareasSobreCatalogo(entregadas, catalogoDelParcial, tope) {
+  const lista = entregadas || [];
+  const esperadas = catalogoDelParcial || [];
+
+  if (esperadas.length === 0) {
+    const base = calcularRubroPromedio(lista, tope);
+    return { ...base, esperadas: lista.length, entregadas: lista.length, faltantes: [] };
+  }
+
+  // Lo entregado se indexa por el id del documento, que es el mismo id del
+  // catalogo (admin.js guarda cada calificacion en .../tareas/{idDeLaTarea}).
+  const porId = new Map();
+  lista.forEach(t => { if (t && t.id) porId.set(t.id, t); });
+
+  let suma = 0;
+  const faltantes = [];
+  esperadas.forEach(tarea => {
+    const entregada = porId.get(tarea.id);
+    if (entregada && entregada.calificacion !== undefined && entregada.calificacion !== null) {
+      suma += Number(entregada.calificacion) || 0;
+    } else {
+      faltantes.push(tarea);
+    }
+  });
+
+  const promedio = suma / esperadas.length;
+  return {
+    pts: (promedio / 10) * tope,
+    tope,
+    lista,
+    promedio,
+    esperadas: esperadas.length,
+    entregadas: esperadas.length - faltantes.length,
+    faltantes,
+  };
+}
+
 function calcularParticipacionConteo(lista, meta, tope) {
   const cantidad = (lista || []).length;
   const efectiva = Math.min(cantidad, meta);
@@ -102,16 +155,35 @@ function calcularProyecto(datosProyecto) {
   return { pts, tope: 40, detalle };
 }
 
-// datos = { tareas, participaciones, asistencias, uniformes, examenes, practico, proyecto }
+// datos = { tareas, participaciones, asistencias, uniformes, examenes,
+//           practico, proyecto, catalogoTareas }
 export function calcularParcial(parcial, datos) {
   const tareasDelParcial = (datos.tareas || []).filter(t => t.parcial === parcial);
   const participacionDelParcial = (datos.participaciones || []).filter(p => p.parcial === parcial);
   const asistenciaDelParcial = (datos.asistencias || []).filter(a => a.parcial === parcial);
+  const catalogoDelParcial = (datos.catalogoTareas || []).filter(t => t.parcial === parcial);
 
   if (parcial === 'final') {
     const tope = TOPES.final;
-    const combinado = [...tareasDelParcial, ...participacionDelParcial];
-    const tareasParticipacion = calcularRubroPromedio(combinado, tope.tareasParticipacion);
+    // En el Final, Tareas y Participacion comparten un solo rubro de 15 pts:
+    // se promedia el resultado de tareas (sobre catalogo) con el de
+    // participacion (sobre la meta), para que una tarea no entregada tambien
+    // cuente como cero aqui.
+    const todasLasTareas = datos.tareas || [];
+    const todoElCatalogo = datos.catalogoTareas || [];
+    const rTareas = calcularTareasSobreCatalogo(todasLasTareas, todoElCatalogo, 10);
+    const participacionTotal = (datos.participaciones || []).length;
+    const metaTotal = (META_PARTICIPACION.p1 || 0) + (META_PARTICIPACION.p2 || 0);
+    const fraccionPart = metaTotal > 0 ? Math.min(participacionTotal, metaTotal) / metaTotal : 0;
+    const fraccionTareas = (rTareas.promedio === null ? 0 : rTareas.promedio) / 10;
+    const fraccion = (fraccionTareas + fraccionPart) / 2;
+    const tareasParticipacion = {
+      pts: fraccion * tope.tareasParticipacion,
+      tope: tope.tareasParticipacion,
+      lista: [...todasLasTareas, ...(datos.participaciones || [])],
+      tareas: rTareas,
+      participacion: { cantidad: participacionTotal, meta: metaTotal },
+    };
     const examen = calcularExamen((datos.examenes || {}).final, tope.examen);
     const asistencia = calcularAsistencia(asistenciaDelParcial, tope.asistencia);
     const proyecto = calcularProyecto(datos.proyecto);
@@ -120,7 +192,7 @@ export function calcularParcial(parcial, datos) {
   }
 
   const tope = TOPES[parcial];
-  const tareas = calcularRubroPromedio(tareasDelParcial, tope.tareas);
+  const tareas = calcularTareasSobreCatalogo(tareasDelParcial, catalogoDelParcial, tope.tareas);
   const participacion = calcularParticipacionConteo(participacionDelParcial, META_PARTICIPACION[parcial], tope.participacion);
   const asistencia = calcularAsistencia(asistenciaDelParcial, tope.asistencia);
   const uniformes = calcularUniformes((datos.uniformes || {})[parcial], tope.uniformes);
