@@ -25,7 +25,7 @@
   li:last-child .clase{border-bottom:1px solid var(--arena)}
   a.clase:hover .titulo{color:var(--rojo)}
   .sin-enlace{background:#ECE8DF}
-  .sin-enlace .titulo::after{content:" · en cocina";font-family:"Public Sans",sans-serif;font-size:.8rem;font-weight:500;color:var(--gris)}
+  .sin-enlace .titulo::after{content:" · sin diapositivas";font-family:"Public Sans",sans-serif;font-size:.8rem;font-weight:500;color:var(--gris)}
   .descarga .titulo::after{content:" ↓";color:var(--rojo)}
   .fecha{grid-row:span 2;font-weight:600;color:var(--rojo);font-size:.9rem;padding-top:3px}
   .titulo{font-family:"Fraunces",serif;font-weight:600;font-size:1.2rem;line-height:1.25;color:var(--marino)}
@@ -63,6 +63,12 @@ const SESIONES = [
     archivo: "taller-2-preguntas-10-12.html",
     titulo: "Cierre de la Entrega 1 · preguntas 10 a 12",
     descripcion: "Religión y corrientes, armado del documento, referencias y lista de verificación." },
+  { tema: "Evaluaciones y fechas clave", fecha: "Jue 15 oct",
+    titulo: "Examen del Parcial 1",
+    descripcion: "Examen escrito de los Temas 1 y 2 completos. Se recibe también la Entrega 1 del proyecto." },
+  { tema: "Evaluaciones y fechas clave", fecha: "Vie 16 oct",
+    titulo: "Retroalimentación e inicio del Tema 3",
+    descripcion: "Revisión grupal de resultados y dudas. Introducción a las cinco regiones del mundo, con mapa mundial." },
   { tema: "Tema 3 · Cocinas en el mundo", fecha: "Jue 22 oct",
     archivo: "3-1-cocinas-africanas.html",
     titulo: "3.1 Cocinas africanas",
@@ -102,10 +108,29 @@ const SESIONES = [
     archivo: "4-4-primer-restaurante.html",
     titulo: "4.4 El primer restaurante · repaso Parcial 2",
     descripcion: "Boulanger y los caldos restaurativos, la Revolución, Delmonico's, el Porfiriato y las fondas." },
+  { tema: "Evaluaciones y fechas clave", fecha: "Jue 26 nov",
+    titulo: "Examen práctico del Parcial 2 · Práctica de cocina 3",
+    descripcion: "Examen práctico formal, grupo dividido en dos mitades. Opciones: bistec Delmonico's, curry, pescado meunière o paella." },
+  { tema: "Evaluaciones y fechas clave", fecha: "Vie 27 nov",
+    titulo: "Examen teórico del Parcial 2",
+    descripcion: "Examen escrito de los Temas 3 y 4 hasta el 4.4. Se recibe también la Entrega 2 del proyecto." },
   { tema: "Tema 4 · La comida y el poder", fecha: "Jue 3 dic",
     archivo: "4-5-cocina-profesional.html",
     titulo: "4.5 La cocina profesional · cierre del libro",
-    descripcion: "Escoffier y la brigada, Le Cordon Bleu, las mujeres en la cocina, la UNESCO y el Bocuse d'Or." }
+    descripcion: "Escoffier y la brigada, Le Cordon Bleu, las mujeres en la cocina, la UNESCO y el Bocuse d'Or." },
+  { tema: "Evaluaciones y fechas clave", fecha: "Vie 4 dic",
+    titulo: "Exposición final del proyecto",
+    descripcion: "Cada alumno expone ante el grupo su platillo: de dónde viene, qué rutas lo explican y qué aprendió. De 2 a 3 minutos por persona." },
+  { tema: "Cierre del curso", fecha: "Jue 10 dic",
+    archivo: "repaso-final.html",
+    titulo: "Repaso general para el Examen Final",
+    descripcion: "Los 4 temas en preguntas relámpago por equipos, las ideas centrales del curso y dudas finales." },
+  { tema: "Cierre del curso", fecha: "Vie 11 dic",
+    titulo: "Fin de cuatrimestre",
+    descripcion: "Entrega de calificaciones acumuladas del parcial y del curso. Espacio para tu retroalimentación sobre la materia." },
+  { tema: "Cierre del curso", fecha: "Jue 17 dic",
+    titulo: "Examen Final",
+    descripcion: "Examen escrito que integra los cuatro temas del curso completo. Fecha por confirmar con coordinación." }
 ];
 </script>
 

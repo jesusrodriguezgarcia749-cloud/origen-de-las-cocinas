@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Repaso general para el Examen Final · Origen de las Cocinas</title>
+</head>
+<body>
+<!-- =====================================================================
+     SESIÓN: Jueves 10 de diciembre · Repaso general · 3 horas
+     Preguntas relámpago por equipos sobre los 4 temas del curso
+     ===================================================================== -->
+<script>
+const PRESENTACION = {
+  materia: "Origen de las Cocinas",
+
+  diapositivas: [
+    { tipo: "portadaDia",
+      tema: "Cierre del curso",
+      dia: "Jueves 10 de diciembre",
+      titulo: "Repaso general",
+      subtitulo: "Los 4 temas, en formato de competencia por equipos",
+      duracion: "3 horas" },
+
+    { tipo: "objetivos",
+      intro: "Hoy repasamos todo el curso jugando. Gana el equipo que más recuerde.",
+      puntos: [
+        "Vas a repasar los 4 temas con preguntas relámpago por equipos.",
+        "Vas a identificar qué te falta estudiar antes del examen.",
+        "Vas a resolver tus dudas finales conmigo.",
+        "Vas a llevarte una guía clara de qué estudiar en casa."
+      ] },
+
+    { tipo: "tema",
+      titulo: "Cómo funciona el juego",
+      etiqueta: "Reglas",
+      minutos: "0-10", evaluacion: "Participación",
+      notas: "Forma 4 o 5 equipos. Lleva un marcador para el pizarrón y anota los puntos a la vista de todos.",
+      puntos: [
+        "Nos dividimos en **equipos**. Cada uno elige un nombre.",
+        "Yo leo la pregunta. El equipo que **levante la mano primero** contesta.",
+        "**Si acierta, gana un punto.** Si falla, el turno pasa al siguiente equipo que levantó la mano.",
+        "**Ronda final:** las últimas preguntas valen **doble**."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Ronda 1 · Tema 1",
+      etiqueta: "Historia de la cocina",
+      minutos: "11-40", evaluacion: "Participación",
+      puntos: [
+        "De los **primeros registros escritos** a las **cocinas actuales**.",
+        "Mesopotamia, Roma, la Edad Media, el Renacimiento y la Edad Moderna.",
+        "La cocina económica, la cocina eléctrica y las corrientes contemporáneas.",
+        "**Cinco preguntas.** ¿Listos?"
+      ],
+      pasoAPaso: true },
+
+    { tipo: "repaso",
+      titulo: "Ronda 1 · Tema 1",
+      notas: "Lee una por una. No muestres la respuesta hasta que varios equipos hayan intentado.",
+      preguntas: [
+        { pregunta: "¿En qué soporte están los primeros registros escritos de recetas?", respuesta: "En **tablillas de arcilla** de Mesopotamia." },
+        { pregunta: "¿Cómo se llamaba la salsa de pescado fermentado de los romanos?", respuesta: "El **garum**." },
+        { pregunta: "¿Qué recetario romano se atribuye a Apicio?", respuesta: "**De re coquinaria**, con más de 400 recetas." },
+        { pregunta: "¿Qué italiana llegó a la corte francesa en 1533?", respuesta: "**Catalina de Médici**." },
+        { pregunta: "¿Qué cocinero francés sistematizó las técnicas por escrito en el siglo XVII?", respuesta: "**La Varenne**." }
+      ] },
+
+    { tipo: "tema",
+      titulo: "Ronda 2 · Tema 2",
+      etiqueta: "Régimen, épocas, religión y corrientes",
+      minutos: "41-70", evaluacion: "Participación",
+      puntos: [
+        "Las formas de **clasificar** una cocina.",
+        "La **firma de época** que deja cada periodo histórico.",
+        "Las **normas religiosas** y cómo moldean lo que se come.",
+        "Las **corrientes** gastronómicas de hoy."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "repaso",
+      titulo: "Ronda 2 · Tema 2",
+      preguntas: [
+        { pregunta: "¿Cómo se llaman las normas alimentarias judías y las musulmanas?", respuesta: "**Kashrut** y **halal**." },
+        { pregunta: "¿Qué cocina nació del encuentro entre migrantes japoneses y Perú?", respuesta: "La cocina **nikkei**." },
+        { pregunta: "¿Qué corriente de los años setenta propuso porciones ligeras y emplatado depurado?", respuesta: "La **nouvelle cuisine**." },
+        { pregunta: "¿De qué año es el manifiesto New Nordic?", respuesta: "De **2004**." },
+        { pregunta: "¿Qué firma de época dejó Escoffier?", respuesta: "Las **salsas madre**, la **brigada** y el orden estricto del menú." }
+      ] },
+
+    { tipo: "pausa",
+      titulo: "¡Pausa activa!",
+      duracion: "10 minutos",
+      minutos: "71-80",
+      texto: "**Diez minutos.** Al regresar seguimos con el Tema 3, que es el más largo del curso. Vayan repasando entre ustedes las cinco regiones del mundo." },
+
+    { tipo: "tema",
+      titulo: "Ronda 3 · Tema 3",
+      etiqueta: "Las cinco regiones del mundo",
+      minutos: "81-120", evaluacion: "Participación",
+      puntos: [
+        "**África:** el Magreb, el comercio transahariano y la diáspora.",
+        "**América:** lo prehispánico, el mestizaje, Campeche y el resto del continente.",
+        "**Asia:** China, Japón, la India, el Galeón de Manila y la Ruta de la Seda.",
+        "**Europa** y **Oceanía.** Son **ocho preguntas**: es el tema más largo."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "repaso",
+      titulo: "Ronda 3 · Tema 3 (parte 1)",
+      preguntas: [
+        { pregunta: "¿Qué dos productos movían las caravanas transaharianas?", respuesta: "**Oro** del sur y **sal** del desierto." },
+        { pregunta: "¿Qué pan fermentado sirve también de plato y cubierto?", respuesta: "La **injera** del Cuerno de África, hecha de teff." },
+        { pregunta: "¿Qué fraile documentó la cocina prehispánica con informantes indígenas?", respuesta: "**Bernardino de Sahagún**, en el Códice Florentino." },
+        { pregunta: "¿Cómo se llama el horno de tierra maya?", respuesta: "El **pib**." }
+      ] },
+
+    { tipo: "repaso",
+      titulo: "Ronda 3 · Tema 3 (parte 2)",
+      preguntas: [
+        { pregunta: "¿Qué ruta unió Manila con Acapulco durante 250 años?", respuesta: "El **Galeón de Manila**, de 1565 a 1815." },
+        { pregunta: "¿Qué ingrediente americano transformó la pasta italiana?", respuesta: "El **jitomate**." },
+        { pregunta: "¿Cómo se llama el horno de tierra maorí?", respuesta: "El **hangi**. En Samoa, umu; en Fiyi, lovo." },
+        { pregunta: "¿Qué pirata holandés saqueó Campeche en 1685?", respuesta: "Laurens de Graaf, **“Lorencillo”**." }
+      ] },
+
+    { tipo: "tema",
+      titulo: "Ronda 4 · Tema 4",
+      etiqueta: "La comida y el poder",
+      minutos: "121-150", evaluacion: "Participación",
+      puntos: [
+        "De la **necesidad** de alimentarse a la **cultura**.",
+        "**Roma** y la mesa como disciplina documentada.",
+        "**La realeza:** Versalles, Topkapi, la Ciudad Prohibida y la corte mogol.",
+        "**El restaurante** y la **cocina profesional**. Esta ronda vale **doble**."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "repaso",
+      titulo: "Ronda 4 · Tema 4 · vale doble",
+      notas: "Recuérdales que valen doble antes de empezar. Sube la energía al final.",
+      preguntas: [
+        { pregunta: "¿Cómo se llamaba la comida pública del rey en Versalles?", respuesta: "El **grand couvert**." },
+        { pregunta: "¿Qué cocina de palacio anticipó la brigada de Escoffier?", respuesta: "La del **Topkapi** otomano, siglos antes." },
+        { pregunta: "¿Qué platillo nació en la corte mogol?", respuesta: "El **biryani**." },
+        { pregunta: "¿De dónde viene la palabra “restaurante”?", respuesta: "De los **caldos restaurativos** que prometían restaurar el estómago." }
+      ] },
+
+    { tipo: "repaso",
+      titulo: "Ronda 4 · últimas preguntas",
+      preguntas: [
+        { pregunta: "¿Qué novedad introdujo Delmonico's en 1837?", respuesta: "El **menú à la carte** impreso y un **chef con nombre propio**." },
+        { pregunta: "¿Quién fundó Le Cordon Bleu en 1895?", respuesta: "**Marthe Distel**, que era periodista." },
+        { pregunta: "¿Qué reconoció la UNESCO en 2010 sobre México?", respuesta: "La **cocina tradicional mexicana** como Patrimonio Cultural Inmaterial." }
+      ] },
+
+    { tipo: "tema",
+      titulo: "Las cuatro ideas del curso",
+      notas: "Baja el ritmo del juego aquí. Esto es lo que quieres que se lleven aunque olviden las fechas.",
+      puntos: [
+        "**Ninguna cocina es pura.** Todas nacen del comercio, la migración, la conquista y la adaptación.",
+        "**La geografía manda.** El clima y los recursos explican por qué se come lo que se come.",
+        "**Las mismas soluciones aparecen lejos.** Hornos de tierra en Yucatán, Nueva Zelanda y Chile.",
+        "**El poder se expresa en la mesa.** De los banquetes romanos a Versalles y al restaurante."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Qué estudiar en casa",
+      etiqueta: "Guía de estudio",
+      minutos: "151-170", evaluacion: "Formativo",
+      puntos: [
+        "**La Cronología general** del libro: las fechas clave de los cuatro temas.",
+        "**El Glosario:** los términos técnicos que pueden preguntarse de forma directa.",
+        "**Las tablas comparativas** de cada tema: son las que más ayudan a ordenar.",
+        "**Las diapositivas de clase:** están todas en la plataforma, con sus repasos relámpago."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tarea",
+      titulo: "Dudas finales",
+      etiqueta: "Pregunten",
+      minutos: "171-180", evaluacion: "Participación",
+      notas: "Deja tiempo real. Si nadie pregunta, lanza tú una duda típica para romper el hielo.",
+      puntos: [
+        "Es la **última clase antes del examen**. Pregunten lo que sea.",
+        "Si algo del libro no quedó claro, es el momento.",
+        "También pueden preguntar **cómo será el examen**: tipos de reactivo y temas que entran.",
+        "**El examen final es escrito** e integra los **cuatro temas** del curso."
+      ] },
+
+    { tipo: "cierre",
+      titulo: "Cierre del curso",
+      evidencia: "Participación en el juego de repaso por equipos.",
+      materiales: "Libro de texto completo, Cronología general y Glosario.",
+      proxima: "**Viernes 11:** entrega de calificaciones y retroalimentación del curso. **Jueves 17: examen final escrito**, con los cuatro temas." }
+  ]
+};
+</script>
+<script src="motor.js"></script>
+</body>
+</html>
