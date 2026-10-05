@@ -26,6 +26,7 @@
   a.clase:hover .titulo{color:var(--rojo)}
   .sin-enlace{background:#ECE8DF}
   .sin-enlace .titulo::after{content:" · en cocina";font-family:"Public Sans",sans-serif;font-size:.8rem;font-weight:500;color:var(--gris)}
+  .descarga .titulo::after{content:" ↓";color:var(--rojo)}
   .fecha{grid-row:span 2;font-weight:600;color:var(--rojo);font-size:.9rem;padding-top:3px}
   .titulo{font-family:"Fraunces",serif;font-weight:600;font-size:1.2rem;line-height:1.25;color:var(--marino)}
   .desc{color:var(--gris);line-height:1.45;font-size:.95rem}
@@ -50,6 +51,10 @@ const SESIONES = [
     archivo: "guia-apa.html",
     titulo: "Cómo citar en APA",
     descripcion: "Formato, interlineado, sangría francesa, citas textuales, cita de una cita y lista de referencias." },
+  { tema: "Guías de consulta", fecha: "Descarga",
+    archivo: "plantillas/Plantilla_APA.docx", descarga: true,
+    titulo: "Plantilla de Word en formato APA",
+    descripcion: "Hoja ya configurada: márgenes, interlineado doble y las dos sangrías. Escribe encima y entrega." },
   { tema: "Proyecto · Mi Plato, Mi Historia", fecha: "Jue 8 oct",
     archivo: "taller-1-preguntas-6-9.html",
     titulo: "Taller de proyecto · preguntas 6 a 9",
@@ -119,7 +124,7 @@ const SESIONES = [
     <h2>${esc(g.tema)}</h2>
     <ol>${g.items.map(s => `
       <li>${s.archivo
-        ? `<a class="clase" href="${esc(s.archivo)}">`
+        ? `<a class="clase${s.descarga ? " descarga" : ""}" href="${esc(s.archivo)}"${s.descarga ? " download" : ""}>`
         : `<div class="clase sin-enlace">`}
         <span class="fecha">${esc(s.fecha)}</span>
         <span class="titulo">${esc(s.titulo)}</span>
