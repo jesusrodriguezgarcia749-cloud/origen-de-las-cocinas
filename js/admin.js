@@ -270,6 +270,12 @@ async function agregarItemCatalogo(tipo) {
   const fecha = document.getElementById(cfg.fechaInput).value;
   const parcial = document.getElementById(cfg.parcialSelect).value;
   if (!nombre) { alert('Escribe un nombre.'); return; }
+  // Aviso importante: en cuanto una tarea entra al catálogo, empieza a contar
+  // para la calificación. Quien no la entregue tendrá cero en ella.
+  if (tipo === 'tareas') {
+    const ok = confirm(`¿Agregar la tarea "${nombre}" al ${parcial === 'p1' ? 'Parcial 1' : parcial === 'p2' ? 'Parcial 2' : 'Examen Final'}?\n\nDesde este momento cuenta para la calificación: a quien no la entregue le contará como cero en el promedio de tareas.`);
+    if (!ok) return;
+  }
   try {
     await addDoc(collection(db, 'grupos', grupoActivo, cfg.catalogo), { nombre, fecha, parcial, creado: serverTimestamp() });
   } catch (err) { marcarResultado(cfg.btnAgregar, cfg.msgNueva, false, '', 'No se pudo agregar: ' + (err.message || err)); return; }
@@ -296,6 +302,14 @@ async function cargarCatalogo(tipo) {
   } catch { items = []; }
   empty.hidden = items.length > 0;
   if (items.length === 0) { empty.textContent = 'Sin registros en este parcial todavía.'; return; }
+  // Para tareas, se recuerda cuántas hay: es el denominador del promedio.
+  if (tipo === 'tareas') {
+    const nota = document.createElement('p');
+    nota.className = 'field-hint';
+    nota.style.margin = '0 0 10px';
+    nota.textContent = `Hay ${items.length} tarea(s) en este parcial. El promedio se saca sobre ese total: lo no entregado cuenta como cero.`;
+    cont.appendChild(nota);
+  }
   items.forEach(item => {
     const row = document.createElement('button');
     row.type = 'button'; row.className = 'asis-row';
@@ -794,7 +808,11 @@ async function ajustarCalificacionExamen(alumnoId, parcial) {
 // ---------- HISTORIAL ----------
 async function datosDeAlumno(alumnoId) {
   const base = ['grupos', grupoActivo, 'alumnos', alumnoId];
-  const [tarSnap, partSnap, asisSnap, unifP1, unifP2, exaP1, exaP2, exaFinal, practicoP2, proyE1, proyE2, proyEF] = await Promise.all([
+  const [catalogoSnap, tarSnap, partSnap, asisSnap, unifP1, unifP2, exaP1, exaP2, exaFinal, practicoP2, proyE1, proyE2, proyEF] = await Promise.all([
+    // Catálogo de tareas del grupo: define cuántas tareas existen en cada
+    // parcial. Es el denominador del promedio, para que una tarea del
+    // catálogo que el alumno no entregó cuente como cero.
+    getDocs(collection(db, 'grupos', grupoActivo, 'tareas_catalogo')).catch(() => null),
     getDocs(collection(db, ...base, 'tareas')).catch(() => null),
     getDocs(collection(db, ...base, 'participaciones')).catch(() => null),
     getDocs(collection(db, ...base, 'asistencias')).catch(() => null),
@@ -809,8 +827,11 @@ async function datosDeAlumno(alumnoId) {
     getDoc(doc(db, ...base, 'proyecto', 'entregaFinal')).catch(() => null),
   ]);
   return {
-    tareas: tarSnap ? tarSnap.docs.map(d => d.data()) : [],
-    participaciones: partSnap ? partSnap.docs.map(d => d.data()) : [],
+    catalogoTareas: catalogoSnap ? catalogoSnap.docs.map(d => ({ id: d.id, ...d.data() })) : [],
+    // Se conserva el id del documento: es el mismo id que la tarea tiene en
+    // el catálogo, y es con lo que se emparejan entregadas contra esperadas.
+    tareas: tarSnap ? tarSnap.docs.map(d => ({ id: d.id, ...d.data() })) : [],
+    participaciones: partSnap ? partSnap.docs.map(d => ({ id: d.id, ...d.data() })) : [],
     asistencias: asisSnap ? asisSnap.docs.map(d => d.data()) : [],
     uniformes: { p1: unifP1 && unifP1.exists() ? unifP1.data() : null, p2: unifP2 && unifP2.exists() ? unifP2.data() : null },
     examenes: { p1: exaP1 && exaP1.exists() ? exaP1.data() : null, p2: exaP2 && exaP2.exists() ? exaP2.data() : null, final: exaFinal && exaFinal.exists() ? exaFinal.data() : null },
@@ -912,6 +933,21 @@ async function mostrarResumenAlumno(alumno) {
       .map(x => `<li>${escaparHTML(x.fecha || 'sin fecha')} — ${escaparHTML(x.nombre || '')}${conCalificacion ? `: <strong>${(Number(x.calificacion) || 0).toFixed(1)}/10</strong>` : ''}</li>`).join('');
     return `<ul style="margin:6px 0 0; padding-left:18px; font-size:.85em;">${filas}</ul>`;
   };
+  // Lista de tareas que marca explícitamente las no entregadas.
+  const listaTareasHTML = (entregadas, faltantes) => {
+    const items = [
+      ...(entregadas || []).map(x => ({ ...x, entregada: true })),
+      ...(faltantes || []).map(x => ({ ...x, entregada: false })),
+    ];
+    if (items.length === 0) return `<p class="empty-inline">Sin tareas registradas.</p>`;
+    const filas = items.sort((a, b) => (a.fecha || '').localeCompare(b.fecha || ''))
+      .map(x => x.entregada
+        ? `<li>${escaparHTML(x.fecha || 'sin fecha')} — ${escaparHTML(x.nombre || '')}: <strong>${(Number(x.calificacion) || 0).toFixed(1)}/10</strong></li>`
+        : `<li>${escaparHTML(x.fecha || 'sin fecha')} — ${escaparHTML(x.nombre || '')}: <strong>no entregada (0/10)</strong></li>`)
+      .join('');
+    return `<ul style="margin:6px 0 0; padding-left:18px; font-size:.85em;">${filas}</ul>`;
+  };
+  const etiquetaTareas = (r) => `Tareas (${r.esperadas ? `${r.entregadas} de ${r.esperadas} entregadas` : 'sin tareas registradas'})`;
 
   resumen.innerHTML = `
     <p class="eval-alumno-activo">Resumen de: ${escaparHTML(alumno.nombre)}</p>
@@ -931,18 +967,18 @@ async function mostrarResumenAlumno(alumno) {
       } else if (esP2) {
         cuerpo = filaRubro('Examen escrito', r.examenEscrito.pts, r.examenEscrito.tope) +
           filaRubro('Examen práctico', r.practico.pts, r.practico.tope) +
-          filaRubro('Tareas', r.tareas.pts, r.tareas.tope) +
+          filaRubro(etiquetaTareas(r.tareas), r.tareas.pts, r.tareas.tope) +
           filaRubro(`Participación (${r.participacion.cantidad} de ${r.participacion.meta})`, r.participacion.pts, r.participacion.tope) +
           filaRubro('Asistencia', r.asistencia.pts, r.asistencia.tope) +
           filaRubro('Uniformes', r.uniformes.pts, r.uniformes.tope) +
-          `<details class="prog-detalle-bloque" style="margin-top:8px;"><summary>Ver fechas — Tareas y Participación</summary><p class="field-hint" style="margin:8px 0 2px;">Tareas:</p>${listaDetalleHTML(r.tareas.lista, 'Sin tareas capturadas.', true)}<p class="field-hint" style="margin:10px 0 2px;">Participación:</p>${listaDetalleHTML(r.participacion.lista, 'Sin participación capturada.', false)}</details>`;
+          `<details class="prog-detalle-bloque" style="margin-top:8px;"><summary>Ver fechas — Tareas y Participación</summary><p class="field-hint" style="margin:8px 0 2px;">Tareas:</p>${listaTareasHTML(r.tareas.lista, r.tareas.faltantes)}<p class="field-hint" style="margin:10px 0 2px;">Participación:</p>${listaDetalleHTML(r.participacion.lista, 'Sin participación capturada.', false)}</details>`;
       } else {
         cuerpo = filaRubro('Examen', r.examen.pts, r.examen.tope) +
-          filaRubro('Tareas', r.tareas.pts, r.tareas.tope) +
+          filaRubro(etiquetaTareas(r.tareas), r.tareas.pts, r.tareas.tope) +
           filaRubro(`Participación (${r.participacion.cantidad} de ${r.participacion.meta})`, r.participacion.pts, r.participacion.tope) +
           filaRubro('Asistencia', r.asistencia.pts, r.asistencia.tope) +
           filaRubro('Uniformes', r.uniformes.pts, r.uniformes.tope) +
-          `<details class="prog-detalle-bloque" style="margin-top:8px;"><summary>Ver fechas — Tareas y Participación</summary><p class="field-hint" style="margin:8px 0 2px;">Tareas:</p>${listaDetalleHTML(r.tareas.lista, 'Sin tareas capturadas.', true)}<p class="field-hint" style="margin:10px 0 2px;">Participación:</p>${listaDetalleHTML(r.participacion.lista, 'Sin participación capturada.', false)}</details>`;
+          `<details class="prog-detalle-bloque" style="margin-top:8px;"><summary>Ver fechas — Tareas y Participación</summary><p class="field-hint" style="margin:8px 0 2px;">Tareas:</p>${listaTareasHTML(r.tareas.lista, r.tareas.faltantes)}<p class="field-hint" style="margin:10px 0 2px;">Participación:</p>${listaDetalleHTML(r.participacion.lista, 'Sin participación capturada.', false)}</details>`;
       }
       return `<div class="res-card"><h4>${NOMBRES_PARCIAL[p]}</h4>${cuerpo}<div class="res-row res-total"><span>Total</span><strong>${r.total.toFixed(1)} / 100 pts</strong></div></div>`;
     }).join('')}
@@ -959,17 +995,17 @@ async function exportarCalificaciones() {
   const msg = document.getElementById('export-msg');
   msg.textContent = 'Preparando archivo…'; msg.hidden = false;
 
-  const filas = [['Alumno', 'Parcial', 'Examen escrito', 'Examen práctico', 'Proyecto', 'Tareas', 'Participación', 'Asistencia', 'Uniformes', 'TOTAL (100)']];
+  const filas = [['Alumno', 'Parcial', 'Examen escrito', 'Examen práctico', 'Proyecto', 'Tareas', 'Tareas entregadas', 'Participación', 'Asistencia', 'Uniformes', 'TOTAL (100)']];
   for (const alumno of alumnosCache) {
     const datos = await datosDeAlumno(alumno.id);
     PARCIALES.forEach(p => {
       const r = calcularParcial(p, datos);
       if (p === 'final') {
-        filas.push([alumno.nombre, NOMBRES_PARCIAL[p], r.examen.pts.toFixed(1), '—', r.proyecto.pts.toFixed(1), r.tareasParticipacion.pts.toFixed(1), '—', r.asistencia.pts.toFixed(1), '—', r.total.toFixed(1)]);
+        filas.push([alumno.nombre, NOMBRES_PARCIAL[p], r.examen.pts.toFixed(1), '—', r.proyecto.pts.toFixed(1), r.tareasParticipacion.pts.toFixed(1), '—', '—', r.asistencia.pts.toFixed(1), '—', r.total.toFixed(1)]);
       } else if (p === 'p2') {
-        filas.push([alumno.nombre, NOMBRES_PARCIAL[p], r.examenEscrito.pts.toFixed(1), r.practico.pts.toFixed(1), '—', r.tareas.pts.toFixed(1), r.participacion.pts.toFixed(1), r.asistencia.pts.toFixed(1), r.uniformes.pts.toFixed(1), r.total.toFixed(1)]);
+        filas.push([alumno.nombre, NOMBRES_PARCIAL[p], r.examenEscrito.pts.toFixed(1), r.practico.pts.toFixed(1), '—', r.tareas.pts.toFixed(1), `${r.tareas.entregadas ?? 0} de ${r.tareas.esperadas ?? 0}`, r.participacion.pts.toFixed(1), r.asistencia.pts.toFixed(1), r.uniformes.pts.toFixed(1), r.total.toFixed(1)]);
       } else {
-        filas.push([alumno.nombre, NOMBRES_PARCIAL[p], r.examen.pts.toFixed(1), '—', '—', r.tareas.pts.toFixed(1), r.participacion.pts.toFixed(1), r.asistencia.pts.toFixed(1), r.uniformes.pts.toFixed(1), r.total.toFixed(1)]);
+        filas.push([alumno.nombre, NOMBRES_PARCIAL[p], r.examen.pts.toFixed(1), '—', '—', r.tareas.pts.toFixed(1), `${r.tareas.entregadas ?? 0} de ${r.tareas.esperadas ?? 0}`, r.participacion.pts.toFixed(1), r.asistencia.pts.toFixed(1), r.uniformes.pts.toFixed(1), r.total.toFixed(1)]);
       }
     });
   }
