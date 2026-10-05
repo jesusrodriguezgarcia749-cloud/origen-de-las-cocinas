@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>4.4 El primer restaurante · Origen de las Cocinas</title>
+</head>
+<body>
+<!-- =====================================================================
+     SESIÓN: Viernes 20 de noviembre · 4.4 El primer restaurante + repaso Parcial 2 · 2 horas
+     Fuente: libro de texto Origen de las Cocinas, Tema 4.4
+     ===================================================================== -->
+<script>
+const PRESENTACION = {
+  materia: "Origen de las Cocinas",
+
+  diapositivas: [
+    { tipo: "portadaDia",
+      tema: "Tema 4 · La comida y el poder",
+      dia: "Viernes 20 de noviembre",
+      titulo: "4.4 El primer restaurante",
+      subtitulo: "Y repaso para el Parcial 2",
+      duracion: "2 horas",
+      imagen: "img/primer_restaurante.jpg" },
+
+    { tipo: "objetivos",
+      intro: "Hoy vas a descubrir que algo tan normal como elegir de una carta es un invento reciente.",
+      puntos: [
+        "Vas a conocer el origen del restaurante y de su nombre.",
+        "Vas a entender por qué la Revolución Francesa lo multiplicó.",
+        "Vas a diseñar en equipo un menú à la carte.",
+        "Vas a repasar los Temas 3 y 4 para el Parcial 2."
+      ] },
+
+    { tipo: "pregunta",
+      minutos: "0-10", evaluacion: "Formativo",
+      pregunta: "Antes de 1765, ¿qué pasaba si querías comer fuera de casa?",
+      respuesta: "Ibas a una **posada** o a una **casa de comidas**, comías **a la hora que ellos decidían** y te servían **lo que hubiera**. No había carta ni posibilidad real de elegir." },
+
+    { tipo: "tema",
+      titulo: "Un invento sorprendentemente reciente",
+      puntos: [
+        "El restaurante como lo conocemos hoy es **sorprendentemente reciente** frente a toda la historia que hemos recorrido.",
+        "Su definición tiene tres partes: **elegir libremente** entre platillos, **a cualquier hora**, sentado en una **mesa individual**.",
+        "Antes existían **posadas** y casas de comidas, llamadas *traiteurs*, que servían a hora fija lo que el establecimiento decidiera.",
+        "**Dato de perspectiva:** Roma documentó sus banquetes hace 2,000 años. El restaurante tiene apenas **260**."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Boulanger y el nacimiento del término",
+      minutos: "11-30", evaluacion: "Formativo",
+      puntos: [
+        "Según el relato más difundido, en **1765** un parisino conocido como **Boulanger** abrió en la rue des Poulies, cerca del actual Louvre, un pequeño establecimiento.",
+        "Vendía **“caldos restaurativos”** o *bouillons*.",
+        "Los anunciaba con un cartel en **latín** que prometía **“restaurar”** el estómago cansado del cliente.",
+        "De esa promesa de restauración derivó, con el tiempo, la palabra **“restaurante”**."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "Lo que cambió para siempre",
+          imagen: "img/primer_restaurante.jpg",
+          notas: "Pregunta: ¿qué ven aquí que no habría en una posada de la época? Las mesas individuales.",
+          puntos: [
+            "**Mesas individuales con mantel:** cada quien en la suya. En la posada se comía en una mesa comunal, con desconocidos.",
+            "**Caldos humeantes:** los *bouillons* “restaurativos” con los que empezó todo.",
+            "**Cada mesa con su propio plato:** se podía elegir, en vez de recibir lo que hubiera.",
+            "**Espejos y lámparas:** el local aspiraba a la elegancia, no solo a llenar el estómago.",
+            "**Lo verdaderamente nuevo:** no fue la comida. Fue **la libertad de elegir qué, cuándo y dónde sentarse**."
+          ] }
+      ] },
+
+    { tipo: "tema",
+      titulo: "Ojo: la historia está en discusión",
+      etiqueta: "Pensamiento crítico",
+      notas: "Enlaza con la lección del queso relleno: la tradición oral y los documentos no siempre coinciden. Es justo lo que pide la pregunta 20 del proyecto.",
+      puntos: [
+        "El relato de Boulanger es el **más difundido**, pero no todos los historiadores lo dan por probado.",
+        "Investigaciones académicas señalan que **ese personaje casi no aparece en los documentos** de la época, y que el cambio fue más gradual.",
+        "Otros países reclaman antigüedad: en **Madrid** hay un establecimiento de **1725**, aunque abrió como hostería, no como restaurante.",
+        "**La lección:** una fecha fundacional redonda y una frase bonita se repiten fácil. Un buen profesional **revisa de dónde viene el dato**."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Beauvilliers y el salón elegante",
+      puntos: [
+        "Poco después, **Antoine Beauvilliers**, antiguo cocinero al servicio del Conde de Provenza, abrió **La Grande Taverne de Londres**.",
+        "El cliente podía **sentarse cuando quisiera** y elegir entre varios platillos en **porciones individuales**.",
+        "**Brillat-Savarin** lo describió como el mejor restaurador de París durante quince años.",
+        "Destacó cuatro cosas: **salón elegante**, **servicio esmerado**, **bodega cuidada** y **cocina de calidad superior**. Siguen siendo los cuatro pilares de hoy."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "La carta: poder elegir",
+          imagen: "img/carta_menu_historico.jpg",
+          notas: "La letra de la imagen es decorativa y no corresponde a un documento real; úsala solo como ambientación.",
+          puntos: [
+            "**Organizada por tiempos:** sopas, entradas, asados, postres y vinos, cada uno en su columna.",
+            "**Manuscrita:** cada ejemplar se copiaba a mano. La carta impresa llegó después.",
+            "**Los precios al lado de cada platillo:** el cliente sabía de antemano cuánto iba a pagar. Eso también era nuevo.",
+            "**Pluma, tintero y vela:** así se trabajaba antes de la imprenta barata.",
+            "**La carta es el símbolo del invento:** un papel que dice **“tú decides”**."
+          ] }
+      ] },
+
+    { tipo: "tema",
+      titulo: "La Revolución Francesa multiplicó todo",
+      minutos: "31-45", evaluacion: "Formativo",
+      puntos: [
+        "La verdadera multiplicación llegó con la **Revolución Francesa de 1789**.",
+        "La caída del Antiguo Régimen dejó **sin empleo a un enorme número de cocineros** que trabajaban para la aristocracia y el clero.",
+        "Muchos optaron por **abrir sus propios establecimientos** para el público.",
+        "De **menos de cien** restaurantes en París antes de la Revolución, se pasó a **varios miles** a finales de la primera década del siglo XIX."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "El cocinero sin corte",
+          imagen: "img/cocinero_sin_corte.jpg",
+          notas: "Pregunta: si fueras ese cocinero, ¿qué harías? Deja que respondan antes del último punto.",
+          puntos: [
+            "**La cocina vacía:** los fogones apagados, los muebles cubiertos, el polvo. La corte se fue.",
+            "**Los cazos de cobre siguen colgados:** las herramientas están. Lo que falta es el patrón.",
+            "**El cocinero se queda solo** con su oficio y sin a quién servir.",
+            "**Lo que hicieron muchos:** abrir su propio local y cocinar para quien pudiera pagar.",
+            "**La paradoja de la historia:** la técnica que se había desarrollado **para los reyes** terminó, gracias a una revolución, **al alcance del público**."
+          ] }
+      ] },
+
+    { tipo: "cita",
+      texto: "El restaurante moderno nació apenas en 1765, y no se multiplicó hasta que la Revolución Francesa dejó sin empleo a los cocineros de la aristocracia.",
+      autor: "Origen de las Cocinas, Tema 4.4" },
+
+    { tipo: "video",
+      titulo: "Cómo surgieron los restaurantes",
+      youtube: "https://www.youtube.com/watch?v=dHlPGovhM9k",
+      pie: "Video breve en español sobre el origen del restaurante.",
+      notas: "Antes de ponerlo, pide que busquen tres cosas: 1) de dónde viene la palabra “restaurante”, 2) qué pasaba antes de que existieran, 3) qué papel jugó la Revolución Francesa. Revísalo antes de clase." },
+
+    { tipo: "tema",
+      titulo: "Grimod: nace la crítica gastronómica",
+      puntos: [
+        "Tantos restaurantes nuevos produjeron casi de inmediato una profesión que no existía: la **crítica gastronómica**.",
+        "**Grimod de La Reynière**, noble venido a menos tras la Revolución, publicó entre **1803 y 1812** ocho volúmenes de ***L'Almanach des gourmands***.",
+        "Se considera el **primer texto de crítica de restaurantes** de la historia, con reseñas de platillos y cocineros, organizado en recorridos a pie que llamaba **“itinerarios nutritivos”**.",
+        "Antes era **crítico teatral**: trasladó a la mesa el mismo oficio de evaluar en público."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "cita",
+      texto: "Los platos sobre los que se habla parecen mejores.",
+      autor: "Grimod de La Reynière, atribuido",
+      notas: "Pregunta al grupo: ¿pasa lo mismo hoy con las reseñas y las redes sociales?" },
+
+    { tipo: "tema",
+      titulo: "Delmonico's: el modelo cruza el Atlántico",
+      minutos: "46-60", evaluacion: "Formativo",
+      puntos: [
+        "En **1837**, los hermanos suizos **Giovanni y Pietro Delmonico** abrieron en Nueva York el primer restaurante de **alta cocina de Estados Unidos**.",
+        "Introdujeron prácticas desconocidas ahí: **menú impreso à la carte** en lugar del *table d'hôte* de menú fijo, **carta de vinos separada**, comedores privados y una cava de **más de mil botellas**.",
+        "En **1862** contrataron a **Charles Ranhofer**, considerado el primer **“chef estrella”** de ese país.",
+        "De su cocina salieron el **bistec Delmonico**, la **langosta Newberg** y el **Baked Alaska**."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "observa",
+          titulo: "El comedor como escaparate",
+          imagen: "img/comedor_gran_hotel.jpg",
+          notas: "Pregunta: ¿a qué se parece esto de la clase pasada? A Versalles. La diferencia: aquí no hace falta ser noble, basta con pagar.",
+          puntos: [
+            "**Mantel blanco, cristalería y plata:** la vajilla de la corte, ahora en un negocio abierto al público.",
+            "**Meseros de frac:** el servicio esmerado que ya describía Brillat-Savarin.",
+            "**La clientela es la alta burguesía**, no la nobleza: gente que **paga**, no que hereda.",
+            "**Verse mientras se come:** el comedor sigue siendo escenario, igual que en Versalles.",
+            "**El cambio de fondo:** el lujo de la mesa dejó de ser un **privilegio de nacimiento** y pasó a ser un **servicio que se compra**."
+          ] }
+      ] },
+
+    { tipo: "tema",
+      titulo: "México: el Porfiriato y las fondas",
+      puntos: [
+        "Durante el **Porfiriato (1876-1911)**, la cocina francesa se volvió un símbolo de estatus tan fuerte que los **frijoles, la tortilla y el chile** llegaron a tratarse con desdén en público.",
+        "Los restaurantes de moda tenían nombres y menús en francés: **La Maison Dorée**, **La Concordia**, **La Ópera** y sobre todo **Sylvain**, fundado en 1903.",
+        "Para el **Centenario de 1910**, el chef **Sylvain Daumont** dirigió a un centenar de ayudantes en un banquete para **1,700 invitados**.",
+        "**La doble vida:** el propio Porfirio Díaz comía en privado los **tamales oaxaqueños** de su tierra, mientras sus banquetes oficiales se servían con menús en francés."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "tema",
+          titulo: "Las fondas: la otra historia",
+          puntos: [
+            "Mientras la élite cenaba en francés, la mayoría comía en **fondas y figones**: establecimientos populares, sencillos y baratos.",
+            "Servían **comida corrida** a una clientela mucho más mezclada socialmente.",
+            "Son el equivalente mexicano de los **thermopolia romanos**: un circuito popular que existió **siempre en paralelo** a la alta cocina.",
+            "**Por qué casi no hay registro de ellas:** su clientela **no dejaba memorias ni crónicas escritas**. La historia conserva lo que alguien se tomó la molestia de escribir."
+          ],
+          pasoAPaso: true }
+      ] },
+
+    { tipo: "pregunta",
+      pregunta: "Cayó el Porfiriato en 1911. ¿Qué pasó con los restaurantes franceses?",
+      respuesta: "**No desaparecieron.** Los nuevos revolucionarios simplemente **ocuparon las mismas mesas**. El poder político cambia de manos mucho más seguido que los hábitos de la mesa que ese poder disfruta." },
+
+    { tipo: "pausa",
+      titulo: "¡Pausa activa!",
+      duracion: "5 minutos",
+      minutos: "61-66",
+      texto: "**Fonda o restaurante.** De pie. Al escuchar una característica, da un paso **al frente** si es de fonda y **atrás** si es de restaurante de lujo: comida corrida, carta de vinos, precio fijo del día, menú à la carte, mesa compartida, comedor privado, chef con nombre propio." },
+
+    { tipo: "tarea",
+      titulo: "Diseñen un menú à la carte",
+      minutos: "67-95", evaluacion: "Sumativo · Rúbrica de Tarea",
+      notas: "Actividad central. Da 20 minutos de trabajo y deja 8 para presentar.",
+      puntos: [
+        "En equipos, diseñen un **menú à la carte** inspirado en **Delmonico's** o en un **restaurante porfirista**.",
+        "Debe incluir: **entradas, platos fuertes y postres**, con **precios** y una **carta de vinos** separada.",
+        "Cuiden el detalle de época: ¿en qué idioma estaría escrito? ¿qué platillos serían un lujo entonces?",
+        "Cada equipo presenta su menú y explica **qué mensaje manda** a su clientela."
+      ] },
+
+    { tipo: "tema",
+      titulo: "Repaso para el Parcial 2",
+      minutos: "96-110", evaluacion: "Participación",
+      notas: "Repaso dirigido. Haz que el grupo reconstruya cada punto antes de mostrarlo.",
+      puntos: [
+        "**Tema 3:** las cinco regiones del mundo. África, América, Asia, Europa y Oceanía.",
+        "**Tema 4, hasta hoy:** la necesidad de alimentarse, Roma, la realeza y el restaurante.",
+        "**Las ideas que atraviesan todo:** ninguna cocina es pura; la geografía manda; los ingredientes viajan y se vuelven “de siempre”; el poder se expresa en la mesa.",
+        "**Para estudiar en casa:** repasa la **Cronología** y el **Glosario** del libro."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "repaso",
+      notas: "Unos 8 minutos. Es repaso de cierre: mezcla preguntas del Tema 3 y del Tema 4.",
+      preguntas: [
+        { pregunta: "¿De dónde viene la palabra “restaurante”?", respuesta: "De los **caldos “restaurativos”** que prometían restaurar el estómago cansado, hacia 1765." },
+        { pregunta: "¿Qué novedad introdujo Delmonico's en 1837?", respuesta: "El **menú à la carte** impreso, carta de vinos separada y un **chef con nombre propio**." },
+        { pregunta: "¿Cómo se llamaba la comida pública del rey en Versalles?", respuesta: "El **grand couvert**." },
+        { pregunta: "¿Qué horno de tierra comparten el pib maya y el hangi maorí?", respuesta: "Los dos cuecen con **piedras calientes bajo tierra**, en continentes distintos." },
+        { pregunta: "¿Qué recetario documentó la cocina romana?", respuesta: "**De re coquinaria**, atribuido a Apicio." }
+      ] },
+
+    { tipo: "proyecto",
+      minutos: "111-117",
+      notas: "Recuérdales que con las respuestas de las últimas semanas deben armar el borrador completo de la Entrega 2.",
+      preguntas: [
+        { numero: 20, texto: "¿Existe o existió algún restaurante famoso asociado a mi platillo? ¿Hay alguna leyenda popular sobre su origen que la investigación seria desmiente?" }
+      ] },
+
+    { tipo: "cierre",
+      minutos: "118-120",
+      evidencia: "El menú de cada equipo incluye entradas, fuertes, postres, precios y carta de vinos, con coherencia de época.",
+      materiales: "Libro de texto, Tema 4.4, Cronología y Glosario.",
+      proxima: "**Repaso individual** con la Cronología y el Glosario. Armar el **borrador completo de la Entrega 2** de Mi Plato, Mi Historia." }
+  ]
+};
+</script>
+<script src="motor.js"></script>
+</body>
+</html>
