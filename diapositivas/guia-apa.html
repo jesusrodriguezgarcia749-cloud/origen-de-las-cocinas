@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cómo citar en APA · Origen de las Cocinas</title>
+</head>
+<body>
+<!-- =====================================================================
+     GUÍA DE CONSULTA · Cómo citar en formato APA (7.ª edición)
+     Se usa el jueves 8 de octubre y queda disponible todo el cuatrimestre.
+     ===================================================================== -->
+<script>
+const PRESENTACION = {
+  materia: "Origen de las Cocinas",
+
+  diapositivas: [
+    { tipo: "portadaDia",
+      tema: "Guía de consulta",
+      dia: "Para todo el cuatrimestre",
+      titulo: "Cómo citar en APA",
+      subtitulo: "Séptima edición · lo que más vas a usar",
+      duracion: "Consulta libre" },
+
+    { tipo: "objetivos",
+      titulo: "Para qué sirve esta guía",
+      intro: "No necesitas aprenderte APA de memoria. Necesitas saber dónde consultarlo.",
+      puntos: [
+        "Cómo se ve un documento en APA: márgenes, interlineado y sangrías.",
+        "Cómo citar dentro del texto, con tus palabras o textualmente.",
+        "Qué hacer cuando citas algo que ya venía citado en otro libro.",
+        "Cómo se arma la lista de referencias."
+      ] },
+
+    { tipo: "tema",
+      titulo: "¿Por qué se cita?",
+      etiqueta: "Lo primero",
+      notas: "No lo plantees como un trámite. Plantéalo como honestidad profesional.",
+      puntos: [
+        "**Para dar crédito** a quien hizo el trabajo antes que tú.",
+        "**Para que te puedan verificar:** cualquiera debe poder ir a tu fuente y comprobar el dato.",
+        "**Para que te tomen en serio:** un trabajo sin fuentes es una opinión; con fuentes, es una investigación.",
+        "**Para no cometer plagio.** Usar las palabras o las ideas de otro sin decirlo tiene consecuencias académicas y legales."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Cómo se ve un documento en APA",
+      etiqueta: "Formato",
+      notas: "Dicta estas cuatro medidas. Son las que más se les olvidan al entregar.",
+      puntos: [
+        "**Márgenes:** 2.54 cm por los cuatro lados. Es el que Word trae como “Normal”.",
+        "**Interlineado:** **doble** en todo el documento, incluidas las referencias. Sin espacios extra entre párrafos.",
+        "**Letra:** Times New Roman 12, o Arial o Calibri 11. Una sola en todo el trabajo.",
+        "**Alineación:** el texto se alinea a la **izquierda**, no justificado."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "tema",
+          titulo: "Dónde está cada cosa en Word",
+          puntos: [
+            "**Interlineado doble:** pestaña Inicio → el icono de interlineado → elige **2.0**. Después, en ese mismo menú, “Quitar espacio después del párrafo”.",
+            "**Márgenes:** pestaña Disposición → Márgenes → **Normal**.",
+            "**Sangrías:** pestaña Inicio → la flechita de la esquina del grupo Párrafo → ahí aparece **Sangría especial**.",
+            "**Consejo:** configura todo **antes** de empezar a escribir. Arreglarlo al final toma el triple de tiempo."
+          ],
+          pasoAPaso: true }
+      ] },
+
+    { tipo: "tema",
+      titulo: "Las dos sangrías",
+      etiqueta: "Ojo con esto",
+      notas: "Es lo que más preguntan. Dibuja las dos en el pizarrón, se entienden mejor viéndolas.",
+      puntos: [
+        "**Sangría de primera línea (1.27 cm):** se usa en **cada párrafo del texto**. Solo la primera línea entra un poco.",
+        "**Sangría francesa (1.27 cm):** se usa **solo en las referencias**. Es al revés: la primera línea queda pegada al margen y **las demás entran**.",
+        "**Por qué es al revés:** para que el apellido del autor salte a la vista al buscar en la lista.",
+        "**En Word:** Párrafo → Sangría especial → **Primera línea** o **Francesa**, y escribe 1.27 cm."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Citar con tus palabras",
+      etiqueta: "Parafraseo",
+      notas: "Insiste: parafrasear no es cambiar dos palabras. Es entenderlo y decirlo de nuevo.",
+      puntos: [
+        "Es la forma **más usada** y la que más se valora: explicas la idea con tus propias palabras.",
+        "**No lleva comillas**, pero **sí lleva la cita**.",
+        "**Entre paréntesis:** El pibipollo se cuece en un horno de tierra (Rodríguez García, 2026).",
+        "**O dentro de la oración:** Según Rodríguez García (2026), el pibipollo se cuece en un horno de tierra."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Citar textualmente",
+      etiqueta: "Cita corta",
+      puntos: [
+        "Si el texto tiene **menos de 40 palabras**, va **entre comillas**, dentro de tu párrafo.",
+        "Al final se pone el autor, el año y, si el documento tiene páginas, **la página**.",
+        "**Ejemplo:** El autor señala que “el término *pib* significa enterrado” (Universidad Anáhuac Mérida, 2019).",
+        "**Si es un libro:** (Rodríguez García, 2026, p. 45). Si abarca varias páginas: (pp. 45-46)."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Cuando la cita es larga",
+      etiqueta: "Cita en bloque",
+      notas: "Adviérteles que no abusen: un trabajo lleno de citas largas parece relleno.",
+      puntos: [
+        "Si el texto tiene **40 palabras o más**, cambia el formato por completo.",
+        "**Se quitan las comillas.**",
+        "El bloque entero se mete **1.27 cm hacia adentro**, con interlineado doble.",
+        "La cita va **después del punto final**, no antes: ... y vuelve a la mesa de los vivos. (Rodríguez García, 2026, p. 45)"
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Citar una cita",
+      etiqueta: "Cita secundaria",
+      notas: "Esto es lo que preguntaste tú. Es el caso más frecuente cuando investigan en internet.",
+      puntos: [
+        "Pasa cuando encuentras una idea de un autor **citada dentro del libro de otro autor**, y no pudiste leer el original.",
+        "La fórmula es **“como se citó en”**.",
+        "**Ejemplo:** Brillat-Savarin describió a Beauvilliers como el mejor restaurador de París (como se citó en Rodríguez García, 2026).",
+        "**La regla que casi nadie sabe:** en la lista de referencias va **solo la fuente que sí leíste**, no la original."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "tema",
+          titulo: "Por qué se hace así",
+          puntos: [
+            "Porque tú **no verificaste** el texto original: estás confiando en que el segundo autor lo copió bien.",
+            "Si pones el original en tus referencias, estarías diciendo que lo leíste. Eso **no sería honesto**.",
+            "**Lo ideal siempre es buscar el original.** La cita secundaria es un recurso para cuando no está a tu alcance.",
+            "**Consejo práctico:** si vas a usar mucho una idea, invierte diez minutos en buscar la fuente original. Tu trabajo vale más."
+          ],
+          pasoAPaso: true }
+      ] },
+
+    { tipo: "tema",
+      titulo: "Cuántos autores",
+      puntos: [
+        "**Un autor:** (Rodríguez García, 2026).",
+        "**Dos autores:** siempre los dos, unidos por “y”: (Michelin y Michelin, 1900).",
+        "**Tres o más:** solo el primero, seguido de **et al.**: (Pérez et al., 2021).",
+        "**Una institución:** el autor es la institución: (UNESCO, 2010)."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Casos que siempre salen",
+      etiqueta: "Dudas frecuentes",
+      puntos: [
+        "**No tiene fecha:** se escribe **(s.f.)**, de “sin fecha”. Ejemplo: (Pérez, s.f.).",
+        "**No tiene autor:** se usa el **título abreviado** entre comillas: (“Historia del pibipollo”, 2020).",
+        "**Página web sin páginas:** no pongas número de página. Solo autor y año.",
+        "**Un video de YouTube:** el autor es el **canal**, y el año es el de publicación del video."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "La lista de referencias",
+      etiqueta: "Al final",
+      notas: "Aclara la diferencia entre referencias y bibliografía: solo va lo que citaste.",
+      puntos: [
+        "Va en **hoja aparte**, al final, con el título **Referencias** centrado y en negritas.",
+        "**Orden alfabético** por el apellido del primer autor.",
+        "**Sangría francesa** e interlineado doble.",
+        "**Regla de oro:** solo se incluye **lo que citaste** en el texto. Ni más, ni menos."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Cómo se escribe cada tipo",
+      puntos: [
+        "**Libro:** Apellido, N. (Año). *Título en cursiva*. Editorial.",
+        "**Capítulo de libro:** Apellido, N. (Año). Título del capítulo. En N. Apellido (Ed.), *Título del libro* (pp. 00-00). Editorial.",
+        "**Página web:** Autor o institución. (Año). *Título de la página en cursiva*. Nombre del sitio. Dirección web.",
+        "**Video:** Nombre del canal. (Año, día de mes). *Título del video* [Video]. YouTube. Dirección web."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Detalles de las referencias",
+      etiqueta: "Lo que más se equivoca",
+      puntos: [
+        "**En el título solo va mayúscula la primera palabra**, y los nombres propios. No todas las palabras.",
+        "**La cursiva es del título**, no del autor ni de la editorial.",
+        "**La dirección web va completa**, sin punto al final y sin la palabra “Recuperado de”.",
+        "**Todo lleva punto final**, menos la dirección web."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Tres errores que cuestan puntos",
+      etiqueta: "Evítalos",
+      notas: "Dilo con claridad: copiar y pegar sin citar es plagio, aunque no haya sido con intención.",
+      puntos: [
+        "**Copiar y pegar sin comillas ni cita.** Aunque sean dos renglones, es plagio.",
+        "**Citar en el texto algo que no está en las referencias**, o al revés. Las dos listas deben coincidir.",
+        "**Poner “Wikipedia” o “Google” como fuente.** Google es un buscador, no una fuente. Entra a la página que encontraste y cita esa.",
+        "**Extra:** Wikipedia sirve para orientarte, pero baja hasta sus referencias y usa **esas** fuentes."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "repaso",
+      titulo: "¿Qué tanto te acuerdas?",
+      notas: "Unos 5 minutos. Úsalo al cerrar el bloque de APA.",
+      preguntas: [
+        { pregunta: "¿Qué interlineado lleva todo el documento?", respuesta: "**Doble**, incluidas las referencias." },
+        { pregunta: "¿Qué sangría llevan las referencias?", respuesta: "**Francesa**, de 1.27 cm: la primera línea pegada y las demás adentro." },
+        { pregunta: "A partir de cuántas palabras una cita va en bloque sin comillas?", respuesta: "A partir de **40 palabras**." },
+        { pregunta: "¿Cómo se cita algo que leíste citado en otro libro?", respuesta: "Con **“como se citó en”**, y en las referencias va **solo la fuente que leíste**." },
+        { pregunta: "¿Qué va en la lista de referencias?", respuesta: "**Solo lo que citaste** en el texto. Ni más, ni menos." }
+      ] },
+
+    { tipo: "cierre",
+      titulo: "Guarda esta guía",
+      evidencia: "Puedes volver a esta presentación cuando quieras, desde el menú de diapositivas.",
+      materiales: "Documento de ejemplo de la Entrega 1, donde todo esto está aplicado.",
+      proxima: "Revisa el **documento de ejemplo del pibipollo**: ahí están las citas en el texto, las referencias y las sangrías tal como deben verse." }
+  ]
+};
+</script>
+<script src="motor.js"></script>
+</body>
+</html>
