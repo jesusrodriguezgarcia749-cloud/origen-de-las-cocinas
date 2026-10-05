@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Taller de proyecto · Preguntas 10 a 12 y Entrega 1 · Origen de las Cocinas</title>
+</head>
+<body>
+<!-- =====================================================================
+     SESIÓN: Viernes 9 de octubre · Taller de proyecto (2 de 2) · 2 horas
+     Cierre de la primera parte de Mi Plato, Mi Historia
+     ===================================================================== -->
+<script>
+const PRESENTACION = {
+  materia: "Origen de las Cocinas",
+
+  diapositivas: [
+    { tipo: "portadaDia",
+      tema: "Proyecto · Mi Plato, Mi Historia",
+      dia: "Viernes 9 de octubre",
+      titulo: "Cierre de la Entrega 1",
+      subtitulo: "Preguntas 10 a 12 y armado del documento",
+      duracion: "2 horas" },
+
+    { tipo: "objetivos",
+      intro: "Hoy cerramos la primera parte del proyecto. Al salir de aquí, tu Entrega 1 debe estar armada.",
+      puntos: [
+        "Vas a responder las preguntas 10, 11 y 12.",
+        "Vas a ver mi ejemplo completo, con sus referencias en APA.",
+        "Vas a armar el documento de la Entrega 1 con sus 12 respuestas.",
+        "Vas a revisarlo con una lista de verificación antes de entregarlo."
+      ] },
+
+    { tipo: "tema",
+      titulo: "Bloque 1: preguntas 10 y 11",
+      etiqueta: "Trabajo en clase",
+      minutos: "0-15", evaluacion: "Formativo",
+      notas: "Es el Tema 2.3, que ya vieron. Recuérdalo brevemente antes de los ejemplos.",
+      puntos: [
+        "**Pregunta 10:** ¿mi platillo tiene alguna norma religiosa asociada? Si no la tiene, explica por qué.",
+        "**Pregunta 11:** ¿se sirve en alguna fecha, rito o celebración específica? ¿Qué simboliza ahí, más allá del sabor?",
+        "Las dos son del **Tema 2.3**, el de religión, que ya vimos.",
+        "**Ojo con la 10:** “no tiene” también es una respuesta válida, **si la justificas**."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "ejemplo",
+      numero: 10,
+      pregunta: "¿Mi platillo tiene alguna norma religiosa asociada? Si no la tiene, explica por qué.",
+      respuesta: "No tiene una **norma** religiosa que prohíba o permita ingredientes, como el *kashrut* judío o el *halal* musulmán vistos en el Tema 2.3. Lo que sí tiene es un **uso ritual**: es la ofrenda central del Hanal Pixán. La diferencia importa: una norma **regula qué se puede comer**; un uso ritual **asigna un significado** a un platillo dentro de una ceremonia. El pibipollo es el segundo caso, y su carácter ritual viene de un **sincretismo** entre la tradición maya de honrar a los muertos y la celebración católica de los fieles difuntos.",
+      fuente: "Rodríguez García (2025), Tema 2.3.",
+      notas: "Es la respuesta modelo más valiosa: enseña a distinguir norma de rito, en lugar de responder sí o no." },
+
+    { tipo: "ejemplo",
+      numero: 11,
+      pregunta: "¿Se sirve en alguna fecha, rito o celebración específica? ¿Qué simboliza ahí, más allá del sabor?",
+      respuesta: "Se sirve en el **Hanal Pixán**, que en maya significa **“comida de las ánimas”**, del 31 de octubre al 2 de noviembre. Se coloca en el altar como ofrenda, bajo la creencia de que las ánimas regresan esos días a disfrutarlo. Su simbolismo está en la **técnica**: cocinarlo **bajo tierra** y después desenterrarlo evoca el **regreso al origen** y el vínculo con quienes ya se fueron. Prepararlo **en familia** forma parte del rito tanto como comerlo.",
+      fuente: "Universidad Anáhuac Mérida (2019); Rodríguez García (2025), Tema 2.3.",
+      notas: "Resalta que la pregunta dice “más allá del sabor”: lo que se pide es el significado, no la receta." },
+
+    { tipo: "tarea",
+      titulo: "Ahora ustedes: preguntas 10 y 11",
+      minutos: "16-40", evaluacion: "Participación",
+      notas: "Pasa mesa por mesa. Los más atrasados, que prioricen terminar lo que falte.",
+      puntos: [
+        "**Mínimo 4 renglones** por pregunta y anoten de dónde sacaron cada dato.",
+        "Si su platillo **no tiene** norma religiosa, **expliquen por qué**. No dejen la respuesta en un “no”.",
+        "Si no tiene fecha específica, digan **cuándo sí se come** y por qué.",
+        "Tienen **25 minutos**."
+      ] },
+
+    { tipo: "tema",
+      titulo: "Bloque 2: pregunta 12",
+      etiqueta: "Trabajo en clase",
+      minutos: "41-50", evaluacion: "Formativo",
+      puntos: [
+        "**Pregunta 12:** ¿a qué corriente gastronómica pertenece hoy mi platillo?",
+        "Es del **Tema 2.4**, el último que vimos.",
+        "Abran el libro en la lista de corrientes y ubiquen la suya.",
+        "Esta pregunta **cierra la Entrega 1**."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "ejemplo",
+      numero: 12,
+      pregunta: "¿A qué corriente gastronómica pertenece hoy mi platillo?",
+      respuesta: "Pertenece a la **cocina tradicional**, concretamente a la **cocina tradicional mexicana**, reconocida por la **UNESCO** como Patrimonio Cultural Inmaterial de la Humanidad en **2010** por ser una práctica cultural completa, de cultivo, técnica y transmisión entre generaciones. Dicho eso, también ha entrado en la **cocina de autor**: algunos restaurantes de la península lo reinterpretan en porciones individuales o con otros rellenos, lo que plantea una pregunta abierta: **¿sigue siendo un pibipollo si se sirve fuera del Hanal Pixán?**",
+      fuente: "UNESCO (2010); Rodríguez García (2025), Tema 2.4.",
+      notas: "La pregunta final del ejemplo es deliberada: muéstrales que una buena respuesta puede dejar abierta una duda bien planteada." },
+
+    { tipo: "tarea",
+      titulo: "Ahora ustedes: pregunta 12",
+      minutos: "51-65", evaluacion: "Participación",
+      puntos: [
+        "Ubiquen su platillo en **una corriente** del Tema 2.4 y **justifíquenlo**.",
+        "Si pertenece a más de una, **díganlo y expliquen** cómo conviven.",
+        "Tienen **15 minutos**.",
+        "Al terminar, **ya tienen las 12 respuestas**. Lo que sigue es armar el documento."
+      ] },
+
+    { tipo: "tema",
+      titulo: "Cómo se arma la Entrega 1",
+      etiqueta: "Entrega",
+      minutos: "66-70", evaluacion: "Sumativo",
+      notas: "Enseña aquí el documento de ejemplo del pibipollo. Que vean cómo se ve armado.",
+      puntos: [
+        "**Portada:** nombre del platillo, tu nombre completo, la materia, el grupo y la fecha.",
+        "**Las 12 preguntas**, cada una con su número, la pregunta y tu respuesta debajo.",
+        "**Citas en APA** dentro del texto, donde uses un dato que no sea tuyo.",
+        "**Referencias** al final, en orden alfabético."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Cómo se escriben las referencias",
+      notas: "Escríbelas en el pizarrón. El detalle que más se les olvida es la sangría de la segunda línea.",
+      puntos: [
+        "**Libro:** Apellido, N. (Año). *Título del libro en cursiva*. Editorial.",
+        "**Página web:** Autor o institución. (Año). *Título de la página en cursiva*. Nombre del sitio. Dirección web.",
+        "**Van en orden alfabético** por el apellido del autor.",
+        "La **segunda línea** de cada referencia va con sangría, un poco más adentro."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tarea",
+      titulo: "Armen su documento",
+      minutos: "71-105", evaluacion: "Sumativo · Entrega 1",
+      notas: "Deja que trabajen. Resuelve dudas de formato de uno en uno.",
+      puntos: [
+        "Pasen sus 12 respuestas **en limpio**, en el orden de las preguntas.",
+        "Agreguen la **portada** y la lista de **referencias**.",
+        "Revisen ortografía: **acentos**, mayúsculas y comas, como vimos ayer.",
+        "Tienen **35 minutos**. Lo que no terminen, se termina en casa."
+      ] },
+
+    { tipo: "tema",
+      titulo: "Lista de verificación antes de entregar",
+      etiqueta: "Revisa esto",
+      notas: "Que la copien. Es exactamente lo que vas a revisar al calificar.",
+      puntos: [
+        "**¿Están las 12 preguntas?** Con su número y la pregunta escrita completa.",
+        "**¿Cada respuesta tiene al menos 4 renglones?** Nada de respuestas de una línea.",
+        "**¿Citaste tus fuentes** donde usaste un dato que no es tuyo?",
+        "**¿Está la lista de referencias** al final, en orden alfabético?",
+        "**¿Lo releíste completo** buscando acentos y mayúsculas?"
+      ],
+      pasoAPaso: true },
+
+    { tipo: "repaso",
+      notas: "Unos 5 minutos. Repaso rápido del proyecto y del examen.",
+      preguntas: [
+        { pregunta: "¿Cuántas preguntas forman la Entrega 1?", respuesta: "**Las 12 primeras.**" },
+        { pregunta: "¿Qué lleva una cita textual en APA?", respuesta: "**Comillas** y, al final, **(Apellido, año)**." },
+        { pregunta: "¿Dónde van las referencias completas?", respuesta: "**Al final del documento**, en orden alfabético." },
+        { pregunta: "¿Qué se hace si una pregunta no aplica a mi platillo?", respuesta: "**Se responde explicando por qué no aplica.** Nunca se deja en blanco." }
+      ] },
+
+    { tipo: "cierre",
+      minutos: "106-120",
+      evidencia: "Documento de la Entrega 1 armado: portada, las 12 preguntas respondidas, citas en el texto y referencias al final.",
+      materiales: "Libro de texto (Temas 2.3 y 2.4), respuestas de la 1 a la 9, computadora o cuaderno.",
+      proxima: "**Jueves 15: examen del Parcial 1.** Estudien con la Cronología y el Glosario del libro. Entrega 1 según la fecha acordada." }
+  ]
+};
+</script>
+<script src="motor.js"></script>
+</body>
+</html>

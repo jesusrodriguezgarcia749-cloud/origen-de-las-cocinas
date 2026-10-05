@@ -85,6 +85,12 @@
   .d-pregunta .preg{font-family:"Fraunces",serif;font-size:1.4em;font-weight:600;color:var(--marino);max-width:18em;margin:0 auto .9em;line-height:1.2}
   .d-pregunta .resp{display:inline-block;background:var(--marino);color:#fff;padding:.55em 1em;font-size:.95em;line-height:1.4;max-width:30em;text-align:left}
   .d-pregunta .pista{font-size:.6em;color:var(--gris);margin-top:1em}
+  /* Ejemplo del proyecto */
+  .ej-cab{display:grid;grid-template-columns:auto 1fr;gap:.2em .9em;align-items:baseline;margin-bottom:.7em}
+  .ej-num{font:700 .6em "Public Sans",sans-serif;background:var(--rojo);color:#fff;padding:.4em .8em;white-space:nowrap;align-self:start}
+  .ej-preg{font-family:"Fraunces",serif;font-weight:600;font-size:1.05em;color:var(--marino);line-height:1.25}
+  .ej-resp{background:#fff;border-left:8px solid var(--marino);padding:.7em .9em;font-size:.78em;line-height:1.45}
+  .ej-fuente{font-size:.58em;color:var(--gris);margin-top:.7em;line-height:1.4}
   /* Repaso relámpago */
   .reveal ol.rep{list-style:none;margin:0;padding:0;counter-reset:r}
   .reveal ol.rep li{counter-increment:r;position:relative;padding-left:1.9em;margin:0 0 .55em;font-size:.82em;line-height:1.3}
@@ -212,6 +218,13 @@
       <ol class="rep">${(d.preguntas || []).map(p => `
         <li class="fragment"><span class="q">${txt(p.pregunta)}</span>
           <span class="a fragment">${txt(p.respuesta)}</span></li>`).join("")}</ol>`,
+
+    // Pregunta del proyecto con la respuesta modelo del docente
+    ejemplo: d => `
+      <div class="ej-cab"><span class="ej-num">Pregunta ${esc(d.numero)}</span>
+        <span class="ej-preg">${txt(d.pregunta)}</span></div>
+      <div class="ej-resp fragment">${txt(d.respuesta)}</div>
+      ${d.fuente ? `<p class="ej-fuente fragment">${txt(d.fuente)}</p>` : ""}`,
 
     pregunta: d => `
       <p class="preg">${esc(d.pregunta)}</p>
