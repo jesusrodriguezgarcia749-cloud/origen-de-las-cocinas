@@ -60,7 +60,11 @@ export const PESO_CUATRIMESTRE = { p1: 0.25, p2: 0.25, final: 0.50 };
 
 export const NOMBRES_PARCIAL = { p1: 'Parcial 1', p2: 'Parcial 2', final: 'Examen Final' };
 
-const PESO_ASISTENCIA = { presente: 1, justificado: 1, retardo: 0.5, falta: 0 };
+// Peso de cada estado sobre el rubro de asistencia.
+// La regla del curso es TRES retardos equivalen a UNA falta: por eso cada
+// retardo descuenta un tercio de clase (1 - 1/3 = 2/3). Con 0.5 serian dos
+// retardos por falta, que era el valor anterior.
+const PESO_ASISTENCIA = { presente: 1, justificado: 1, retardo: 2 / 3, falta: 0 };
 
 function promedioCalificaciones(lista) {
   if (!lista || lista.length === 0) return null;
