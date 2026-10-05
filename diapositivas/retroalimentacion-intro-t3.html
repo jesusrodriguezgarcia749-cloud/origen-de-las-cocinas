@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Retroalimentación e inicio del Tema 3 · Origen de las Cocinas</title>
+</head>
+<body>
+<!-- =====================================================================
+     SESIÓN: Viernes 16 de octubre · Retroalimentación + inicio Tema 3 · 2 horas
+     ===================================================================== -->
+<script>
+const PRESENTACION = {
+  materia: "Origen de las Cocinas",
+
+  diapositivas: [
+    { tipo: "portadaDia",
+      tema: "Cierre del Parcial 1 · Apertura del Tema 3",
+      dia: "Viernes 16 de octubre",
+      titulo: "De la línea del tiempo al mapa",
+      subtitulo: "Retroalimentación del examen e inicio del Tema 3",
+      duracion: "2 horas" },
+
+    { tipo: "objetivos",
+      intro: "Cerramos la primera mitad del curso y abrimos la segunda, que cambia por completo de enfoque.",
+      puntos: [
+        "Vas a ver cómo te fue y dónde estuvieron los errores más comunes.",
+        "Vas a entender cómo se conectan los cuatro temas del curso.",
+        "Vas a conocer las cinco regiones del Tema 3.",
+        "Vas a elegir, en equipo, la región que vas a seguir todo el tema."
+      ] },
+
+    { tipo: "tema",
+      titulo: "Cómo nos fue",
+      etiqueta: "Retroalimentación",
+      minutos: "0-10", evaluacion: "Formativo",
+      notas: "Aquí das los datos generales del grupo: promedio, calificación más alta, cuántos aprobaron. No des nombres.",
+      puntos: [
+        "Primero los **números generales** del grupo, sin nombres.",
+        "Después, **los tres errores más repetidos** y por qué se dieron.",
+        "Al final, **la Entrega 1**: qué estuvo bien y qué hay que mejorar para la Entrega 2.",
+        "**La idea no es el regaño**, sino que sepan exactamente **qué corregir** para el siguiente parcial."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Los errores más comunes",
+      etiqueta: "Qué corregir",
+      notas: "Ajusta estos tres puntos a lo que realmente viste al calificar. Son los más frecuentes, pero cámbialos si tu grupo falló en otra cosa.",
+      puntos: [
+        "**Confundir épocas:** mezclar lo que pertenece a la Edad Media con lo del Renacimiento. Repasen la **Cronología** del libro.",
+        "**Responder de memoria sin justificar:** la respuesta correcta no basta si no se explica **por qué**.",
+        "**Confundir norma con costumbre:** una norma religiosa prohíbe o permite; una costumbre solo se repite.",
+        "**En la Entrega 1:** respuestas demasiado cortas y **fuentes sin citar**."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tarea",
+      titulo: "Dudas del examen",
+      etiqueta: "Pregunten",
+      minutos: "11-25", evaluacion: "Participación",
+      notas: "Si nadie pregunta, no te quedes esperando: toma tú dos reactivos del examen y resuélvelos en voz alta.",
+      puntos: [
+        "**Pregunta 1 para el grupo:** ¿qué reactivo se les hizo más difícil y por qué?",
+        "**Pregunta 2:** ¿hubo alguno que, al leerlo, no entendieron qué se les pedía?",
+        "Vamos a **resolver juntos** dos reactivos en el pizarrón.",
+        "**Para los que no van a preguntar:** vengan conmigo al final de la clase con su examen en la mano."
+      ] },
+
+    { tipo: "tema",
+      titulo: "Dónde estamos del curso",
+      etiqueta: "El mapa del curso",
+      minutos: "26-40", evaluacion: "Formativo",
+      notas: "Esta es la diapositiva más importante de la sesión. Dibuja los cuatro temas en el pizarrón mientras lo explicas.",
+      puntos: [
+        "**Tema 1, el CUÁNDO:** la línea del tiempo. De Mesopotamia a las cocinas de hoy.",
+        "**Tema 2, el CÓMO se clasifica:** por régimen, por época, por religión, por corriente.",
+        "**Tema 3, el DÓNDE:** el mapa. Las cinco regiones del mundo. **Aquí empezamos hoy.**",
+        "**Tema 4, el POR QUÉ:** la comida y el poder. Cierra el curso."
+      ],
+      pasoAPaso: true,
+      subtemas: [
+        { tipo: "tema",
+          titulo: "Cómo se conectan",
+          puntos: [
+            "Los cuatro temas miran **lo mismo desde ángulos distintos**. No son materias separadas.",
+            "Un platillo tiene un **cuándo** (Tema 1), se puede **clasificar** (Tema 2), viene de un **dónde** (Tema 3) y dice algo del **poder** de quien lo come (Tema 4).",
+            "**Su proyecto es exactamente eso:** las 23 preguntas de Mi Plato, Mi Historia recorren los cuatro ángulos sobre un solo platillo.",
+            "**Por eso el examen final integra todo:** porque el curso es una sola idea vista cuatro veces."
+          ],
+          pasoAPaso: true }
+      ] },
+
+    { tipo: "tema",
+      titulo: "El Tema 3 cambia la pregunta",
+      etiqueta: "Nuevo enfoque",
+      puntos: [
+        "Hasta ahora preguntábamos **cuándo** pasó algo. A partir de hoy preguntamos **dónde** y **por qué ahí**.",
+        "La respuesta casi siempre tiene que ver con tres cosas: el **clima**, los **recursos** y las **rutas**.",
+        "**Dejamos la línea del tiempo y abrimos el mapa.**",
+        "**Una advertencia:** el Tema 3 es el más largo del curso. Son **seis sesiones** y cinco regiones."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "pregunta",
+      pregunta: "¿Por qué en Yucatán se cocina bajo tierra y en Noruega se cura el pescado?",
+      respuesta: "Por el **entorno**. Donde hay piedra caliza, leña y calor, se cava un horno. Donde el invierno dura medio año, hay que **conservar**. La cocina de un lugar es, antes que nada, una **respuesta a su geografía**." },
+
+    { tipo: "tema",
+      titulo: "Las cinco regiones del mundo",
+      etiqueta: "Tema 3",
+      minutos: "41-60", evaluacion: "Formativo",
+      notas: "Aquí proyecta o reparte el mapa mundial. Señala cada región mientras la nombras.",
+      puntos: [
+        "**África:** el Magreb, el comercio transahariano y la diáspora hacia América.",
+        "**América:** lo prehispánico, el mestizaje, Campeche y el resto del continente. **La nuestra.**",
+        "**Asia:** China, Japón, la India, el Sureste asiático, Medio Oriente y Asia Central.",
+        "**Europa:** el Mediterráneo, Centroeuropa y el Este, los países nórdicos y las Islas Británicas.",
+        "**Oceanía:** Australia, Nueva Zelanda y las islas del Pacífico."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "observa",
+      titulo: "El mapa de todo el Tema 3",
+      imagen: "img/mapa_mundial.jpg",
+      notas: "Si no tienes la imagen, usa un mapa impreso o proyectado y señala cada región. Lo importante es que vean el continente completo, no solo el nombre.",
+      puntos: [
+        "**Cinco regiones, seis sesiones.** Cada clase es un continente o una parte de él.",
+        "**No vamos en orden geográfico, sino de ida y vuelta:** empezamos en África, cruzamos a América, saltamos a Asia, volvemos a Europa y cerramos en Oceanía.",
+        "**Las flechas importan más que las fronteras:** lo que explica cada cocina son las **rutas** que la conectaron con las demás.",
+        "**Fíjate en nuestra posición:** Campeche está justo en medio de dos rutas, la del Atlántico y la del Pacífico. Eso explica mucho de nuestra comida."
+      ] },
+
+    { tipo: "tema",
+      titulo: "El hilo que atraviesa todo el tema",
+      notas: "Dilo despacio. Es la idea que vas a repetir en las seis sesiones del Tema 3.",
+      puntos: [
+        "**Ninguna cocina es pura.** Todas nacen del comercio, la migración, la conquista y la adaptación al entorno.",
+        "**Ejemplo que ya conocen:** el chile es americano, pero hoy es básico en Corea, en la India y en Hungría.",
+        "**Al revés también:** el cerdo de la cochinita y el trigo del pan llegaron de Europa.",
+        "**Lo van a ver en cada clase:** en todos los continentes hay un ingrediente que llegó de otro lado y hoy parece de toda la vida."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "pausa",
+      titulo: "¡Pausa activa!",
+      duracion: "5 minutos",
+      minutos: "61-66",
+      texto: "**El mapa humano del mundo.** Cada esquina del salón es una región: África, América, Asia y Europa; el centro es Oceanía. Al escuchar un platillo o ingrediente (tortilla, sushi, paella, cuscús, pavlova, mole, curry), corre a la región que creas correcta. No importa si fallas: eso es justo lo que vamos a aprender." },
+
+    { tipo: "tarea",
+      titulo: "Tu equipo elige región",
+      etiqueta: "Actividad",
+      minutos: "67-100", evaluacion: "Participación",
+      notas: "Es la actividad clave: estas suposiciones las vas a retomar el 22 de octubre, al abrir la clase de África.",
+      puntos: [
+        "Formen **equipos** y cada uno elige **una región** de las cinco, sin repetir.",
+        "Sin buscar nada en internet, escriban **tres suposiciones** sobre la cocina de su región: qué creen que se come ahí y por qué.",
+        "Pueden equivocarse. **De eso se trata.**",
+        "**Guárdenlas.** Las vamos a sacar al final del Tema 3 para ver qué acertaron y qué no."
+      ] },
+
+    { tipo: "tarea",
+      titulo: "Presenten sus suposiciones",
+      minutos: "101-115", evaluacion: "Participación",
+      notas: "Anota en el pizarrón las suposiciones más interesantes o más equivocadas. Darán mucho juego después.",
+      puntos: [
+        "Cada equipo lee sus tres suposiciones en **un minuto**.",
+        "El resto del grupo puede decir si está de acuerdo o no, **sin buscar la respuesta todavía**.",
+        "Yo anoto las más interesantes en el pizarrón.",
+        "**Nadie dice quién tiene razón hoy.** Lo iremos descubriendo clase por clase."
+      ] },
+
+    { tipo: "cierre",
+      minutos: "116-120",
+      evidencia: "Cada equipo tiene por escrito tres suposiciones sobre la cocina de su región.",
+      materiales: "Mapa mundial (impreso o proyectado), examen devuelto, cuaderno.",
+      proxima: "**Jueves 22 de octubre: 3.1 Cocinas africanas.** Lean el subtema 3.1 del libro y traigan sus tres suposiciones." }
+  ]
+};
+</script>
+<script src="motor.js"></script>
+</body>
+</html>

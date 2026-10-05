@@ -30,6 +30,7 @@
   .fecha{grid-row:span 2;font-weight:600;color:var(--rojo);font-size:.9rem;padding-top:3px}
   .titulo{font-family:"Fraunces",serif;font-weight:600;font-size:1.2rem;line-height:1.25;color:var(--marino)}
   .desc{color:var(--gris);line-height:1.45;font-size:.95rem}
+  .bloque{color:var(--marino);font-weight:600}
   .vacia{border:3px dashed var(--gris);color:var(--gris);padding:24px;text-align:center}
   @media (max-width:480px){.clase{grid-template-columns:1fr}.fecha{grid-row:auto}}
 </style>
@@ -47,88 +48,89 @@
      ===================================================================== -->
 <script>
 const SESIONES = [
-  { tema: "Guías de consulta", fecha: "Siempre",
+  { tema: "Guías de consulta", fecha: "Siempre", orden: "0000-00-00",
     archivo: "guia-apa.html",
     titulo: "Cómo citar en APA",
     descripcion: "Formato, interlineado, sangría francesa, citas textuales, cita de una cita y lista de referencias." },
-  { tema: "Guías de consulta", fecha: "Descarga",
+  { tema: "Guías de consulta", fecha: "Descarga", orden: "0000-00-01",
     archivo: "plantillas/Plantilla_APA.docx", descarga: true,
     titulo: "Plantilla de Word en formato APA",
     descripcion: "Hoja ya configurada: márgenes, interlineado doble y las dos sangrías. Escribe encima y entrega." },
-  { tema: "Proyecto · Mi Plato, Mi Historia", fecha: "Jue 8 oct",
+  { tema: "Proyecto · Mi Plato, Mi Historia", fecha: "Jue 8 oct", orden: "2026-10-08",
     archivo: "taller-1-preguntas-6-9.html",
     titulo: "Taller de proyecto · preguntas 6 a 9",
     descripcion: "Ejemplo resuelto con el pibipollo, cómo citar en APA y taller de ortografía." },
-  { tema: "Proyecto · Mi Plato, Mi Historia", fecha: "Vie 9 oct",
+  { tema: "Proyecto · Mi Plato, Mi Historia", fecha: "Vie 9 oct", orden: "2026-10-09",
     archivo: "taller-2-preguntas-10-12.html",
     titulo: "Cierre de la Entrega 1 · preguntas 10 a 12",
     descripcion: "Religión y corrientes, armado del documento, referencias y lista de verificación." },
-  { tema: "Evaluaciones y fechas clave", fecha: "Jue 15 oct",
+  { tema: "Evaluaciones y fechas clave", fecha: "Jue 15 oct", orden: "2026-10-15",
     titulo: "Examen del Parcial 1",
     descripcion: "Examen escrito de los Temas 1 y 2 completos. Se recibe también la Entrega 1 del proyecto." },
-  { tema: "Evaluaciones y fechas clave", fecha: "Vie 16 oct",
+  { tema: "Tema 3 · Cocinas en el mundo", fecha: "Vie 16 oct", orden: "2026-10-16",
+    archivo: "retroalimentacion-intro-t3.html",
     titulo: "Retroalimentación e inicio del Tema 3",
-    descripcion: "Revisión grupal de resultados y dudas. Introducción a las cinco regiones del mundo, con mapa mundial." },
-  { tema: "Tema 3 · Cocinas en el mundo", fecha: "Jue 22 oct",
+    descripcion: "Errores más comunes del examen, cómo se conectan los 4 temas y el mapa de las cinco regiones del mundo." },
+  { tema: "Tema 3 · Cocinas en el mundo", fecha: "Jue 22 oct", orden: "2026-10-22",
     archivo: "3-1-cocinas-africanas.html",
     titulo: "3.1 Cocinas africanas",
     descripcion: "El Magreb, el comercio transahariano, las 4 regiones de África y la diáspora." },
-  { tema: "Tema 3 · Cocinas en el mundo", fecha: "Vie 23 oct",
+  { tema: "Tema 3 · Cocinas en el mundo", fecha: "Vie 23 oct", orden: "2026-10-23",
     archivo: "3-2-mexico-prehispanico.html",
     titulo: "3.2 México prehispánico y mestizo",
     descripcion: "Sahagún, el cacao, las chinampas, el pib maya y la herencia de dos mundos." },
-  { tema: "Tema 3 · Cocinas en el mundo", fecha: "Jue 29 oct",
+  { tema: "Tema 3 · Cocinas en el mundo", fecha: "Jue 29 oct", orden: "2026-10-29",
     titulo: "Práctica de cocina 2",
     descripcion: "Cochinita pibil, mole poblano simplificado, pan de cazón o queso relleno. Grupo dividido en dos mitades. Uniforme completo y cuchillo propio." },
-  { tema: "Tema 3 · Cocinas en el mundo", fecha: "Vie 30 oct",
+  { tema: "Tema 3 · Cocinas en el mundo", fecha: "Vie 30 oct", orden: "2026-10-30",
     archivo: "3-2-campeche-america.html",
     titulo: "3.2 Campeche y el resto de América",
     descripcion: "Piratas, murallas y queso relleno; el chuño andino, la feijoada y el asado del Cono Sur." },
-  { tema: "Tema 3 · Cocinas en el mundo", fecha: "Jue 5 nov",
+  { tema: "Tema 3 · Cocinas en el mundo", fecha: "Jue 5 nov", orden: "2026-11-05",
     archivo: "3-3-cocinas-asiaticas.html",
     titulo: "3.3 Cocinas asiáticas",
     descripcion: "China, Japón y Corea; la India y el curry; el Galeón de Manila; Medio Oriente y la Ruta de la Seda." },
-  { tema: "Tema 3 · Cocinas en el mundo", fecha: "Vie 6 nov",
+  { tema: "Tema 3 · Cocinas en el mundo", fecha: "Vie 6 nov", orden: "2026-11-06",
     archivo: "3-4-cocinas-europeas.html",
     titulo: "3.4 Cocinas europeas",
     descripcion: "Los 4 bloques: mediterráneo, Centroeuropa y Este, nórdico e Islas Británicas; Francia y Catalina de Médici." },
-  { tema: "Tema 3 · Cocinas en el mundo", fecha: "Jue 12 nov",
+  { tema: "Tema 3 · Cocinas en el mundo", fecha: "Jue 12 nov", orden: "2026-11-12",
     archivo: "3-5-cocinas-oceania.html",
     titulo: "3.5 Cocinas de Oceanía · cierre del Tema 3",
     descripcion: "El hangi maorí, el bushfood australiano, las islas del Pacífico, Hawái y el repaso general del tema." },
-  { tema: "Tema 4 · La comida y el poder", fecha: "Vie 13 nov",
+  { tema: "Tema 4 · La comida y el poder", fecha: "Vie 13 nov", orden: "2026-11-13",
     archivo: "4-1-4-2-necesidad-roma.html",
     titulo: "4.1 y 4.2 Necesidad de alimentarse e influencia de Roma",
     descripcion: "De la necesidad biológica a la cultura, el reverso del hambre, Apicio y la herencia del Imperio." },
-  { tema: "Tema 4 · La comida y el poder", fecha: "Jue 19 nov",
+  { tema: "Tema 4 · La comida y el poder", fecha: "Jue 19 nov", orden: "2026-11-19",
     archivo: "4-3-comida-realeza.html",
     titulo: "4.3 La comida en la realeza",
     descripcion: "El grand couvert de Versalles, las cocinas del Topkapi, la Ciudad Prohibida y el biryani mogol." },
-  { tema: "Tema 4 · La comida y el poder", fecha: "Vie 20 nov",
+  { tema: "Tema 4 · La comida y el poder", fecha: "Vie 20 nov", orden: "2026-11-20",
     archivo: "4-4-primer-restaurante.html",
     titulo: "4.4 El primer restaurante · repaso Parcial 2",
     descripcion: "Boulanger y los caldos restaurativos, la Revolución, Delmonico's, el Porfiriato y las fondas." },
-  { tema: "Evaluaciones y fechas clave", fecha: "Jue 26 nov",
+  { tema: "Evaluaciones y fechas clave", fecha: "Jue 26 nov", orden: "2026-11-26",
     titulo: "Examen práctico del Parcial 2 · Práctica de cocina 3",
     descripcion: "Examen práctico formal, grupo dividido en dos mitades. Opciones: bistec Delmonico's, curry, pescado meunière o paella." },
-  { tema: "Evaluaciones y fechas clave", fecha: "Vie 27 nov",
+  { tema: "Evaluaciones y fechas clave", fecha: "Vie 27 nov", orden: "2026-11-27",
     titulo: "Examen teórico del Parcial 2",
     descripcion: "Examen escrito de los Temas 3 y 4 hasta el 4.4. Se recibe también la Entrega 2 del proyecto." },
-  { tema: "Tema 4 · La comida y el poder", fecha: "Jue 3 dic",
+  { tema: "Tema 4 · La comida y el poder", fecha: "Jue 3 dic", orden: "2026-12-03",
     archivo: "4-5-cocina-profesional.html",
     titulo: "4.5 La cocina profesional · cierre del libro",
     descripcion: "Escoffier y la brigada, Le Cordon Bleu, las mujeres en la cocina, la UNESCO y el Bocuse d'Or." },
-  { tema: "Evaluaciones y fechas clave", fecha: "Vie 4 dic",
+  { tema: "Evaluaciones y fechas clave", fecha: "Vie 4 dic", orden: "2026-12-04",
     titulo: "Exposición final del proyecto",
     descripcion: "Cada alumno expone ante el grupo su platillo: de dónde viene, qué rutas lo explican y qué aprendió. De 2 a 3 minutos por persona." },
-  { tema: "Cierre del curso", fecha: "Jue 10 dic",
+  { tema: "Cierre del curso", fecha: "Jue 10 dic", orden: "2026-12-10",
     archivo: "repaso-final.html",
     titulo: "Repaso general para el Examen Final",
     descripcion: "Los 4 temas en preguntas relámpago por equipos, las ideas centrales del curso y dudas finales." },
-  { tema: "Cierre del curso", fecha: "Vie 11 dic",
+  { tema: "Cierre del curso", fecha: "Vie 11 dic", orden: "2026-12-11",
     titulo: "Fin de cuatrimestre",
     descripcion: "Entrega de calificaciones acumuladas del parcial y del curso. Espacio para tu retroalimentación sobre la materia." },
-  { tema: "Cierre del curso", fecha: "Jue 17 dic",
+  { tema: "Cierre del curso", fecha: "Jue 17 dic", orden: "2026-12-17",
     titulo: "Examen Final",
     descripcion: "Examen escrito que integra los cuatro temas del curso completo. Fecha por confirmar con coordinación." }
 ];
@@ -139,10 +141,15 @@ const SESIONES = [
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const cont = document.getElementById("lista");
   if (!SESIONES.length) { cont.innerHTML = '<p class="vacia">Todavía no hay presentaciones.</p>'; return; }
+  // Se ordena todo por fecha y se agrupa por mes, para que el alumno siga el curso en orden.
+  const MESES = { "10": "Octubre", "11": "Noviembre", "12": "Diciembre" };
+  const lista = SESIONES.slice().sort((a, b) => (a.orden || "").localeCompare(b.orden || ""));
   const grupos = [];
-  SESIONES.forEach(s => {
-    let g = grupos.find(x => x.tema === s.tema);
-    if (!g) grupos.push(g = { tema: s.tema, items: [] });
+  lista.forEach(s => {
+    const o = s.orden || "";
+    const titulo = o < "2026-01-01" ? "Guías de consulta" : (MESES[o.slice(5, 7)] || "Otras fechas");
+    let g = grupos.find(x => x.tema === titulo);
+    if (!g) grupos.push(g = { tema: titulo, items: [] });
     g.items.push(s);
   });
   cont.innerHTML = grupos.map(g => `
@@ -153,7 +160,7 @@ const SESIONES = [
         : `<div class="clase sin-enlace">`}
         <span class="fecha">${esc(s.fecha)}</span>
         <span class="titulo">${esc(s.titulo)}</span>
-        <span class="desc">${esc(s.descripcion)}</span>
+        <span class="desc">${s.tema && s.orden >= "2026-01-01" ? `<b class="bloque">${esc(s.tema)}</b> · ` : ""}${esc(s.descripcion)}</span>
       ${s.archivo ? "</a>" : "</div>"}</li>`).join("")}</ol>`).join("");
 })();
 </script>
