@@ -34,6 +34,10 @@ const PARCIALES = ['diag', 'p1', 'p2', 'final'];
 let sesion = null;
 let parcialActivo = null;
 let banco = null;
+// De qué parcial es el banco que está cargado en memoria. Sin este dato, al
+// revisar las respuestas de dos exámenes distintos sin recargar la página se
+// quedaba el banco del primero y la revisión salía en blanco.
+let bancoParcial = null;
 let intento = null;
 let temporizador = null;
 let vigilanciaActiva = false;
@@ -72,6 +76,16 @@ function semillaDe(texto) {
   let h = 0;
   for (let i = 0; i < texto.length; i++) h = (h * 31 + texto.charCodeAt(i)) % 233280;
   return h || 1;
+}
+
+// Carga el banco de reactivos del parcial pedido, reutilizándolo solo si el
+// que ya está en memoria es de ese mismo examen.
+async function asegurarBanco(parcial) {
+  if (banco && bancoParcial === parcial) return;
+  const res = await fetch(PARCIALES_INFO[parcial].archivo, { cache: 'no-store' });
+  if (!res.ok) throw new Error(`No se encontró el banco de reactivos (HTTP ${res.status})`);
+  banco = await res.json();
+  bancoParcial = parcial;
 }
 
 async function cargarGrupos() {
@@ -223,9 +237,7 @@ async function iniciarExamen(parcial) {
   const info = PARCIALES_INFO[parcial];
 
   try {
-    const res = await fetch(info.archivo, { cache: 'no-store' });
-    if (!res.ok) throw new Error(`No se encontró el banco de reactivos (HTTP ${res.status})`);
-    banco = await res.json();
+    await asegurarBanco(parcial);
   } catch (e) {
     alert('No se pudo cargar el examen: ' + e.message);
     return;
@@ -575,7 +587,9 @@ function mostrarResultado() {
   const info = PARCIALES_INFO[intento.parcial];
   const pct = intento.total ? intento.aciertos / intento.total * 100 : 0;
   const clase = pct >= 80 ? 'res-ok' : (pct >= 60 ? 'res-riesgo' : 'res-bajo');
-  const fallos = intento.detalle.filter(d => !d.correcto);
+  // Un intento muy antiguo podría no traer "detalle"; se tolera en lugar de
+  // dejar la pantalla de resultados en blanco.
+  const fallos = Array.isArray(intento.detalle) ? intento.detalle.filter(d => !d.correcto) : [];
 
   const revision = fallos.map(d => {
     const r = reactivoPorId(d.id);
@@ -620,9 +634,13 @@ function mostrarResultado() {
 
 async function verResultado(parcial) {
   parcialActivo = parcial;
-  if (!banco) {
-    const res = await fetch(PARCIALES_INFO[parcial].archivo, { cache: 'no-store' });
-    banco = await res.json();
+  // Se recarga el banco cuando el que está en memoria es de otro examen; si
+  // no, la revisión saldría con las tarjetas vacías.
+  try {
+    await asegurarBanco(parcial);
+  } catch (e) {
+    alert('No se pudieron cargar las preguntas de este examen: ' + (e.message || e));
+    return;
   }
   const snap = await getDoc(doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'intentos', parcial));
   if (!snap.exists()) return;

@@ -302,6 +302,14 @@ async function cargarCatalogo(tipo) {
   } catch { items = []; }
   empty.hidden = items.length > 0;
   if (items.length === 0) { empty.textContent = 'Sin registros en este parcial todavía.'; return; }
+  // Nota de ayuda arriba de la lista, distinta para cada tipo.
+  if (tipo === 'participaciones') {
+    const nota = document.createElement('p');
+    nota.className = 'field-hint';
+    nota.style.margin = '0 0 10px';
+    nota.textContent = 'La participación se marca con palomita: cuenta cuántas veces participó cada alumno, no con qué calificación.';
+    cont.appendChild(nota);
+  }
   // Para tareas, se recuerda cuántas hay: es el denominador del promedio.
   if (tipo === 'tareas') {
     const nota = document.createElement('p');
@@ -332,20 +340,34 @@ async function calificarItem(tipo, item) {
     catch { valores[a.id] = ''; }
   }));
 
-  cont.innerHTML = `<div class="quiz-actions" style="margin-bottom:12px; display:flex; gap:8px;"><button type="button" class="btn btn-ghost-dark btn-small" data-accion="marcar-diez">Marcar todos con 10</button><button type="button" class="btn btn-ghost-dark btn-small" data-accion="limpiar-todos">Limpiar todos (nadie participó)</button></div>`;
+  // La PARTICIPACIÓN se registra con palomita, no con número: lo que cuenta
+  // es cuántas veces participó cada quien contra la meta del parcial, no qué
+  // tan bien lo hizo. Las TAREAS sí se califican de 0 a 10.
+  const esParticipacion = tipo === 'participaciones';
+
+  cont.innerHTML = `<div class="quiz-actions" style="margin-bottom:12px; display:flex; gap:8px;"><button type="button" class="btn btn-ghost-dark btn-small" data-accion="marcar-diez">${esParticipacion ? 'Marcar a todos' : 'Marcar todos con 10'}</button><button type="button" class="btn btn-ghost-dark btn-small" data-accion="limpiar-todos">${esParticipacion ? 'Quitar a todos (nadie participó)' : 'Limpiar todos'}</button></div>`;
   const filasCont = document.createElement('div');
   filasCont.id = `${cfg.calificarLista}-filas`;
   cont.appendChild(filasCont);
   alumnosCache.forEach(a => {
     const row = document.createElement('div');
     row.className = 'ens-row'; row.dataset.alumnoId = a.id;
-    row.innerHTML = `<span class="student-name">${escaparHTML(a.nombre)}</span><input type="number" min="0" max="10" step="0.1" class="calif-input" value="${valores[a.id] ?? ''}" placeholder="0-10">`;
+    if (esParticipacion) {
+      const marcado = valores[a.id] !== '' && valores[a.id] !== undefined && valores[a.id] !== null;
+      row.innerHTML = `<label class="part-check" style="display:flex; align-items:center; gap:10px; width:100%; cursor:pointer;"><input type="checkbox" class="part-input" ${marcado ? 'checked' : ''} style="width:22px; height:22px; flex:none;"><span class="student-name">${escaparHTML(a.nombre)}</span></label>`;
+    } else {
+      row.innerHTML = `<span class="student-name">${escaparHTML(a.nombre)}</span><input type="number" min="0" max="10" step="0.1" class="calif-input" value="${valores[a.id] ?? ''}" placeholder="0-10">`;
+    }
     filasCont.appendChild(row);
   });
-  cont.querySelector('[data-accion="marcar-diez"]').addEventListener('click', () => { filasCont.querySelectorAll('.calif-input').forEach(inp => { inp.value = '10'; }); });
+  cont.querySelector('[data-accion="marcar-diez"]').addEventListener('click', () => {
+    if (esParticipacion) filasCont.querySelectorAll('.part-input').forEach(inp => { inp.checked = true; });
+    else filasCont.querySelectorAll('.calif-input').forEach(inp => { inp.value = '10'; });
+  });
   cont.querySelector('[data-accion="limpiar-todos"]').addEventListener('click', () => {
     if (!confirm('¿Vaciar la captura de todos los alumnos para esta actividad?')) return;
-    filasCont.querySelectorAll('.calif-input').forEach(inp => { inp.value = ''; });
+    if (esParticipacion) filasCont.querySelectorAll('.part-input').forEach(inp => { inp.checked = false; });
+    else filasCont.querySelectorAll('.calif-input').forEach(inp => { inp.value = ''; });
   });
   document.getElementById(cfg.calificarWrap).scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -358,10 +380,22 @@ async function guardarCalificaciones(tipo) {
   try { const snap = await getDoc(doc(db, 'grupos', grupoActivo, cfg.catalogo, itemId)); item = snap.data(); } catch { alert('No se pudo leer la tarea.'); return; }
   const filas = document.querySelectorAll(`#${cfg.calificarLista} .ens-row`);
   const escrituras = [];
+  const esParticipacion = tipo === 'participaciones';
   filas.forEach(row => {
     const alumnoId = row.dataset.alumnoId;
-    const input = row.querySelector('.calif-input');
     const ref = doc(db, 'grupos', grupoActivo, 'alumnos', alumnoId, cfg.sub, itemId);
+    if (esParticipacion) {
+      // Palomita puesta = participó. Se guarda con calificación 10 para que
+      // los listados y el rubro combinado del Final la cuenten completa.
+      const check = row.querySelector('.part-input');
+      if (check && check.checked) {
+        escrituras.push(setDoc(ref, { parcial: item.parcial, nombre: item.nombre, fecha: item.fecha, calificacion: 10, actualizado: serverTimestamp() }));
+      } else {
+        escrituras.push(deleteDoc(ref).catch(() => {}));
+      }
+      return;
+    }
+    const input = row.querySelector('.calif-input');
     if (input.value === '') { escrituras.push(deleteDoc(ref).catch(() => {})); }
     else {
       const calificacion = parseFloat(input.value);

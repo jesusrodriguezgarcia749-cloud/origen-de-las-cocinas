@@ -163,10 +163,12 @@ function renderListaTareas(entregadas, faltantes) {
   return `<ul style="margin:6px 0 0; padding-left:18px; font-size:.9em;">${filas}</ul>`;
 }
 
-function renderListaActividades(lista, vacio) {
+// conCalificacion = false para participación: ahí solo importa que participó,
+// no con qué número, porque se registra con palomita.
+function renderListaActividades(lista, vacio, conCalificacion = true) {
   if (!lista || lista.length === 0) return `<p class="empty-inline">${vacio}</p>`;
   const filas = lista.slice().sort((a, b) => (a.fecha || '').localeCompare(b.fecha || ''))
-    .map(x => `<li>${esc(x.fecha || 'sin fecha')} — ${esc(x.nombre || '')}${x.calificacion !== undefined && x.calificacion !== null ? `: <strong>${Number(x.calificacion).toFixed(1)}/10</strong>` : ''}</li>`).join('');
+    .map(x => `<li>${esc(x.fecha || 'sin fecha')} — ${esc(x.nombre || '')}${conCalificacion && x.calificacion !== undefined && x.calificacion !== null ? `: <strong>${Number(x.calificacion).toFixed(1)}/10</strong>` : ''}</li>`).join('');
   return `<ul style="margin:6px 0 0; padding-left:18px; font-size:.9em;">${filas}</ul>`;
 }
 
@@ -218,7 +220,7 @@ function renderParciales() {
           <summary>Ver fechas — Tareas${listaPart ? ' y Participación' : ''}</summary>
           <p class="field-hint" style="margin:8px 0 2px;">Tareas:</p>
           ${esFinal ? renderListaActividades(listaTareas, 'Sin tareas capturadas.') : renderListaTareas(listaTareas, faltantesTareas)}
-          ${listaPart ? `<p class="field-hint" style="margin:10px 0 2px;">Participación:</p>${renderListaActividades(listaPart, 'Sin participación capturada.')}` : ''}
+          ${listaPart ? `<p class="field-hint" style="margin:10px 0 2px;">Participación:</p>${renderListaActividades(listaPart, 'Sin participación capturada.', false)}` : ''}
         </details>
         <div class="res-row res-total"><span>Total</span><strong>${r.total.toFixed(1)} / 100 pts</strong></div>
       </div>`;
