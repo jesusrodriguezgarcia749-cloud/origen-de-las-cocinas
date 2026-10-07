@@ -12,6 +12,7 @@ import {
 import { firebaseConfig } from "./firebase-config.js";
 import { calcularParcial, calcularCuatrimestre, NOMBRES_PARCIAL, TOPES } from "./calculo.js";
 import { reporteGrupo, reporteAlumno, reporteExamenAlumno, reporteExamenGrupo } from "./reporte.js";
+import { vistaRapida } from "./matriz.js";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -111,6 +112,8 @@ function cargarTabActiva() {
   const btnActivo = document.querySelector('.tab-btn.active');
   if (!btnActivo) return;
   const tab = btnActivo.dataset.tab;
+  // Tabla de alumnos contra actividades, arriba de la captura de siempre.
+  vistaRapida(tab, { db, grupoActivo, alumnos: alumnosCache });
   if (tab === 'tareas') cargarCatalogo('tareas');
   if (tab === 'participacion') cargarCatalogo('participaciones');
   if (tab === 'proyecto') cargarProyecto();
@@ -218,9 +221,10 @@ function renderAlumnos(lista) {
   lista.forEach(a => {
     const li = document.createElement('li');
     li.className = 'student-row';
-    li.innerHTML = `<span class="student-name">${escaparHTML(a.nombre)}</span><span class="student-pin" title="PIN de acceso del alumno">PIN: ${escaparHTML(a.pin || '—')}</span><button type="button" class="btn-delete-student" data-id="${a.id}" title="Eliminar alumno">Eliminar</button>`;
+    li.innerHTML = `<span class="student-name">${escaparHTML(a.nombre)}</span><span class="student-pin" title="PIN de acceso del alumno">PIN: ${escaparHTML(a.pin || '—')}</span><button type="button" class="btn-editar-student" data-id="${a.id}" title="Corregir el nombre">Editar</button><button type="button" class="btn-delete-student" data-id="${a.id}" title="Eliminar alumno">Eliminar</button>`;
     ul.appendChild(li);
   });
+  ul.querySelectorAll('.btn-editar-student').forEach(btn => btn.addEventListener('click', () => editarNombreAlumno(btn.dataset.id)));
   ul.querySelectorAll('.btn-delete-student').forEach(btn => btn.addEventListener('click', () => eliminarAlumno(btn.dataset.id)));
 }
 
@@ -241,6 +245,100 @@ async function agregarAlumno(e) {
   alert(`Alumno agregado.\n\nDale este PIN de acceso:\n\n${nombre} → PIN ${pin}`);
 }
 
+// Subcolecciones y documentos que forman el expediente de un alumno. Si al
+// corregir el nombre cambia su identificador, todo esto se muda al nuevo.
+const SUBCOLECCIONES_ALUMNO = ['tareas', 'participaciones', 'asistencias', 'uniformes', 'examenes', 'practico', 'proyecto', 'intentos'];
+
+async function editarNombreAlumno(alumnoId) {
+  const alumno = alumnosCache.find(a => a.id === alumnoId);
+  if (!alumno) return;
+  const nuevo = prompt('Corrige el nombre completo del alumno:', alumno.nombre);
+  if (nuevo === null) return;
+  const nombre = nuevo.trim();
+  if (!nombre) { alert('El nombre no puede quedar vacío.'); return; }
+  if (nombre === alumno.nombre) return;
+
+  const idNuevo = slugNombre(nombre);
+  if (!idNuevo) { alert('Ese nombre no es válido.'); return; }
+
+  // Caso sencillo: cambian acentos o mayúsculas, pero el identificador es el
+  // mismo. Se corrige el texto y ya; no hay nada que mudar.
+  if (idNuevo === alumnoId) {
+    try { await setDoc(doc(db, 'grupos', grupoActivo, 'alumnos', alumnoId), { ...alumno, nombre, actualizado: serverTimestamp() }); }
+    catch (err) { alert('No se pudo guardar: ' + (err.message || err)); return; }
+    await cargarAlumnos();
+    alert(`Nombre corregido a "${nombre}".`);
+    return;
+  }
+
+  if ((await getDoc(doc(db, 'grupos', grupoActivo, 'alumnos', idNuevo))).exists()) {
+    alert('Ya hay otro alumno con ese nombre en este grupo. Usa un nombre distinto.');
+    return;
+  }
+
+  const ok = confirm(`¿Cambiar "${alumno.nombre}" por "${nombre}"?\n\nSe moverá todo su expediente: tareas, participaciones, asistencias, exámenes, proyecto e intentos. No se pierde nada.\n\nIMPORTANTE: a partir de ahora el alumno entrará con su nombre corregido. Su PIN sigue siendo el mismo (${alumno.pin || '—'}). Avísale.`);
+  if (!ok) return;
+
+  const li = document.querySelector(`.btn-editar-student[data-id="${CSS.escape(alumnoId)}"]`)?.closest('li');
+  let barra = null;
+  if (li) {
+    barra = document.createElement('div');
+    barra.className = 'mudanza-barra';
+    barra.innerHTML = '<div class="mudanza-track"><div class="mudanza-fill" style="width:0%"></div></div><span class="mudanza-texto">Preparando…</span>';
+    li.appendChild(barra);
+  }
+  const avanzar = (pct, texto) => {
+    if (!barra) return;
+    barra.querySelector('.mudanza-fill').style.width = `${pct}%`;
+    barra.querySelector('.mudanza-texto').textContent = texto;
+  };
+
+  const viejo = ['grupos', grupoActivo, 'alumnos', alumnoId];
+  const nuevoBase = ['grupos', grupoActivo, 'alumnos', idNuevo];
+
+  try {
+    // 1) Se crea primero el alumno nuevo, conservando su PIN.
+    avanzar(5, 'Creando el registro nuevo…');
+    await setDoc(doc(db, ...nuevoBase), { ...alumno, nombre, creado: alumno.creado || serverTimestamp(), actualizado: serverTimestamp() });
+
+    // 2) Se copia el expediente completo.
+    const copiados = [];
+    for (let i = 0; i < SUBCOLECCIONES_ALUMNO.length; i++) {
+      const sub = SUBCOLECCIONES_ALUMNO[i];
+      avanzar(10 + Math.round(i / SUBCOLECCIONES_ALUMNO.length * 70), `Copiando ${sub}…`);
+      const snap = await getDocs(collection(db, ...viejo, sub)).catch(() => null);
+      if (!snap) continue;
+      for (const d of snap.docs) {
+        await setDoc(doc(db, ...nuevoBase, sub, d.id), d.data());
+        copiados.push([sub, d.id]);
+      }
+    }
+
+    // 3) Se verifica que todo haya llegado ANTES de borrar nada.
+    avanzar(85, 'Verificando…');
+    for (const [sub, id] of copiados) {
+      const chk = await getDoc(doc(db, ...nuevoBase, sub, id));
+      if (!chk.exists()) throw new Error(`No se copió ${sub}/${id}. No se borró nada: el alumno original sigue completo.`);
+    }
+
+    // 4) Hasta aquí, el registro viejo se borra.
+    avanzar(92, 'Quitando el registro anterior…');
+    for (const sub of SUBCOLECCIONES_ALUMNO) {
+      const snap = await getDocs(collection(db, ...viejo, sub)).catch(() => null);
+      if (snap) await Promise.all(snap.docs.map(d => deleteDoc(doc(db, ...viejo, sub, d.id))));
+    }
+    await deleteDoc(doc(db, ...viejo));
+
+    avanzar(100, 'Listo');
+    await cargarAlumnos();
+    alert(`Nombre corregido a "${nombre}".\n\nSe movieron ${copiados.length} registro(s) de su expediente. Recuérdale que ahora entra con su nombre corregido y el mismo PIN.`);
+  } catch (err) {
+    if (barra) barra.querySelector('.mudanza-texto').textContent = 'Error';
+    alert('No se completó el cambio de nombre: ' + (err.message || err) + '\n\nEl alumno original NO se borró. Vuelve a intentarlo.');
+    await cargarAlumnos();
+  }
+}
+
 async function eliminarAlumno(alumnoId) {
   const alumno = alumnosCache.find(a => a.id === alumnoId);
   if (!alumno) return;
@@ -256,8 +354,8 @@ const CONFIG_TIPO = {
 };
 let itemCalificandoId = { tareas: null, participaciones: null };
 
-on('tareas-parcial', 'change', () => cargarCatalogo('tareas'));
-on('part-parcial', 'change', () => cargarCatalogo('participaciones'));
+on('tareas-parcial', 'change', () => { cargarCatalogo('tareas'); vistaRapida('tareas', { db, grupoActivo, alumnos: alumnosCache }); });
+on('part-parcial', 'change', () => { cargarCatalogo('participaciones'); vistaRapida('participacion', { db, grupoActivo, alumnos: alumnosCache }); });
 on('btn-agregar-tarea', 'click', () => agregarItemCatalogo('tareas'));
 on('btn-agregar-part', 'click', () => agregarItemCatalogo('participaciones'));
 on('btn-guardar-tarea-calif', 'click', () => guardarCalificaciones('tareas'));
@@ -409,7 +507,7 @@ async function guardarCalificaciones(tipo) {
 // ---------- ASISTENCIA ----------
 let asistenciaEstados = {};
 on('asis-fecha', 'change', cargarAsistencia);
-on('asis-parcial', 'change', cargarAsistencia);
+on('asis-parcial', 'change', () => { cargarAsistencia(); vistaRapida('asistencia', { db, grupoActivo, alumnos: alumnosCache }); });
 on('btn-guardar-asistencia', 'click', guardarAsistencia);
 const _hoy = new Date();
 const elFecha = document.getElementById('asis-fecha');
