@@ -334,3 +334,96 @@
   padding:13px 14px; border-radius:10px; border:1.5px solid var(--line);
   font-family:var(--font-body); font-size:1rem; background:#fff; color:var(--ink);
 }
+
+/* ===== Añadido: VISTA RÁPIDA — tabla de alumnos contra actividades =====
+   Aparece arriba de cada pestaña (Tareas, Participación, Asistencia,
+   Proyecto y Exámenes) para ver de un vistazo quién entregó y quién no,
+   y corregir una celda suelta sin abrir actividad por actividad.
+   La captura de siempre sigue abajo, intacta. */
+.matriz-wrap{margin:18px 0 26px;}
+.mz-scroll{
+  overflow-x:auto; -webkit-overflow-scrolling:touch;
+  border:1.5px solid var(--line); border-radius:12px; background:#fff;
+}
+.mz-tabla{border-collapse:separate; border-spacing:0; width:max-content; min-width:100%; font-size:.85rem;}
+.mz-tabla th, .mz-tabla td{padding:0; text-align:center; vertical-align:middle;}
+
+/* Encabezado de columnas */
+.mz-tabla thead th{
+  background:var(--charcoal); color:var(--cream); font-family:var(--font-body);
+  font-weight:600; font-size:.74rem; line-height:1.2; padding:9px 8px;
+  position:sticky; top:0; z-index:2; white-space:nowrap;
+}
+.mz-col-tit{display:block;}
+.mz-col-sub{display:block; font-weight:400; font-size:.68rem; opacity:.7; margin-top:2px;}
+
+/* Columna de nombres: se queda fija al deslizar de lado */
+.mz-tabla .mz-col-nombre{
+  position:sticky; left:0; z-index:3; text-align:left;
+  min-width:132px; max-width:160px; padding:9px 12px;
+  font-weight:600; font-size:.82rem; line-height:1.25;
+  background:var(--cream); border-right:1.5px solid var(--line);
+}
+.mz-tabla thead .mz-col-nombre{background:var(--charcoal); color:var(--cream); z-index:4;}
+.mz-tabla tbody tr:nth-child(even) .mz-col-nombre{background:#fff;}
+.mz-tabla tbody tr:nth-child(even) td{background:rgba(0,0,0,0.015);}
+.mz-tabla tbody td, .mz-tabla tbody th{border-top:1px solid var(--line);}
+
+/* Última columna: el resumen de la fila */
+.mz-col-total{
+  font-size:.76rem; font-weight:700; color:var(--ink-soft);
+  white-space:nowrap; padding:8px 12px; min-width:76px;
+}
+
+.mz-celda{padding:4px;}
+
+/* Celda de calificación (tareas, proyecto, exámenes) */
+.mz-num{
+  width:54px; padding:8px 4px; border-radius:8px; border:1.5px solid var(--line);
+  font-family:var(--font-body); font-size:.88rem; font-weight:600; text-align:center;
+  background:#fff; color:var(--ink);
+}
+.mz-num.mz-falta{
+  border-color:var(--paprika); border-style:dashed;
+  background:rgba(166,61,47,0.07);
+}
+.mz-num:focus{outline:2px solid var(--saffron); outline-offset:1px;}
+
+/* Celda de palomita (participación) */
+.mz-check{
+  width:38px; height:38px; border-radius:9px; cursor:pointer;
+  font-size:1.05rem; font-weight:700; line-height:1;
+  border:1.5px solid var(--line); background:#fff; color:var(--ink-soft);
+  transition:background .12s ease, color .12s ease, border-color .12s ease, transform .1s ease;
+}
+.mz-check:active{transform:scale(0.92);}
+.mz-check.mz-si{background:var(--sage); border-color:var(--sage); color:#fff;}
+.mz-check.mz-no{border-style:dashed;}
+
+/* Celda de asistencia (semáforo) */
+.mz-estado{
+  width:38px; height:38px; border-radius:9px; cursor:pointer;
+  font-family:var(--font-body); font-size:.86rem; font-weight:700; line-height:1;
+  border:1.5px solid transparent; color:#fff;
+  transition:transform .1s ease, background .12s ease;
+}
+.mz-estado:active{transform:scale(0.92);}
+.mz-estado.mz-presente{background:var(--sage);}
+.mz-estado.mz-retardo{background:#C9A22C;}
+.mz-estado.mz-justificado{background:var(--ink-soft);}
+.mz-estado.mz-falta{background:var(--paprika);}
+
+.matriz-wrap .mz-guardar{margin-top:14px;}
+
+/* ===== Añadido: botón para corregir el nombre de un alumno ===== */
+.btn-editar-student{
+  border:1.5px solid var(--saffron-dark); color:var(--saffron-dark); background:transparent;
+  padding:6px 12px; border-radius:999px; font-size:.78rem; font-weight:600; cursor:pointer;
+}
+.btn-editar-student:hover{background:var(--saffron-dark); color:#fff;}
+
+/* Barra de avance mientras se muda el expediente del alumno */
+.mudanza-barra{flex-basis:100%; display:flex; align-items:center; gap:10px; margin-top:10px;}
+.mudanza-track{flex:1; height:8px; border-radius:999px; background:var(--line); overflow:hidden;}
+.mudanza-fill{height:100%; background:var(--sage); transition:width .25s ease;}
+.mudanza-texto{font-size:.76rem; color:var(--ink-soft); white-space:nowrap; min-width:118px;}
