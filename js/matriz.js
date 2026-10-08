@@ -94,14 +94,14 @@ function dibujar(cont, { titulo, ayuda, alumnos, columnas, valores, tipo, resume
         <thead>
           <tr>
             <th class="mz-col-nombre">Alumno</th>
-            ${columnas.map(c => `<th class="mz-col-act"><span class="mz-col-tit">${esc(c.titulo)}</span>${c.sub ? `<span class="mz-col-sub">${esc(c.sub)}</span>` : ''}</th>`).join('')}
+            ${columnas.map(c => `<th class="mz-col-act" title="${esc(c.titulo)}${c.sub ? ` · ${esc(c.sub)}` : ''}"><span class="mz-col-tit">${esc(c.titulo)}</span>${c.sub ? `<span class="mz-col-sub">${esc(c.sub)}</span>` : ''}</th>`).join('')}
             <th class="mz-col-total">Total</th>
           </tr>
         </thead>
         <tbody>
           ${alumnos.map(a => `
             <tr data-fila="${esc(a.id)}">
-              <th class="mz-col-nombre" scope="row">${esc(a.nombre)}</th>
+              <th class="mz-col-nombre" scope="row" title="${esc(a.nombre)}"><span class="mz-nombre-txt">${esc(a.nombre)}</span></th>
               ${columnas.map(c => celda(a, c)).join('')}
               <td class="mz-col-total" data-total="${esc(a.id)}">${esc(resumen(valores[a.id] || {}))}</td>
             </tr>`).join('')}
@@ -355,6 +355,13 @@ async function vistaProyecto(ctx) {
 // ---------------------------------------------------------------------------
 // EXÁMENES — columnas = P1, P2 escrito, P2 práctico, Final
 // ---------------------------------------------------------------------------
+// El examen PRÁCTICO existe solo en el Parcial 2, así que su pestaña lleva
+// una sola columna. La vista de los cuatro exámenes del curso vive en
+// Historial, que es donde se mira el panorama completo.
+const COLS_PRACTICO = [
+  { id: 'practico', titulo: 'Examen práctico', sub: 'Parcial 2 · 20 pts', coleccion: 'practico', docId: 'p2' },
+];
+
 const COLS_EXAMEN = [
   { id: 'p1', titulo: 'Parcial 1', sub: '40 pts', coleccion: 'examenes', docId: 'p1' },
   { id: 'p2', titulo: 'P2 escrito', sub: '20 pts', coleccion: 'examenes', docId: 'p2' },
@@ -362,10 +369,13 @@ const COLS_EXAMEN = [
   { id: 'final', titulo: 'Final', sub: '40 pts', coleccion: 'examenes', docId: 'final' },
 ];
 
-async function vistaExamenes(ctx) {
-  const cont = contenedor('tab-practico', null);
+async function vistaExamenes(ctx, { soloPractico = false } = {}) {
+  const COLS = soloPractico ? COLS_PRACTICO : COLS_EXAMEN;
+  const cont = contenedor(soloPractico ? 'tab-practico' : 'tab-historial', null);
   if (!cont) return;
-  const titulo = 'Vista rápida — todos los exámenes';
+  const titulo = soloPractico
+    ? 'Vista rápida — examen práctico del Parcial 2'
+    : 'Vista rápida — todos los exámenes';
   cargando(cont, titulo);
 
   const { db, grupoActivo, alumnos } = ctx;
@@ -374,7 +384,7 @@ async function vistaExamenes(ctx) {
   const valores = {};
   await Promise.all(alumnos.map(async a => {
     valores[a.id] = {};
-    await Promise.all(COLS_EXAMEN.map(async c => {
+    await Promise.all(COLS.map(async c => {
       try {
         const snap = await getDoc(doc(db, 'grupos', grupoActivo, 'alumnos', a.id, c.coleccion, c.docId));
         if (snap.exists() && snap.data().calificacion !== undefined && snap.data().calificacion !== null) {
@@ -386,17 +396,19 @@ async function vistaExamenes(ctx) {
 
   dibujar(cont, {
     titulo,
-    ayuda: 'Calificación de 0 a 10. <strong>Ojo:</strong> lo que escribas aquí reemplaza lo que haya guardado el examen en línea; úsalo solo para corregir o para capturar el examen práctico.',
+    ayuda: soloPractico
+      ? 'El examen práctico solo existe en el Parcial 2 y vale 20 de los 40 puntos de Examen/Proyecto. Califica con la Rúbrica de Práctica de cocina.'
+      : 'Calificación de 0 a 10 de los cuatro exámenes del curso. <strong>Ojo:</strong> lo que escribas aquí reemplaza lo que haya guardado el examen en línea; úsalo solo para corregir.',
     alumnos,
-    columnas: COLS_EXAMEN,
+    columnas: COLS,
     valores,
     tipo: 'num',
-    resumen: (v) => `${COLS_EXAMEN.filter(c => v[c.id] !== undefined && v[c.id] !== '').length} de 4`,
-    textoBoton: 'Guardar exámenes',
+    resumen: (v) => `${COLS.filter(c => v[c.id] !== undefined && v[c.id] !== '').length} de ${COLS.length}`,
+    textoBoton: soloPractico ? 'Guardar examen práctico' : 'Guardar exámenes',
     onGuardar: async (vals) => {
       const escrituras = [];
       alumnos.forEach(a => {
-        COLS_EXAMEN.forEach(c => {
+        COLS.forEach(c => {
           const ref = doc(db, 'grupos', grupoActivo, 'alumnos', a.id, c.coleccion, c.docId);
           const v = (vals[a.id] || {})[c.id];
           if (v === undefined || v === '') {
@@ -424,7 +436,8 @@ export async function vistaRapida(tab, ctx) {
     if (tab === 'participacion') return await vistaCatalogo(ctx, 'participaciones');
     if (tab === 'asistencia') return await vistaAsistencia(ctx);
     if (tab === 'proyecto') return await vistaProyecto(ctx);
-    if (tab === 'practico') return await vistaExamenes(ctx);
+    if (tab === 'practico') return await vistaExamenes(ctx, { soloPractico: true });
+    if (tab === 'historial') return await vistaExamenes(ctx, { soloPractico: false });
   } catch (err) {
     console.warn('[vista rápida]', err);
   }

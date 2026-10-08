@@ -806,39 +806,76 @@ async function cargarIntentos() {
     if (existente) existente.remove();
   }
 
-  cont.innerHTML = '';
-  filas.forEach(({ alumno, est, examenDoc }) => {
-    const div = document.createElement('div');
-    div.className = 'intento-card';
-    if (!est) {
-      div.innerHTML = `<div class="intento-top"><span class="student-name">${escaparHTML(alumno.nombre)}</span><span class="intento-estado est-sin">Sin iniciar</span></div>`;
-    } else if (est.estado === 'entregado') {
-      div.innerHTML = `<div class="intento-top"><span class="student-name">${escaparHTML(alumno.nombre)}</span><span class="intento-estado est-ok">${Number(est.calificacion).toFixed(1)} / 10</span></div>
-        <p class="intento-detalle">${est.aciertos}/${est.total} correctas${est.automatico ? ' · se acabó el tiempo' : ''}${est.salidas ? ` · ${est.salidas} salida(s) previas` : ''}</p>
-        <div class="intento-acciones"><button class="btn btn-ghost-dark btn-small" data-descargar-examen="${alumno.id}">Descargar examen (PDF)</button></div>`;
-    } else if (est.estado === 'bloqueado') {
-      div.innerHTML = `<div class="intento-top"><span class="student-name">${escaparHTML(alumno.nombre)}</span><span class="intento-estado est-bloq">Bloqueado</span></div>
-        <p class="intento-detalle">Salió de la pantalla ${est.salidas || 1} vez(ces). Contestadas: ${Object.keys(est.respuestas || {}).length} de ${(est.ids || []).length}</p>
-        <div class="intento-acciones"><button class="btn btn-primary btn-small" data-reabrir="${alumno.id}">Reabrir examen</button><button class="btn btn-ghost-dark btn-small" data-extra="${alumno.id}">+ tiempo</button></div>`;
-    } else {
+  // Tabla de alumnos contra el avance de su examen: el nombre se queda fijo
+  // a la izquierda y lo demás se desliza de lado, igual que en las otras
+  // pestañas. Antes era una tarjeta grande por alumno y con 27 alumnos había
+  // que deslizar muchísimo para saber quién ya entregó.
+  const ESTADO_EXAMEN = {
+    sin:       { texto: 'Sin iniciar', clase: 'mz-ex-sin' },
+    en_curso:  { texto: 'En curso',    clase: 'mz-ex-curso' },
+    bloqueado: { texto: 'Bloqueado',   clase: 'mz-ex-bloq' },
+    entregado: { texto: 'Entregado',   clase: 'mz-ex-ok' },
+  };
+
+  const filaHTML = ({ alumno, est, examenDoc }) => {
+    const clave = !est ? 'sin' : (est.estado || 'en_curso');
+    const info = ESTADO_EXAMEN[clave] || ESTADO_EXAMEN.en_curso;
+
+    let calif = '—', aciertos = '—', salidas = '—', acciones = '';
+
+    if (clave === 'entregado') {
+      calif = `${Number(est.calificacion ?? 0).toFixed(1)} / 10`;
+      aciertos = `${est.aciertos}/${est.total}${est.automatico ? ' ⏱' : ''}`;
+      salidas = est.salidas ? String(est.salidas) : '0';
+      acciones = `<button type="button" class="mz-btn" data-descargar-examen="${alumno.id}">PDF</button>`;
+    } else if (clave === 'bloqueado') {
+      aciertos = `${Object.keys(est.respuestas || {}).length}/${(est.ids || []).length}`;
+      salidas = String(est.salidas || 1);
+      acciones = `<button type="button" class="mz-btn mz-btn-fuerte" data-reabrir="${alumno.id}">Reabrir</button><button type="button" class="mz-btn" data-extra="${alumno.id}">+ min</button>`;
+    } else if (clave === 'en_curso') {
       const totalMin = (est.minutos || 60) + (est.minutosExtra || 0);
       const restante = Math.max(0, Math.round(totalMin - (Date.now() - est.iniciado) / 60000));
-      div.innerHTML = `<div class="intento-top"><span class="student-name">${escaparHTML(alumno.nombre)}</span><span class="intento-estado est-curso">En curso</span></div>
-        <p class="intento-detalle">Le quedan ~${restante} min · contestadas ${Object.keys(est.respuestas || {}).length} de ${(est.ids || []).length}</p>
-        <div class="intento-acciones"><button class="btn btn-ghost-dark btn-small" data-extra="${alumno.id}">+ tiempo</button></div>`;
+      calif = `~${restante} min`;
+      aciertos = `${Object.keys(est.respuestas || {}).length}/${(est.ids || []).length}`;
+      salidas = String(est.salidas || 0);
+      acciones = `<button type="button" class="mz-btn" data-extra="${alumno.id}">+ min</button>`;
     }
 
-    // El Diagnóstico no tiene calificación oficial que ajustar — se omite
-    // el bloque de "Ajustar calificación" solo para ese parcial.
+    // El Diagnóstico no tiene calificación oficial que ajustar.
+    const esAjusteManual = examenDoc && examenDoc.origen && examenDoc.origen !== 'examen en línea';
     if (parcial !== 'diag') {
-      const ajusteInfo = document.createElement('div');
-      ajusteInfo.className = 'intento-acciones'; ajusteInfo.style.marginTop = '6px';
-      const esAjusteManual = examenDoc && examenDoc.origen && examenDoc.origen !== 'examen en línea';
-      ajusteInfo.innerHTML = `${esAjusteManual ? `<p class="intento-detalle">Calificación ajustada manualmente: <strong>${Number(examenDoc.calificacion).toFixed(1)} / 10</strong></p>` : ''}<button class="btn btn-ghost-dark btn-small" data-ajustar-examen="${alumno.id}">Ajustar calificación</button>`;
-      div.appendChild(ajusteInfo);
+      if (esAjusteManual) calif = `${Number(examenDoc.calificacion).toFixed(1)} / 10 ✎`;
+      acciones += `<button type="button" class="mz-btn" data-ajustar-examen="${alumno.id}">Ajustar</button>`;
     }
-    cont.appendChild(div);
-  });
+
+    return `
+      <tr>
+        <th class="mz-col-nombre" scope="row" title="${escaparHTML(alumno.nombre)}"><span class="mz-nombre-txt">${escaparHTML(alumno.nombre)}</span></th>
+        <td class="mz-celda"><span class="mz-ex-chip ${info.clase}">${info.texto}</span></td>
+        <td class="mz-celda mz-ex-dato"${esAjusteManual ? ' title="Calificación ajustada a mano por el docente"' : ''}>${calif}</td>
+        <td class="mz-celda mz-ex-dato">${aciertos}</td>
+        <td class="mz-celda mz-ex-dato">${salidas}</td>
+        <td class="mz-celda mz-ex-acciones">${acciones || '—'}</td>
+      </tr>`;
+  };
+
+  cont.innerHTML = `
+    <div class="mz-scroll">
+      <table class="mz-tabla">
+        <thead>
+          <tr>
+            <th class="mz-col-nombre">Alumno</th>
+            <th class="mz-col-act"><span class="mz-col-tit">Estado</span></th>
+            <th class="mz-col-act"><span class="mz-col-tit">Calificación</span><span class="mz-col-sub">o tiempo</span></th>
+            <th class="mz-col-act"><span class="mz-col-tit">Aciertos</span></th>
+            <th class="mz-col-act"><span class="mz-col-tit">Salidas</span></th>
+            <th class="mz-col-act mz-col-ancha"><span class="mz-col-tit">Acciones</span></th>
+          </tr>
+        </thead>
+        <tbody>${filas.map(filaHTML).join('')}</tbody>
+      </table>
+    </div>
+    <p class="field-hint" style="margin-top:10px;">Desliza la tabla de lado para ver todas las columnas. El reloj ⏱ marca que se entregó por tiempo agotado, y el lápiz ✎ que la calificación se ajustó a mano.</p>`;
 
   cont.querySelectorAll('[data-reabrir]').forEach(b => b.addEventListener('click', () => reabrirExamen(b.dataset.reabrir, parcial)));
   cont.querySelectorAll('[data-extra]').forEach(b => b.addEventListener('click', () => darTiempoExtra(b.dataset.extra, parcial)));
