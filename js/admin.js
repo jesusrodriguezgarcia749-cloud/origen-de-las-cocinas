@@ -113,13 +113,12 @@ function cargarTabActiva() {
   if (!btnActivo) return;
   const tab = btnActivo.dataset.tab;
   // Tabla de alumnos contra actividades, arriba de la captura de siempre.
-  vistaRapida(tab, { db, grupoActivo, alumnos: alumnosCache });
+  vistaRapida(tab, { db, grupoActivo, alumnos: alumnosCache, datosDeAlumno });
   if (tab === 'tareas') cargarCatalogo('tareas');
   if (tab === 'participacion') cargarCatalogo('participaciones');
   if (tab === 'proyecto') cargarProyecto();
   if (tab === 'asistencia') cargarAsistencia();
   if (tab === 'uniformes') cargarUniformes();
-  if (tab === 'practico') cargarPractico();
   if (tab === 'enlinea') { cargarExamenesAbiertos(); cargarIntentos(); }
   if (tab === 'historial') cargarHistorial();
   if (tab === 'avisos') cargarAvisos();
@@ -354,8 +353,8 @@ const CONFIG_TIPO = {
 };
 let itemCalificandoId = { tareas: null, participaciones: null };
 
-on('tareas-parcial', 'change', () => { cargarCatalogo('tareas'); vistaRapida('tareas', { db, grupoActivo, alumnos: alumnosCache }); });
-on('part-parcial', 'change', () => { cargarCatalogo('participaciones'); vistaRapida('participacion', { db, grupoActivo, alumnos: alumnosCache }); });
+on('tareas-parcial', 'change', () => { cargarCatalogo('tareas'); vistaRapida('tareas', { db, grupoActivo, alumnos: alumnosCache, datosDeAlumno }); });
+on('part-parcial', 'change', () => { cargarCatalogo('participaciones'); vistaRapida('participacion', { db, grupoActivo, alumnos: alumnosCache, datosDeAlumno }); });
 on('btn-agregar-tarea', 'click', () => agregarItemCatalogo('tareas'));
 on('btn-agregar-part', 'click', () => agregarItemCatalogo('participaciones'));
 on('btn-guardar-tarea-calif', 'click', () => guardarCalificaciones('tareas'));
@@ -507,7 +506,7 @@ async function guardarCalificaciones(tipo) {
 // ---------- ASISTENCIA ----------
 let asistenciaEstados = {};
 on('asis-fecha', 'change', cargarAsistencia);
-on('asis-parcial', 'change', () => { cargarAsistencia(); vistaRapida('asistencia', { db, grupoActivo, alumnos: alumnosCache }); });
+on('asis-parcial', 'change', () => { cargarAsistencia(); vistaRapida('asistencia', { db, grupoActivo, alumnos: alumnosCache, datosDeAlumno }); });
 on('btn-guardar-asistencia', 'click', guardarAsistencia);
 const _hoy = new Date();
 const elFecha = document.getElementById('asis-fecha');
@@ -597,7 +596,18 @@ async function guardarUniformes() {
 }
 
 // ---------- EXAMEN PRÁCTICO (solo Parcial 2) ----------
-on('btn-guardar-practico', 'click', guardarPractico);
+// La pestaña del examen práctico se captura únicamente desde la vista rápida
+// de arriba. El bloque de abajo (una fila por alumno) quedó duplicado, así que
+// se oculta en lugar de borrarlo del HTML, para no romper nada que lo busque.
+function ocultarCapturaPracticoAntigua() {
+  ['practico-lista', 'practico-empty', 'btn-guardar-practico', 'practico-msg']
+    .forEach(id => { const el = document.getElementById(id); if (el) el.hidden = true; });
+  // El texto de ayuda de esa sección también sobra: la vista rápida trae el suyo.
+  const panel = document.getElementById('tab-practico');
+  const ayuda = panel && panel.querySelector(':scope > .field-hint');
+  if (ayuda) ayuda.hidden = true;
+}
+document.addEventListener('DOMContentLoaded', ocultarCapturaPracticoAntigua);
 
 async function cargarPractico() {
   const cont = document.getElementById('practico-lista');

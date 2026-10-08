@@ -17,6 +17,8 @@ import {
   collection, doc, getDoc, getDocs, setDoc, deleteDoc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+import { calcularParcial, calcularCuatrimestre, PESO_CUATRIMESTRE } from "./calculo.js";
+
 const ESTADOS = ['presente', 'retardo', 'justificado', 'falta'];
 const ETIQUETA_ESTADO = { presente: 'Presente', retardo: 'Retardo', justificado: 'Justificado', falta: 'Falta' };
 const LETRA_ESTADO = { presente: 'P', retardo: 'R', justificado: 'J', falta: 'F' };
@@ -371,7 +373,8 @@ const COLS_EXAMEN = [
 
 async function vistaExamenes(ctx, { soloPractico = false } = {}) {
   const COLS = soloPractico ? COLS_PRACTICO : COLS_EXAMEN;
-  const cont = contenedor(soloPractico ? 'tab-practico' : 'tab-historial', null);
+  const cont = contenedor(soloPractico ? 'tab-practico' : 'tab-enlinea',
+                          soloPractico ? null : 'intentos-empty');
   if (!cont) return;
   const titulo = soloPractico
     ? 'Vista rápida — examen práctico del Parcial 2'
@@ -428,6 +431,119 @@ async function vistaExamenes(ctx, { soloPractico = false } = {}) {
 }
 
 // ---------------------------------------------------------------------------
+// HISTORIAL — promedio de cada alumno
+//
+// Se muestran dos números distintos a propósito:
+//   "Hasta hoy"     ignora los rubros que todavía no se capturan, así que
+//                   dice cómo va el alumno de verdad a mitad del curso.
+//   "Cuatrimestre"  es la calificación oficial: lo que falta cuenta como
+//                   cero, igual que la verá el alumno y que saldrá en actas.
+// A mitad del curso el oficial sale muy bajo porque el Examen Final pesa la
+// mitad y todavía no existe; por eso conviene ver los dos juntos.
+// ---------------------------------------------------------------------------
+
+// Devuelve los puntos obtenidos y los puntos posibles SOLO de los rubros que
+// ya tienen algo capturado en ese parcial.
+function capturadoDelParcial(parcial, r) {
+  let obtenidos = 0, posibles = 0;
+  const sumar = (rubro, cuenta) => {
+    if (!rubro || !cuenta) return;
+    obtenidos += rubro.pts; posibles += rubro.tope;
+  };
+
+  if (parcial === 'final') {
+    sumar(r.examen, r.examen.calificacion !== null);
+    ['entrega1', 'entrega2', 'entregaFinal'].forEach(e => {
+      const d = r.proyecto.detalle[e];
+      sumar(d, d.calificacion !== null);
+    });
+    sumar(r.tareasParticipacion, (r.tareasParticipacion.lista || []).length > 0);
+    sumar(r.asistencia, r.asistencia.total > 0);
+    return { obtenidos, posibles };
+  }
+
+  if (parcial === 'p2') {
+    sumar(r.examenEscrito, r.examenEscrito.calificacion !== null);
+    sumar(r.practico, r.practico.calificacion !== null);
+  } else {
+    sumar(r.examen, r.examen.calificacion !== null);
+  }
+  sumar(r.tareas, (r.tareas.esperadas || 0) > 0 || (r.tareas.lista || []).length > 0);
+  sumar(r.participacion, r.participacion.cantidad > 0);
+  sumar(r.asistencia, r.asistencia.total > 0);
+  sumar(r.uniformes, r.asistencia.total > 0);
+  return { obtenidos, posibles };
+}
+
+async function vistaPromedios(ctx) {
+  const cont = contenedor('tab-historial', null);
+  if (!cont) return;
+  const titulo = 'Vista rápida — promedio de cada alumno';
+  cargando(cont, titulo);
+
+  const { grupoActivo, alumnos, datosDeAlumno } = ctx;
+  if (!grupoActivo) { cont.innerHTML = `<h3 class="section-title">${titulo}</h3><p class="empty-inline">Elige un grupo primero.</p>`; return; }
+  if (!alumnos.length) { cont.innerHTML = `<h3 class="section-title">${titulo}</h3><p class="empty-inline">Este grupo aún no tiene alumnos.</p>`; return; }
+  if (typeof datosDeAlumno !== 'function') { cont.innerHTML = ''; return; }
+
+  const filas = [];
+  for (const alumno of alumnos) {
+    let datos;
+    try { datos = await datosDeAlumno(alumno.id); } catch { continue; }
+    const r = {};
+    ['p1', 'p2', 'final'].forEach(p => { r[p] = calcularParcial(p, datos); });
+
+    // Promedio ponderado considerando solo lo capturado.
+    let obt = 0, pos = 0;
+    ['p1', 'p2', 'final'].forEach(p => {
+      const c = capturadoDelParcial(p, r[p]);
+      obt += c.obtenidos * PESO_CUATRIMESTRE[p];
+      pos += c.posibles * PESO_CUATRIMESTRE[p];
+    });
+    const hoy = pos > 0 ? (obt / pos) * 10 : null;
+
+    filas.push({
+      alumno,
+      p1: r.p1.total, p2: r.p2.total, fin: r.final.total,
+      hoy,
+      cuatri: calcularCuatrimestre(r) / 10,
+      finVacio: capturadoDelParcial('final', r.final).posibles === 0,
+    });
+  }
+
+  const num = (v) => v.toFixed(1);
+  cont.innerHTML = `
+    <h3 class="section-title">${esc(titulo)}</h3>
+    <p class="field-hint"><strong>Hasta hoy</strong> toma en cuenta solo lo que ya capturaste, así que dice cómo va realmente cada alumno. <strong>Cuatrimestre</strong> es la calificación oficial: lo que falta cuenta como cero, y por eso sale baja mientras no se aplique el Examen Final.</p>
+    <div class="mz-scroll">
+      <table class="mz-tabla">
+        <thead>
+          <tr>
+            <th class="mz-col-nombre">Alumno</th>
+            <th class="mz-col-act"><span class="mz-col-tit">Parcial 1</span><span class="mz-col-sub">de 100</span></th>
+            <th class="mz-col-act"><span class="mz-col-tit">Parcial 2</span><span class="mz-col-sub">de 100</span></th>
+            <th class="mz-col-act"><span class="mz-col-tit">Final</span><span class="mz-col-sub">de 100</span></th>
+            <th class="mz-col-act"><span class="mz-col-tit">Hasta hoy</span><span class="mz-col-sub">lo capturado</span></th>
+            <th class="mz-col-act mz-col-final"><span class="mz-col-tit">Cuatrimestre</span><span class="mz-col-sub">oficial</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          ${filas.map(f => `
+            <tr>
+              <th class="mz-col-nombre" scope="row" title="${esc(f.alumno.nombre)}"><span class="mz-nombre-txt">${esc(f.alumno.nombre)}</span></th>
+              <td class="mz-celda mz-prom">${num(f.p1)}</td>
+              <td class="mz-celda mz-prom">${num(f.p2)}</td>
+              <td class="mz-celda mz-prom${f.finVacio ? ' mz-prom-pend' : ''}">${num(f.fin)}</td>
+              <td class="mz-celda mz-final ${f.hoy === null ? '' : (f.hoy >= 6 ? 'mz-ok' : 'mz-mal')}">${f.hoy === null ? '—' : num(f.hoy) + ' / 10'}</td>
+              <td class="mz-celda mz-final mz-col-final">${num(f.cuatri)} / 10</td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+    <p class="field-hint" style="margin-top:10px;">Toca un alumno en la lista de abajo para ver su desglose completo.</p>`;
+}
+
+// ---------------------------------------------------------------------------
 // Punto de entrada: admin.js llama a esto al abrir cada pestaña.
 // ---------------------------------------------------------------------------
 export async function vistaRapida(tab, ctx) {
@@ -437,7 +553,8 @@ export async function vistaRapida(tab, ctx) {
     if (tab === 'asistencia') return await vistaAsistencia(ctx);
     if (tab === 'proyecto') return await vistaProyecto(ctx);
     if (tab === 'practico') return await vistaExamenes(ctx, { soloPractico: true });
-    if (tab === 'historial') return await vistaExamenes(ctx, { soloPractico: false });
+    if (tab === 'enlinea') return await vistaExamenes(ctx, { soloPractico: false });
+    if (tab === 'historial') return await vistaPromedios(ctx);
   } catch (err) {
     console.warn('[vista rápida]', err);
   }
