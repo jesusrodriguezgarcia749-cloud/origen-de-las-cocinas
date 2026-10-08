@@ -342,7 +342,8 @@
    La captura de siempre sigue abajo, intacta. */
 .matriz-wrap{margin:18px 0 26px;}
 .mz-scroll{
-  overflow-x:auto; -webkit-overflow-scrolling:touch;
+  position:relative;
+  overflow-x:auto; overflow-y:visible; -webkit-overflow-scrolling:touch;
   border:1.5px solid var(--line); border-radius:12px; background:#fff;
 }
 .mz-tabla{border-collapse:separate; border-spacing:0; width:max-content; min-width:100%; font-size:.85rem;}
@@ -351,18 +352,35 @@
 /* Encabezado de columnas */
 .mz-tabla thead th{
   background:var(--charcoal); color:var(--cream); font-family:var(--font-body);
-  font-weight:600; font-size:.74rem; line-height:1.2; padding:9px 8px;
-  position:sticky; top:0; z-index:2; white-space:nowrap;
+  font-weight:600; font-size:.74rem; line-height:1.25; padding:9px 8px;
+  white-space:nowrap; vertical-align:middle;
 }
-.mz-col-tit{display:block;}
-.mz-col-sub{display:block; font-weight:400; font-size:.68rem; opacity:.7; margin-top:2px;}
+/* Cada encabezado ocupa un ancho fijo: el nombre de la actividad arriba y
+   su fecha debajo, los dos en una sola línea y cortados si no caben. */
+.mz-col-act{width:110px; min-width:110px; max-width:110px;}
+.mz-col-tit{
+  display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  max-width:96px; margin:0 auto;
+}
+.mz-col-sub{
+  display:block; font-weight:400; font-size:.68rem; opacity:.75; margin-top:3px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:96px; margin-left:auto; margin-right:auto;
+}
 
-/* Columna de nombres: se queda fija al deslizar de lado */
+/* Columna de nombres: se queda fija al deslizar de lado.
+   El nombre va en UNA sola línea y se corta con puntos suspensivos; el
+   nombre completo queda en el "title", al mantener el dedo encima. Sin
+   esto, los nombres largos partían la fila en tres renglones y la tabla
+   se veía amontonada. */
 .mz-tabla .mz-col-nombre{
   position:sticky; left:0; z-index:3; text-align:left;
-  min-width:132px; max-width:160px; padding:9px 12px;
-  font-weight:600; font-size:.82rem; line-height:1.25;
+  width:150px; min-width:150px; max-width:150px; padding:9px 12px;
+  font-weight:600; font-size:.82rem; line-height:1.3;
   background:var(--cream); border-right:1.5px solid var(--line);
+  box-shadow:3px 0 6px -3px rgba(0,0,0,0.18);
+}
+.mz-nombre-txt{
+  display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 .mz-tabla thead .mz-col-nombre{background:var(--charcoal); color:var(--cream); z-index:4;}
 .mz-tabla tbody tr:nth-child(even) .mz-col-nombre{background:#fff;}
@@ -427,3 +445,48 @@
 .mudanza-track{flex:1; height:8px; border-radius:999px; background:var(--line); overflow:hidden;}
 .mudanza-fill{height:100%; background:var(--sage); transition:width .25s ease;}
 .mudanza-texto{font-size:.76rem; color:var(--ink-soft); white-space:nowrap; min-width:118px;}
+
+/* ===== Añadido: pestaña Examen en línea en formato de tabla =====
+   Antes era una tarjeta grande por alumno; con un grupo de 27 había que
+   deslizar muchísimo para saber quién ya entregó. Ahora es la misma tabla
+   de las otras pestañas, con el nombre fijo y el avance a un vistazo. */
+.mz-col-ancha{width:168px; min-width:168px; max-width:168px;}
+.mz-col-ancha .mz-col-tit, .mz-col-ancha .mz-col-sub{max-width:154px;}
+
+.mz-ex-chip{
+  display:inline-block; padding:5px 10px; border-radius:999px;
+  font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.03em;
+  white-space:nowrap; color:#fff;
+}
+.mz-ex-sin{background:var(--line); color:var(--ink-soft);}
+.mz-ex-curso{background:var(--saffron-dark);}
+.mz-ex-bloq{background:var(--paprika);}
+.mz-ex-ok{background:var(--sage);}
+
+.mz-ex-dato{
+  font-size:.84rem; font-weight:600; color:var(--ink); white-space:nowrap; padding:8px 6px;
+}
+.mz-ex-acciones{padding:6px 8px; white-space:nowrap;}
+.mz-btn{
+  display:inline-block; margin:2px; padding:7px 11px; border-radius:999px;
+  border:1.5px solid var(--line); background:#fff; color:var(--ink-soft);
+  font-family:var(--font-body); font-size:.74rem; font-weight:600; cursor:pointer;
+  white-space:nowrap;
+}
+.mz-btn:active{transform:scale(0.94);}
+.mz-btn-fuerte{border-color:var(--paprika); color:var(--paprika);}
+.mz-btn-fuerte:hover{background:var(--paprika); color:#fff;}
+/* ===== Añadido: tabla de promedios en Historial =====
+   "Hasta hoy" ignora lo que aún no se captura; "Cuatrimestre" es la oficial.
+   Las dos se ven juntas para que el número bajo de media carrera no asuste. */
+.mz-prom{
+  font-size:.86rem; font-weight:700; color:var(--ink);
+  white-space:nowrap; padding:8px 6px;
+}
+/* El Final sin capturar se ve apagado, para no confundirlo con un cero real. */
+.mz-prom-pend{color:var(--ink-soft); font-weight:600;}
+.mz-final{font-size:.95rem; font-weight:700; white-space:nowrap; padding:8px 10px;}
+.mz-ok{color:var(--sage);}
+.mz-mal{color:var(--paprika);}
+.mz-col-final{width:112px; min-width:112px; max-width:112px; background:rgba(107,122,94,0.10);}
+.mz-tabla thead .mz-col-final{background:#3b3d4d;}
