@@ -159,9 +159,60 @@ function calcularProyecto(datosProyecto) {
   return { pts, tope: 40, detalle };
 }
 
+// ---------------------------------------------------------------------------
+// REDONDEO DE CALIFICACIONES (regla de la escuela)
+//   - Reprobatoria (menos de 6): siempre baja.        5.9  -> 5
+//   - Punto .50 o menos: baja.                         8.5  -> 8
+//   - Punto .60 o más: sube.                           8.6  -> 9
+//   - Entre .51 y .59 (ej. 9.52): lo decide el DOCENTE, alumno por alumno.
+//     Su decisión se guarda en el documento del alumno, campo
+//     redondeos.{p1|p2|final|cuatrimestre} = { centesimas, valor }.
+//     Si la calificación cambia después, la decisión ya no aplica
+//     (no coinciden las centésimas) y vuelve a quedar pendiente.
+// Todo se hace en centésimas enteras para evitar errores de decimales.
+// ---------------------------------------------------------------------------
+export const CLAVES_REDONDEO = ['p1', 'p2', 'final', 'cuatrimestre'];
+export const NOMBRES_REDONDEO = { p1: 'Parcial 1', p2: 'Parcial 2', final: 'Examen Final', cuatrimestre: 'Cuatrimestre' };
+
+export function redondearCalificacion(calif, decision) {
+  const centesimas = Math.round(Math.max(0, Math.min(10, Number(calif) || 0)) * 100);
+  const entero = Math.floor(centesimas / 100);
+  const fraccion = centesimas % 100;
+  const base = { cruda: centesimas / 100, centesimas, abajo: entero, arriba: Math.min(10, entero + 1), pendiente: false, decidido: false };
+
+  if (centesimas >= 1000) return { ...base, oficial: 10, regla: 'tope' };
+  if (entero < 6) return { ...base, oficial: entero, regla: 'reprobatoria' };
+  if (fraccion <= 50) return { ...base, oficial: entero, regla: 'baja' };
+  if (fraccion >= 60) return { ...base, oficial: entero + 1, regla: 'sube' };
+
+  // Zona de decisión del docente: .51 a .59
+  const vale = decision && Number(decision.centesimas) === centesimas
+    && (Number(decision.valor) === entero || Number(decision.valor) === entero + 1);
+  if (vale) return { ...base, oficial: Number(decision.valor), regla: 'docente', decidido: true };
+  return { ...base, oficial: null, regla: 'docente', pendiente: true };
+}
+
+// Calificación que se usa para promediar: la redondeada; si todavía está
+// pendiente de decisión, la cruda (y se marca como pendiente).
+export function valorParaPromediar(calif) {
+  return calif.oficial !== null ? calif.oficial : calif.cruda;
+}
+
+// Texto corto para mostrar una calificación redondeada.
+export function textoCalificacion(calif) {
+  if (calif.pendiente) return `${calif.cruda.toFixed(2)} (por decidir)`;
+  return String(calif.oficial);
+}
+
 // datos = { tareas, participaciones, asistencias, uniformes, examenes,
-//           practico, proyecto, catalogoTareas }
+//           practico, proyecto, catalogoTareas, redondeos }
 export function calcularParcial(parcial, datos) {
+  const r = calcularParcialBase(parcial, datos);
+  r.calif = redondearCalificacion(r.total / 10, (datos.redondeos || {})[parcial]);
+  return r;
+}
+
+function calcularParcialBase(parcial, datos) {
   const tareasDelParcial = (datos.tareas || []).filter(t => t.parcial === parcial);
   const participacionDelParcial = (datos.participaciones || []).filter(p => p.parcial === parcial);
   const asistenciaDelParcial = (datos.asistencias || []).filter(a => a.parcial === parcial);
@@ -214,9 +265,40 @@ export function calcularParcial(parcial, datos) {
   return { parcial, total, examen, tareas, participacion, asistencia, uniformes };
 }
 
+// Promedio SIN redondear, en escala de 100 (se conserva para la vista
+// "Hasta hoy" y otros cálculos internos).
 export function calcularCuatrimestre(resultadosPorParcial) {
   return ['p1', 'p2', 'final'].reduce(
     (s, p) => s + (resultadosPorParcial[p]?.total || 0) * PESO_CUATRIMESTRE[p],
     0
   );
+}
+
+// Calificación del cuatrimestre según la regla del docente: se promedian
+// Parcial 1 y Parcial 2 YA REDONDEADOS, ese resultado se promedia con el
+// Examen Final (también redondeado), y al final se redondea con la misma
+// regla. Escala de 10.
+export function calcularCuatrimestreRedondeado(resultadosPorParcial, redondeos) {
+  const v = p => valorParaPromediar(resultadosPorParcial[p].calif);
+  const promedio = ((v('p1') + v('p2')) / 2 + v('final')) / 2;
+  const bloquesPendientes = ['p1', 'p2', 'final'].filter(p => resultadosPorParcial[p].calif.pendiente);
+  const calif = redondearCalificacion(promedio, (redondeos || {}).cuatrimestre);
+  return { promedio, calif, bloquesPendientes };
+}
+
+// Lista de calificaciones de un alumno que caen en la zona .51-.59, ya sea
+// pendientes o ya decididas. Un bloque sin nada capturado no se pregunta, y
+// el cuatrimestre solo se pregunta cuando el Examen Final ya tiene algo y
+// los tres bloques ya están decididos.
+export function zonaDeDecision(resultadosPorParcial, redondeos) {
+  const items = [];
+  ['p1', 'p2', 'final'].forEach(p => {
+    const r = resultadosPorParcial[p];
+    if (r.total > 0 && r.calif.regla === 'docente') items.push({ clave: p, calif: r.calif });
+  });
+  const cuatri = calcularCuatrimestreRedondeado(resultadosPorParcial, redondeos);
+  if (resultadosPorParcial.final.total > 0 && cuatri.bloquesPendientes.length === 0 && cuatri.calif.regla === 'docente') {
+    items.push({ clave: 'cuatrimestre', calif: cuatri.calif });
+  }
+  return items;
 }

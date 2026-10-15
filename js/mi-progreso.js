@@ -6,7 +6,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 import { firebaseConfig } from "./firebase-config.js";
-import { calcularParcial, calcularCuatrimestre, NOMBRES_PARCIAL, NOMBRES_ENTREGA_PROYECTO } from "./calculo.js";
+import { calcularParcial, calcularCuatrimestreRedondeado, NOMBRES_PARCIAL, NOMBRES_ENTREGA_PROYECTO } from "./calculo.js";
 
 const app = initializeApp(firebaseConfig);
 const auth_db = getFirestore(app);
@@ -89,7 +89,9 @@ async function cargarAvisos() {
 
 async function cargarDatos() {
   const base = ['grupos', sesion.grupoId, 'alumnos', sesion.alumnoId];
-  const [catalogoSnap, tareasSnap, partSnap, asisSnap, unifP1, unifP2, exaP1, exaP2, exaFinal, practicoP2, proyE1, proyE2, proyEF] = await Promise.all([
+  const [alumnoSnap, catalogoSnap, tareasSnap, partSnap, asisSnap, unifP1, unifP2, exaP1, exaP2, exaFinal, practicoP2, proyE1, proyE2, proyEF] = await Promise.all([
+    // Documento del alumno: ahí están las decisiones de redondeo del docente.
+    getDoc(doc(db, ...base)).catch(() => null),
     // Catálogo de tareas del grupo: define cuántas tareas existen en cada
     // parcial. Es el denominador del promedio, para que una tarea no
     // entregada cuente como cero y no se infle la calificación.
@@ -109,6 +111,7 @@ async function cargarDatos() {
   ]);
 
   datosCache = {
+    redondeos: alumnoSnap && alumnoSnap.exists() ? (alumnoSnap.data().redondeos || {}) : {},
     catalogoTareas: catalogoSnap ? catalogoSnap.docs.map(d => ({ id: d.id, ...d.data() })) : [],
     // Se conserva el id del documento: es el mismo id que la tarea tiene en
     // el catálogo, y es con lo que se emparejan entregadas contra esperadas.
@@ -223,6 +226,7 @@ function renderParciales() {
           ${listaPart ? `<p class="field-hint" style="margin:10px 0 2px;">Participación:</p>${renderListaActividades(listaPart, 'Sin participación capturada.', false)}` : ''}
         </details>
         <div class="res-row res-total"><span>Total</span><strong>${r.total.toFixed(1)} / 100 pts</strong></div>
+        ${r.total > 0 ? `<div class="res-row res-total"><span>Calificación del bloque</span><strong>${r.calif.pendiente ? `${r.calif.cruda.toFixed(2)} <small class="res-extra">— tu docente está revisando el redondeo</small>` : `${r.calif.oficial} / 10`}</strong></div>` : ''}
       </div>`;
   });
 
@@ -232,10 +236,11 @@ function renderParciales() {
 function renderResumen() {
   const resultados = {};
   ['p1', 'p2', 'final'].forEach(p => { resultados[p] = calcularParcial(p, datosCache); });
-  const total = calcularCuatrimestre(resultados);
+  const cuatri = calcularCuatrimestreRedondeado(resultados, datosCache.redondeos);
+  const texto = cuatri.calif.pendiente ? `${cuatri.calif.cruda.toFixed(2)} (en revisión)` : `${cuatri.calif.oficial} / 10`;
   document.getElementById('prog-resumen').innerHTML = `
-    <div class="score-display">Calificación final del cuatrimestre: ${(total / 10).toFixed(1)} / 10</div>
-    <p class="field-hint">Parcial 1 (25%) + Parcial 2 (25%) + Examen Final (50%).</p>
+    <div class="score-display">Calificación del cuatrimestre: ${texto}</div>
+    <p class="field-hint">Se promedian Parcial 1 y Parcial 2 (ya redondeados) y ese resultado se promedia con el Examen Final. Redondeo: reprobatoria baja; .50 o menos baja; .60 o más sube.</p>
   `;
 }
 

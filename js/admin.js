@@ -6,11 +6,11 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import {
   getFirestore, collection, doc, setDoc, deleteDoc, addDoc, getDoc, getDocs,
-  query, orderBy, serverTimestamp
+  query, orderBy, serverTimestamp, onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 import { firebaseConfig } from "./firebase-config.js";
-import { calcularParcial, calcularCuatrimestre, NOMBRES_PARCIAL, TOPES } from "./calculo.js";
+import { calcularParcial, calcularCuatrimestre, calcularCuatrimestreRedondeado, zonaDeDecision, textoCalificacion, NOMBRES_PARCIAL, NOMBRES_REDONDEO, TOPES } from "./calculo.js";
 import { reporteGrupo, reporteAlumno, reporteExamenAlumno, reporteExamenGrupo } from "./reporte.js";
 import { vistaRapida } from "./matriz.js";
 
@@ -112,6 +112,8 @@ function cargarTabActiva() {
   const btnActivo = document.querySelector('.tab-btn.active');
   if (!btnActivo) return;
   const tab = btnActivo.dataset.tab;
+  // La tabla en vivo del examen solo escucha mientras esa pestaña está abierta.
+  if (tab !== 'enlinea') detenerIntentosEnVivo();
   // Tabla de alumnos contra actividades, arriba de la captura de siempre.
   vistaRapida(tab, { db, grupoActivo, alumnos: alumnosCache, datosDeAlumno });
   if (tab === 'tareas') cargarCatalogo('tareas');
@@ -135,6 +137,7 @@ async function cargarGrupos() {
 on('btn-nuevo-grupo', 'click', crearGrupo);
 on('grupo-select', 'change', async (e) => {
   grupoActivo = e.target.value || null;
+  detenerIntentosEnVivo();
   if (grupoActivo) {
     localStorage.setItem('oc_grupo_activo', grupoActivo);
     await cargarAlumnos();
@@ -274,6 +277,18 @@ async function editarNombreAlumno(alumnoId) {
     alert('Ya hay otro alumno con ese nombre en este grupo. Usa un nombre distinto.');
     return;
   }
+
+  // Si el alumno está contestando un examen en este momento, su celular
+  // seguiría guardando en el registro viejo y esas respuestas se perderían.
+  // Se pide esperar a que entregue.
+  try {
+    const intentosSnap = await getDocs(collection(db, 'grupos', grupoActivo, 'alumnos', alumnoId, 'intentos'));
+    const enCurso = intentosSnap.docs.filter(d => d.data().estado === 'en_curso');
+    if (enCurso.length > 0) {
+      alert(`${alumno.nombre} tiene un examen EN CURSO (${enCurso.map(d => ETIQUETAS_EXAMEN[d.id] || d.id).join(', ')}).\n\nEspera a que lo entregue y luego corrige el nombre. Si lo cambias ahora, sus respuestas se guardarían en el registro viejo.`);
+      return;
+    }
+  } catch { /* si no se pudo revisar, se sigue con el aviso normal */ }
 
   const ok = confirm(`¿Cambiar "${alumno.nombre}" por "${nombre}"?\n\nSe moverá todo su expediente: tareas, participaciones, asistencias, exámenes, proyecto e intentos. No se pierde nada.\n\nIMPORTANTE: a partir de ahora el alumno entrará con su nombre corregido. Su PIN sigue siendo el mismo (${alumno.pin || '—'}). Avísale.`);
   if (!ok) return;
@@ -721,15 +736,141 @@ async function guardarExamenesAbiertos() {
   marcarResultado('btn-guardar-examenes-abiertos', 'abiertos-msg', true, '✓ Guardado.', '');
 }
 
+// La tabla se mantiene EN VIVO: cada alumno tiene dos "escuchas" (su intento
+// y su calificación de examen) y, en cuanto algo cambia en la base de datos,
+// su fila se vuelve a pintar sola. No hace falta recargar la página.
+let intentosSubs = [];
+let intentosReloj = null;
+let intentosPintado = null;
+let intentosSesion = 0;
+
+function detenerIntentosEnVivo() {
+  intentosSubs.forEach(u => { try { u(); } catch { /* nada */ } });
+  intentosSubs = [];
+  clearInterval(intentosReloj); intentosReloj = null;
+  clearTimeout(intentosPintado); intentosPintado = null;
+  intentosSesion++;
+}
+
+const ESTADO_EXAMEN = {
+  sin:       { texto: 'Sin iniciar', clase: 'mz-ex-sin' },
+  en_curso:  { texto: 'En curso',    clase: 'mz-ex-curso' },
+  bloqueado: { texto: 'Bloqueado',   clase: 'mz-ex-bloq' },
+  entregado: { texto: 'Entregado',   clase: 'mz-ex-ok' },
+};
+
+// Tiempo restante de un intento en curso, con la misma cuenta que usa el
+// examen del alumno (incluye pausas por reapertura y minutos extra).
+function minutosRestantes(est) {
+  const base = est.segundosAlPausar ?? ((est.minutos || 60) * 60);
+  const desde = est.reanudadoEn || est.iniciado;
+  if (!desde) return null;
+  const seg = base + (est.minutosExtra || 0) * 60 - Math.floor((Date.now() - desde) / 1000);
+  return Math.max(0, Math.ceil(seg / 60));
+}
+
+function filaIntentoHTML(parcial, { alumno, est, examenDoc }) {
+  const clave = !est ? 'sin' : (est.estado || 'en_curso');
+  const info = ESTADO_EXAMEN[clave] || ESTADO_EXAMEN.en_curso;
+  let calif = '—', aciertos = '—', salidas = '—', acciones = '';
+
+  if (clave === 'entregado') {
+    calif = `${Number(est.calificacion ?? 0).toFixed(1)} / 10`;
+    aciertos = `${est.aciertos}/${est.total}${est.automatico ? ' ⏱' : ''}`;
+    salidas = est.salidas ? String(est.salidas) : '0';
+    acciones = `<button type="button" class="mz-btn" data-descargar-examen="${alumno.id}">PDF</button>`;
+  } else if (clave === 'bloqueado') {
+    aciertos = `${Object.keys(est.respuestas || {}).length}/${(est.ids || []).length}`;
+    salidas = String(est.salidas || 1);
+    acciones = `<button type="button" class="mz-btn mz-btn-fuerte" data-reabrir="${alumno.id}">Reabrir</button><button type="button" class="mz-btn" data-extra="${alumno.id}">+ min</button>`;
+  } else if (clave === 'en_curso') {
+    const restante = minutosRestantes(est);
+    calif = restante === null ? 'en curso' : `~${restante} min`;
+    aciertos = `${Object.keys(est.respuestas || {}).length}/${(est.ids || []).length}`;
+    salidas = String(est.salidas || 0);
+    acciones = `<button type="button" class="mz-btn" data-extra="${alumno.id}">+ min</button>`;
+  }
+
+  // El Diagnóstico no tiene calificación oficial que ajustar.
+  const esAjusteManual = examenDoc && examenDoc.origen && examenDoc.origen !== 'examen en línea';
+  if (parcial !== 'diag') {
+    if (esAjusteManual) calif = `${Number(examenDoc.calificacion).toFixed(1)} / 10 ✎`;
+    acciones += `<button type="button" class="mz-btn" data-ajustar-examen="${alumno.id}">Ajustar</button>`;
+  }
+
+  return `
+    <tr>
+      <th class="mz-col-nombre" scope="row" title="${escaparHTML(alumno.nombre)}"><span class="mz-nombre-txt">${escaparHTML(alumno.nombre)}</span></th>
+      <td class="mz-celda"><span class="mz-ex-chip ${info.clase}">${info.texto}</span></td>
+      <td class="mz-celda mz-ex-dato"${esAjusteManual ? ' title="Calificación ajustada a mano por el docente"' : ''}>${calif}</td>
+      <td class="mz-celda mz-ex-dato">${aciertos}</td>
+      <td class="mz-celda mz-ex-dato">${salidas}</td>
+      <td class="mz-celda mz-ex-acciones">${acciones || '—'}</td>
+    </tr>`;
+}
+
+// Concentrado grupal por sección — solo para el Examen Diagnóstico.
+// Usa las categorías codificadas en el id de cada reactivo
+// (diag-a.. = Cultura gastronómica, diag-b.. = Historia/geografía,
+// diag-c.. = Comprensión lectora, diag-d.. = Experiencia práctica,
+// diag-e.. = Vocabulario y técnicas).
+function pintarConcentradoDiag(contConcentrado, filas, bancoDiag) {
+  const NOMBRE_CATEGORIA = {
+    a: 'Cultura gastronómica general',
+    b: 'Historia y geografía general',
+    c: 'Comprensión lectora',
+    d: 'Experiencia práctica en cocina',
+    e: 'Vocabulario y técnicas culinarias',
+  };
+  const categoriaDe = {};
+  bancoDiag.reactivos.forEach(r => { categoriaDe[r.id] = (r.id.split('-')[1] || '')[0]; });
+  const correctasPorCat = { a: 0, b: 0, c: 0, d: 0, e: 0 };
+  const totalPorCat = { a: 0, b: 0, c: 0, d: 0, e: 0 };
+  let entregados = 0, sumaCalif = 0;
+  filas.forEach(({ est }) => {
+    if (est && est.estado === 'entregado' && Array.isArray(est.detalle)) {
+      entregados++;
+      sumaCalif += Number(est.calificacion) || 0;
+      est.detalle.forEach(d => {
+        const cat = categoriaDe[d.id];
+        if (!cat || !(cat in totalPorCat)) return;
+        totalPorCat[cat]++;
+        if (d.correcto) correctasPorCat[cat]++;
+      });
+    }
+  });
+  if (entregados === 0) {
+    contConcentrado.innerHTML = '<h4>Concentrado grupal — Examen Diagnóstico</h4><p class="empty-inline">Todavía nadie ha entregado este examen.</p>';
+    return;
+  }
+  const filasCategoria = Object.keys(NOMBRE_CATEGORIA).map(cat => {
+    const pct = totalPorCat[cat] ? (correctasPorCat[cat] / totalPorCat[cat] * 100) : 0;
+    return `<div class="res-row"><span>${NOMBRE_CATEGORIA[cat]}</span><strong>${pct.toFixed(0)}% de aciertos</strong></div>`;
+  }).join('');
+  contConcentrado.innerHTML = `
+    <h4>Concentrado grupal — Examen Diagnóstico</h4>
+    <div class="res-row"><span>Alumnos que entregaron</span><strong>${entregados} de ${filas.length}</strong></div>
+    <div class="res-row"><span>Promedio general del grupo</span><strong>${(sumaCalif / entregados).toFixed(1)} / 10</strong></div>
+    ${filasCategoria}
+    <p class="field-hint" style="margin-top:10px;">Porcentaje de aciertos promedio por sección, considerando solo a quienes ya entregaron.</p>`;
+}
+
 async function cargarIntentos() {
+  detenerIntentosEnVivo();
+  const sesion = intentosSesion;
   const cont = document.getElementById('intentos-lista');
   const empty = document.getElementById('intentos-empty');
   if (!cont) return;
   cont.innerHTML = '';
   if (!grupoActivo) { empty.hidden = false; empty.textContent = 'Elige un grupo primero.'; return; }
+
+  // Lista de alumnos recién leída, por si un nombre se corrigió en otro lado.
+  try { await cargarAlumnos(); } catch { /* se usa la que ya está */ }
+  if (sesion !== intentosSesion) return; // se cambió de pestaña o de examen mientras cargaba
   if (alumnosCache.length === 0) { empty.hidden = false; empty.textContent = 'Este grupo aún no tiene alumnos.'; return; }
   empty.hidden = true;
   const parcial = document.getElementById('enlinea-parcial').value;
+  const grupo = grupoActivo;
 
   let btnTodos = document.getElementById('btn-descargar-examenes-grupo');
   if (!btnTodos) {
@@ -740,23 +881,9 @@ async function cargarIntentos() {
   btnTodos.textContent = `Descargar todos los exámenes de ${ETIQUETAS_EXAMEN[parcial]} (PDF)`;
   btnTodos.onclick = () => descargarExamenesGrupo(parcial);
 
-  cont.innerHTML = '<p class="empty-inline">Cargando…</p>';
-  const filas = [];
-  for (const a of alumnosCache) {
-    let est = null;
-    try { const snap = await getDoc(doc(db, 'grupos', grupoActivo, 'alumnos', a.id, 'intentos', parcial)); est = snap.exists() ? snap.data() : null; } catch { /* sin intento */ }
-    let examenDoc = null;
-    try { const snapEx = await getDoc(doc(db, 'grupos', grupoActivo, 'alumnos', a.id, 'examenes', parcial)); examenDoc = snapEx.exists() ? snapEx.data() : null; } catch { /* sin examen */ }
-    filas.push({ alumno: a, est, examenDoc });
-  }
-
-  // Concentrado grupal por sección — solo para el Examen Diagnóstico.
-  // Usa las mismas categorías codificadas en el id de cada reactivo
-  // (diag-a1..a6 = Cultura gastronómica, diag-b.. = Historia/geografía,
-  // diag-c.. = Comprensión lectora, diag-d.. = Experiencia práctica,
-  // diag-e.. = Vocabulario y técnicas).
+  let contConcentrado = document.getElementById('concentrado-diag-grupal');
+  let bancoDiag = null;
   if (parcial === 'diag') {
-    let contConcentrado = document.getElementById('concentrado-diag-grupal');
     if (!contConcentrado) {
       contConcentrado = document.createElement('div');
       contConcentrado.id = 'concentrado-diag-grupal';
@@ -765,111 +892,16 @@ async function cargarIntentos() {
       cont.parentNode.insertBefore(contConcentrado, cont);
     }
     contConcentrado.innerHTML = '<p class="empty-inline">Calculando concentrado grupal…</p>';
-    try {
-      const bancoDiag = await cargarBancoExamen('diag');
-      const NOMBRE_CATEGORIA = {
-        a: 'Cultura gastronómica general',
-        b: 'Historia y geografía general',
-        c: 'Comprensión lectora',
-        d: 'Experiencia práctica en cocina',
-        e: 'Vocabulario y técnicas culinarias',
-      };
-      const categoriaDe = {};
-      bancoDiag.reactivos.forEach(r => { categoriaDe[r.id] = (r.id.split('-')[1] || '')[0]; });
-
-      const correctasPorCat = { a: 0, b: 0, c: 0, d: 0, e: 0 };
-      const totalPorCat = { a: 0, b: 0, c: 0, d: 0, e: 0 };
-      let entregados = 0, sumaCalif = 0;
-
-      filas.forEach(({ est }) => {
-        if (est && est.estado === 'entregado' && Array.isArray(est.detalle)) {
-          entregados++;
-          sumaCalif += Number(est.calificacion) || 0;
-          est.detalle.forEach(d => {
-            const cat = categoriaDe[d.id];
-            if (!cat || !(cat in totalPorCat)) return;
-            totalPorCat[cat]++;
-            if (d.correcto) correctasPorCat[cat]++;
-          });
-        }
-      });
-
-      if (entregados === 0) {
-        contConcentrado.innerHTML = '<h4>Concentrado grupal — Examen Diagnóstico</h4><p class="empty-inline">Todavía nadie ha entregado este examen.</p>';
-      } else {
-        const filasCategoria = Object.keys(NOMBRE_CATEGORIA).map(cat => {
-          const pct = totalPorCat[cat] ? (correctasPorCat[cat] / totalPorCat[cat] * 100) : 0;
-          return `<div class="res-row"><span>${NOMBRE_CATEGORIA[cat]}</span><strong>${pct.toFixed(0)}% de aciertos</strong></div>`;
-        }).join('');
-        contConcentrado.innerHTML = `
-          <h4>Concentrado grupal — Examen Diagnóstico</h4>
-          <div class="res-row"><span>Alumnos que entregaron</span><strong>${entregados} de ${alumnosCache.length}</strong></div>
-          <div class="res-row"><span>Promedio general del grupo</span><strong>${(sumaCalif / entregados).toFixed(1)} / 10</strong></div>
-          ${filasCategoria}
-          <p class="field-hint" style="margin-top:10px;">Porcentaje de aciertos promedio por sección, considerando solo a quienes ya entregaron.</p>`;
-      }
-    } catch (err) {
-      contConcentrado.innerHTML = `<p class="empty-inline">No se pudo calcular el concentrado: ${err.message || err}</p>`;
-    }
-  } else {
-    const existente = document.getElementById('concentrado-diag-grupal');
-    if (existente) existente.remove();
+    try { bancoDiag = await cargarBancoExamen('diag'); }
+    catch (err) { contConcentrado.innerHTML = `<p class="empty-inline">No se pudo calcular el concentrado: ${err.message || err}</p>`; }
+    if (sesion !== intentosSesion) return;
+  } else if (contConcentrado) {
+    contConcentrado.remove(); contConcentrado = null;
   }
 
-  // Tabla de alumnos contra el avance de su examen: el nombre se queda fijo
-  // a la izquierda y lo demás se desliza de lado, igual que en las otras
-  // pestañas. Antes era una tarjeta grande por alumno y con 27 alumnos había
-  // que deslizar muchísimo para saber quién ya entregó.
-  const ESTADO_EXAMEN = {
-    sin:       { texto: 'Sin iniciar', clase: 'mz-ex-sin' },
-    en_curso:  { texto: 'En curso',    clase: 'mz-ex-curso' },
-    bloqueado: { texto: 'Bloqueado',   clase: 'mz-ex-bloq' },
-    entregado: { texto: 'Entregado',   clase: 'mz-ex-ok' },
-  };
-
-  const filaHTML = ({ alumno, est, examenDoc }) => {
-    const clave = !est ? 'sin' : (est.estado || 'en_curso');
-    const info = ESTADO_EXAMEN[clave] || ESTADO_EXAMEN.en_curso;
-
-    let calif = '—', aciertos = '—', salidas = '—', acciones = '';
-
-    if (clave === 'entregado') {
-      calif = `${Number(est.calificacion ?? 0).toFixed(1)} / 10`;
-      aciertos = `${est.aciertos}/${est.total}${est.automatico ? ' ⏱' : ''}`;
-      salidas = est.salidas ? String(est.salidas) : '0';
-      acciones = `<button type="button" class="mz-btn" data-descargar-examen="${alumno.id}">PDF</button>`;
-    } else if (clave === 'bloqueado') {
-      aciertos = `${Object.keys(est.respuestas || {}).length}/${(est.ids || []).length}`;
-      salidas = String(est.salidas || 1);
-      acciones = `<button type="button" class="mz-btn mz-btn-fuerte" data-reabrir="${alumno.id}">Reabrir</button><button type="button" class="mz-btn" data-extra="${alumno.id}">+ min</button>`;
-    } else if (clave === 'en_curso') {
-      const totalMin = (est.minutos || 60) + (est.minutosExtra || 0);
-      const restante = Math.max(0, Math.round(totalMin - (Date.now() - est.iniciado) / 60000));
-      calif = `~${restante} min`;
-      aciertos = `${Object.keys(est.respuestas || {}).length}/${(est.ids || []).length}`;
-      salidas = String(est.salidas || 0);
-      acciones = `<button type="button" class="mz-btn" data-extra="${alumno.id}">+ min</button>`;
-    }
-
-    // El Diagnóstico no tiene calificación oficial que ajustar.
-    const esAjusteManual = examenDoc && examenDoc.origen && examenDoc.origen !== 'examen en línea';
-    if (parcial !== 'diag') {
-      if (esAjusteManual) calif = `${Number(examenDoc.calificacion).toFixed(1)} / 10 ✎`;
-      acciones += `<button type="button" class="mz-btn" data-ajustar-examen="${alumno.id}">Ajustar</button>`;
-    }
-
-    return `
-      <tr>
-        <th class="mz-col-nombre" scope="row" title="${escaparHTML(alumno.nombre)}"><span class="mz-nombre-txt">${escaparHTML(alumno.nombre)}</span></th>
-        <td class="mz-celda"><span class="mz-ex-chip ${info.clase}">${info.texto}</span></td>
-        <td class="mz-celda mz-ex-dato"${esAjusteManual ? ' title="Calificación ajustada a mano por el docente"' : ''}>${calif}</td>
-        <td class="mz-celda mz-ex-dato">${aciertos}</td>
-        <td class="mz-celda mz-ex-dato">${salidas}</td>
-        <td class="mz-celda mz-ex-acciones">${acciones || '—'}</td>
-      </tr>`;
-  };
-
+  // Estructura fija de la tabla; solo el cuerpo se repinta.
   cont.innerHTML = `
+    <span class="en-vivo" id="intentos-en-vivo">En vivo — se actualiza solo</span>
     <div class="mz-scroll">
       <table class="mz-tabla">
         <thead>
@@ -882,15 +914,71 @@ async function cargarIntentos() {
             <th class="mz-col-act mz-col-ancha"><span class="mz-col-tit">Acciones</span></th>
           </tr>
         </thead>
-        <tbody>${filas.map(filaHTML).join('')}</tbody>
+        <tbody id="intentos-tbody"><tr><td colspan="6" class="mz-celda">Cargando…</td></tr></tbody>
       </table>
     </div>
     <p class="field-hint" style="margin-top:10px;">Desliza la tabla de lado para ver todas las columnas. El reloj ⏱ marca que se entregó por tiempo agotado, y el lápiz ✎ que la calificación se ajustó a mano.</p>`;
 
-  cont.querySelectorAll('[data-reabrir]').forEach(b => b.addEventListener('click', () => reabrirExamen(b.dataset.reabrir, parcial)));
-  cont.querySelectorAll('[data-extra]').forEach(b => b.addEventListener('click', () => darTiempoExtra(b.dataset.extra, parcial)));
-  cont.querySelectorAll('[data-descargar-examen]').forEach(b => b.addEventListener('click', () => descargarExamenAlumno(b.dataset.descargarExamen, parcial)));
-  cont.querySelectorAll('[data-ajustar-examen]').forEach(b => b.addEventListener('click', () => ajustarCalificacionExamen(b.dataset.ajustarExamen, parcial)));
+  const filas = alumnosCache.map(alumno => ({ alumno, est: null, examenDoc: null }));
+  const porId = new Map(filas.map(f => [f.alumno.id, f]));
+  let pendientesIniciales = filas.length * 2;
+
+  const pintar = () => {
+    if (sesion !== intentosSesion) return;
+    const tbody = document.getElementById('intentos-tbody');
+    if (!tbody) return;
+    tbody.innerHTML = filas.map(f => filaIntentoHTML(parcial, f)).join('');
+    tbody.querySelectorAll('[data-reabrir]').forEach(b => b.addEventListener('click', () => reabrirExamen(b.dataset.reabrir, parcial)));
+    tbody.querySelectorAll('[data-extra]').forEach(b => b.addEventListener('click', () => darTiempoExtra(b.dataset.extra, parcial)));
+    tbody.querySelectorAll('[data-descargar-examen]').forEach(b => b.addEventListener('click', () => descargarExamenAlumno(b.dataset.descargarExamen, parcial)));
+    tbody.querySelectorAll('[data-ajustar-examen]').forEach(b => b.addEventListener('click', () => ajustarCalificacionExamen(b.dataset.ajustarExamen, parcial)));
+    if (contConcentrado && bancoDiag) pintarConcentradoDiag(contConcentrado, filas, bancoDiag);
+  };
+  // Varias actualizaciones seguidas (por ejemplo, 27 alumnos entrando a la
+  // vez) se juntan en un solo repintado.
+  const programarPintado = () => {
+    if (pendientesIniciales > 0) return; // se pinta todo junto cuando llegó lo primero
+    clearTimeout(intentosPintado);
+    intentosPintado = setTimeout(pintar, 250);
+  };
+  const marcarConexion = (ok) => {
+    const el = document.getElementById('intentos-en-vivo');
+    if (!el) return;
+    el.classList.toggle('sin-conexion', !ok);
+    el.textContent = ok ? 'En vivo — se actualiza solo' : 'Sin conexión en vivo — recarga la página';
+  };
+
+  filas.forEach(f => {
+    const base = ['grupos', grupo, 'alumnos', f.alumno.id];
+    let primeraIntento = true, primeraExamen = true;
+    const llegoPrimera = () => {
+      pendientesIniciales--;
+      if (pendientesIniciales === 0) pintar();
+    };
+    intentosSubs.push(onSnapshot(doc(db, ...base, 'intentos', parcial), snap => {
+      const fila = porId.get(f.alumno.id); if (!fila) return;
+      fila.est = snap.exists() ? snap.data() : null;
+      marcarConexion(true);
+      if (primeraIntento) { primeraIntento = false; llegoPrimera(); } else programarPintado();
+    }, err => {
+      console.warn('[en vivo] intento', f.alumno.id, err);
+      marcarConexion(false);
+      if (primeraIntento) { primeraIntento = false; llegoPrimera(); }
+    }));
+    intentosSubs.push(onSnapshot(doc(db, ...base, 'examenes', parcial), snap => {
+      const fila = porId.get(f.alumno.id); if (!fila) return;
+      fila.examenDoc = snap.exists() ? snap.data() : null;
+      if (primeraExamen) { primeraExamen = false; llegoPrimera(); } else programarPintado();
+    }, err => {
+      console.warn('[en vivo] examen', f.alumno.id, err);
+      if (primeraExamen) { primeraExamen = false; llegoPrimera(); }
+    }));
+  });
+
+  // El tiempo restante de quienes están contestando se recalcula cada 30 s.
+  intentosReloj = setInterval(() => {
+    if (filas.some(f => f.est && f.est.estado === 'en_curso')) programarPintado();
+  }, 30000);
 }
 
 let bancosExamenCache = {};
@@ -923,6 +1011,7 @@ async function descargarExamenesGrupo(parcial) {
   const textoOriginal = btnTodos ? btnTodos.textContent : '';
   if (btnTodos) { btnTodos.disabled = true; btnTodos.textContent = 'Generando…'; }
   try {
+    await cargarAlumnos();
     const banco = await cargarBancoExamen(parcial);
     const entregas = [];
     for (const alumno of alumnosCache) {
@@ -946,7 +1035,6 @@ async function reabrirExamen(alumnoId, parcial) {
   await setDoc(ref, { ...est, estado: 'en_curso', segundosAlPausar: seg, minutosExtra: 0, reanudadoEn: Date.now(), reabiertoEn: new Date().toISOString(), actualizado: serverTimestamp() });
   const m = Math.floor(seg / 60), s = seg % 60;
   alert(`Examen reabierto. Continuará con ${m}:${String(s).padStart(2, '0')}.`);
-  cargarIntentos();
 }
 
 async function darTiempoExtra(alumnoId, parcial) {
@@ -964,7 +1052,6 @@ async function darTiempoExtra(alumnoId, parcial) {
   if (isNaN(n) || n <= 0) return;
   await setDoc(ref, { ...est, minutosExtra: (est.minutosExtra || 0) + n, actualizado: serverTimestamp() });
   alert(`Se agregaron ${n} minutos.`);
-  cargarIntentos();
 }
 
 async function ajustarCalificacionExamen(alumnoId, parcial) {
@@ -981,13 +1068,14 @@ async function ajustarCalificacionExamen(alumnoId, parcial) {
   try { await setDoc(actualRef, { calificacion, origen: 'ajuste manual del docente', actualizado: serverTimestamp() }); }
   catch (err) { alert('No se pudo guardar el ajuste: ' + (err.message || err)); return; }
   alert(`Calificación actualizada a ${calificacion.toFixed(1)} / 10.`);
-  cargarIntentos();
 }
 
 // ---------- HISTORIAL ----------
 async function datosDeAlumno(alumnoId) {
   const base = ['grupos', grupoActivo, 'alumnos', alumnoId];
-  const [catalogoSnap, tarSnap, partSnap, asisSnap, unifP1, unifP2, exaP1, exaP2, exaFinal, practicoP2, proyE1, proyE2, proyEF] = await Promise.all([
+  const [alumnoSnap, catalogoSnap, tarSnap, partSnap, asisSnap, unifP1, unifP2, exaP1, exaP2, exaFinal, practicoP2, proyE1, proyE2, proyEF] = await Promise.all([
+    // Documento del alumno: ahí se guardan las decisiones de redondeo.
+    getDoc(doc(db, ...base)).catch(() => null),
     // Catálogo de tareas del grupo: define cuántas tareas existen en cada
     // parcial. Es el denominador del promedio, para que una tarea del
     // catálogo que el alumno no entregó cuente como cero.
@@ -1006,6 +1094,7 @@ async function datosDeAlumno(alumnoId) {
     getDoc(doc(db, ...base, 'proyecto', 'entregaFinal')).catch(() => null),
   ]);
   return {
+    redondeos: alumnoSnap && alumnoSnap.exists() ? (alumnoSnap.data().redondeos || {}) : {},
     catalogoTareas: catalogoSnap ? catalogoSnap.docs.map(d => ({ id: d.id, ...d.data() })) : [],
     // Se conserva el id del documento: es el mismo id que la tarea tiene en
     // el catálogo, y es con lo que se emparejan entregadas contra esperadas.
@@ -1051,28 +1140,104 @@ function renderSelectHistAlumno() {
 
 on('btn-pdf', 'click', generarPDF);
 
+// Antes de cualquier reporte se vuelve a leer la lista de alumnos desde la
+// base de datos. Así, si un nombre se corrigió (en esta pestaña, en otra
+// ventana o en el celular), el reporte usa el registro nuevo y no uno viejo
+// que ya quedó vacío — eso era lo que sacaba a un alumno en ceros.
+async function refrescarAlumnos() {
+  await cargarAlumnos();
+  renderSelectHistAlumno();
+}
+
+// Revisa si hay calificaciones en la zona .51-.59 sin decidir. Si las hay,
+// pregunta antes de generar. Devuelve false si el docente prefiere decidir
+// primero.
+function confirmarPendientes(lista) {
+  const pendientes = [];
+  lista.forEach(({ alumno, datos }) => {
+    const res = {};
+    PARCIALES.forEach(p => { res[p] = calcularParcial(p, datos); });
+    zonaDeDecision(res, datos.redondeos).filter(x => x.calif.pendiente)
+      .forEach(x => pendientes.push(`• ${alumno.nombre} — ${NOMBRES_REDONDEO[x.clave]}: ${x.calif.cruda.toFixed(2)}`));
+  });
+  if (pendientes.length === 0) return true;
+  return confirm(`Hay ${pendientes.length} calificación(es) por decidir (¿subir o dejar?):\n\n${pendientes.slice(0, 12).join('\n')}${pendientes.length > 12 ? '\n…' : ''}\n\nPuedes decidirlas en "Redondeos por decidir", aquí mismo en Historial.\n\n¿Generar de todos modos? Saldrán marcadas como "por decidir".`);
+}
+
 async function generarPDF() {
   if (!grupoActivo) { alert('Elige un grupo primero.'); return; }
-  if (alumnosCache.length === 0) { alert('Este grupo no tiene alumnos.'); return; }
   const modo = document.getElementById('hist-modo').value;
+  const elegido = document.getElementById('hist-alumno-select').value;
   const msg = document.getElementById('export-msg');
   msg.textContent = 'Generando reporte…'; msg.hidden = false;
   try {
+    await refrescarAlumnos();
+    if (alumnosCache.length === 0) { alert('Este grupo no tiene alumnos.'); msg.hidden = true; return; }
     if (modo === 'alumno') {
-      const alumnoId = document.getElementById('hist-alumno-select').value;
-      if (!alumnoId) { alert('Elige un alumno de la lista.'); msg.hidden = true; return; }
-      const alumno = alumnosCache.find(a => a.id === alumnoId);
-      if (!alumno) { msg.hidden = true; return; }
+      if (!elegido) { alert('Elige un alumno de la lista.'); msg.hidden = true; return; }
+      const alumno = alumnosCache.find(a => a.id === elegido);
+      if (!alumno) { alert('Ese alumno ya no está con ese nombre (probablemente se corrigió). La lista ya se actualizó: vuelve a elegirlo.'); msg.hidden = true; return; }
       const datos = await datosDeAlumno(alumno.id);
+      if (!confirmarPendientes([{ alumno, datos }])) { msg.hidden = true; return; }
       await reporteAlumno({ nombreGrupo: nombreDelGrupo(), alumno, datos });
     } else {
       const alumnos = [];
       for (const alumno of alumnosCache) { alumnos.push({ alumno, datos: await datosDeAlumno(alumno.id) }); }
+      if (!confirmarPendientes(alumnos)) { msg.hidden = true; return; }
       await reporteGrupo({ nombreGrupo: nombreDelGrupo(), alumnos, parciales: parcialesReporte });
     }
     msg.textContent = '✓ Reporte abierto en una ventana nueva.';
     setTimeout(() => { msg.hidden = true; }, 4000);
   } catch (err) { console.error(err); msg.textContent = 'No se pudo generar el reporte: ' + (err.message || err); }
+}
+
+// ---------- REDONDEOS POR DECIDIR ----------
+// Lista de calificaciones en la zona .51-.59 (como 9.52). El docente decide
+// si sube o se queda; la decisión se guarda en el documento del alumno.
+async function cargarRedondeos() {
+  const cont = document.getElementById('hist-redondeos');
+  if (!cont) return;
+  if (!grupoActivo || alumnosCache.length === 0) { cont.innerHTML = '<p class="empty-inline">Sin alumnos.</p>'; return; }
+  cont.innerHTML = '<p class="empty-inline">Revisando calificaciones…</p>';
+  const items = [];
+  for (const alumno of alumnosCache) {
+    let datos;
+    try { datos = await datosDeAlumno(alumno.id); } catch { continue; }
+    const res = {};
+    PARCIALES.forEach(p => { res[p] = calcularParcial(p, datos); });
+    zonaDeDecision(res, datos.redondeos).forEach(x => items.push({ alumno, ...x }));
+  }
+  if (items.length === 0) {
+    cont.innerHTML = '<p class="empty-inline">✓ No hay calificaciones entre .51 y .59. Todo se redondea solo.</p>';
+    return;
+  }
+  const pend = items.filter(x => x.calif.pendiente).length;
+  cont.innerHTML = `
+    <p class="field-hint" style="margin-top:0;">${pend > 0 ? `<strong>${pend} por decidir.</strong> ` : '✓ Todas decididas. '}Puedes cambiar una decisión cuando quieras.</p>
+    ${items.map((x, i) => `
+      <div class="redondeo-row${x.calif.pendiente ? ' redondeo-pend' : ''}">
+        <div class="redondeo-info">
+          <span class="student-name">${escaparHTML(x.alumno.nombre)}</span>
+          <span class="redondeo-detalle">${NOMBRES_REDONDEO[x.clave]}: <strong>${x.calif.cruda.toFixed(2)}</strong>${x.calif.pendiente ? ' · por decidir' : ` · quedó en ${x.calif.oficial}`}</span>
+        </div>
+        <div class="redondeo-botones">
+          <button type="button" class="mz-btn${x.calif.decidido && x.calif.oficial === x.calif.arriba ? ' mz-btn-fuerte' : ''}" data-r="${i}" data-valor="${x.calif.arriba}">Subir a ${x.calif.arriba}</button>
+          <button type="button" class="mz-btn${x.calif.decidido && x.calif.oficial === x.calif.abajo ? ' mz-btn-fuerte' : ''}" data-r="${i}" data-valor="${x.calif.abajo}">Dejar en ${x.calif.abajo}</button>
+        </div>
+      </div>`).join('')}`;
+  cont.querySelectorAll('[data-r]').forEach(btn => btn.addEventListener('click', async () => {
+    const x = items[Number(btn.dataset.r)];
+    const valor = Number(btn.dataset.valor);
+    cont.querySelectorAll('button').forEach(b => { b.disabled = true; });
+    try {
+      await setDoc(doc(db, 'grupos', grupoActivo, 'alumnos', x.alumno.id),
+        { redondeos: { [x.clave]: { centesimas: x.calif.centesimas, valor, decidido: serverTimestamp() } } }, { merge: true });
+    } catch (err) {
+      alert('No se pudo guardar la decisión: ' + (err.message || err));
+    }
+    await cargarRedondeos();
+    vistaRapida('historial', { db, grupoActivo, alumnos: alumnosCache, datosDeAlumno });
+  }));
 }
 
 function cargarHistorial() {
@@ -1081,7 +1246,7 @@ function cargarHistorial() {
   const resumen = document.getElementById('hist-resumen');
   if (!cont) return;
   cont.innerHTML = ''; resumen.hidden = true;
-  renderParcialesReporte(); renderSelectHistAlumno();
+  renderParcialesReporte(); renderSelectHistAlumno(); cargarRedondeos();
   if (!grupoActivo) { empty.hidden = false; empty.textContent = 'Elige un grupo primero.'; return; }
   if (alumnosCache.length === 0) { empty.hidden = false; empty.textContent = 'Este grupo aún no tiene alumnos.'; return; }
   empty.hidden = true;
@@ -1103,7 +1268,7 @@ async function mostrarResumenAlumno(alumno) {
   const datos = await datosDeAlumno(alumno.id);
   const resultados = {};
   PARCIALES.forEach(p => { resultados[p] = calcularParcial(p, datos); });
-  const totalCuatrimestre = calcularCuatrimestre(resultados);
+  const cuatri = calcularCuatrimestreRedondeado(resultados, datos.redondeos);
 
   const filaRubro = (nombre, pts, tope) => `<div class="res-row"><span>${nombre}</span><strong>${pts.toFixed(1)} / ${tope}</strong></div>`;
   const listaDetalleHTML = (lista, vacio, conCalificacion) => {
@@ -1159,10 +1324,10 @@ async function mostrarResumenAlumno(alumno) {
           filaRubro('Uniformes', r.uniformes.pts, r.uniformes.tope) +
           `<details class="prog-detalle-bloque" style="margin-top:8px;"><summary>Ver fechas — Tareas y Participación</summary><p class="field-hint" style="margin:8px 0 2px;">Tareas:</p>${listaTareasHTML(r.tareas.lista, r.tareas.faltantes)}<p class="field-hint" style="margin:10px 0 2px;">Participación:</p>${listaDetalleHTML(r.participacion.lista, 'Sin participación capturada.', false)}</details>`;
       }
-      return `<div class="res-card"><h4>${NOMBRES_PARCIAL[p]}</h4>${cuerpo}<div class="res-row res-total"><span>Total</span><strong>${r.total.toFixed(1)} / 100 pts</strong></div></div>`;
+      return `<div class="res-card"><h4>${NOMBRES_PARCIAL[p]}</h4>${cuerpo}<div class="res-row res-total"><span>Total</span><strong>${r.total.toFixed(1)} / 100 pts</strong></div><div class="res-row res-total"><span>Calificación (redondeada)</span><strong>${textoCalificacion(r.calif)}</strong></div></div>`;
     }).join('')}
-    <div class="score-display">Calificación final del cuatrimestre: ${(totalCuatrimestre / 10).toFixed(1)} / 10</div>
-    <p class="field-hint">Parcial 1 (25%) + Parcial 2 (25%) + Examen Final (50%).</p>
+    <div class="score-display">Calificación del cuatrimestre: ${textoCalificacion(cuatri.calif)} / 10</div>
+    <p class="field-hint">Promedio de Parcial 1 y Parcial 2 (ya redondeados), promediado con el Examen Final (redondeado): ${cuatri.promedio.toFixed(2)}.${cuatri.bloquesPendientes.length ? ' Hay bloques por decidir en "Redondeos por decidir".' : ''}</p>
   `;
 }
 
@@ -1174,19 +1339,25 @@ async function exportarCalificaciones() {
   const msg = document.getElementById('export-msg');
   msg.textContent = 'Preparando archivo…'; msg.hidden = false;
 
-  const filas = [['Alumno', 'Parcial', 'Examen escrito', 'Examen práctico', 'Proyecto', 'Tareas', 'Tareas entregadas', 'Participación', 'Asistencia', 'Uniformes', 'TOTAL (100)']];
+  try { await refrescarAlumnos(); } catch { /* se usa la lista que ya está */ }
+  const filas = [['Alumno', 'Parcial', 'Examen escrito', 'Examen práctico', 'Proyecto', 'Tareas', 'Tareas entregadas', 'Participación', 'Asistencia', 'Uniformes', 'TOTAL (100)', 'Calificación sin redondear', 'Calificación redondeada']];
   for (const alumno of alumnosCache) {
     const datos = await datosDeAlumno(alumno.id);
+    const resultados = {};
     PARCIALES.forEach(p => {
       const r = calcularParcial(p, datos);
+      resultados[p] = r;
+      const califs = [r.calif.cruda.toFixed(2), r.calif.pendiente ? 'POR DECIDIR' : String(r.calif.oficial)];
       if (p === 'final') {
-        filas.push([alumno.nombre, NOMBRES_PARCIAL[p], r.examen.pts.toFixed(1), '—', r.proyecto.pts.toFixed(1), r.tareasParticipacion.pts.toFixed(1), '—', '—', r.asistencia.pts.toFixed(1), '—', r.total.toFixed(1)]);
+        filas.push([alumno.nombre, NOMBRES_PARCIAL[p], r.examen.pts.toFixed(1), '—', r.proyecto.pts.toFixed(1), r.tareasParticipacion.pts.toFixed(1), '—', '—', r.asistencia.pts.toFixed(1), '—', r.total.toFixed(1), ...califs]);
       } else if (p === 'p2') {
-        filas.push([alumno.nombre, NOMBRES_PARCIAL[p], r.examenEscrito.pts.toFixed(1), r.practico.pts.toFixed(1), '—', r.tareas.pts.toFixed(1), `${r.tareas.entregadas ?? 0} de ${r.tareas.esperadas ?? 0}`, r.participacion.pts.toFixed(1), r.asistencia.pts.toFixed(1), r.uniformes.pts.toFixed(1), r.total.toFixed(1)]);
+        filas.push([alumno.nombre, NOMBRES_PARCIAL[p], r.examenEscrito.pts.toFixed(1), r.practico.pts.toFixed(1), '—', r.tareas.pts.toFixed(1), `${r.tareas.entregadas ?? 0} de ${r.tareas.esperadas ?? 0}`, r.participacion.pts.toFixed(1), r.asistencia.pts.toFixed(1), r.uniformes.pts.toFixed(1), r.total.toFixed(1), ...califs]);
       } else {
-        filas.push([alumno.nombre, NOMBRES_PARCIAL[p], r.examen.pts.toFixed(1), '—', '—', r.tareas.pts.toFixed(1), `${r.tareas.entregadas ?? 0} de ${r.tareas.esperadas ?? 0}`, r.participacion.pts.toFixed(1), r.asistencia.pts.toFixed(1), r.uniformes.pts.toFixed(1), r.total.toFixed(1)]);
+        filas.push([alumno.nombre, NOMBRES_PARCIAL[p], r.examen.pts.toFixed(1), '—', '—', r.tareas.pts.toFixed(1), `${r.tareas.entregadas ?? 0} de ${r.tareas.esperadas ?? 0}`, r.participacion.pts.toFixed(1), r.asistencia.pts.toFixed(1), r.uniformes.pts.toFixed(1), r.total.toFixed(1), ...califs]);
       }
     });
+    const cuatri = calcularCuatrimestreRedondeado(resultados, datos.redondeos);
+    filas.push([alumno.nombre, 'CUATRIMESTRE', '', '', '', '', '', '', '', '', '', cuatri.promedio.toFixed(2), cuatri.calif.pendiente ? 'POR DECIDIR' : String(cuatri.calif.oficial)]);
   }
 
   const csv = (arr) => arr.map(f => f.map(v => { const s = String(v ?? ''); return /[",;\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; }).join(',')).join('\n');

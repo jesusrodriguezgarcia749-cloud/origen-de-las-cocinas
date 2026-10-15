@@ -1,7 +1,7 @@
 // reporte.js — reporte de calificaciones en PDF (grupo o por alumno) y examen
 // resuelto, para Origen de las Cocinas.
 
-import { calcularParcial, calcularCuatrimestre, NOMBRES_PARCIAL, NOMBRES_ENTREGA_PROYECTO } from "./calculo.js";
+import { calcularParcial, calcularCuatrimestreRedondeado, NOMBRES_PARCIAL, NOMBRES_ENTREGA_PROYECTO } from "./calculo.js";
 
 export const ESCUELA = {
   nombre: 'Instituto Tecnológico y de Estudios Superiores René Descartes',
@@ -16,6 +16,13 @@ const ETIQUETA_TIPO_REACTIVO = { opcion_multiple: 'Opción múltiple', verdadero
 function esc(s) { const d = document.createElement('div'); d.textContent = s ?? ''; return d.innerHTML; }
 function hoy() { return new Date().toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }); }
 function badge(calif) { const c = Number(calif); const clase = c >= 8 ? 'b-ok' : (c >= 6 ? 'b-riesgo' : 'b-repro'); return `<span class="badge ${clase}">${c.toFixed(1)}</span>`; }
+// Calificación redondeada (entera). Si está en la zona .51-.59 sin decidir,
+// se muestra la cruda marcada como "por decidir".
+function badgeRedondeada(calif) {
+  if (calif.pendiente) return `<span class="badge b-pend" title="Entre .51 y .59: falta la decisión del docente">${calif.cruda.toFixed(2)} ?</span>`;
+  const c = calif.oficial; const clase = c >= 8 ? 'b-ok' : (c >= 6 ? 'b-riesgo' : 'b-repro');
+  return `<span class="badge ${clase}" title="Sin redondear: ${calif.cruda.toFixed(2)}">${c}</span>`;
+}
 
 function barajarConSemilla(arr, semilla) {
   const copia = [...arr]; let s = semilla;
@@ -58,6 +65,7 @@ const ESTILOS = `
   .b-ok{background:rgba(74,93,60,.14); color:#4A5D3C;}
   .b-riesgo{background:rgba(201,138,44,.18); color:#8A5E12;}
   .b-repro{background:rgba(166,61,47,.14); color:#A63D2F;}
+  .b-pend{background:#fff; color:#A63D2F; border:1.5px dashed #A63D2F;}
   .asis-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(60px,1fr)); gap:5px; margin-top:8px;}
   .asis-dia{border-radius:5px; padding:6px 3px; text-align:center; color:#fff; font-size:.62rem; font-weight:700;}
   .a-presente{background:#6B7A5E;} .a-justificado{background:#4A7FA5;}
@@ -122,14 +130,13 @@ function columnasParcial(parcial) {
 }
 
 function filaParcial(nombre, r) {
-  const calif = r.total / 10;
   if (r.parcial === 'final') {
-    return `<tr><td class="alumno">${esc(nombre)}</td><td class="num">${r.examen.pts.toFixed(1)}</td><td class="num">${r.proyecto.pts.toFixed(1)}</td><td class="num">${r.tareasParticipacion.pts.toFixed(1)}</td><td class="num">${r.asistencia.pts.toFixed(2)}</td><td class="num total-col">${r.total.toFixed(1)}</td><td class="num">${badge(calif)}</td></tr>`;
+    return `<tr><td class="alumno">${esc(nombre)}</td><td class="num">${r.examen.pts.toFixed(1)}</td><td class="num">${r.proyecto.pts.toFixed(1)}</td><td class="num">${r.tareasParticipacion.pts.toFixed(1)}</td><td class="num">${r.asistencia.pts.toFixed(2)}</td><td class="num total-col">${r.total.toFixed(1)}</td><td class="num">${badgeRedondeada(r.calif)}</td></tr>`;
   }
   if (r.parcial === 'p2') {
-    return `<tr><td class="alumno">${esc(nombre)}</td><td class="num">${r.examenEscrito.pts.toFixed(1)}</td><td class="num">${r.practico.pts.toFixed(1)}</td><td class="num">${r.tareas.pts.toFixed(1)}</td><td class="num">${r.participacion.pts.toFixed(1)}</td><td class="num">${r.asistencia.pts.toFixed(2)}</td><td class="num">${r.uniformes.pts.toFixed(1)}</td><td class="num total-col">${r.total.toFixed(1)}</td><td class="num">${badge(calif)}</td></tr>`;
+    return `<tr><td class="alumno">${esc(nombre)}</td><td class="num">${r.examenEscrito.pts.toFixed(1)}</td><td class="num">${r.practico.pts.toFixed(1)}</td><td class="num">${r.tareas.pts.toFixed(1)}</td><td class="num">${r.participacion.pts.toFixed(1)}</td><td class="num">${r.asistencia.pts.toFixed(2)}</td><td class="num">${r.uniformes.pts.toFixed(1)}</td><td class="num total-col">${r.total.toFixed(1)}</td><td class="num">${badgeRedondeada(r.calif)}</td></tr>`;
   }
-  return `<tr><td class="alumno">${esc(nombre)}</td><td class="num">${r.examen.pts.toFixed(1)}</td><td class="num">${r.tareas.pts.toFixed(1)}</td><td class="num">${r.participacion.pts.toFixed(1)}</td><td class="num">${r.asistencia.pts.toFixed(2)}</td><td class="num">${r.uniformes.pts.toFixed(1)}</td><td class="num total-col">${r.total.toFixed(1)}</td><td class="num">${badge(calif)}</td></tr>`;
+  return `<tr><td class="alumno">${esc(nombre)}</td><td class="num">${r.examen.pts.toFixed(1)}</td><td class="num">${r.tareas.pts.toFixed(1)}</td><td class="num">${r.participacion.pts.toFixed(1)}</td><td class="num">${r.asistencia.pts.toFixed(2)}</td><td class="num">${r.uniformes.pts.toFixed(1)}</td><td class="num total-col">${r.total.toFixed(1)}</td><td class="num">${badgeRedondeada(r.calif)}</td></tr>`;
 }
 
 export async function reporteGrupo({ nombreGrupo, alumnos, parciales }) {
@@ -152,6 +159,7 @@ export async function reporteGrupo({ nombreGrupo, alumnos, parciales }) {
       ${p === 'final' ? `<p style="font-size:.68rem;color:#5C544A;margin-top:10px;">Proyecto = Entrega 1 (15) + Entrega 2 (15) + Entrega final (10) de "Mi Plato, Mi Historia".</p>` : ''}
       ${p === 'p2' ? `<p style="font-size:.68rem;color:#5C544A;margin-top:10px;">Examen práctico = Práctica de cocina 3, capturada por el docente.</p>` : ''}
       <div class="leyenda" style="margin-top:14px;"><span><i class="lg" style="background:#4A5D3C"></i> 8.0 o más</span><span><i class="lg" style="background:#C9A22C"></i> Entre 6.0 y 7.9 — en riesgo</span><span><i class="lg" style="background:#A63D2F"></i> Menor a 6.0 — reprobado</span></div>
+      <p style="font-size:.64rem;color:#5C544A;margin:4px 0 0;">Calif. = calificación redondeada: reprobatoria baja; .50 o menos baja; .60 o más sube; entre .51 y .59 lo decide el docente.</p>
       ${FIRMAS}${pie()}</div>`;
   });
   abrirVentana(`Reporte de grupo — ${nombreGrupo}`, secciones);
@@ -162,7 +170,8 @@ export async function reporteAlumno({ nombreGrupo, alumno, datos }) {
   const PARCIALES = ['p1', 'p2', 'final'];
   const resultados = {};
   PARCIALES.forEach(p => { resultados[p] = calcularParcial(p, datos); });
-  const totalCuatrimestre = calcularCuatrimestre(resultados);
+  const cuatri = calcularCuatrimestreRedondeado(resultados, datos.redondeos);
+  const califTexto = (c) => c.pendiente ? `${c.cruda.toFixed(2)} (por decidir)` : `${c.oficial}`;
 
   const tablasParciales = PARCIALES.map(p => {
     const r = resultados[p];
@@ -190,14 +199,15 @@ export async function reporteAlumno({ nombreGrupo, alumno, datos }) {
     <h1>Reporte individual de evaluación</h1><p class="subtitulo">${esc(alumno.nombre)}</p>
     <div class="datos"><div class="dato"><div class="dato-etq">Grupo</div><div class="dato-val">${esc(nombreGrupo)}</div></div><div class="dato"><div class="dato-etq">Docente</div><div class="dato-val">${esc(ESCUELA.docente)}</div></div><div class="dato"><div class="dato-etq">Periodos con registro</div><div class="dato-val">${cursados} de 3</div></div><div class="dato"><div class="dato-etq">Emitido</div><div class="dato-val">${hoy()}</div></div></div>
     ${tablasParciales}
-    ${asistenciaHTML ? `<h2>Detalle de asistencia</h2><div class="leyenda"><span><i class="lg a-presente"></i> Presente</span><span><i class="lg a-justificado"></i> Justificado</span><span><i class="lg a-retardo"></i> Retardo (0.5)</span><span><i class="lg a-falta"></i> Falta (0)</span></div>${asistenciaHTML}` : ''}
+    ${asistenciaHTML ? `<h2>Detalle de asistencia</h2><div class="leyenda"><span><i class="lg a-presente"></i> Presente</span><span><i class="lg a-justificado"></i> Justificado</span><span><i class="lg a-retardo"></i> Retardo (3 retardos = 1 falta)</span><span><i class="lg a-falta"></i> Falta (0)</span></div>${asistenciaHTML}` : ''}
     <h2>Calificación final del cuatrimestre</h2>
-    <table><thead><tr><th>Concepto</th><th class="num">Ponderación</th><th class="num">Calificación</th></tr></thead><tbody>
-      <tr><td>Parcial 1</td><td class="num">25%</td><td class="num">${(resultados.p1.total / 10).toFixed(1)}</td></tr>
-      <tr><td>Parcial 2</td><td class="num">25%</td><td class="num">${(resultados.p2.total / 10).toFixed(1)}</td></tr>
-      <tr><td>Examen Final</td><td class="num">50%</td><td class="num">${(resultados.final.total / 10).toFixed(1)}</td></tr>
-      <tr class="fila-total"><td colspan="2">Calificación final del cuatrimestre</td><td class="num">${(totalCuatrimestre / 10).toFixed(1)}</td></tr>
+    <table><thead><tr><th>Concepto</th><th class="num">Sin redondear</th><th class="num">Calificación</th></tr></thead><tbody>
+      <tr><td>Parcial 1</td><td class="num">${resultados.p1.calif.cruda.toFixed(2)}</td><td class="num">${califTexto(resultados.p1.calif)}</td></tr>
+      <tr><td>Parcial 2</td><td class="num">${resultados.p2.calif.cruda.toFixed(2)}</td><td class="num">${califTexto(resultados.p2.calif)}</td></tr>
+      <tr><td>Examen Final</td><td class="num">${resultados.final.calif.cruda.toFixed(2)}</td><td class="num">${califTexto(resultados.final.calif)}</td></tr>
+      <tr class="fila-total"><td>Calificación del cuatrimestre</td><td class="num">${cuatri.promedio.toFixed(2)}</td><td class="num">${califTexto(cuatri.calif)}</td></tr>
     </tbody></table>
+    <p style="font-size:.66rem;color:#5C544A;margin-top:8px;">Se promedian Parcial 1 y Parcial 2 ya redondeados; ese resultado se promedia con el Examen Final redondeado, y se redondea con la misma regla: reprobatoria baja, .50 o menos baja, .60 o más sube, entre .51 y .59 lo decide el docente.</p>
     ${FIRMAS}${pie()}</div>`;
   abrirVentana(`Reporte — ${alumno.nombre}`, cuerpo);
 }

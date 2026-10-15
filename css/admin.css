@@ -490,3 +490,18 @@
 .mz-mal{color:var(--paprika);}
 .mz-col-final{width:112px; min-width:112px; max-width:112px; background:rgba(107,122,94,0.10);}
 .mz-tabla thead .mz-col-final{background:#3b3d4d;}
+
+/* ---------- Redondeos por decidir ---------- */
+.redondeo-row{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; padding:10px 12px; border:1.5px solid var(--line); border-radius:10px; margin-bottom:8px; background:#fff;}
+.redondeo-row.redondeo-pend{border-color:var(--paprika); background:rgba(166,61,47,0.05);}
+.redondeo-info{display:flex; flex-direction:column; gap:2px; min-width:0;}
+.redondeo-detalle{font-size:.82rem; color:var(--ink-soft);}
+.redondeo-botones{display:flex; gap:6px; flex-wrap:wrap;}
+
+/* ---------- Examen en línea en vivo ---------- */
+.en-vivo{display:inline-flex; align-items:center; gap:6px; font-size:.8rem; font-weight:600; color:var(--sage); margin-bottom:10px;}
+.en-vivo::before{content:""; width:8px; height:8px; border-radius:50%; background:currentColor; animation:latido 1.6s ease-in-out infinite;}
+.en-vivo.sin-conexion{color:var(--paprika);}
+.en-vivo.sin-conexion::before{animation:none;}
+@keyframes latido{0%,100%{opacity:1;} 50%{opacity:.25;}}
+@media (prefers-reduced-motion: reduce){ .en-vivo::before{animation:none;} }

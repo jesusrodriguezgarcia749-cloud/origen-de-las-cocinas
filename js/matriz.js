@@ -17,7 +17,7 @@ import {
   collection, doc, getDoc, getDocs, setDoc, deleteDoc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-import { calcularParcial, calcularCuatrimestre, PESO_CUATRIMESTRE } from "./calculo.js";
+import { calcularParcial, calcularCuatrimestre, PESO_CUATRIMESTRE, calcularCuatrimestreRedondeado } from "./calculo.js";
 
 const ESTADOS = ['presente', 'retardo', 'justificado', 'falta'];
 const ETIQUETA_ESTADO = { presente: 'Presente', retardo: 'Retardo', justificado: 'Justificado', falta: 'Falta' };
@@ -506,7 +506,7 @@ async function vistaPromedios(ctx) {
       alumno,
       p1: r.p1.total, p2: r.p2.total, fin: r.final.total,
       hoy,
-      cuatri: calcularCuatrimestre(r) / 10,
+      cuatri: calcularCuatrimestreRedondeado(r, datos.redondeos),
       finVacio: capturadoDelParcial('final', r.final).posibles === 0,
     });
   }
@@ -514,7 +514,7 @@ async function vistaPromedios(ctx) {
   const num = (v) => v.toFixed(1);
   cont.innerHTML = `
     <h3 class="section-title">${esc(titulo)}</h3>
-    <p class="field-hint"><strong>Hasta hoy</strong> toma en cuenta solo lo que ya capturaste, así que dice cómo va realmente cada alumno. <strong>Cuatrimestre</strong> es la calificación oficial: lo que falta cuenta como cero, y por eso sale baja mientras no se aplique el Examen Final.</p>
+    <p class="field-hint"><strong>Hasta hoy</strong> toma en cuenta solo lo que ya capturaste, así que dice cómo va realmente cada alumno. <strong>Cuatrimestre</strong> se saca con los bloques ya redondeados: lo que falta cuenta como cero, y por eso sale baja mientras no se aplique el Examen Final. El signo ? indica un redondeo por decidir.</p>
     <div class="mz-scroll">
       <table class="mz-tabla">
         <thead>
@@ -524,7 +524,7 @@ async function vistaPromedios(ctx) {
             <th class="mz-col-act"><span class="mz-col-tit">Parcial 2</span><span class="mz-col-sub">de 100</span></th>
             <th class="mz-col-act"><span class="mz-col-tit">Final</span><span class="mz-col-sub">de 100</span></th>
             <th class="mz-col-act"><span class="mz-col-tit">Hasta hoy</span><span class="mz-col-sub">lo capturado</span></th>
-            <th class="mz-col-act mz-col-final"><span class="mz-col-tit">Cuatrimestre</span><span class="mz-col-sub">oficial</span></th>
+            <th class="mz-col-act mz-col-final"><span class="mz-col-tit">Cuatrimestre</span><span class="mz-col-sub">redondeado</span></th>
           </tr>
         </thead>
         <tbody>
@@ -535,7 +535,7 @@ async function vistaPromedios(ctx) {
               <td class="mz-celda mz-prom">${num(f.p2)}</td>
               <td class="mz-celda mz-prom${f.finVacio ? ' mz-prom-pend' : ''}">${num(f.fin)}</td>
               <td class="mz-celda mz-final ${f.hoy === null ? '' : (f.hoy >= 6 ? 'mz-ok' : 'mz-mal')}">${f.hoy === null ? '—' : num(f.hoy) + ' / 10'}</td>
-              <td class="mz-celda mz-final mz-col-final">${num(f.cuatri)} / 10</td>
+              <td class="mz-celda mz-final mz-col-final" title="Promedio sin redondear: ${f.cuatri.promedio.toFixed(2)}">${f.cuatri.calif.pendiente ? `${f.cuatri.calif.cruda.toFixed(2)} ?` : f.cuatri.calif.oficial} / 10</td>
             </tr>`).join('')}
         </tbody>
       </table>
