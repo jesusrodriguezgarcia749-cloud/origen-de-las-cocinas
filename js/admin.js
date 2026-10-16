@@ -6,7 +6,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import {
   getFirestore, collection, doc, setDoc, deleteDoc, addDoc, getDoc, getDocs,
-  query, orderBy, serverTimestamp, onSnapshot
+  query, orderBy, serverTimestamp, onSnapshot, updateDoc, deleteField
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 import { firebaseConfig } from "./firebase-config.js";
@@ -211,8 +211,16 @@ on('form-alumno', 'submit', agregarAlumno);
 async function cargarAlumnos() {
   if (!grupoActivo) return;
   const snap = await getDocs(query(collection(db, 'grupos', grupoActivo, 'alumnos'), orderBy('nombre')));
-  alumnosCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  // OJO: el id del documento va AL FINAL para que siempre gane. Antes iba
+  // primero y, si el documento traía guardado un campo "id" (lo dejaba la
+  // corrección de nombre), ese id VIEJO lo pisaba: el panel leía el
+  // expediente del nombre anterior, ya vacío, y el alumno salía en ceros.
+  alumnosCache = snap.docs.map(d => ({ ...d.data(), id: d.id }));
   renderAlumnos(alumnosCache);
+  // Limpieza: se borra ese campo "id" sobrante de los alumnos que lo traigan.
+  snap.docs.filter(d => 'id' in d.data()).forEach(d => {
+    updateDoc(d.ref, { id: deleteField() }).catch(err => console.warn('No se pudo limpiar el campo id de', d.id, err));
+  });
 }
 
 function renderAlumnos(lista) {
@@ -251,6 +259,10 @@ async function agregarAlumno(e) {
 // corregir el nombre cambia su identificador, todo esto se muda al nuevo.
 const SUBCOLECCIONES_ALUMNO = ['tareas', 'participaciones', 'asistencias', 'uniformes', 'examenes', 'practico', 'proyecto', 'intentos'];
 
+// Datos del alumno para guardar, sin el campo "id" (ese es el nombre del
+// documento, no un dato; si se guarda, se queda con el valor viejo).
+function sinId(alumno) { const { id, ...resto } = alumno; return resto; }
+
 async function editarNombreAlumno(alumnoId) {
   const alumno = alumnosCache.find(a => a.id === alumnoId);
   if (!alumno) return;
@@ -266,7 +278,7 @@ async function editarNombreAlumno(alumnoId) {
   // Caso sencillo: cambian acentos o mayúsculas, pero el identificador es el
   // mismo. Se corrige el texto y ya; no hay nada que mudar.
   if (idNuevo === alumnoId) {
-    try { await setDoc(doc(db, 'grupos', grupoActivo, 'alumnos', alumnoId), { ...alumno, nombre, actualizado: serverTimestamp() }); }
+    try { await setDoc(doc(db, 'grupos', grupoActivo, 'alumnos', alumnoId), { ...sinId(alumno), nombre, actualizado: serverTimestamp() }); }
     catch (err) { alert('No se pudo guardar: ' + (err.message || err)); return; }
     await cargarAlumnos();
     alert(`Nombre corregido a "${nombre}".`);
@@ -313,7 +325,7 @@ async function editarNombreAlumno(alumnoId) {
   try {
     // 1) Se crea primero el alumno nuevo, conservando su PIN.
     avanzar(5, 'Creando el registro nuevo…');
-    await setDoc(doc(db, ...nuevoBase), { ...alumno, nombre, creado: alumno.creado || serverTimestamp(), actualizado: serverTimestamp() });
+    await setDoc(doc(db, ...nuevoBase), { ...sinId(alumno), nombre, creado: alumno.creado || serverTimestamp(), actualizado: serverTimestamp() });
 
     // 2) Se copia el expediente completo.
     const copiados = [];
