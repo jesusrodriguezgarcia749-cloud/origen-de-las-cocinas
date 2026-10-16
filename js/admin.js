@@ -1196,7 +1196,7 @@ async function generarPDF() {
       const alumnos = [];
       for (const alumno of alumnosCache) { alumnos.push({ alumno, datos: await datosDeAlumno(alumno.id) }); }
       if (!confirmarPendientes(alumnos)) { msg.hidden = true; return; }
-      await reporteGrupo({ nombreGrupo: nombreDelGrupo(), alumnos, parciales: parcialesReporte });
+      await reporteGrupo({ nombreGrupo: nombreDelGrupo(), grupoId: grupoActivo, alumnos, parciales: parcialesReporte });
     }
     msg.textContent = '✓ Reporte abierto en una ventana nueva.';
     setTimeout(() => { msg.hidden = true; }, 4000);

@@ -1,0 +1,172 @@
+{
+ "_comentario": "Lista oficial del acta de calificaciones (ITES). El reporte PDF del grupo sale en este orden, con matrícula y apellidos primero. alumnoId = identificador del alumno en la plataforma (null = no está registrado en la plataforma). Si se corrige el nombre de un alumno en la plataforma, su alumnoId cambia y hay que actualizarlo aquí.",
+ "grupos": {
+  "kVxfCF7JvV2gzjAspgRZ": [
+   {
+    "matricula": "2716106",
+    "nombre": "ALVAREZ OSORIO ANA CLAUDIA",
+    "alumnoId": "ana-claudia-alvarez-osorio"
+   },
+   {
+    "matricula": "2716389",
+    "nombre": "AKE BLANCO LIZZET ABIGAIL",
+    "alumnoId": "lizzet-abigail-ake-blanco"
+   },
+   {
+    "matricula": "2716086",
+    "nombre": "BALAN UC ZULEICA GUADALUPE",
+    "alumnoId": "zuleica-guadalupe-balan-uc"
+   },
+   {
+    "matricula": "2716098",
+    "nombre": "BAÑOS GARRIDO INGRID ABIGAIL",
+    "alumnoId": "ingrid-abigail-banos-garrido"
+   },
+   {
+    "matricula": "2716089",
+    "nombre": "BETANZOS POOL GAEL EMILIANO",
+    "alumnoId": "gael-emiliano-betanzos-pool"
+   },
+   {
+    "matricula": "2716093",
+    "nombre": "CAHUICH COBOS NAYELI ALEJANDRA",
+    "alumnoId": "nayeli-alejandra-cahuich-cobos"
+   },
+   {
+    "matricula": "2716103",
+    "nombre": "CALDERON NIEVES DARIANA GUADALUPE",
+    "alumnoId": "dariana-gpe-calderon-nieves"
+   },
+   {
+    "matricula": "2611563",
+    "nombre": "CASTILLO BAÑOS DAVID OMAR",
+    "alumnoId": null
+   },
+   {
+    "matricula": "2716101",
+    "nombre": "CHAN PAREDES ANYELI GUADALUPE",
+    "alumnoId": "anyeli-guadalupe-chan-paredes"
+   },
+   {
+    "matricula": "2716092",
+    "nombre": "CONTRERAS JIMENEZ JHOSMAR ENRIQUE",
+    "alumnoId": null
+   },
+   {
+    "matricula": "2716084",
+    "nombre": "DE LA CRUZ RAMON IVAN",
+    "alumnoId": "ivan-de-la-cruz-ramon"
+   },
+   {
+    "matricula": "2716080",
+    "nombre": "FERRAEZ CHI DAFNE RUBI",
+    "alumnoId": "dafne-rubi-ferraez-chi"
+   },
+   {
+    "matricula": "2716090",
+    "nombre": "FLORES DZEC VALERIA ESMERALDA",
+    "alumnoId": "valeria-esmeralda-flores-dzec"
+   },
+   {
+    "matricula": "2716107",
+    "nombre": "GALLARDO CRUZ IAN JOSHUA",
+    "alumnoId": "ian-joshua-gallardo-cruz"
+   },
+   {
+    "matricula": "2716088",
+    "nombre": "GARCIA TORRES WILLIAM AZIEL",
+    "alumnoId": "william-aziel-garcia-torres"
+   },
+   {
+    "matricula": "2716100",
+    "nombre": "GUILLEN VERA JAVIER",
+    "alumnoId": null
+   },
+   {
+    "matricula": "2716097",
+    "nombre": "HEREDIA ACAL HADASA XIMENA",
+    "alumnoId": null
+   },
+   {
+    "matricula": "2716087",
+    "nombre": "HERNANDEZ PECH KIMBERLY NOEMI",
+    "alumnoId": "kimberly-noemi-hernandez-pech"
+   },
+   {
+    "matricula": "2716081",
+    "nombre": "HERRERA QUIJANO DANIELA ANAHY GUADALUPE",
+    "alumnoId": "daniela-anahy-guadalupe-herrera-quijano"
+   },
+   {
+    "matricula": "2716102",
+    "nombre": "HUICHIN UC CESAR ORLANDO",
+    "alumnoId": "cesar-orlando-huchin-uc"
+   },
+   {
+    "matricula": "2716091",
+    "nombre": "LOPEZ HERNANDEZ CINTHIA CELESTE",
+    "alumnoId": "cinthia-celeste-lopez-hernandez"
+   },
+   {
+    "matricula": "2716105",
+    "nombre": "LOPEZ UHLIG MERLY DEL ROCIO",
+    "alumnoId": "merly-del-rocio-lopez-uhlig"
+   },
+   {
+    "matricula": "2716099",
+    "nombre": "LUNA CHAN SHIRLE ANAHI",
+    "alumnoId": "shirle-anahi-luna-chan"
+   },
+   {
+    "matricula": "2716095",
+    "nombre": "MOTA PAT ARTURO ISAAC",
+    "alumnoId": null
+   },
+   {
+    "matricula": "2716401",
+    "nombre": "PEREZ HERNANDEZ ALINA ESTRELLA",
+    "alumnoId": "alina-estrella-perez-hernandez"
+   },
+   {
+    "matricula": "2716083",
+    "nombre": "RIOS MAY MIA CORAZON",
+    "alumnoId": "mia-corazon-rios-may"
+   },
+   {
+    "matricula": "2716104",
+    "nombre": "RODRIGUEZ FERNANDO DANIEL",
+    "alumnoId": "fernando-daniel-rodriguez"
+   },
+   {
+    "matricula": "2716108",
+    "nombre": "SANCHEZ MISS ERLIN SEBASTIAN",
+    "alumnoId": "erlin-sebastian-sanchez-miss"
+   },
+   {
+    "matricula": "2716094",
+    "nombre": "SEBASTIAN JUAN ALISON ALEXA",
+    "alumnoId": "alison-alexa-sebastian-juan"
+   },
+   {
+    "matricula": "2716109",
+    "nombre": "SOSA GUERRA JOHAN RAUL",
+    "alumnoId": "johan-raul-sosa-guerra"
+   },
+   {
+    "matricula": "2716082",
+    "nombre": "TUN SUAREZ ABRIL MONTSERRAT",
+    "alumnoId": "abril-montserrat-tun-suarez"
+   },
+   {
+    "matricula": "2716096",
+    "nombre": "UICAB PACHECO ROGER MANUEL",
+    "alumnoId": "roger-manuel-uicab-pacheco"
+   },
+   {
+    "matricula": "2716110",
+    "nombre": "VELAZQUEZ CRISOSTOMO YOSELIN DE LOS ANGELES",
+    "alumnoId": null
+   }
+  ]
+ }
+}

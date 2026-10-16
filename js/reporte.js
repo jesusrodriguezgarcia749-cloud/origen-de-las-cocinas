@@ -60,6 +60,9 @@ const ESTILOS = `
   tbody tr:nth-child(even){background:#FBF8F1;}
   tbody td.alumno{font-weight:600;}
   .total-col{font-weight:700; color:#4A5D3C;}
+  .tabla-acta{font-size:.62rem;} .tabla-acta td, .tabla-acta th{padding:5px 4px;}
+  .tabla-acta td.letras{font-size:.58rem; font-weight:700; letter-spacing:.02em;}
+  .tabla-acta tr.fila-sin td{background:#F7F3EA;}
   tr.fila-total td{background:#F0EADC; font-weight:700; border-top:2px solid #231F1A;}
   .badge{display:inline-block; padding:2px 7px; border-radius:99px; font-size:.64rem; font-weight:700;}
   .b-ok{background:rgba(74,93,60,.14); color:#4A5D3C;}
@@ -129,18 +132,81 @@ function columnasParcial(parcial) {
   return ['Alumno', 'Examen<br>/40', 'Tareas<br>/25', 'Particip.<br>/25', 'Asist.<br>/5', 'Unif.<br>/5', 'Total<br>/100', 'Calif.'];
 }
 
-function filaParcial(nombre, r) {
-  if (r.parcial === 'final') {
-    return `<tr><td class="alumno">${esc(nombre)}</td><td class="num">${r.examen.pts.toFixed(1)}</td><td class="num">${r.proyecto.pts.toFixed(1)}</td><td class="num">${r.tareasParticipacion.pts.toFixed(1)}</td><td class="num">${r.asistencia.pts.toFixed(2)}</td><td class="num total-col">${r.total.toFixed(1)}</td><td class="num">${badgeRedondeada(r.calif)}</td></tr>`;
-  }
-  if (r.parcial === 'p2') {
-    return `<tr><td class="alumno">${esc(nombre)}</td><td class="num">${r.examenEscrito.pts.toFixed(1)}</td><td class="num">${r.practico.pts.toFixed(1)}</td><td class="num">${r.tareas.pts.toFixed(1)}</td><td class="num">${r.participacion.pts.toFixed(1)}</td><td class="num">${r.asistencia.pts.toFixed(2)}</td><td class="num">${r.uniformes.pts.toFixed(1)}</td><td class="num total-col">${r.total.toFixed(1)}</td><td class="num">${badgeRedondeada(r.calif)}</td></tr>`;
-  }
-  return `<tr><td class="alumno">${esc(nombre)}</td><td class="num">${r.examen.pts.toFixed(1)}</td><td class="num">${r.tareas.pts.toFixed(1)}</td><td class="num">${r.participacion.pts.toFixed(1)}</td><td class="num">${r.asistencia.pts.toFixed(2)}</td><td class="num">${r.uniformes.pts.toFixed(1)}</td><td class="num total-col">${r.total.toFixed(1)}</td><td class="num">${badgeRedondeada(r.calif)}</td></tr>`;
+// Celdas de puntos por rubro (sin nombre ni calificación).
+function celdasRubros(r) {
+  if (r.parcial === 'final') return [r.examen.pts.toFixed(1), r.proyecto.pts.toFixed(1), r.tareasParticipacion.pts.toFixed(1), r.asistencia.pts.toFixed(2)];
+  if (r.parcial === 'p2') return [r.examenEscrito.pts.toFixed(1), r.practico.pts.toFixed(1), r.tareas.pts.toFixed(1), r.participacion.pts.toFixed(1), r.asistencia.pts.toFixed(2), r.uniformes.pts.toFixed(1)];
+  return [r.examen.pts.toFixed(1), r.tareas.pts.toFixed(1), r.participacion.pts.toFixed(1), r.asistencia.pts.toFixed(2), r.uniformes.pts.toFixed(1)];
 }
 
-export async function reporteGrupo({ nombreGrupo, alumnos, parciales }) {
+function filaParcial(nombre, r) {
+  return `<tr><td class="alumno">${esc(nombre)}</td>${celdasRubros(r).map(v => `<td class="num">${v}</td>`).join('')}<td class="num total-col">${r.total.toFixed(1)}</td><td class="num">${badgeRedondeada(r.calif)}</td></tr>`;
+}
+
+// ---------- Orden del acta oficial ----------
+const LETRAS = ['CERO', 'UNO', 'DOS', 'TRES', 'CUATRO', 'CINCO', 'SEIS', 'SIETE', 'OCHO', 'NUEVE', 'DIEZ'];
+function califEnLetras(calif) { return calif.pendiente ? 'POR DECIDIR' : (LETRAS[calif.oficial] ?? ''); }
+
+function normalizar(t) { return (t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z\s]/g, ' ').split(/\s+/).filter(Boolean).sort().join(' '); }
+
+async function cargarListaOficial(grupoId) {
+  try {
+    const res = await fetch('data/lista_oficial.json', { cache: 'no-store' });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return (data.grupos || {})[grupoId] || null;
+  } catch { return null; }
+}
+
+// Empata cada renglón del acta con su alumno: primero por identificador y,
+// si no coincide (por ejemplo, porque se corrigió el nombre), por las
+// palabras del nombre sin importar el orden ni los acentos.
+function ordenarSegunActa(lista, alumnos) {
+  const usados = new Set();
+  const renglones = lista.map((oficial, i) => {
+    let item = alumnos.find(x => x.alumno.id === oficial.alumnoId && !usados.has(x));
+    if (!item) item = alumnos.find(x => !usados.has(x) && normalizar(x.alumno.nombre) === normalizar(oficial.nombre));
+    if (item) usados.add(item);
+    return { no: i + 1, matricula: oficial.matricula, nombre: oficial.nombre, item };
+  });
+  const sobrantes = alumnos.filter(x => !usados.has(x));
+  return { renglones, sobrantes };
+}
+
+function hojaActa({ logo, p, nombreGrupo, renglones, sobrantes, conSalto }) {
+  const nRubros = columnasParcial(p).length - 3; // sin Alumno, Total, Calif.
+  const encab = ['No.', 'Matrícula', 'Nombre del alumno', ...columnasParcial(p).slice(1, -1), 'Número', 'Letras'];
+  const conDatos = renglones.filter(r => r.item);
+  const filas = renglones.map(r => {
+    if (!r.item) return `<tr class="fila-sin"><td class="num">${r.no}</td><td>${esc(r.matricula)}</td><td class="alumno">${esc(r.nombre)}</td><td class="num" colspan="${nRubros + 1}" style="color:#8A8177;">Sin registro en la plataforma</td><td class="num">—</td><td>—</td></tr>`;
+    const res = calcularParcial(p, r.item.datos);
+    return `<tr><td class="num">${r.no}</td><td>${esc(r.matricula)}</td><td class="alumno">${esc(r.nombre)}</td>${celdasRubros(res).map(v => `<td class="num">${v}</td>`).join('')}<td class="num total-col">${res.total.toFixed(1)}</td><td class="num">${badgeRedondeada(res.calif)}</td><td class="letras">${califEnLetras(res.calif)}</td></tr>`;
+  }).join('');
+  const extra = sobrantes.map(x => {
+    const res = calcularParcial(p, x.datos);
+    return `<tr><td class="num">—</td><td>—</td><td class="alumno">${esc(x.alumno.nombre)} <small style="color:#A63D2F;">(no está en el acta)</small></td>${celdasRubros(res).map(v => `<td class="num">${v}</td>`).join('')}<td class="num total-col">${res.total.toFixed(1)}</td><td class="num">${badgeRedondeada(res.calif)}</td><td class="letras">${califEnLetras(res.calif)}</td></tr>`;
+  }).join('');
+  const prom = conDatos.length ? conDatos.reduce((s, r) => s + calcularParcial(p, r.item.datos).total, 0) / conDatos.length : 0;
+  return `<div class="hoja${conSalto ? ' salto' : ''}">${encabezado(logo)}
+    <h1>Calificaciones — orden del acta</h1>
+    <p class="subtitulo">${esc(NOMBRES_PARCIAL[p])} · mismo orden, matrícula y nombre que el acta oficial, para pasar renglón por renglón</p>
+    <div class="datos"><div class="dato"><div class="dato-etq">Grupo</div><div class="dato-val">${esc(nombreGrupo)}</div></div><div class="dato"><div class="dato-etq">Docente</div><div class="dato-val">${esc(ESCUELA.docente)}</div></div><div class="dato"><div class="dato-etq">En el acta</div><div class="dato-val">${renglones.length} (${conDatos.length} con registro)</div></div><div class="dato"><div class="dato-etq">Emitido</div><div class="dato-val">${hoy()}</div></div></div>
+    <table class="tabla-acta"><thead><tr>${encab.map((c, ci) => `<th class="${ci > 2 ? 'num' : ''}">${c}</th>`).join('')}</tr></thead><tbody>${filas}${extra}
+      <tr class="fila-total"><td colspan="${nRubros + 3}">Promedio del grupo (${conDatos.length} con registro)</td><td class="num">${prom.toFixed(1)}</td><td class="num">${(prom / 10).toFixed(1)}</td><td></td></tr>
+    </tbody></table>
+    <p style="font-size:.64rem;color:#5C544A;margin:8px 0 0;">Número = calificación redondeada: reprobatoria baja; .50 o menos baja; .60 o más sube; entre .51 y .59 lo decide el docente (aparece "POR DECIDIR").</p>
+    ${FIRMAS}${pie()}</div>`;
+}
+
+export async function reporteGrupo({ nombreGrupo, grupoId, alumnos, parciales }) {
   const logo = await logoComoDataUrl();
+  const listaOficial = grupoId ? await cargarListaOficial(grupoId) : null;
+  if (listaOficial) {
+    const { renglones, sobrantes } = ordenarSegunActa(listaOficial, alumnos);
+    const secciones = parciales.map((p, i) => hojaActa({ logo, p, nombreGrupo, renglones, sobrantes, conSalto: i > 0 })).join('');
+    abrirVentana(`Reporte de grupo — ${nombreGrupo}`, secciones);
+    return;
+  }
   let secciones = '';
   parciales.forEach((p, i) => {
     let filas = '';
