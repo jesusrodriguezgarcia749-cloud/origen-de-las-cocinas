@@ -60,3 +60,50 @@ document.addEventListener('DOMContentLoaded', () => {
     if (sessionStorage.getItem(PREF_KEY) === '1') activar();
   }
 });
+
+// ---------------------------------------------------------------------------
+// Modo claro / oscuro: botón 🌙/☀️ del encabezado. La preferencia se guarda en
+// el navegador; si no hay preferencia, se respeta la del sistema.
+// ---------------------------------------------------------------------------
+document.addEventListener('DOMContentLoaded', () => {
+  const raiz = document.documentElement;
+  const btn = document.querySelector('.theme-toggle');
+  const pintar = () => {
+    const oscuro = raiz.getAttribute('data-theme') === 'dark';
+    if (btn) {
+      btn.textContent = oscuro ? '☀️' : '🌙';
+      btn.setAttribute('aria-label', oscuro ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+    }
+  };
+  pintar();
+  btn?.addEventListener('click', () => {
+    const oscuro = raiz.getAttribute('data-theme') === 'dark';
+    if (oscuro) raiz.removeAttribute('data-theme'); else raiz.setAttribute('data-theme', 'dark');
+    try { localStorage.setItem('aula_tema', oscuro ? 'light' : 'dark'); } catch { /* sin almacenamiento */ }
+    pintar();
+  });
+
+  // Botón "volver arriba": aparece al bajar en páginas largas.
+  const arriba = document.createElement('button');
+  arriba.className = 'to-top';
+  arriba.type = 'button';
+  arriba.setAttribute('aria-label', 'Volver arriba');
+  arriba.textContent = '↑';
+  document.body.appendChild(arriba);
+  arriba.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  const revisar = () => arriba.classList.toggle('visible', window.scrollY > 700);
+  window.addEventListener('scroll', revisar, { passive: true });
+  revisar();
+});
+
+// ---------------------------------------------------------------------------
+// App instalable (PWA): el service worker guarda una copia de las páginas para
+// poder leer el compendio sin internet. Siempre intenta primero la versión en
+// línea, así que los cambios publicados se ven de inmediato.
+// ---------------------------------------------------------------------------
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  window.addEventListener('load', () => {
+    const base = location.pathname.replace(/[^/]*$/, '').replace(/diapositivas\/$/, '');
+    navigator.serviceWorker.register(base + 'sw.js', { scope: base }).catch(() => { /* sin soporte */ });
+  });
+}

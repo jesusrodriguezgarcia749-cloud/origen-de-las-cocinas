@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendario del curso — Origen de las Cocinas</title>
+<meta name="theme-color" content="#1C1B19">
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:image" content="https://jesusrodriguezgarcia749-cloud.github.io/origen-de-las-cocinas/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jesusrodriguezgarcia749-cloud.github.io/origen-de-las-cocinas/assets/og-image.png">
+<script>try{var t=localStorage.getItem('aula_tema');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Calendario del curso — Origen de las Cocinas">
+<meta property="og:description" content="Las sesiones, exámenes y entregas del curso Origen de las Cocinas, día por día.">
+<meta property="og:locale" content="es_MX">
+<meta name="description" content="Las sesiones, exámenes y entregas del curso Origen de las Cocinas, día por día.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/index.css">
+<link rel="stylesheet" href="css/extra.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">OC</span>
+      <span class="brand-text">Origen de las Cocinas</span>
+    </a>
+    <nav class="main-nav" aria-label="Navegación principal">
+      <a href="compendio.html">Compendio</a>
+      <a href="diapositivas/">Diapositivas</a>
+      <a href="calendario.html" aria-current="page">Calendario</a>
+      <a href="proyecto.html">Proyecto</a>
+      <a href="actividades.html">Actividades</a>
+      <a href="biblioteca.html">Biblioteca</a>
+      <a href="examen.html">Examen</a>
+      <a href="mi-progreso.html">Mi progreso</a>
+      <a href="admin.html" class="nav-admin">Panel docente</a>
+    </nav>
+    <div class="header-tools">
+      <button class="theme-toggle" type="button" aria-label="Cambiar a modo oscuro" title="Modo claro / oscuro">🌙</button>
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="hero-texture"></div>
+  <div class="wrap" style="position:relative;z-index:2">
+    <p class="eyebrow">Calendario</p>
+    <h1>Calendario del curso</h1>
+    <p>Todas las clases, exámenes y entregas del cuatrimestre en un solo lugar. Toca una sesión para ver su plan completo y lo que debes leer.</p>
+  </div>
+</section>
+
+<main class="wrap page-main">
+  <div class="cal-leyenda">
+    <span><i style="background:var(--saffron)"></i>Clase</span>
+    <span><i style="background:var(--paprika)"></i>Examen</span>
+    <span><i style="background:var(--sage)"></i>Entrega del proyecto</span>
+    <span><i style="background:var(--charcoal-soft)"></i>Práctica de cocina</span>
+  </div>
+  <div id="calendario-root"><p class="cargando-msg">Cargando…</p></div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>Aula Virtual · Origen de las Cocinas · LudoMente Studio</p>
+  </div>
+</footer>
+
+<script src="js/app.js"></script>
+<script src="js/curso.js"></script>
+</body>
+</html>

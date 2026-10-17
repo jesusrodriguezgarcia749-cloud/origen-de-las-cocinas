@@ -4,6 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mi progreso — Origen de las Cocinas</title>
+<meta name="theme-color" content="#1C1B19">
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:image" content="https://jesusrodriguezgarcia749-cloud.github.io/origen-de-las-cocinas/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jesusrodriguezgarcia749-cloud.github.io/origen-de-las-cocinas/assets/og-image.png">
+<script>try{var t=localStorage.getItem('aula_tema');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mi progreso — Origen de las Cocinas">
+<meta property="og:locale" content="es_MX">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -11,6 +26,7 @@
 <link rel="stylesheet" href="css/admin.css">
 <link rel="stylesheet" href="css/progreso.css">
 <link rel="stylesheet" href="css/index.css">
+<link rel="stylesheet" href="css/extra.css">
 </head>
 <body>
 
@@ -23,15 +39,20 @@
     <nav class="main-nav" aria-label="Navegación principal">
       <a href="compendio.html">Compendio</a>
       <a href="diapositivas/">Diapositivas</a>
+      <a href="calendario.html">Calendario</a>
+      <a href="proyecto.html">Proyecto</a>
       <a href="actividades.html">Actividades</a>
       <a href="biblioteca.html">Biblioteca</a>
       <a href="examen.html">Examen</a>
       <a href="mi-progreso.html" aria-current="page">Mi progreso</a>
       <a href="admin.html" class="nav-admin">Panel docente</a>
     </nav>
-    <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="header-tools">
+      <button class="theme-toggle" type="button" aria-label="Cambiar a modo oscuro" title="Modo claro / oscuro">🌙</button>
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
 

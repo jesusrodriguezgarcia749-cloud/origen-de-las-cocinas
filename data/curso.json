@@ -1,0 +1,922 @@
+{
+ "inicio": "2026-09-10",
+ "fin": "2026-12-17",
+ "sesiones": [
+  {
+   "n": 1,
+   "horas": 3,
+   "fecha": "2026-09-10",
+   "fechaTexto": "Jue 10 de septiembre",
+   "tema": "Tema 1 · Introducción",
+   "titulo": "1.1 Introducción a la historia de la cocina",
+   "docente": [
+    "Presentación de la asignatura, encuadre, ponderaciones y calendario de exámenes.",
+    "Exposición: Brillat-Savarin y sus aforismos.",
+    "Lluvia de ideas: ¿por qué comemos como comemos?"
+   ],
+   "independiente": [
+    "Lectura de la sección 1.1 del libro de texto.",
+    "Evaluación diagnóstica breve."
+   ],
+   "proyecto": [
+    "Presentar el proyecto Mi Plato, Mi Historia y el banco de temas por región (con etiqueta 🟢/🟡 en cada platillo).",
+    "Cada alumno elige, sin repetir, UN platillo específico (no región) para todo el cuatrimestre. Máximo 4 alumnos en temas 🟡; pedir una fuente confiable en el momento antes de aprobar.",
+    "Pregunta 1: ¿qué platillo elijo y por qué me interesa investigarlo?",
+    "Pregunta 2: ¿qué técnica de cocción usa principalmente mi platillo, y qué logra esa técnica con esos ingredientes?",
+    "Pregunta 3: ¿mi platillo tiene parentesco con la Antigua Roma? (Si es 🟡: investigar en cambio el origen de un ingrediente principal.)"
+   ],
+   "evaluacion": [
+    "Rúbrica de Participación (lluvia de ideas)",
+    "Asistencia"
+   ],
+   "subtemas": [
+    "1.1"
+   ]
+  },
+  {
+   "n": 2,
+   "horas": 2,
+   "fecha": "2026-09-11",
+   "fechaTexto": "Vie 11 de septiembre",
+   "tema": "Tema 1 · Introducción",
+   "titulo": "1.2.1 Antigua Roma",
+   "docente": [
+    "Exposición con imágenes de mosaicos romanos.",
+    "Análisis grupal de un fragmento traducido de De re coquinaria."
+   ],
+   "independiente": [
+    "Cuadro en equipo con las tres fases del banquete romano (gustatio, prima mensa, secunda mensa)."
+   ],
+   "proyecto": [
+    "Recordatorio: registrar en la lista de grupo qué tema eligió cada alumno."
+   ],
+   "evaluacion": [
+    "Rúbrica de Tarea (cuadro por equipo)",
+    "Participación"
+   ],
+   "subtemas": [
+    "1.2.1"
+   ]
+  },
+  {
+   "n": 3,
+   "horas": 3,
+   "fecha": "2026-09-17",
+   "fechaTexto": "Jue 17 de septiembre",
+   "tema": "Tema 1 · Introducción",
+   "titulo": "1.2.2 Edad Media · 1.2.3 Renacimiento",
+   "docente": [
+    "Exposición con diapositivas.",
+    "Debate dirigido: la especia como símbolo de estatus, ayer y hoy."
+   ],
+   "independiente": [
+    "Línea de tiempo ilustrada de recetarios medievales y renacentistas."
+   ],
+   "proyecto": [
+    "Pregunta 4: ¿a cuál de estos tres periodos pertenece o remite mi platillo? Justifica con un dato del libro."
+   ],
+   "evaluacion": [
+    "Rúbrica de Exposición/Debate",
+    "Rúbrica de Tarea (línea de tiempo)"
+   ],
+   "subtemas": [
+    "1.2.2",
+    "1.2.3"
+   ]
+  },
+  {
+   "n": 4,
+   "horas": 2,
+   "fecha": "2026-09-18",
+   "fechaTexto": "Vie 18 de septiembre",
+   "tema": "Tema 1 · Introducción",
+   "titulo": "1.2.4 Edad Moderna",
+   "docente": [
+    "Exposición con diapositivas.",
+    "Mapa colaborativo en el pizarrón del intercambio colombino."
+   ],
+   "independiente": [
+    "Mapa en equipo del intercambio colombino con al menos 10 ingredientes."
+   ],
+   "proyecto": [
+    "Pregunta 5: ¿algún ingrediente de mi platillo viajó en el intercambio colombino? ¿En qué dirección?"
+   ],
+   "evaluacion": [
+    "Rúbrica de Tarea (mapa por equipo)",
+    "Participación"
+   ],
+   "subtemas": [
+    "1.2.4"
+   ]
+  },
+  {
+   "n": 5,
+   "horas": 2,
+   "fecha": "2026-09-25",
+   "fechaTexto": "Vie 25 de septiembre",
+   "tema": "Tema 1 · Introducción",
+   "titulo": "1.3 La cocina económica · 1.4 La cocina eléctrica",
+   "docente": [
+    "Exposición con diapositivas.",
+    "Línea de tiempo grupal de la electrificación de la cocina."
+   ],
+   "independiente": [
+    "Investigar el origen de una cocina económica o fonda familiar conocida (media cuartilla)."
+   ],
+   "proyecto": [
+    "Pregunta 6: ¿mi platillo se prepara con fuego de leña, estufa u otra tecnología? ¿Cambió con la electrificación?",
+    "Pregunta 7: ¿qué sabores básicos dominan en mi platillo, y cómo se logra ese balance con la técnica que identifiqué?"
+   ],
+   "evaluacion": [
+    "Rúbrica de Tarea (investigación breve)",
+    "Participación"
+   ],
+   "subtemas": [
+    "1.3",
+    "1.4"
+   ]
+  },
+  {
+   "n": 6,
+   "horas": 3,
+   "fecha": "2026-10-01",
+   "fechaTexto": "Jue 1 de octubre",
+   "tema": "Tema 1 · Introducción",
+   "titulo": "1.5 Otros tipos de cocinas · 1.6 Cocinas actuales · cierre del Tema 1",
+   "docente": [
+    "Exposición con diapositivas.",
+    "Clasificación en equipo de 10 establecimientos reales de la localidad.",
+    "Aula invertida: exposición breve de un restaurante o chef de vanguardia investigado previamente."
+   ],
+   "independiente": [
+    "Investigación previa (aula invertida).",
+    "Repaso individual del Tema 1 con Glosario y Cronología."
+   ],
+   "proyecto": [],
+   "evaluacion": [
+    "Rúbrica de Exposición (aula invertida)",
+    "Rúbrica de Tarea (clasificación)"
+   ],
+   "subtemas": [
+    "1.5",
+    "1.6"
+   ]
+  },
+  {
+   "n": 7,
+   "horas": 2,
+   "fecha": "2026-10-02",
+   "fechaTexto": "Vie 2 de octubre",
+   "tema": "Tema 2 · Tipología de la cocina",
+   "titulo": "2.1 Régimen · 2.2 Épocas",
+   "docente": [
+    "Exposición con diapositivas.",
+    "Cuadro comparativo: un mismo platillo en régimen cotidiano vs. de festejo."
+   ],
+   "independiente": [
+    "Entrevistar a un familiar sobre un platillo de ocasión especial (media cuartilla)."
+   ],
+   "proyecto": [
+    "Pregunta 8: ¿mi platillo es cotidiano, dominical o de festejo? Ejemplo concreto.",
+    "Pregunta 9: ¿qué \"firma de época\" tiene, según la tabla del Tema 2.2?"
+   ],
+   "evaluacion": [
+    "Rúbrica de Tarea (entrevista y cuadro)",
+    "Participación"
+   ],
+   "subtemas": [
+    "2.1",
+    "2.2"
+   ]
+  },
+  {
+   "n": 8,
+   "horas": 3,
+   "fecha": "2026-10-08",
+   "fechaTexto": "Jue 8 de octubre",
+   "tema": "Tema 2 · Tipología de la cocina",
+   "titulo": "2.3 Religión",
+   "docente": [
+    "Exposición con diapositivas.",
+    "Mesa de debate por equipos: cada equipo representa una tradición religiosa y explica su norma alimentaria."
+   ],
+   "independiente": [
+    "Preparar, por equipo, la presentación de la tradición religiosa asignada."
+   ],
+   "proyecto": [
+    "Pregunta 10: ¿mi platillo tiene alguna norma religiosa asociada? Si no la tiene, explica por qué.",
+    "Pregunta 11: ¿se sirve en alguna fecha, rito o celebración específica? ¿Qué simboliza ahí, más allá del sabor?"
+   ],
+   "evaluacion": [
+    "Rúbrica de Exposición/Debate por equipo"
+   ],
+   "subtemas": [
+    "2.3"
+   ]
+  },
+  {
+   "n": 9,
+   "horas": 2,
+   "fecha": "2026-10-09",
+   "fechaTexto": "Vie 9 de octubre",
+   "tema": "Tema 2 · Tipología de la cocina",
+   "titulo": "2.4 Corrientes · cierre del Tema 2",
+   "docente": [
+    "Exposición con diapositivas.",
+    "Línea de tiempo grupal de corrientes del siglo XX y XXI.",
+    "Repaso general dirigido de Temas 1 y 2."
+   ],
+   "independiente": [
+    "Repaso individual con Cronología y Glosario."
+   ],
+   "proyecto": [
+    "Pregunta 12: ¿a qué corriente gastronómica pertenece hoy mi platillo?",
+    "Con las 12 preguntas, armar el borrador completo de la Entrega 1 (se entrega la próxima semana)."
+   ],
+   "evaluacion": [
+    "Rúbrica de Tarea (línea de tiempo)",
+    "Participación (repaso)"
+   ],
+   "subtemas": [
+    "2.4"
+   ]
+  },
+  {
+   "n": 10,
+   "horas": 2,
+   "fecha": "2026-10-16",
+   "fechaTexto": "Vie 16 de octubre",
+   "tema": "Tema 3 · Cocinas en el mundo",
+   "titulo": "Retroalimentación del Parcial 1 e inicio del Tema 3",
+   "docente": [
+    "Revisión grupal de resultados del examen y dudas.",
+    "Introducción al Tema 3 — Cocinas en el mundo, con el mapa mundial de las 5 regiones."
+   ],
+   "independiente": [
+    "Leer la introducción del Tema 3 en el compendio."
+   ],
+   "proyecto": [],
+   "evaluacion": [
+    "Participación"
+   ],
+   "subtemas": []
+  },
+  {
+   "n": 11,
+   "horas": 3,
+   "fecha": "2026-10-22",
+   "fechaTexto": "Jue 22 de octubre",
+   "tema": "Tema 3 · Cocinas en el mundo",
+   "titulo": "3.1 Cocinas africanas",
+   "docente": [
+    "Exposición con mapa de África por regiones.",
+    "Mapa mural en equipos: ingredientes y platillos representativos."
+   ],
+   "independiente": [
+    "Investigar un platillo afrolatinoamericano y su posible origen africano."
+   ],
+   "proyecto": [
+    "Pregunta 13: ¿a cuál de las 5 regiones del Tema 3 pertenece mi platillo?",
+    "Pregunta 14: si es de México, ¿qué parte es herencia prehispánica y qué parte fue adoptada?"
+   ],
+   "evaluacion": [
+    "Rúbrica de Tarea (mapa mural e investigación)"
+   ],
+   "subtemas": [
+    "3.1"
+   ]
+  },
+  {
+   "n": 12,
+   "horas": 2,
+   "fecha": "2026-10-23",
+   "fechaTexto": "Vie 23 de octubre",
+   "tema": "Tema 3 · Cocinas en el mundo",
+   "titulo": "3.2 Cocinas americanas · Parte 1: México prehispánico y mestizo",
+   "docente": [
+    "Exposición con cita de Sahagún sobre la mesa de Moctezuma.",
+    "Cuadro comparativo mexica vs. maya en equipos."
+   ],
+   "independiente": [
+    "Repasar la tabla \"México aportó al mundo / Llegaron a México\"."
+   ],
+   "proyecto": [
+    "Si mi platillo es de México: ¿qué parte es herencia prehispánica y qué parte fue adoptada tras la conquista?"
+   ],
+   "evaluacion": [
+    "Rúbrica de Tarea (cuadro comparativo)",
+    "Participación"
+   ],
+   "subtemas": [
+    "3.2"
+   ]
+  },
+  {
+   "n": 13,
+   "horas": 2,
+   "fecha": "2026-10-30",
+   "fechaTexto": "Vie 30 de octubre",
+   "tema": "Tema 3 · Cocinas en el mundo",
+   "titulo": "3.2 Cocinas americanas · Parte 2: Campeche y el resto de América",
+   "docente": [
+    "Exposición con cita del maestro Meneses sobre la cocina campechana.",
+    "Mesa de debate: el platillo campechano que mejor representa las siete influencias."
+   ],
+   "independiente": [
+    "Investigar y presentar un platillo representativo de cada subregión americana vista."
+   ],
+   "proyecto": [
+    "Pregunta 15: ¿qué ruta de comercio, migración o conquista explica que mi platillo exista tal como lo conocemos hoy? De mis ingredientes principales, ¿cuáles son nativos de mi región y cuáles llegaron de fuera? Cita al menos uno de cada tipo."
+   ],
+   "evaluacion": [
+    "Rúbrica de Exposición/Debate",
+    "Rúbrica de Tarea (investigación)"
+   ],
+   "subtemas": [
+    "3.2"
+   ]
+  },
+  {
+   "n": 14,
+   "horas": 3,
+   "fecha": "2026-11-05",
+   "fechaTexto": "Jue 5 de noviembre",
+   "tema": "Tema 3 · Cocinas en el mundo",
+   "titulo": "3.3 Cocinas asiáticas",
+   "docente": [
+    "Exposición con diapositivas.",
+    "Comparación guiada de especias representativas de cada subregión asiática."
+   ],
+   "independiente": [
+    "Investigar cómo el comercio de especias conectó Asia con Europa, y su efecto en un platillo actual."
+   ],
+   "proyecto": [
+    "Pregunta 16: aunque mi platillo no sea asiático, ¿qué ingrediente o técnica de Asia lo influyó?",
+    "Pregunta 17: ¿existe más de una versión de mi platillo en distintos lugares? ¿En qué cambian, y por qué?"
+   ],
+   "evaluacion": [
+    "Rúbrica de Tarea (investigación)",
+    "Participación"
+   ],
+   "subtemas": [
+    "3.3"
+   ]
+  },
+  {
+   "n": 15,
+   "horas": 2,
+   "fecha": "2026-11-06",
+   "fechaTexto": "Vie 6 de noviembre",
+   "tema": "Tema 3 · Cocinas en el mundo",
+   "titulo": "3.4 Cocinas europeas",
+   "docente": [
+    "Exposición con diapositivas.",
+    "Mapa de Europa por equipos con los 4 bloques gastronómicos."
+   ],
+   "independiente": [
+    "Redactar media cuartilla sobre cómo un ingrediente marca la frontera entre dos bloques europeos."
+   ],
+   "proyecto": [],
+   "evaluacion": [
+    "Rúbrica de Tarea (mapa y reflexión)"
+   ],
+   "subtemas": [
+    "3.4"
+   ]
+  },
+  {
+   "n": 16,
+   "horas": 3,
+   "fecha": "2026-11-12",
+   "fechaTexto": "Jue 12 de noviembre",
+   "tema": "Tema 3 · Cocinas en el mundo",
+   "titulo": "3.5 Cocinas de Oceanía · cierre del Tema 3",
+   "docente": [
+    "Exposición e imágenes del horno de tierra (hangi/umu/lovo).",
+    "Repaso general dirigido del Tema 3 completo."
+   ],
+   "independiente": [
+    "Investigar un platillo de fusión australiano o neozelandés y sus tres influencias históricas."
+   ],
+   "proyecto": [],
+   "evaluacion": [
+    "Rúbrica de Tarea (investigación)",
+    "Participación (repaso)"
+   ],
+   "subtemas": [
+    "3.5"
+   ]
+  },
+  {
+   "n": 17,
+   "horas": 2,
+   "fecha": "2026-11-13",
+   "fechaTexto": "Vie 13 de noviembre",
+   "tema": "Tema 4 · Necesidades e influencias",
+   "titulo": "4.1 Necesidad del hombre por alimentarse · 4.2 Influencia de Roma",
+   "docente": [
+    "Exposición con diapositivas.",
+    "Discusión grupal: un ejemplo propio de comida que cumple función más allá de la nutrición."
+   ],
+   "independiente": [
+    "Redactar media cuartilla relacionando la necesidad de alimentarse con la identidad cultural propia."
+   ],
+   "proyecto": [
+    "Pregunta 18: ¿mi platillo cumple alguna función más allá de la nutrición en la identidad de quien lo come? ¿Tiene relación, directa o indirecta, con la Antigua Roma vista en el Tema 4.2?"
+   ],
+   "evaluacion": [
+    "Rúbrica de Tarea (reflexión escrita)",
+    "Participación"
+   ],
+   "subtemas": [
+    "4.1",
+    "4.2"
+   ]
+  },
+  {
+   "n": 18,
+   "horas": 3,
+   "fecha": "2026-11-19",
+   "fechaTexto": "Jue 19 de noviembre",
+   "tema": "Tema 4 · Necesidades e influencias",
+   "titulo": "4.3 Influencia de la comida en la realeza",
+   "docente": [
+    "Exposición con diapositivas.",
+    "Comparación en equipos del protocolo de Versalles con el de la corte otomana."
+   ],
+   "independiente": [
+    "Investigar un banquete de Estado contemporáneo y qué protocolo histórico conserva."
+   ],
+   "proyecto": [
+    "Pregunta 19: ¿mi platillo tuvo relación con una corte real, o llegó a la mesa del pueblo desde el principio?"
+   ],
+   "evaluacion": [
+    "Rúbrica de Tarea (investigación por equipo)",
+    "Participación"
+   ],
+   "subtemas": [
+    "4.3"
+   ]
+  },
+  {
+   "n": 19,
+   "horas": 2,
+   "fecha": "2026-11-20",
+   "fechaTexto": "Vie 20 de noviembre",
+   "tema": "Tema 4 · Necesidades e influencias",
+   "titulo": "4.4 El primer restaurante · repaso para el Parcial 2",
+   "docente": [
+    "Exposición con diapositivas.",
+    "Diseño en equipo de un menú à la carte inspirado en Delmonico's o un restaurante porfirista.",
+    "Repaso general dirigido de Temas 3 y 4."
+   ],
+   "independiente": [
+    "Repaso individual con Cronología y Glosario."
+   ],
+   "proyecto": [
+    "Pregunta 20: ¿existe o existió algún restaurante famoso asociado a mi platillo? ¿Hay alguna leyenda popular sobre su origen que la investigación seria desmiente?",
+    "Con las respuestas de las últimas semanas, armar el borrador completo de la Entrega 2."
+   ],
+   "evaluacion": [
+    "Rúbrica de Tarea (menú por equipo)",
+    "Participación (repaso)"
+   ],
+   "subtemas": [
+    "4.4"
+   ]
+  },
+  {
+   "n": 20,
+   "horas": 3,
+   "fecha": "2026-12-03",
+   "fechaTexto": "Jue 3 de diciembre",
+   "tema": "Tema 4 · Cierre y actividad final",
+   "titulo": "4.5 La cocina profesional · cierre del libro",
+   "docente": [
+    "Exposición con diapositivas.",
+    "Video-foro breve sobre la profesionalización de la cocina.",
+    "Presentación de la exposición final individual (indicaciones y rúbrica)."
+   ],
+   "independiente": [
+    "Elegir y preparar el material de apoyo para exponer individualmente el 4 de diciembre."
+   ],
+   "proyecto": [
+    "Pregunta 21: ¿los ingredientes originales de mi platillo siguen siendo igual de accesibles o sustentables de producir hoy que hace 100+ años?",
+    "Pregunta 22: si tuviera que servir este platillo hoy en un restaurante, ¿qué le cambiaría sin perder su esencia histórica?",
+    "Pregunta 23 (reflexión final): ¿qué aprendí investigando mi platillo que no sabía al principio del cuatrimestre? Pulir la ficha y el material de apoyo para exponerla el 4 de diciembre."
+   ],
+   "evaluacion": [],
+   "subtemas": [
+    "4.5"
+   ]
+  },
+  {
+   "n": 21,
+   "horas": 3,
+   "fecha": "2026-12-10",
+   "fechaTexto": "Jue 10 de diciembre",
+   "tema": "Tema 4 · Cierre y actividad final",
+   "titulo": "Repaso general para Examen Final",
+   "docente": [
+    "Repaso general dirigido de los 4 temas (preguntas relámpago por equipos).",
+    "Resolución de dudas finales."
+   ],
+   "independiente": [
+    "Repaso individual con la Cronología general y el Glosario."
+   ],
+   "proyecto": [],
+   "evaluacion": [
+    "Participación (juego de repaso)"
+   ],
+   "subtemas": []
+  }
+ ],
+ "eventos": [
+  {
+   "tipo": "practica",
+   "fecha": "2026-09-24",
+   "titulo": "Práctica de cocina 1",
+   "fechaTexto": "Jueves 24 de septiembre · grupo dividido en dos mitades",
+   "detalle": "Una de cuatro opciones ligadas a los Temas 1.2.1 a 1.2.4: consomé estilo La Varenne, glaseado estilo Apicio, guiso estilo Le Viandier o postre de la corte de Catalina de Médici. Uniforme completo."
+  },
+  {
+   "tipo": "examen",
+   "fecha": "2026-10-15",
+   "titulo": "Examen del Parcial 1",
+   "fechaTexto": "Jueves 15 de octubre",
+   "detalle": "Examen escrito de los Temas 1 y 2 completos."
+  },
+  {
+   "tipo": "entrega",
+   "fecha": "2026-10-15",
+   "titulo": "Entrega 1 del proyecto «Mi Plato, Mi Historia»",
+   "fechaTexto": "Jueves 15 de octubre",
+   "detalle": "Preguntas 1 a 12 (Temas 1 y 2). Vale 15 de los 40 puntos del proyecto, que cuentan en el Examen Final."
+  },
+  {
+   "tipo": "practica",
+   "fecha": "2026-10-29",
+   "titulo": "Práctica de cocina 2",
+   "fechaTexto": "Jueves 29 de octubre · grupo dividido en dos mitades",
+   "detalle": "Cocina prehispánica, mestiza y campechana: cochinita pibil, mole poblano simplificado, pan de cazón o queso relleno. Uniforme completo y cuchillo propio."
+  },
+  {
+   "tipo": "examen",
+   "fecha": "2026-11-26",
+   "titulo": "Examen práctico del Parcial 2 · Práctica de cocina 3",
+   "fechaTexto": "Jueves 26 de noviembre · grupo dividido en dos mitades",
+   "detalle": "Vale 20 de los 40 puntos del rubro Examen/Proyecto del Parcial 2. Opciones: bistec Delmonico's, curry, pescado meunière o paella."
+  },
+  {
+   "tipo": "examen",
+   "fecha": "2026-11-27",
+   "titulo": "Examen teórico del Parcial 2",
+   "fechaTexto": "Viernes 27 de noviembre",
+   "detalle": "Examen escrito de los Temas 3 y 4 (hasta el 4.4). Vale los otros 20 puntos del rubro Examen/Proyecto."
+  },
+  {
+   "tipo": "entrega",
+   "fecha": "2026-11-27",
+   "titulo": "Entrega 2 del proyecto «Mi Plato, Mi Historia»",
+   "fechaTexto": "Viernes 27 de noviembre",
+   "detalle": "Ficha completa con las preguntas 1 a 20. Vale 15 de los 40 puntos del proyecto."
+  },
+  {
+   "tipo": "entrega",
+   "fecha": "2026-12-04",
+   "titulo": "Exposición final del proyecto «Mi Plato, Mi Historia»",
+   "fechaTexto": "Viernes 4 de diciembre",
+   "detalle": "Exposición individual de 2 a 3 minutos ante el grupo. Vale 10 de los 40 puntos del proyecto."
+  },
+  {
+   "tipo": "aviso",
+   "fecha": "2026-12-11",
+   "titulo": "Fin de cuatrimestre",
+   "fechaTexto": "Viernes 11 de diciembre",
+   "detalle": "Entrega de calificaciones acumuladas del parcial y del curso. Espacio para tu retroalimentación sobre la materia."
+  },
+  {
+   "tipo": "examen",
+   "fecha": "2026-12-17",
+   "titulo": "Examen Final",
+   "fechaTexto": "Jueves 17 de diciembre (fecha por confirmar con Coordinación)",
+   "detalle": "Examen escrito que integra los cuatro temas del curso."
+  }
+ ],
+ "proyecto": {
+  "nombre": "Mi Plato, Mi Historia",
+  "lema": "Detrás de cada platillo hay una historia: este cuatrimestre la cuentas tú.",
+  "descripcion": "Cada alumno elige, sin repetir, un platillo específico y lo investiga todo el cuatrimestre: de dónde viene, qué técnica usa, qué rutas lo trajeron hasta nuestra mesa y qué significa para quien lo come. Respondes 23 preguntas guía en tres entregas y cierras con una exposición individual ante el grupo.",
+  "peso": "El proyecto vale 40 de los 100 puntos del Examen Final. No se suma a los parciales: vive completo en el Final.",
+  "colores": [
+   "#6B7A5E",
+   "#A63D2F",
+   "#C98A2C"
+  ],
+  "entregas": [
+   {
+    "clave": "entrega1",
+    "nombre": "Entrega 1 · Ficha, parte 1",
+    "fecha": "2026-10-15",
+    "fechaTexto": "Jueves 15 de octubre",
+    "puntos": 15,
+    "temas": "Temas 1 y 2",
+    "requisito": "Las preguntas 1 a 12, cada una con su número, la pregunta completa y al menos 4 renglones de respuesta. Portada, citas en el texto y lista de referencias en APA al final.",
+    "preguntas": [
+     "¿qué platillo elijo y por qué me interesa investigarlo?",
+     "¿qué técnica de cocción usa principalmente mi platillo, y qué logra esa técnica con esos ingredientes?",
+     "¿mi platillo tiene parentesco con la Antigua Roma? (Si es 🟡: investigar en cambio el origen de un ingrediente principal.)",
+     "¿a cuál de estos tres periodos pertenece o remite mi platillo? Justifica con un dato del libro.",
+     "¿algún ingrediente de mi platillo viajó en el intercambio colombino? ¿En qué dirección?",
+     "¿mi platillo se prepara con fuego de leña, estufa u otra tecnología? ¿Cambió con la electrificación?",
+     "¿qué sabores básicos dominan en mi platillo, y cómo se logra ese balance con la técnica que identifiqué?",
+     "¿mi platillo es cotidiano, dominical o de festejo? Ejemplo concreto.",
+     "¿qué \"firma de época\" tiene, según la tabla del Tema 2.2?",
+     "¿mi platillo tiene alguna norma religiosa asociada? Si no la tiene, explica por qué.",
+     "¿se sirve en alguna fecha, rito o celebración específica? ¿Qué simboliza ahí, más allá del sabor?",
+     "¿a qué corriente gastronómica pertenece hoy mi platillo?"
+    ]
+   },
+   {
+    "clave": "entrega2",
+    "nombre": "Entrega 2 · Ficha completa",
+    "fecha": "2026-11-27",
+    "fechaTexto": "Viernes 27 de noviembre",
+    "puntos": 15,
+    "temas": "Temas 1 al 4",
+    "requisito": "La ficha completa con las preguntas 1 a 20: las 12 primeras corregidas con la retroalimentación de la Entrega 1 y las 8 nuevas, con citas y referencias en APA.",
+    "preguntas": [
+     "¿a cuál de las 5 regiones del Tema 3 pertenece mi platillo?",
+     "si es de México, ¿qué parte es herencia prehispánica y qué parte fue adoptada?",
+     "¿qué ruta de comercio, migración o conquista explica que mi platillo exista tal como lo conocemos hoy? De mis ingredientes principales, ¿cuáles son nativos de mi región y cuáles llegaron de fuera? Cita al menos uno de cada tipo.",
+     "aunque mi platillo no sea asiático, ¿qué ingrediente o técnica de Asia lo influyó?",
+     "¿existe más de una versión de mi platillo en distintos lugares? ¿En qué cambian, y por qué?",
+     "¿mi platillo cumple alguna función más allá de la nutrición en la identidad de quien lo come? ¿Tiene relación, directa o indirecta, con la Antigua Roma vista en el Tema 4.2?",
+     "¿mi platillo tuvo relación con una corte real, o llegó a la mesa del pueblo desde el principio?",
+     "¿existe o existió algún restaurante famoso asociado a mi platillo? ¿Hay alguna leyenda popular sobre su origen que la investigación seria desmiente?"
+    ]
+   },
+   {
+    "clave": "entregaFinal",
+    "nombre": "Entrega final · Exposición individual",
+    "fecha": "2026-12-04",
+    "fechaTexto": "Viernes 4 de diciembre",
+    "puntos": 10,
+    "temas": "Curso completo",
+    "requisito": "Responde las preguntas 21 a 23 y expón ante el grupo, en 2 a 3 minutos, de dónde viene tu platillo, qué rutas lo explican y qué aprendiste investigándolo.",
+    "preguntas": [
+     "¿los ingredientes originales de mi platillo siguen siendo igual de accesibles o sustentables de producir hoy que hace 100+ años?",
+     "si tuviera que servir este platillo hoy en un restaurante, ¿qué le cambiaría sin perder su esencia histórica?",
+     "¿qué aprendí investigando mi platillo que no sabía al principio del cuatrimestre?"
+    ]
+   }
+  ],
+  "enlaces": [
+   {
+    "texto": "Ver las rúbricas",
+    "href": "rubricas.html"
+   },
+   {
+    "texto": "Taller: preguntas 6 a 9",
+    "href": "diapositivas/taller-1-preguntas-6-9.html"
+   },
+   {
+    "texto": "Taller: preguntas 10 a 12",
+    "href": "diapositivas/taller-2-preguntas-10-12.html"
+   },
+   {
+    "texto": "Guía para citar en APA",
+    "href": "diapositivas/guia-apa.html"
+   },
+   {
+    "texto": "Plantilla de Word APA",
+    "href": "diapositivas/plantillas/Plantilla_APA.docx",
+    "descarga": true
+   }
+  ],
+  "ejemplo": {
+   "titulo": "Ejemplo resuelto: el pibipollo (preguntas 6, 8 y 10)",
+   "nota": "Es el platillo que usamos de modelo en los talleres de clase. No lo copies: tus respuestas deben hablar de tu propio platillo.",
+   "respuestas": [
+    {
+     "n": 6,
+     "texto": "El pibipollo se cocina tradicionalmente en el **pib**, un horno excavado en la tierra donde se calientan piedras con leña; sobre ellas se coloca el tamal envuelto en hojas de plátano y se cubre con tierra durante varias horas. Con la urbanización y la llegada de la electricidad y el gas a los hogares, **muchas familias lo hornean hoy en horno convencional**. El cambio no es solo de aparato: al perder el contacto con la tierra y la leña, **se pierde el sabor ahumado**, que era parte de su identidad."
+    },
+    {
+     "n": 8,
+     "texto": "Es claramente **de festejo**, y además de una fecha muy precisa: se prepara para el **Hanal Pixán**, la celebración de los difuntos en la península, entre el **31 de octubre y el 2 de noviembre**. No es un platillo que se coma el resto del año. En mi casa, mi familia lo prepara una sola vez al año y se reparte entre vecinos y parientes; parte del sentido es **compartirlo**, no solo comerlo."
+    },
+    {
+     "n": 10,
+     "texto": "No tiene una **norma** religiosa que prohíba o permita ingredientes, como el *kashrut* judío o el *halal* musulmán vistos en el Tema 2.3. Lo que sí tiene es un **uso ritual**: es la ofrenda central del Hanal Pixán. Una norma **regula qué se puede comer**; un uso ritual **asigna un significado** a un platillo dentro de una ceremonia. El pibipollo es el segundo caso, y su carácter ritual viene de un **sincretismo** entre la tradición maya de honrar a los muertos y la celebración católica de los fieles difuntos (Rodríguez García, 2026)."
+    }
+   ]
+  }
+ },
+ "rubricas": [
+  {
+   "id": "practica",
+   "nombre": "Práctica de cocina (incluye el examen práctico del Parcial 2)",
+   "criterios": [
+    [
+     "Mise en place",
+     "Ingredientes pesados, cortados y organizados antes de encender el fuego.",
+     "Organización parcial; improvisa algunos pasos.",
+     "Sin mise en place; trabaja en desorden."
+    ],
+    [
+     "Técnica",
+     "Aplica correctamente la técnica de cocción del platillo y explica qué logra.",
+     "Aplica la técnica con errores menores.",
+     "La técnica es incorrecta o no la conoce."
+    ],
+    [
+     "Higiene y seguridad",
+     "Lava manos y superficies, separa crudos de cocidos y maneja cuchillo y fuego con seguridad.",
+     "Descuidos menores de higiene o seguridad.",
+     "Pone en riesgo la inocuidad o su seguridad."
+    ],
+    [
+     "Sabor, punto y presentación",
+     "Sazón equilibrado, punto de cocción correcto y emplatado limpio.",
+     "Resultado aceptable con fallas de sazón o de punto.",
+     "Platillo mal cocido, desequilibrado o descuidado."
+    ],
+    [
+     "Contexto histórico",
+     "Explica de dónde viene el platillo con datos del curso.",
+     "Da una explicación general, sin datos.",
+     "No relaciona el platillo con el curso."
+    ],
+    [
+     "Tiempo y limpieza final",
+     "Termina a tiempo y entrega su estación limpia.",
+     "Se retrasa o deja la estación a medias.",
+     "No termina o deja la estación sucia."
+    ]
+   ]
+  },
+  {
+   "id": "uniforme",
+   "nombre": "Uniforme",
+   "criterios": [
+    [
+     "Filipina y pantalón",
+     "Limpios, planchados y completos.",
+     "Completos, con descuidos menores.",
+     "Incompletos o sucios."
+    ],
+    [
+     "Gorro, mandil y calzado",
+     "Gorro o cofia, mandil y zapato cerrado antiderrapante.",
+     "Falta un elemento menor.",
+     "Faltan varios elementos."
+    ],
+    [
+     "Presentación personal",
+     "Cabello recogido, uñas cortas, sin joyería ni maquillaje.",
+     "Un detalle por corregir.",
+     "Incumple varias normas de presentación."
+    ]
+   ]
+  },
+  {
+   "id": "entregas",
+   "nombre": "Entregas 1 y 2 del proyecto",
+   "criterios": [
+    [
+     "Respuestas completas",
+     "Están todas las preguntas, con número, la pregunta completa y al menos 4 renglones cada una.",
+     "Están todas, pero algunas muy breves.",
+     "Faltan preguntas o hay respuestas de una línea."
+    ],
+    [
+     "Uso del curso",
+     "Usa datos y conceptos del libro de texto para sostener cada respuesta.",
+     "Usa el curso solo en algunas respuestas.",
+     "No usa lo visto en el curso."
+    ],
+    [
+     "Fuentes en APA",
+     "Cita dentro del texto y cierra con la lista de referencias en orden alfabético.",
+     "Cita, con errores de formato.",
+     "No cita o copia sin dar crédito."
+    ],
+    [
+     "Ortografía y presentación",
+     "Portada, redacción clara, sin faltas de acentos ni mayúsculas.",
+     "Errores ortográficos ocasionales.",
+     "Errores frecuentes o documento desordenado."
+    ]
+   ]
+  },
+  {
+   "id": "exposicion-final",
+   "nombre": "Exposición final del proyecto",
+   "criterios": [
+    [
+     "Dominio de su platillo",
+     "Explica origen, técnica, rutas y significado sin leer.",
+     "Explica, pero se apoya mucho en notas.",
+     "Lee o no domina su tema."
+    ],
+    [
+     "Uso del curso",
+     "Conecta su platillo con al menos dos temas del curso.",
+     "Menciona el curso de forma general.",
+     "No conecta con el curso."
+    ],
+    [
+     "Reflexión final",
+     "Comparte con claridad qué aprendió que no sabía al inicio.",
+     "La reflexión es breve o general.",
+     "No hay reflexión."
+    ],
+    [
+     "Tiempo y material de apoyo",
+     "Respeta los 2 a 3 minutos y su material es claro.",
+     "Se excede o el material es pobre.",
+     "Sin material o muy fuera de tiempo."
+    ]
+   ]
+  },
+  {
+   "id": "exposicion",
+   "nombre": "Exposición, debate y aula invertida",
+   "criterios": [
+    [
+     "Dominio del tema",
+     "Explica con sus palabras y con ejemplos.",
+     "Explica, con apoyo excesivo en la lectura.",
+     "Lee sin explicar."
+    ],
+    [
+     "Argumentos",
+     "Defiende su postura con datos del curso y escucha a los demás.",
+     "Opina sin datos o interrumpe.",
+     "No participa en el intercambio."
+    ],
+    [
+     "Organización",
+     "Respeta el tiempo y todos los integrantes participan.",
+     "Se excede o participa solo una parte del equipo.",
+     "Desorganizada o incompleta."
+    ]
+   ]
+  },
+  {
+   "id": "tarea",
+   "nombre": "Tareas (cuadros, mapas, líneas de tiempo e investigaciones)",
+   "criterios": [
+    [
+     "Contenido",
+     "Incluye todos los elementos que pide la consigna.",
+     "Faltan algunos elementos.",
+     "Faltan la mayoría."
+    ],
+    [
+     "Precisión",
+     "Los datos son correctos y vienen del curso o de fuentes confiables.",
+     "Algunos datos imprecisos.",
+     "Datos erróneos o sin fuente."
+    ],
+    [
+     "Presentación",
+     "Ordenada, legible y sin faltas de ortografía.",
+     "Algunos errores de presentación.",
+     "Desordenada o ilegible."
+    ],
+    [
+     "Puntualidad",
+     "Se entrega en la fecha acordada.",
+     "Se entrega con retraso justificado.",
+     "No se entrega."
+    ]
+   ]
+  },
+  {
+   "id": "participacion",
+   "nombre": "Participación",
+   "criterios": [
+    [
+     "Aportaciones",
+     "Participa por iniciativa propia con ideas relacionadas con el tema.",
+     "Participa solo cuando se le pide.",
+     "No participa."
+    ],
+    [
+     "Escucha y respeto",
+     "Escucha, respeta turnos y retoma las ideas de otros.",
+     "A veces interrumpe o se distrae.",
+     "Interrumpe con frecuencia."
+    ],
+    [
+     "Trabajo en equipo",
+     "Cumple su parte y ayuda al equipo.",
+     "Cumple solo una parte.",
+     "No colabora."
+    ]
+   ]
+  }
+ ]
+}
