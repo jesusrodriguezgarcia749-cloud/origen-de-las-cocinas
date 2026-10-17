@@ -254,7 +254,8 @@ html[data-theme="dark"] .sources h2{color:#FAF7F0 !important;}
 .header-inner{gap:22px;}
 .brand{flex-shrink:0;}
 @media (max-width:560px){
-  .header-inner{gap:10px;flex-wrap:nowrap;}
+  .header-inner{gap:10px;flex-wrap:wrap;}
+  .brand{flex:1 1 0; min-width:0;}
   .brand-text{white-space:normal;font-size:.98rem;line-height:1.15;}
   .header-tools{flex-shrink:0;}
 }
