@@ -79,6 +79,8 @@
   .d-imagen figcaption,.d-video .pie{font-size:.65em;color:var(--gris);margin-top:.6em}
   .vacio{border:3px dashed var(--gris);color:var(--gris);padding:2em 1em;text-align:center;font-size:.7em;line-height:1.5}
   .marco-video{position:relative;width:100%;max-width:920px;margin:0 auto;aspect-ratio:16/9;background:#000}
+  .abrir-yt{color:var(--rojo);font-weight:600;text-decoration:none}
+  .abrir-yt:hover{text-decoration:underline}
   .marco-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
   /* Pregunta */
   .d-pregunta{text-align:center}
@@ -208,7 +210,8 @@
       ${id
         ? `<div class="marco-video"><iframe data-src="https://www.youtube-nocookie.com/embed/${id}?rel=0${sub}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="${esc(d.titulo)}"></iframe></div>`
         : `<div class="vacio">Aquí va el video. Copia el enlace del video de YouTube y pégalo en el campo youtube.</div>`}
-      ${d.pie ? `<p class="pie">${esc(d.pie)}</p>` : ""}`;
+      ${d.pie ? `<p class="pie">${esc(d.pie)}</p>` : ""}
+      ${id ? `<p class="pie"><a class="abrir-yt" href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener">¿No carga? Ábrelo en YouTube ↗</a></p>` : ""}`;
     },
 
     // Repaso relámpago: cada pregunta aparece con un clic y su respuesta con el siguiente
