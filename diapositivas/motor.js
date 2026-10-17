@@ -114,8 +114,9 @@
   .d-cierre .col{background:#fff;padding:.8em .9em;border-top:6px solid var(--rojo);font-size:.82em;line-height:1.45}
   .d-cierre .col h3{font-family:"Public Sans",sans-serif;font-size:.85em;color:var(--rojo);font-weight:700;margin:0 0 .5em}
   /* Botón volver y controles */
-  .volver{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:12px;z-index:30;font:600 12px "Public Sans",sans-serif;color:var(--marino);background:rgba(244,242,237,.9);border:1.5px solid var(--marino);padding:4px 10px;text-decoration:none;opacity:.85}
+  .volver{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:10px;z-index:30;font:600 12px "Public Sans",sans-serif;color:var(--marino);background:rgba(255,255,255,.85);border:1px solid rgba(0,0,0,.15);border-radius:999px;padding:5px 11px;text-decoration:none;opacity:.9;transition:opacity .4s}
   .volver:hover{opacity:1}
+  .volver.oculto{opacity:0;pointer-events:none}
   .volver:focus-visible{outline:3px solid var(--rojo);outline-offset:2px}
   .reveal .progress{color:var(--rojo);height:5px}
   .reveal .controls{color:var(--marino)}
@@ -276,8 +277,17 @@
     const volver = document.createElement("a");
     volver.className = "volver";
     volver.href = P.enlaceVolver || "index.html";
-    volver.textContent = P.textoVolver || "Todas las diapositivas";
+    volver.textContent = "← " + (P.textoVolver || "Todas las diapositivas");
     document.body.appendChild(volver);
+    // Se esconde sola para no tapar la diapositiva; reaparece al mover el mouse o tocar la pantalla.
+    let espera;
+    const mostrar = () => {
+      volver.classList.remove("oculto");
+      clearTimeout(espera);
+      espera = setTimeout(() => volver.classList.add("oculto"), 3000);
+    };
+    ["mousemove", "touchstart", "keydown"].forEach(ev => document.addEventListener(ev, mostrar, { passive: true }));
+    mostrar();
 
     const reveal = document.createElement("div");
     reveal.className = "reveal";
