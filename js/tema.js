@@ -63,10 +63,10 @@ function renderContenido(contenido, termino) {
   return html;
 }
 
-async function init() {
+async function init(idDirecto) {
   const params = new URLSearchParams(window.location.search);
-  const idBuscado = params.get('id');
-  const termino = (params.get('buscar') || '').trim();
+  const idBuscado = idDirecto || params.get('id');
+  const termino = idDirecto ? '' : (params.get('buscar') || '').trim();
   const root = document.getElementById('tema-root');
   const pager = document.getElementById('tema-pager');
 
@@ -131,6 +131,7 @@ async function init() {
       ? `<a href="tema.html?id=${encodeURIComponent(siguiente.subtema.id)}" class="next"><span class="pager-label">Siguiente →</span><span class="pager-title">${siguiente.subtema.id} ${escaparHTML(siguiente.subtema.titulo)}</span></a>`
       : `<span class="placeholder"></span>`}
   `;
+  document.dispatchEvent(new CustomEvent('tema:renderizado', { detail: { id: s.id } }));
 }
 
 function conectarBuscador() {
@@ -143,6 +144,15 @@ function conectarBuscador() {
     if (q) window.location.href = `compendio.html?buscar=${encodeURIComponent(q)}`;
   });
 }
+
+// Cambia de subtema sin recargar la página (lo usa el lector en voz alta
+// para seguir leyendo el siguiente subtema sin interrumpirse).
+window.irASubtema = async (id) => {
+  history.pushState({ id }, '', `tema.html?id=${encodeURIComponent(id)}`);
+  await init(id);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+window.addEventListener('popstate', () => init());
 
 document.addEventListener('DOMContentLoaded', () => {
   conectarBuscador();
