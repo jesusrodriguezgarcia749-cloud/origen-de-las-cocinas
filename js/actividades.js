@@ -292,7 +292,7 @@ async function finDeRonda() {
     res.innerHTML = '<p class="empty-inline">Guardando tu resultado…</p>';
     try {
       await setDoc(doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'actividades', `tema-${temaActivo}`), {
-        tema: temaActivo, completado: true, total, nombre: sesion.nombre, fecha: serverTimestamp(),
+        tema: temaActivo, completado: true, correcto: true, pinVerificado: sesion.pin, total, nombre: sesion.nombre, fecha: serverTimestamp(),
       });
       terminados.add(temaActivo);
       try { localStorage.removeItem(claveAvance(temaActivo)); } catch { /* nada */ }
