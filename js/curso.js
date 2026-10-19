@@ -56,7 +56,7 @@ async function renderHoy() {
     principal = `
       <article class="hoy-card">
         <p class="hoy-kicker">${esHoy ? 'Hoy en clase' : 'Próxima clase'} · Sesión ${sesion.n} de ${curso.sesiones.length}</p>
-        <p class="hoy-fecha">${capital(fechaLarga(sesion.fecha))} · ${sesion.horas || 2} horas</p>
+        <p class="hoy-fecha">${capital(fechaLarga(sesion.fecha))} · ${sesion.horas || 2} ${(sesion.horas || 2) === 1 ? 'hora' : 'horas'}</p>
         <h2>${esc(sesion.titulo)}</h2>
         ${sesion.subtemas.length ? `<p class="hoy-sub">${esHoy ? 'Repasa en el compendio' : 'Lee antes de clase'}</p>${linksSubtemas(sesion.subtemas)}` : ''}
         <p class="hoy-sub">Lo que haremos</p>
