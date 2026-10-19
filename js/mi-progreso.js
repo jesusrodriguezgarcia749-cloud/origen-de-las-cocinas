@@ -89,7 +89,7 @@ async function cargarAvisos() {
 
 async function cargarDatos() {
   const base = ['grupos', sesion.grupoId, 'alumnos', sesion.alumnoId];
-  const [alumnoSnap, catalogoSnap, tareasSnap, partSnap, asisSnap, unifP1, unifP2, exaP1, exaP2, exaFinal, practicoP2, proyE1, proyE2, proyEF] = await Promise.all([
+  const [alumnoSnap, catalogoSnap, tareasSnap, partSnap, asisSnap, unifP1, unifP2, exaP1, exaP2, exaFinal, practicoP2, proyE1, proyE2, proyEF, actSnap] = await Promise.all([
     // Documento del alumno: ahí están las decisiones de redondeo del docente.
     getDoc(doc(db, ...base)).catch(() => null),
     // Catálogo de tareas del grupo: define cuántas tareas existen en cada
@@ -108,9 +108,11 @@ async function cargarDatos() {
     getDoc(doc(db, ...base, 'proyecto', 'entrega1')).catch(() => null),
     getDoc(doc(db, ...base, 'proyecto', 'entrega2')).catch(() => null),
     getDoc(doc(db, ...base, 'proyecto', 'entregaFinal')).catch(() => null),
+    getDocs(collection(db, ...base, 'actividades')).catch(() => null),
   ]);
 
   datosCache = {
+    actividades: actSnap ? actSnap.docs.map(d => d.data()) : [],
     redondeos: alumnoSnap && alumnoSnap.exists() ? (alumnoSnap.data().redondeos || {}) : {},
     catalogoTareas: catalogoSnap ? catalogoSnap.docs.map(d => ({ id: d.id, ...d.data() })) : [],
     // Se conserva el id del documento: es el mismo id que la tarea tiene en
@@ -199,14 +201,14 @@ function renderParciales() {
         filaRubro('Examen escrito', r.examenEscrito.pts, r.examenEscrito.tope, r.examenEscrito.calificacion !== null ? `${r.examenEscrito.calificacion}/10` : 'sin capturar') +
         filaRubro('Examen práctico', r.practico.pts, r.practico.tope, r.practico.calificacion !== null ? `${r.practico.calificacion}/10` : 'sin capturar') +
         filaRubro('Tareas', r.tareas.pts, r.tareas.tope, textoTareas(r.tareas)) +
-        filaRubro('Participación', r.participacion.pts, r.participacion.tope, `${r.participacion.cantidad} de ${r.participacion.meta} participaciones`) +
+        filaRubro('Participación', r.participacion.pts, r.participacion.tope, r.participacion.texto) +
         filaRubro('Asistencia', r.asistencia.pts, r.asistencia.tope, `${r.asistencia.presentes}/${r.asistencia.total} clases`) +
         filaRubro('Uniformes', r.uniformes.pts, r.uniformes.tope, `${r.uniformes.faltas} falta(s)`);
     } else {
       filasDetalle =
         filaRubro('Examen', r.examen.pts, r.examen.tope, r.examen.calificacion !== null ? `${r.examen.calificacion}/10` : 'sin capturar') +
         filaRubro('Tareas', r.tareas.pts, r.tareas.tope, textoTareas(r.tareas)) +
-        filaRubro('Participación', r.participacion.pts, r.participacion.tope, `${r.participacion.cantidad} de ${r.participacion.meta} participaciones`) +
+        filaRubro('Participación', r.participacion.pts, r.participacion.tope, r.participacion.texto) +
         filaRubro('Asistencia', r.asistencia.pts, r.asistencia.tope, `${r.asistencia.presentes}/${r.asistencia.total} clases`) +
         filaRubro('Uniformes', r.uniformes.pts, r.uniformes.tope, `${r.uniformes.faltas} falta(s)`);
     }
@@ -230,7 +232,21 @@ function renderParciales() {
       </div>`;
   });
 
-  cont.innerHTML = html;
+  cont.innerHTML = renderRetroalimentacion() + html;
+}
+
+// Comentarios del docente en cada entrega del proyecto (solo los ve el alumno
+// con su nombre y PIN).
+function renderRetroalimentacion() {
+  const nombres = { entrega1: 'Entrega 1', entrega2: 'Entrega 2', entregaFinal: 'Entrega final' };
+  const items = Object.keys(nombres).map(k => {
+    const d = (datosCache.proyecto || {})[k];
+    if (!d || !d.comentario) return '';
+    const calif = d.calificacion !== undefined && d.calificacion !== null ? ` · <strong>${d.calificacion}/10</strong>` : '';
+    return `<div class="retro-item"><p class="retro-titulo">${nombres[k]}${calif}</p><p class="retro-texto">${esc(d.comentario).replace(/\n/g, '<br>')}</p></div>`;
+  }).join('');
+  if (!items) return '';
+  return `<div class="res-card retro-card" id="retroalimentacion"><h4>Retroalimentación de tu proyecto</h4>${items}</div>`;
 }
 
 function renderResumen() {

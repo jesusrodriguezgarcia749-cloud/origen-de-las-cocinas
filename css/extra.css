@@ -264,3 +264,9 @@ html[data-theme="dark"] .sources h2{color:#FAF7F0 !important;}
 html,body{overflow-x:clip;}
 .cal-item.t-practica{border-left-color:var(--charcoal-soft);}
 .t-practica .cal-tipo{background:var(--charcoal-soft); color:#fff;}
+
+/* Retroalimentación del proyecto en Mi progreso */
+.retro-card{border-top:5px solid var(--sage);}
+.retro-item{background:var(--parchment); border-radius:10px; padding:10px 14px; margin-top:10px;}
+.retro-titulo{margin:0 0 4px; font-weight:700; font-size:.9rem; color:var(--ink);}
+.retro-texto{margin:0; font-size:.92rem; line-height:1.5; color:var(--ink);}

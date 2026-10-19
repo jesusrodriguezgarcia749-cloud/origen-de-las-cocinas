@@ -60,11 +60,30 @@
 
 <main class="wrap actividades-main">
 
-  <section id="act-selector">
+  <section id="act-login">
     <p class="eyebrow">Zona de estudio</p>
     <h1>Actividades de repaso</h1>
-    <p class="field-hint">Practica libremente. Esto <strong>no tiene valor</strong> en tu calificación oficial — es solo para prepararte.</p>
+    <p class="act-intro">Desde el Parcial 2, las actividades de repaso valen <strong>15 de los 25 puntos de participación</strong> (los otros 10 son tu participación en clase). Un tema cuenta cuando lo terminas <strong>sin errores</strong>: las preguntas que falles vuelven a aparecer hasta que te salgan bien.</p>
+    <div class="act-login-card">
+      <form id="act-form-login">
+        <label for="act-login-grupo" class="field-label">Grupo</label>
+        <select id="act-login-grupo"><option value="">— Elige tu grupo —</option></select>
+        <label for="act-login-nombre" class="field-label">Tu nombre completo</label>
+        <input id="act-login-nombre" type="text" placeholder="Como te registró tu docente" required autocomplete="name">
+        <label for="act-login-pin" class="field-label">PIN</label>
+        <input id="act-login-pin" type="text" inputmode="numeric" placeholder="4 dígitos" required>
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top:14px;">Entrar</button>
+        <p id="act-login-error" class="login-error" hidden></p>
+      </form>
+    </div>
+  </section>
 
+  <section id="act-selector" hidden>
+    <div class="act-quien-barra"><span>Hola, <b id="act-quien"></b></span><button id="act-salir" type="button" class="btn-ghost-dark btn-small">Salir</button></div>
+    <p class="eyebrow">Zona de estudio</p>
+    <h1>Actividades de repaso</h1>
+    <p class="field-hint">Valen <strong>15 de los 25 puntos de participación</strong>. Cada tema se termina cuando todas sus preguntas te salen bien. Los temas marcados como «repaso libre» no suman puntos, pero te preparan para el examen.</p>
+    <div id="act-resumen-puntos" class="act-resumen-puntos"></div>
     <div id="act-lista-temas" class="act-temas-grid"><!-- se rellena por JS --></div>
   </section>
 
@@ -73,9 +92,9 @@
       <button id="btn-salir-act" class="btn-ghost-dark btn-small">← Elegir otro tema</button>
       <span id="act-avance"></span>
     </div>
+    <div class="act-progreso-tema"><span id="act-progreso-tema"></span></div>
     <div id="act-reactivo-root"></div>
     <div class="act-nav-botones">
-      <button id="btn-act-anterior" class="btn btn-ghost-dark" disabled>← Anterior</button>
       <button id="btn-act-siguiente" class="btn btn-primary">Siguiente →</button>
     </div>
   </section>
@@ -96,6 +115,6 @@
 <button id="bg-music-toggle" class="music-toggle" aria-label="Activar música de fondo" aria-pressed="false">🎵</button>
 
 <script src="js/app.js"></script>
-<script src="js/actividades.js"></script>
+<script type="module" src="js/actividades.js"></script>
 </body>
 </html>

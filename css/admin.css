@@ -505,3 +505,6 @@
 .en-vivo.sin-conexion::before{animation:none;}
 @keyframes latido{0%,100%{opacity:1;} 50%{opacity:.25;}}
 @media (prefers-reduced-motion: reduce){ .en-vivo::before{animation:none;} }
+
+/* Comentarios del proyecto para el alumno */
+.proy-comentario{flex-basis:100%; width:100%; min-height:54px; padding:8px 10px; border-radius:8px; border:1.5px solid var(--line); font:inherit; font-size:.88rem; resize:vertical; background:#fff;}

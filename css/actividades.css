@@ -205,3 +205,24 @@
 .res-ok{background:var(--sage); color:#fff;}
 .res-riesgo{background:var(--saffron); color:#fff;}
 .res-bajo{background:var(--paprika); color:#fff;}
+
+/* ===== Actividades con valor (desde el Parcial 2) ===== */
+.act-intro{max-width:62ch; color:var(--ink-soft); margin:0 0 18px;}
+.act-quien-barra{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:14px; font-size:.92rem; color:var(--ink-soft);}
+.act-resumen-puntos{display:grid; gap:8px; margin:14px 0 20px;}
+.act-resumen-bloque{background:var(--cream); border-left:5px solid var(--sage); border-radius:10px; padding:10px 14px; font-size:.9rem; box-shadow:var(--shadow-card);}
+.act-tema-card{position:relative; text-align:left;}
+.act-badge{align-self:flex-start; display:inline-block; margin-top:8px; font-size:.72rem; font-weight:700; letter-spacing:.03em; padding:3px 9px; border-radius:999px; background:var(--parchment); color:var(--ink-soft); border:1px solid var(--line);}
+.act-badge-valor{background:var(--saffron); color:#1b1b1b; border-color:transparent;}
+.act-tema-avance{display:block; margin-top:8px; font-size:.78rem; color:var(--ink-soft);}
+.act-mini-barra{display:block; height:5px; background:var(--line); border-radius:4px; overflow:hidden; margin-bottom:4px;}
+.act-mini-barra span{display:block; height:100%; background:var(--sage);}
+.act-tema-card.act-terminado{background:#E3F1E8 !important; border-left-color:#4E9A70 !important;}
+.act-tema-card.act-terminado .act-tema-num{color:#2F6B4B; font-weight:700;}
+html[data-theme="dark"] .act-tema-card.act-terminado{background:#1F3A2C !important; border-left-color:#5FB386 !important;}
+html[data-theme="dark"] .act-tema-card.act-terminado .act-tema-num{color:#9FD8B7;}
+.act-progreso-tema{height:6px; background:var(--line); border-radius:6px; overflow:hidden; margin:-4px 0 14px;}
+.act-progreso-tema span{display:block; height:100%; width:0; background:var(--sage); transition:width .4s;}
+.act-celebra{animation:act-pop .5s ease;}
+@keyframes act-pop{0%{transform:scale(.96);opacity:.4}100%{transform:none;opacity:1}}
+#btn-act-siguiente:disabled{opacity:.45; cursor:not-allowed;}
