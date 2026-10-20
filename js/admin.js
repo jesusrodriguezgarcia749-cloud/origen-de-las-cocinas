@@ -745,7 +745,7 @@ function renderExamenesAbiertos() {
 
 async function guardarExamenesAbiertos() {
   if (!grupoActivo) { alert('Elige un grupo primero.'); return; }
-  try { await setDoc(doc(db, 'grupos', grupoActivo, 'config', 'examenes'), { abiertos: examenesAbiertos, actualizado: serverTimestamp() }); }
+  try { await setDoc(doc(db, 'grupos', grupoActivo, 'config', 'examenes'), { abiertos: examenesAbiertos, actualizado: serverTimestamp() }, { merge: true }); }
   catch (err) { marcarResultado('btn-guardar-examenes-abiertos', 'abiertos-msg', false, '', 'No se pudo guardar: ' + (err.message || err)); return; }
   marcarResultado('btn-guardar-examenes-abiertos', 'abiertos-msg', true, '✓ Guardado.', '');
 }
@@ -803,6 +803,16 @@ function filaIntentoHTML(parcial, { alumno, est, examenDoc }) {
     aciertos = `${Object.keys(est.respuestas || {}).length}/${(est.ids || []).length}`;
     salidas = String(est.salidas || 0);
     acciones = `<button type="button" class="mz-btn" data-extra="${alumno.id}">+ min</button>`;
+  }
+
+  // Permiso individual: sirve cuando el examen está cerrado para el grupo
+  // (alumno que faltó o que se le reabrió). Si el examen está abierto para
+  // todos, no hace falta.
+  if (!examenesAbiertos.includes(parcial)) {
+    const tiene = permisoIndividual(parcial).includes(alumno.id);
+    acciones += tiene
+      ? `<button type="button" class="mz-btn mz-btn-fuerte" data-permiso-quitar="${alumno.id}" title="Solo este alumno puede entrar a este examen, aunque esté cerrado para el grupo">Habilitado ✓</button>`
+      : `<button type="button" class="mz-btn" data-permiso-dar="${alumno.id}" title="Abre este examen solo para este alumno">Habilitar</button>`;
   }
 
   // El Diagnóstico no tiene calificación oficial que ajustar.
@@ -935,6 +945,7 @@ async function cargarIntentos() {
     </div>
     <p class="field-hint" style="margin-top:10px;">Desliza la tabla de lado para ver todas las columnas. El reloj ⏱ marca que se entregó por tiempo agotado, y el lápiz ✎ que la calificación se ajustó a mano.</p>`;
 
+  await cargarPermisos();
   const filas = alumnosCache.map(alumno => ({ alumno, est: null, examenDoc: null }));
   const btnGrupo = document.getElementById('btn-tiempo-grupo');
   if (btnGrupo) btnGrupo.addEventListener('click', () => darTiempoAlGrupo(parcial, filas));
@@ -948,6 +959,8 @@ async function cargarIntentos() {
     tbody.innerHTML = filas.map(f => filaIntentoHTML(parcial, f)).join('');
     tbody.querySelectorAll('[data-reabrir]').forEach(b => b.addEventListener('click', () => reabrirExamen(b.dataset.reabrir, parcial)));
     tbody.querySelectorAll('[data-extra]').forEach(b => b.addEventListener('click', () => darTiempoExtra(b.dataset.extra, parcial)));
+    tbody.querySelectorAll('[data-permiso-dar]').forEach(b => b.addEventListener('click', async () => { await cambiarPermiso(parcial, b.dataset.permisoDar, true); pintar(); }));
+    tbody.querySelectorAll('[data-permiso-quitar]').forEach(b => b.addEventListener('click', async () => { await cambiarPermiso(parcial, b.dataset.permisoQuitar, false); pintar(); }));
     tbody.querySelectorAll('[data-reabrir-entregado]').forEach(b => b.addEventListener('click', () => reabrirEntregado(b.dataset.reabrirEntregado, parcial)));
     tbody.querySelectorAll('[data-descargar-examen]').forEach(b => b.addEventListener('click', () => descargarExamenAlumno(b.dataset.descargarExamen, parcial)));
     tbody.querySelectorAll('[data-ajustar-examen]').forEach(b => b.addEventListener('click', () => ajustarCalificacionExamen(b.dataset.ajustarExamen, parcial)));
@@ -1052,8 +1065,41 @@ async function reabrirExamen(alumnoId, parcial) {
   const est = snap.data();
   const seg = est.segundosAlPausar ?? ((est.minutos || 60) * 60);
   await setDoc(ref, { ...est, estado: 'en_curso', segundosAlPausar: seg, minutosExtra: 0, reanudadoEn: Date.now(), reabiertoEn: new Date().toISOString(), actualizado: serverTimestamp() });
+  await asegurarAcceso(parcial, [alumnoId]);
   const m = Math.floor(seg / 60), s = seg % 60;
   alert(`Examen reabierto. Continuará con ${m}:${String(s).padStart(2, '0')}.`);
+}
+
+// ---------- Permiso individual de examen ----------
+let permisosIndividuales = {};
+function permisoIndividual(parcial) { return permisosIndividuales[parcial] || []; }
+
+async function cargarPermisos() {
+  try {
+    const snap = await getDoc(doc(db, 'grupos', grupoActivo, 'config', 'examenes'));
+    const d = snap.exists() ? snap.data() : {};
+    permisosIndividuales = d.individual || {};
+    examenesAbiertos = Array.isArray(d.abiertos) ? d.abiertos : [];
+  } catch { /* se queda lo que había */ }
+}
+
+async function cambiarPermiso(parcial, alumnoId, dar) {
+  await cargarPermisos();
+  const lista = new Set(permisoIndividual(parcial));
+  if (dar) lista.add(alumnoId); else lista.delete(alumnoId);
+  permisosIndividuales[parcial] = [...lista];
+  await setDoc(doc(db, 'grupos', grupoActivo, 'config', 'examenes'), { individual: { [parcial]: [...lista] }, actualizado: serverTimestamp() }, { merge: true });
+}
+
+// Si el examen está cerrado para el grupo, reabrirle a alguien también le
+// da permiso individual; si no, no podría verlo.
+async function asegurarAcceso(parcial, alumnoIds) {
+  await cargarPermisos();
+  if (examenesAbiertos.includes(parcial)) return;
+  const lista = new Set(permisoIndividual(parcial));
+  alumnoIds.forEach(id => lista.add(id));
+  permisosIndividuales[parcial] = [...lista];
+  await setDoc(doc(db, 'grupos', grupoActivo, 'config', 'examenes'), { individual: { [parcial]: [...lista] }, actualizado: serverTimestamp() }, { merge: true });
 }
 
 // Intento que vuelve a quedar abierto con sus respuestas y N minutos por
@@ -1080,6 +1126,7 @@ async function reabrirEntregado(alumnoId, parcial) {
   const n = pedirMinutos(`${alumno?.nombre || 'Este alumno'} ya entregó (${est.aciertos}/${est.total}${est.automatico ? ', por tiempo agotado' : ''}).\n\nSe reabre con sus respuestas guardadas. ¿Cuántos minutos le das?${aviso}`);
   if (!n) return;
   await setDoc(ref, intentoReabierto(est, n));
+  await asegurarAcceso(parcial, [alumnoId]);
   alert(`Examen reabierto con ${n} minutos. Que el alumno recargue la página y entre de nuevo a Examen.`);
 }
 
@@ -1093,6 +1140,7 @@ async function darTiempoAlGrupo(parcial, filas) {
   const n = pedirMinutos(`Se reabrirá el ${ETIQUETAS_EXAMEN[parcial]} a ${pendientes.length} alumno(s) que no terminaron:\n\n${pendientes.map(f => '• ' + f.alumno.nombre).join('\n')}\n\nConservan sus respuestas.${sinAbrir ? `\n(${sinAbrir} que no lo han abierto tendrán el tiempo completo al iniciarlo.)` : ''}\n\n¿Cuántos minutos les das a partir de ahora?`);
   if (!n) return;
   const ahora = Date.now();
+  await asegurarAcceso(parcial, pendientes.map(f => f.alumno.id));
   await Promise.all(pendientes.map(f => setDoc(doc(db, 'grupos', grupoActivo, 'alumnos', f.alumno.id, 'intentos', parcial), { ...intentoReabierto(f.est, n), reanudadoEn: ahora })));
   alert(`Listo: ${pendientes.length} alumno(s) con ${n} minutos. Que recarguen la página y entren de nuevo a Examen.\n\nEl tiempo empieza a correr desde ahora; si lo harán mañana en clase, usa este botón mañana al iniciar.`);
 }
@@ -1111,6 +1159,7 @@ async function darTiempoExtra(alumnoId, parcial) {
   const n = parseInt(min, 10);
   if (isNaN(n) || n <= 0) return;
   await setDoc(ref, { ...est, minutosExtra: (est.minutosExtra || 0) + n, actualizado: serverTimestamp() });
+  await asegurarAcceso(parcial, [alumnoId]);
   alert(`Se agregaron ${n} minutos.`);
 }
 

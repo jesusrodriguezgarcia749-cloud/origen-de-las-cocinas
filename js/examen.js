@@ -142,7 +142,14 @@ async function entrarASala() {
   let abiertos = [];
   try {
     const cfg = await getDoc(doc(db, 'grupos', sesion.grupoId, 'config', 'examenes'));
-    abiertos = cfg.exists() && Array.isArray(cfg.data().abiertos) ? cfg.data().abiertos : [];
+    const datos = cfg.exists() ? cfg.data() : {};
+    abiertos = Array.isArray(datos.abiertos) ? [...datos.abiertos] : [];
+    // Permiso individual: el docente puede abrirle un examen cerrado a un
+    // alumno en particular (faltó, estaba justificado, se le reabrió).
+    const individual = datos.individual || {};
+    PARCIALES.forEach(p => {
+      if (!abiertos.includes(p) && Array.isArray(individual[p]) && individual[p].includes(sesion.alumnoId)) abiertos.push(p);
+    });
   } catch { abiertos = []; }
 
   abiertos = abiertos.filter(p => PARCIALES.includes(p));
