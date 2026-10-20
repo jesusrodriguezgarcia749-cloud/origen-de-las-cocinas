@@ -916,8 +916,8 @@ async function cargarIntentos() {
   // Estructura fija de la tabla; solo el cuerpo se repinta.
   cont.innerHTML = `
     <span class="en-vivo" id="intentos-en-vivo">En vivo — se actualiza solo</span>
-    <div style="margin:10px 0;"><button type="button" class="btn btn-secondary" id="btn-tiempo-grupo">Dar más tiempo a quienes no terminaron</button>
-    <p class="field-hint" style="margin-top:6px;">Reabre, con los minutos que indiques, a todos los que no terminaron: los que se quedaron sin tiempo (⏱), los bloqueados y los que siguen en curso. Conservan sus respuestas. Quienes entregaron por su cuenta no se tocan.</p></div>
+    <div style="margin:10px 0;"><button type="button" class="btn btn-secondary" id="btn-tiempo-grupo">Dar más tiempo a todos los que no terminaron</button>
+    <p class="field-hint" style="margin-top:6px;">Reabre, con los minutos que indiques, a todos los que no terminaron: todos los que lo abrieron y no contestaron todas las preguntas: los que se quedaron sin tiempo (⏱), los bloqueados, los que siguen en curso y los que lo entregaron incompleto o en blanco. Conservan sus respuestas. Quien contestó todo no se toca.</p></div>
     <div class="mz-scroll">
       <table class="mz-tabla">
         <thead>
@@ -1084,9 +1084,13 @@ async function reabrirEntregado(alumnoId, parcial) {
 }
 
 async function darTiempoAlGrupo(parcial, filas) {
-  const pendientes = filas.filter(f => f.est && (f.est.estado !== 'entregado' || f.est.automatico));
-  if (pendientes.length === 0) { alert('Nadie tiene el examen pendiente: todos los que iniciaron lo entregaron por su cuenta.'); return; }
-  const n = pedirMinutos(`Se reabrirá el ${ETIQUETAS_EXAMEN[parcial]} a ${pendientes.length} alumno(s) que no terminaron:\n\n${pendientes.map(f => '• ' + f.alumno.nombre).join('\n')}\n\nConservan sus respuestas. ¿Cuántos minutos les das a partir de ahora?`);
+  // Cuenta como pendiente todo el que lo abrió y no contestó TODO: en curso,
+  // bloqueado, entregado por tiempo, o entregado a medias (incluso en blanco).
+  const contestadas = est => Object.keys(est.respuestas || {}).length;
+  const pendientes = filas.filter(f => f.est && (f.est.estado !== 'entregado' || f.est.automatico || contestadas(f.est) < (f.est.ids || []).length));
+  const sinAbrir = filas.filter(f => !f.est).length;
+  if (pendientes.length === 0) { alert('Nadie tiene el examen pendiente: todos los que lo abrieron contestaron todas las preguntas.' + (sinAbrir ? `\n\n${sinAbrir} alumno(s) no lo han abierto: al iniciarlo tendrán el tiempo completo.` : '')); return; }
+  const n = pedirMinutos(`Se reabrirá el ${ETIQUETAS_EXAMEN[parcial]} a ${pendientes.length} alumno(s) que no terminaron:\n\n${pendientes.map(f => '• ' + f.alumno.nombre).join('\n')}\n\nConservan sus respuestas.${sinAbrir ? `\n(${sinAbrir} que no lo han abierto tendrán el tiempo completo al iniciarlo.)` : ''}\n\n¿Cuántos minutos les das a partir de ahora?`);
   if (!n) return;
   const ahora = Date.now();
   await Promise.all(pendientes.map(f => setDoc(doc(db, 'grupos', grupoActivo, 'alumnos', f.alumno.id, 'intentos', parcial), { ...intentoReabierto(f.est, n), reanudadoEn: ahora })));
