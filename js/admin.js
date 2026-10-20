@@ -792,7 +792,7 @@ function filaIntentoHTML(parcial, { alumno, est, examenDoc }) {
     calif = `${Number(est.calificacion ?? 0).toFixed(1)} / 10`;
     aciertos = `${est.aciertos}/${est.total}${est.automatico ? ' ⏱' : ''}`;
     salidas = est.salidas ? String(est.salidas) : '0';
-    acciones = `<button type="button" class="mz-btn" data-descargar-examen="${alumno.id}">PDF</button>`;
+    acciones = `<button type="button" class="mz-btn" data-descargar-examen="${alumno.id}">PDF</button><button type="button" class="mz-btn" data-reabrir-entregado="${alumno.id}" title="Vuelve a abrir el examen con sus respuestas guardadas y el tiempo que tú indiques">Reabrir</button>`;
   } else if (clave === 'bloqueado') {
     aciertos = `${Object.keys(est.respuestas || {}).length}/${(est.ids || []).length}`;
     salidas = String(est.salidas || 1);
@@ -916,6 +916,8 @@ async function cargarIntentos() {
   // Estructura fija de la tabla; solo el cuerpo se repinta.
   cont.innerHTML = `
     <span class="en-vivo" id="intentos-en-vivo">En vivo — se actualiza solo</span>
+    <div style="margin:10px 0;"><button type="button" class="btn btn-secondary" id="btn-tiempo-grupo">Dar más tiempo a quienes no terminaron</button>
+    <p class="field-hint" style="margin-top:6px;">Reabre, con los minutos que indiques, a todos los que no terminaron: los que se quedaron sin tiempo (⏱), los bloqueados y los que siguen en curso. Conservan sus respuestas. Quienes entregaron por su cuenta no se tocan.</p></div>
     <div class="mz-scroll">
       <table class="mz-tabla">
         <thead>
@@ -934,6 +936,8 @@ async function cargarIntentos() {
     <p class="field-hint" style="margin-top:10px;">Desliza la tabla de lado para ver todas las columnas. El reloj ⏱ marca que se entregó por tiempo agotado, y el lápiz ✎ que la calificación se ajustó a mano.</p>`;
 
   const filas = alumnosCache.map(alumno => ({ alumno, est: null, examenDoc: null }));
+  const btnGrupo = document.getElementById('btn-tiempo-grupo');
+  if (btnGrupo) btnGrupo.addEventListener('click', () => darTiempoAlGrupo(parcial, filas));
   const porId = new Map(filas.map(f => [f.alumno.id, f]));
   let pendientesIniciales = filas.length * 2;
 
@@ -944,6 +948,7 @@ async function cargarIntentos() {
     tbody.innerHTML = filas.map(f => filaIntentoHTML(parcial, f)).join('');
     tbody.querySelectorAll('[data-reabrir]').forEach(b => b.addEventListener('click', () => reabrirExamen(b.dataset.reabrir, parcial)));
     tbody.querySelectorAll('[data-extra]').forEach(b => b.addEventListener('click', () => darTiempoExtra(b.dataset.extra, parcial)));
+    tbody.querySelectorAll('[data-reabrir-entregado]').forEach(b => b.addEventListener('click', () => reabrirEntregado(b.dataset.reabrirEntregado, parcial)));
     tbody.querySelectorAll('[data-descargar-examen]').forEach(b => b.addEventListener('click', () => descargarExamenAlumno(b.dataset.descargarExamen, parcial)));
     tbody.querySelectorAll('[data-ajustar-examen]').forEach(b => b.addEventListener('click', () => ajustarCalificacionExamen(b.dataset.ajustarExamen, parcial)));
     if (contConcentrado && bancoDiag) pintarConcentradoDiag(contConcentrado, filas, bancoDiag);
@@ -1049,6 +1054,43 @@ async function reabrirExamen(alumnoId, parcial) {
   await setDoc(ref, { ...est, estado: 'en_curso', segundosAlPausar: seg, minutosExtra: 0, reanudadoEn: Date.now(), reabiertoEn: new Date().toISOString(), actualizado: serverTimestamp() });
   const m = Math.floor(seg / 60), s = seg % 60;
   alert(`Examen reabierto. Continuará con ${m}:${String(s).padStart(2, '0')}.`);
+}
+
+// Intento que vuelve a quedar abierto con sus respuestas y N minutos por
+// delante. Se quitan los datos de la entrega anterior; al volver a entregar,
+// el examen se califica de nuevo con todas sus respuestas.
+function intentoReabierto(est, minutos) {
+  const { aciertos, total, calificacion, detalle, entregadoEn, automatico, ...resto } = est;
+  return { ...resto, estado: 'en_curso', segundosAlPausar: minutos * 60, minutosExtra: 0,
+    reanudadoEn: Date.now(), reabiertoEn: new Date().toISOString(), actualizado: serverTimestamp() };
+}
+
+function pedirMinutos(texto) {
+  const n = parseInt(prompt(texto, '20'), 10);
+  return isNaN(n) || n <= 0 ? null : n;
+}
+
+async function reabrirEntregado(alumnoId, parcial) {
+  const alumno = alumnosCache.find(a => a.id === alumnoId);
+  const ref = doc(db, 'grupos', grupoActivo, 'alumnos', alumnoId, 'intentos', parcial);
+  const snap = await getDoc(ref);
+  if (!snap.exists()) return;
+  const est = snap.data();
+  const aviso = parcial === 'diag' ? '' : '\n\nOjo: es un examen con valor. Al volver a entregar, su calificación se reemplaza por la nueva.';
+  const n = pedirMinutos(`${alumno?.nombre || 'Este alumno'} ya entregó (${est.aciertos}/${est.total}${est.automatico ? ', por tiempo agotado' : ''}).\n\nSe reabre con sus respuestas guardadas. ¿Cuántos minutos le das?${aviso}`);
+  if (!n) return;
+  await setDoc(ref, intentoReabierto(est, n));
+  alert(`Examen reabierto con ${n} minutos. Que el alumno recargue la página y entre de nuevo a Examen.`);
+}
+
+async function darTiempoAlGrupo(parcial, filas) {
+  const pendientes = filas.filter(f => f.est && (f.est.estado !== 'entregado' || f.est.automatico));
+  if (pendientes.length === 0) { alert('Nadie tiene el examen pendiente: todos los que iniciaron lo entregaron por su cuenta.'); return; }
+  const n = pedirMinutos(`Se reabrirá el ${ETIQUETAS_EXAMEN[parcial]} a ${pendientes.length} alumno(s) que no terminaron:\n\n${pendientes.map(f => '• ' + f.alumno.nombre).join('\n')}\n\nConservan sus respuestas. ¿Cuántos minutos les das a partir de ahora?`);
+  if (!n) return;
+  const ahora = Date.now();
+  await Promise.all(pendientes.map(f => setDoc(doc(db, 'grupos', grupoActivo, 'alumnos', f.alumno.id, 'intentos', parcial), { ...intentoReabierto(f.est, n), reanudadoEn: ahora })));
+  alert(`Listo: ${pendientes.length} alumno(s) con ${n} minutos. Que recarguen la página y entren de nuevo a Examen.\n\nEl tiempo empieza a correr desde ahora; si lo harán mañana en clase, usa este botón mañana al iniciar.`);
 }
 
 async function darTiempoExtra(alumnoId, parcial) {
