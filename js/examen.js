@@ -72,6 +72,27 @@ function barajarConSemilla(arr, semilla) {
   return copia;
 }
 
+// Elige n reactivos del banco. Si el banco pide selección «por_subtema»,
+// a cada subtema le toca una parte proporcional a cuántas preguntas tiene
+// en el banco (reparto por mayores residuos). Así cada alumno recibe un
+// examen distinto, pero todos con el mismo peso de cada subtema.
+function elegirReactivos(banco, n, semilla) {
+  const todos = banco.reactivos.map(r => r.id);
+  if (banco.config?.seleccion !== 'por_subtema' || n >= todos.length) return barajarConSemilla(todos, semilla).slice(0, n);
+  const grupos = new Map();
+  banco.reactivos.forEach(r => { const k = r.subtema || '—'; if (!grupos.has(k)) grupos.set(k, []); grupos.get(k).push(r.id); });
+  const claves = [...grupos.keys()];
+  const total = todos.length;
+  const cuotas = claves.map(k => { const exacta = grupos.get(k).length * n / total; return { k, base: Math.floor(exacta), resto: exacta - Math.floor(exacta) }; });
+  let faltan = n - cuotas.reduce((s, c) => s + c.base, 0);
+  // Desempate de residuos iguales con la semilla, para no favorecer siempre al mismo subtema.
+  const orden = barajarConSemilla(cuotas, semilla + 17).sort((a, b) => b.resto - a.resto);
+  for (const c of orden) { if (faltan <= 0) break; c.base++; faltan--; }
+  const elegidos = [];
+  cuotas.forEach((c, i) => elegidos.push(...barajarConSemilla(grupos.get(c.k), (semilla + (i + 1) * 7919) % 233280 || 1).slice(0, c.base)));
+  return barajarConSemilla(elegidos, semilla);
+}
+
 function semillaDe(texto) {
   let h = 0;
   for (let i = 0; i < texto.length; i++) h = (h * 31 + texto.charCodeAt(i)) % 233280;
@@ -266,7 +287,7 @@ async function iniciarExamen(parcial) {
   } else {
     const semilla = semillaDe(sesion.alumnoId + '-' + parcial);
     const n = banco.config?.preguntasPorExamen || banco.reactivos.length;
-    const ids = barajarConSemilla(banco.reactivos.map(r => r.id), semilla).slice(0, n);
+    const ids = elegirReactivos(banco, n, semilla);
 
     intento = {
       parcial, ids, semilla, respuestas: {},
