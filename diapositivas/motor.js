@@ -76,6 +76,7 @@
   .d-pausa .caja{background:rgba(255,255,255,.12);padding:.9em 1.1em;line-height:1.45}
   /* Imagen y video */
   .d-imagen figure{margin:0}
+  .d-imagen img[data-ruta$=".svg"]{object-fit:contain;height:540px;max-height:540px;box-shadow:none}
   .d-imagen figcaption,.d-video .pie{font-size:.65em;color:var(--gris);margin-top:.6em}
   .vacio{border:3px dashed var(--gris);color:var(--gris);padding:2em 1em;text-align:center;font-size:.7em;line-height:1.5}
   .marco-video{position:relative;width:100%;max-width:920px;margin:0 auto;aspect-ratio:16/9;background:#000}

@@ -2,8 +2,9 @@
  "parcial": "p2",
  "titulo": "Examen Parcial 2 — Cocinas en el mundo y Necesidades e influencias (hasta 4.4)",
  "config": {
-  "preguntasPorExamen": 42,
-  "minutos": 60
+  "preguntasPorExamen": 40,
+  "minutos": 60,
+  "seleccion": "por_subtema"
  },
  "reactivos": [
   {
@@ -623,6 +624,681 @@
    ],
    "correcta": 0,
    "explicacion": "Clima, comercio o colonización, y religión explican la diversidad del continente."
+  },
+  {
+   "id": "p2-096",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "Cuando el maíz llegó a Italia y España y se volvió la base de la dieta de los pobres, apareció la pelagra. ¿Qué faltó?",
+   "opciones": [
+    "La técnica de cocerlo con cal o ceniza, que libera la niacina",
+    "Acompañarlo con chile, rico en vitamina C",
+    "Molerlo en metate en lugar de molino",
+    "Sembrarlo junto con frijol y calabaza en milpa"
+   ],
+   "correcta": 0,
+   "explicacion": "La nixtamalización libera la niacina; sin ella, una dieta de maíz provoca pelagra.",
+   "gemela": "oc-207"
+  },
+  {
+   "id": "p2-097",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "En el sistema de las «tres hermanas», ¿qué planta fertiliza el suelo para las demás?",
+   "opciones": [
+    "El chile, porque repele plagas",
+    "La calabaza, porque sus hojas conservan la humedad",
+    "El frijol, porque fija nitrógeno",
+    "El maíz, porque sus raíces son profundas"
+   ],
+   "correcta": 2,
+   "explicacion": "El maíz sostiene, el frijol fija nitrógeno y la calabaza cubre el suelo.",
+   "gemela": "oc-208"
+  },
+  {
+   "id": "p2-098",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "Si quisieras estudiar la comida de los mexicas desde la voz de informantes nahuas, ¿qué obra consultarías?",
+   "opciones": [
+    "Las cartas de relación de Hernán Cortés",
+    "La Relación de Diego de Landa",
+    "El Códice Florentino de Sahagún",
+    "El Popol Vuh de los mayas k'iche'"
+   ],
+   "correcta": 2,
+   "explicacion": "Sahagún trabajó con informantes nahuas; Landa escribió sobre Yucatán y el Popol Vuh es maya k'iche'.",
+   "gemela": "oc-209"
+  },
+  {
+   "id": "p2-099",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "Un platillo maya prehispánico cocido en pib podía llevar venado o pavo de monte, pero no…",
+   "opciones": [
+    "cerdo, que llegó con los españoles",
+    "chile, que llegó desde Asia",
+    "achiote, que llegó con los españoles",
+    "maíz, que llegó desde los Andes"
+   ],
+   "correcta": 0,
+   "explicacion": "El cerdo llegó con los españoles; el pib y el achiote son mayas.",
+   "gemela": "oc-210"
+  },
+  {
+   "id": "p2-100",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "El queso relleno combina un ingrediente europeo con un relleno mestizo. ¿De dónde venía el queso?",
+   "opciones": [
+    "De Suiza, tipo gruyer, por los migrantes",
+    "De España, tipo manchego, por los conventos",
+    "De Holanda, tipo Edam, por el comercio del puerto",
+    "De Francia, tipo camembert, por el Porfiriato"
+   ],
+   "correcta": 2,
+   "explicacion": "Según la tradición, el queso tipo Edam llegaba por el comercio de palo de tinte.",
+   "gemela": "oc-211"
+  },
+  {
+   "id": "p2-101",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "El saqueo de «Lorencillo» en 1685 llevó a la Corona española a…",
+   "opciones": [
+    "fundar el puerto de Veracruz",
+    "trasladar el puerto a Mérida",
+    "amurallar Campeche con ocho baluartes",
+    "prohibir el comercio de palo de tinte"
+   ],
+   "correcta": 2,
+   "explicacion": "La muralla hexagonal con ocho baluartes respondió a los ataques piratas.",
+   "gemela": "oc-212"
+  },
+  {
+   "id": "p2-102",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "Un almacén inca (qollqa) guardaba papa para el ejército durante años. ¿En qué forma?",
+   "opciones": [
+    "Como fariña, rallada y tostada",
+    "Como chicha, fermentada",
+    "Como charqui, salada y ahumada",
+    "Como chuño, liofilizada de manera natural"
+   ],
+   "correcta": 3,
+   "explicacion": "El chuño es papa liofilizada por heladas y sol; el charqui es carne seca.",
+   "gemela": "oc-213"
+  },
+  {
+   "id": "p2-103",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "El lomo saltado mezcla el wok cantonés con ingredientes peruanos. ¿A qué tradición pertenece?",
+   "opciones": [
+    "A la cocina chifa, de la migración china",
+    "A la cocina nikkei, de la migración japonesa",
+    "A la cocina criolla, de la herencia española",
+    "A la cocina amazónica, de los pueblos originarios"
+   ],
+   "correcta": 0,
+   "explicacion": "Chifa es china; nikkei es japonesa.",
+   "gemela": "oc-214"
+  },
+  {
+   "id": "p2-104",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "En los tacos al pastor conviven Medio Oriente, la Colonia y Mesoamérica. ¿Qué aporta Medio Oriente?",
+   "opciones": [
+    "El cerdo",
+    "La tortilla de maíz",
+    "El achiote del adobo",
+    "El trompo vertical, heredero del shawarma"
+   ],
+   "correcta": 3,
+   "explicacion": "El trompo es libanés; el cerdo, español; el achiote y la tortilla, mesoamericanos.",
+   "gemela": "oc-215"
+  },
+  {
+   "id": "p2-105",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "Las tablillas cuneiformes de Yale, con guisos de cordero y aves, son importantes porque…",
+   "opciones": [
+    "son el primer menú de un restaurante",
+    "son las recetas escritas más antiguas conocidas",
+    "son el primer tratado sobre el té",
+    "documentan la primera cerveza de Egipto"
+   ],
+   "correcta": 1,
+   "explicacion": "Las tablillas mesopotámicas de hacia 1750 a.C. son las recetas más antiguas conocidas.",
+   "gemela": "oc-216"
+  },
+  {
+   "id": "p2-106",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué tienen en común el dashi japonés, el jitomate maduro y los quesos curados?",
+   "opciones": [
+    "Son ricos en umami, el quinto sabor",
+    "Todos son fermentados",
+    "Todos contienen capsaicina",
+    "Todos son ácidos"
+   ],
+   "correcta": 0,
+   "explicacion": "Ikeda identificó el umami (glutamato), presente en el dashi y otros alimentos.",
+   "gemela": "oc-217"
+  },
+  {
+   "id": "p2-107",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "En el narezushi original, ¿qué pasaba con el arroz?",
+   "opciones": [
+    "Servía para fermentar el pescado y después se desechaba",
+    "Se cocía con vinagre y se comía con el pescado crudo",
+    "Se fermentaba para hacer sake",
+    "Se freía en tempura"
+   ],
+   "correcta": 0,
+   "explicacion": "El narezushi conservaba el pescado; el arroz se desechaba. Siglos después nació el nigiri en Edo.",
+   "gemela": "oc-218"
+  },
+  {
+   "id": "p2-108",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "Antes del siglo XVI, el kimchi coreano…",
+   "opciones": [
+    "era una bebida fermentada",
+    "no era rojo, porque el chile americano aún no llegaba",
+    "ya llevaba gochujang",
+    "se preparaba sin sal"
+   ],
+   "correcta": 1,
+   "explicacion": "El chile es americano; llegó a Corea en los siglos XVI-XVII.",
+   "gemela": "oc-219"
+  },
+  {
+   "id": "p2-109",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "El vindaloo es un ejemplo de historia colonial en la mesa porque…",
+   "opciones": [
+    "lo inventó la marina británica",
+    "nació en Goa, colonia portuguesa, a partir de un adobo de vino y ajo",
+    "nació en la corte mogol de Delhi",
+    "lo llevaron a la India los holandeses de la VOC"
+   ],
+   "correcta": 1,
+   "explicacion": "Vindaloo viene de vinha d'alhos, en la Goa portuguesa.",
+   "gemela": "oc-220"
+  },
+  {
+   "id": "p2-110",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "En el Galeón de Manila, ¿qué combinación viajó de México hacia Asia?",
+   "opciones": [
+    "Chile, maíz, cacao y plata",
+    "Mango, canela y palma de coco",
+    "Arroz, clavo y seda",
+    "Trigo, aceite de oliva y vino"
+   ],
+   "correcta": 0,
+   "explicacion": "De México salieron chile, maíz, cacao y plata; de Asia llegaron mango, especias, coco y tuba.",
+   "gemela": "oc-221"
+  },
+  {
+   "id": "p2-111",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "En 1872, el emperador Meiji…",
+   "opciones": [
+    "promovió el consumo de carne como parte de la modernización",
+    "declaró el sushi platillo nacional",
+    "prohibió la carne por influencia budista",
+    "introdujo la tempura portuguesa"
+   ],
+   "correcta": 0,
+   "explicacion": "Meiji promovió la carne en 1872; antes estuvo restringida por influencia budista.",
+   "gemela": "oc-222"
+  },
+  {
+   "id": "p2-112",
+   "subtema": "3.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "Para los griegos, comer pan, beber vino y usar aceite distinguía a los pueblos «civilizados». Esa base es…",
+   "opciones": [
+    "el intercambio colombino",
+    "la herencia de al-Ándalus",
+    "la trilogía mediterránea: trigo, vid y olivo",
+    "la dieta nórdica"
+   ],
+   "correcta": 2,
+   "explicacion": "La trilogía mediterránea es trigo (pan), vid (vino) y olivo (aceite).",
+   "gemela": "oc-223"
+  },
+  {
+   "id": "p2-113",
+   "subtema": "3.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "Un cocinero sevillano del año 1400 podía usar…",
+   "opciones": [
+    "papa y maíz, llegados de los Andes",
+    "arroz, azafrán y berenjena, llegados con al-Ándalus",
+    "jitomate y chile, llegados de América",
+    "cacao y vainilla, llegados de Mesoamérica"
+   ],
+   "correcta": 1,
+   "explicacion": "Antes de 1492 no había ingredientes americanos en Europa; el arroz, el azafrán y la berenjena llegaron con los árabes.",
+   "gemela": "oc-224"
+  },
+  {
+   "id": "p2-114",
+   "subtema": "3.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "El pámpano en escabeche campechano tiene una raíz…",
+   "opciones": [
+    "francesa, del Porfiriato",
+    "árabe, que llegó por España",
+    "holandesa, del comercio colonial",
+    "maya, de la técnica del pib"
+   ],
+   "correcta": 1,
+   "explicacion": "El escabeche viene del sikbaj árabe y llegó a América por España.",
+   "gemela": "oc-225"
+  },
+  {
+   "id": "p2-115",
+   "subtema": "3.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué platillo europeo depende de un ingrediente domesticado en Mesoamérica?",
+   "opciones": [
+    "La paella, por el arroz",
+    "El fish and chips, por el pescado",
+    "El chucrut, por la col",
+    "El gulash, por la paprika hecha de chile"
+   ],
+   "correcta": 3,
+   "explicacion": "La paprika y el pimentón son chile americano.",
+   "gemela": "oc-226"
+  },
+  {
+   "id": "p2-116",
+   "subtema": "3.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "Las cocinas sefardí y asquenazí tienen repertorios muy distintos, pero comparten…",
+   "opciones": [
+    "las mismas leyes del kashrut",
+    "los mismos ingredientes centroeuropeos",
+    "el origen en Polonia",
+    "el uso del cerdo curado"
+   ],
+   "correcta": 0,
+   "explicacion": "Ambas siguen el kashrut; la sefardí es ibérico-mediterránea y la asquenazí centroeuropea.",
+   "gemela": "oc-227"
+  },
+  {
+   "id": "p2-117",
+   "subtema": "3.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "El restaurante Noma, de Copenhague, se asocia con…",
+   "opciones": [
+    "la Ley de Pureza de 1516",
+    "el manifiesto New Nordic de 2004",
+    "la cocina de corte de Versalles",
+    "el terroir de Normandía"
+   ],
+   "correcta": 1,
+   "explicacion": "New Nordic (2004) y Noma revalorizaron los ingredientes nórdicos.",
+   "gemela": "oc-228"
+  },
+  {
+   "id": "p2-118",
+   "subtema": "3.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "Los navegantes austronesios convertían islas pobres en habitables porque llevaban…",
+   "opciones": [
+    "arroz, té y soya",
+    "trigo, vid y olivo",
+    "taro, ñame, árbol del pan, coco y plátano",
+    "papa, maíz y frijol"
+   ],
+   "correcta": 2,
+   "explicacion": "Las plantas de canoa fueron la base de la colonización del Pacífico.",
+   "gemela": "oc-229"
+  },
+  {
+   "id": "p2-119",
+   "subtema": "3.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "Un estudio genético de 2020 encontró en la Polinesia huellas de contacto con Sudamérica hacia el año 1200. ¿Qué cultivo es la mejor prueba de ese intercambio?",
+   "opciones": [
+    "El árbol del pan",
+    "El camote (kumara)",
+    "El coco",
+    "La kava"
+   ],
+   "correcta": 1,
+   "explicacion": "El camote es americano y llegó a la Polinesia antes de 1492.",
+   "gemela": "oc-230"
+  },
+  {
+   "id": "p2-120",
+   "subtema": "3.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "La existencia del horno de tierra en Oceanía, Mesoamérica y los Andes demuestra que…",
+   "opciones": [
+    "la técnica la llevó el Galeón de Manila",
+    "todos lo aprendieron de los romanos",
+    "los mayas navegaron hasta Nueva Zelanda",
+    "pueblos sin contacto llegaron a la misma solución técnica"
+   ],
+   "correcta": 3,
+   "explicacion": "Es un caso de invención independiente.",
+   "gemela": "oc-231"
+  },
+  {
+   "id": "p2-121",
+   "subtema": "3.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "Hoy el árbol del pan forma parte de la cocina de Jamaica porque…",
+   "opciones": [
+    "llegó en el Galeón de Manila",
+    "los mayas lo cultivaban",
+    "es nativo del Caribe",
+    "los británicos lo llevaron desde Tahití para alimentar a personas esclavizadas"
+   ],
+   "correcta": 3,
+   "explicacion": "Bligh lo llevó al Caribe en 1793, tras el motín del Bounty.",
+   "gemela": "oc-232"
+  },
+  {
+   "id": "p2-122",
+   "subtema": "3.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "El bushfood aborigen incluye…",
+   "opciones": [
+    "poi y lūʻau",
+    "wattleseed, macadamia y ciruela de Kakadu",
+    "kumara, taro y kava",
+    "Vegemite y pavlova"
+   ],
+   "correcta": 1,
+   "explicacion": "La macadamia es australiana; el bushfood es la alimentación aborigen.",
+   "gemela": "oc-233"
+  },
+  {
+   "id": "p2-123",
+   "subtema": "3.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "El poke y el plate lunch se explican sobre todo por…",
+   "opciones": [
+    "la migración india a Fiyi",
+    "los trabajadores migrantes de las plantaciones de azúcar y piña",
+    "los navegantes lapita",
+    "la colonia penal británica de 1788"
+   ],
+   "correcta": 1,
+   "explicacion": "Hawái suma capas migrantes sobre la base polinesia.",
+   "gemela": "oc-234"
+  },
+  {
+   "id": "p2-124",
+   "subtema": "4.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "La hipótesis de Catching Fire (2009) sostiene que…",
+   "opciones": [
+    "la cocina nació con la agricultura",
+    "cocinar influyó en la propia evolución biológica humana",
+    "el fuego se usó primero para conservar",
+    "los humanos cocinaban desde hace 10,000 años"
+   ],
+   "correcta": 1,
+   "explicacion": "Para Wrangham, cocinar nos hizo humanos: más energía, cerebro mayor.",
+   "gemela": "oc-235"
+  },
+  {
+   "id": "p2-125",
+   "subtema": "4.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuál de estas situaciones ilustra mejor el «placer de la mesa» de Brillat-Savarin?",
+   "opciones": [
+    "Comer algo rápido porque se tiene mucha hambre",
+    "Probar un ingrediente nuevo a solas",
+    "Comer más de lo necesario",
+    "Una comida familiar con conversación, aunque el platillo sea sencillo"
+   ],
+   "correcta": 3,
+   "explicacion": "El placer de la mesa es social y humano; el de comer es biológico.",
+   "gemela": "oc-236"
+  },
+  {
+   "id": "p2-126",
+   "subtema": "4.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "La hambruna irlandesa es un ejemplo extremo del riesgo de…",
+   "opciones": [
+    "comer maíz sin nixtamalizar",
+    "depender casi por completo de un solo cultivo",
+    "importar especias",
+    "prohibir la carne"
+   ],
+   "correcta": 1,
+   "explicacion": "El tizón tardío arruinó la papa; murió un millón de personas y otro millón emigró.",
+   "gemela": "oc-237"
+  },
+  {
+   "id": "p2-127",
+   "subtema": "4.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "Para un profesional de la gastronomía, el derecho a la alimentación tiene consecuencias como…",
+   "opciones": [
+    "evitar los ingredientes importados",
+    "reducir el desperdicio y aprovechar integralmente los ingredientes",
+    "cocinar solo platillos tradicionales",
+    "cobrar menos en los restaurantes"
+   ],
+   "correcta": 1,
+   "explicacion": "El artículo 4.º reconoce el derecho; la ética del oficio incluye reducir el desperdicio.",
+   "gemela": "oc-238"
+  },
+  {
+   "id": "p2-128",
+   "subtema": "4.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "Para Lévi-Strauss, lo cocido representa…",
+   "opciones": [
+    "la transformación cultural de la naturaleza",
+    "el estado natural de los alimentos",
+    "la transformación natural, como lo podrido",
+    "una prohibición religiosa"
+   ],
+   "correcta": 0,
+   "explicacion": "Crudo = naturaleza; cocido = cultura; podrido = transformación natural.",
+   "gemela": "oc-239"
+  },
+  {
+   "id": "p2-129",
+   "subtema": "4.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "En una cena romana, el lugar que ocupaba cada comensal en el triclinio indicaba…",
+   "opciones": [
+    "si era esclavo o cocinero",
+    "el tiempo del banquete",
+    "su rango social",
+    "el tipo de vino que bebía"
+   ],
+   "correcta": 2,
+   "explicacion": "El triclinio tenía tres lechos y el lugar marcaba jerarquía.",
+   "gemela": "oc-240"
+  },
+  {
+   "id": "p2-130",
+   "subtema": "4.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué condimento actual funciona con un principio parecido al garum romano?",
+   "opciones": [
+    "El nam pla tailandés",
+    "La mostaza de Dijon",
+    "El vinagre balsámico",
+    "El pimentón español"
+   ],
+   "correcta": 0,
+   "explicacion": "El garum y el nam pla son salsas de pescado fermentado.",
+   "gemela": "oc-241"
+  },
+  {
+   "id": "p2-131",
+   "subtema": "4.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Por qué muchos romanos comían en los thermopolia?",
+   "opciones": [
+    "Porque eran gratuitos",
+    "Porque vivían en insulae, muchas veces sin cocina por el riesgo de incendio",
+    "Porque estaba prohibido cocinar en casa",
+    "Porque solo ahí se servía garum"
+   ],
+   "correcta": 1,
+   "explicacion": "Los thermopolia son el antecedente de las fondas.",
+   "gemela": "oc-242"
+  },
+  {
+   "id": "p2-132",
+   "subtema": "4.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "Que las leyes suntuarias se repitieran una y otra vez indica que…",
+   "opciones": [
+    "solo aplicaban a los esclavos",
+    "el pueblo las exigía",
+    "se cumplían poco",
+    "eran muy eficaces"
+   ],
+   "correcta": 2,
+   "explicacion": "Las leyes contra el lujo se repetían porque se incumplían.",
+   "gemela": "oc-243"
+  },
+  {
+   "id": "p2-133",
+   "subtema": "4.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "La annona romana es un ejemplo temprano de…",
+   "opciones": [
+    "crítica gastronómica",
+    "política alimentaria de Estado",
+    "restaurante popular",
+    "ley suntuaria"
+   ],
+   "correcta": 1,
+   "explicacion": "La annona repartía grano; «pan y circo» resume esa política.",
+   "gemela": "oc-244"
+  },
+  {
+   "id": "p2-134",
+   "subtema": "4.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Quién fue el cocinero de los papas que publicó en 1570 un tratado con más de mil recetas, grabados de utensilios y menús de banquetes?",
+   "opciones": [
+    "La Varenne",
+    "Bartolomeo Scappi",
+    "François Vatel",
+    "Guillaume Tirel, «Taillevent»"
+   ],
+   "correcta": 1,
+   "explicacion": "Scappi publicó Opera en 1570; Taillevent es del siglo XIV y La Varenne del XVII.",
+   "gemela": "oc-245"
+  },
+  {
+   "id": "p2-135",
+   "subtema": "4.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "En el grand couvert de Luis XIV, el derecho a acercarse o a sentarse cerca de la mesa del rey comunicaba…",
+   "opciones": [
+    "la jerarquía de cada cortesano",
+    "la religión del invitado",
+    "el orden de los platos",
+    "la calidad de la comida"
+   ],
+   "correcta": 0,
+   "explicacion": "En la corte, el banquete era una cuestión de prestigio y poder.",
+   "gemela": "oc-246"
+  },
+  {
+   "id": "p2-136",
+   "subtema": "4.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué tienen en común la mesa de Moctezuma y el grand couvert de Versalles?",
+   "opciones": [
+    "Ambas eran públicas",
+    "Ambas usaban cocineros franceses",
+    "Ambas servían cacao en copas de oro",
+    "Ambas comunicaban poder sobre un territorio"
+   ],
+   "correcta": 3,
+   "explicacion": "En ambas, la mesa era un instrumento político.",
+   "gemela": "oc-247"
+  },
+  {
+   "id": "p2-137",
+   "subtema": "4.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "Las cocinas del Topkapi, con cientos de cocineros especializados por tipo de preparación, son un antecedente de…",
+   "opciones": [
+    "el banquete manchú-han",
+    "el restaurante de Boulanger",
+    "el grand couvert de Versalles",
+    "la organización por estaciones de la brigada moderna"
+   ],
+   "correcta": 3,
+   "explicacion": "Topkapi anticipó la brigada; el biryani se asocia con la corte mogol.",
+   "gemela": "oc-248"
+  },
+  {
+   "id": "p2-138",
+   "subtema": "4.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "Según la investigación histórica de Rebecca Spang, ¿qué nombre corresponde al primer restaurante documentado de París?",
+   "opciones": [
+    "Antoine Beauvilliers",
+    "Mathurin Roze de Chantoiseau",
+    "Francesco Procopio dei Coltelli",
+    "Grimod de La Reynière"
+   ],
+   "correcta": 1,
+   "explicacion": "Restaurant designaba el caldo; después, el lugar donde se servía.",
+   "gemela": "oc-249"
+  },
+  {
+   "id": "p2-139",
+   "subtema": "4.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "Además de dejar sin empleo a cocineros de la nobleza, ¿qué medida revolucionaria multiplicó los restaurantes en París?",
+   "opciones": [
+    "La llegada de Delmonico's",
+    "La abolición de los gremios, que controlaban quién vendía cada alimento",
+    "La creación de la crítica gastronómica",
+    "La apertura de casas de café"
+   ],
+   "correcta": 1,
+   "explicacion": "La table d'hôte servía a hora fija lo que el dueño preparaba.",
+   "gemela": "oc-250"
+  },
+  {
+   "id": "p2-140",
+   "subtema": "4.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué mostró la fotografía de los zapatistas desayunando en Sanborns en diciembre de 1914?",
+   "opciones": [
+    "Que Sanborns era una fonda popular",
+    "El nacimiento de las enchiladas suizas",
+    "Que los revolucionarios ocupaban los espacios de la élite porfiriana",
+    "La llegada de la comida rápida a México"
+   ],
+   "correcta": 2,
+   "explicacion": "Los zapatistas en Sanborns (1914); McDonald's llegó a México en 1985.",
+   "gemela": "oc-251"
   }
  ]
 }

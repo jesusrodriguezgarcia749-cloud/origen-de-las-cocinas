@@ -68,6 +68,76 @@
    "explicacion": "Verdadero, según el compendio."
   },
   {
+   "id": "oc-235",
+   "subtema": "4.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "Según Richard Wrangham, ¿qué efecto tuvo cocinar con fuego en la evolución humana?",
+   "opciones": [
+    "Permitió obtener más energía con menos esfuerzo y favoreció cerebros más grandes",
+    "Hizo que los humanos dejaran de comer carne",
+    "Provocó intestinos más largos",
+    "Retrasó la aparición de la agricultura"
+   ],
+   "correcta": 0,
+   "explicacion": "Para Wrangham, cocinar nos hizo humanos: más energía, cerebro mayor."
+  },
+  {
+   "id": "oc-236",
+   "subtema": "4.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "Brillat-Savarin distinguió el placer de comer del placer de la mesa. El placer de la mesa…",
+   "opciones": [
+    "se refiere al sabor de los alimentos",
+    "depende solo del hambre",
+    "lo compartimos con los animales",
+    "es exclusivo de los humanos y depende de la compañía, el lugar y la conversación"
+   ],
+   "correcta": 3,
+   "explicacion": "El placer de la mesa es social y humano; el de comer es biológico."
+  },
+  {
+   "id": "oc-237",
+   "subtema": "4.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué provocó la Gran Hambruna irlandesa (1845-1852)?",
+   "opciones": [
+    "Una sequía que arruinó el trigo",
+    "Una plaga de langostas",
+    "Una guerra con Inglaterra",
+    "Un hongo que destruyó las cosechas de papa, de la que dependía la población pobre"
+   ],
+   "correcta": 3,
+   "explicacion": "El tizón tardío arruinó la papa; murió un millón de personas y otro millón emigró."
+  },
+  {
+   "id": "oc-238",
+   "subtema": "4.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué establece el artículo 4.º de la Constitución mexicana desde 2011?",
+   "opciones": [
+    "La protección de la cocina mexicana como patrimonio",
+    "El derecho a la alimentación nutritiva, suficiente y de calidad",
+    "La obligación de nixtamalizar el maíz",
+    "El salario mínimo de los cocineros"
+   ],
+   "correcta": 1,
+   "explicacion": "El artículo 4.º reconoce el derecho; la ética del oficio incluye reducir el desperdicio."
+  },
+  {
+   "id": "oc-239",
+   "subtema": "4.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué propuso Claude Lévi-Strauss en Lo crudo y lo cocido?",
+   "opciones": [
+    "Que el gusto es solo una sensación física",
+    "Que la gastronomía nació en Francia",
+    "Que la cocina funciona como un lenguaje con el que las culturas ordenan el mundo",
+    "Que cocinar aumentó el tamaño del cerebro"
+   ],
+   "correcta": 2,
+   "explicacion": "Crudo = naturaleza; cocido = cultura; podrido = transformación natural."
+  },
+  {
    "id": "oc-163",
    "subtema": "4.2",
    "tipo": "opcion_multiple",
@@ -120,6 +190,76 @@
    ],
    "correcta": 0,
    "explicacion": "La respuesta es: romano."
+  },
+  {
+   "id": "oc-240",
+   "subtema": "4.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué era el triclinio?",
+   "opciones": [
+    "Un mostrador de comida caliente en la calle",
+    "El tercer tiempo del banquete",
+    "Un comedor con tres lechos en U donde se comía recostado",
+    "Una ley contra el lujo"
+   ],
+   "correcta": 2,
+   "explicacion": "El triclinio tenía tres lechos y el lugar marcaba jerarquía."
+  },
+  {
+   "id": "oc-241",
+   "subtema": "4.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué era el garum?",
+   "opciones": [
+    "Una salsa de pescado fermentado con sal, producida sobre todo en Hispania",
+    "Un vino endulzado con miel",
+    "Un pan de trigo",
+    "Una papilla de trigo"
+   ],
+   "correcta": 0,
+   "explicacion": "El garum y el nam pla son salsas de pescado fermentado."
+  },
+  {
+   "id": "oc-242",
+   "subtema": "4.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué eran los thermopolia?",
+   "opciones": [
+    "Baños públicos con banquete",
+    "Comedores de lujo de la élite",
+    "Mostradores abiertos a la calle donde se vendía comida caliente",
+    "Almacenes de grano del Estado"
+   ],
+   "correcta": 2,
+   "explicacion": "Los thermopolia son el antecedente de las fondas."
+  },
+  {
+   "id": "oc-243",
+   "subtema": "4.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué buscaban las leyes suntuarias romanas como la Ley Fania (161 a.C.)?",
+   "opciones": [
+    "Repartir grano gratis",
+    "Prohibir el vino",
+    "Limitar el gasto y el lujo en los banquetes",
+    "Regular la venta de garum"
+   ],
+   "correcta": 2,
+   "explicacion": "Las leyes contra el lujo se repetían porque se incumplían."
+  },
+  {
+   "id": "oc-244",
+   "subtema": "4.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué expresa la frase «pan y circo» de Juvenal?",
+   "opciones": [
+    "Que el poder aseguraba la paz social garantizando comida y espectáculo",
+    "Que los romanos comían pan en el circo",
+    "Que el pan era el único alimento del pueblo",
+    "Que el circo vendía comida"
+   ],
+   "correcta": 0,
+   "explicacion": "La annona repartía grano; «pan y circo» resume esa política."
   },
   {
    "id": "oc-168",
@@ -225,6 +365,62 @@
    ],
    "correcta": 0,
    "explicacion": "Correcto: La llegada de Catalina de Médici a la corte francesa."
+  },
+  {
+   "id": "oc-245",
+   "subtema": "4.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué publicó Bartolomeo Scappi en 1570?",
+   "opciones": [
+    "Le Cuisinier françois",
+    "El Almanach des gourmands",
+    "Le Viandier",
+    "Opera, un gran tratado de cocina con más de mil recetas"
+   ],
+   "correcta": 3,
+   "explicacion": "Scappi publicó Opera en 1570; Taillevent es del siglo XIV y La Varenne del XVII."
+  },
+  {
+   "id": "oc-246",
+   "subtema": "4.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué fue el grand couvert de Versalles?",
+   "opciones": [
+    "La brigada de cocina del palacio",
+    "El primer restaurante de París",
+    "Un recetario de La Varenne",
+    "La comida pública del rey, observada por cortesanos"
+   ],
+   "correcta": 3,
+   "explicacion": "En la corte, el banquete era una cuestión de prestigio y poder."
+  },
+  {
+   "id": "oc-247",
+   "subtema": "4.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "Según Bernal Díaz del Castillo, ¿cómo era la mesa de Moctezuma?",
+   "opciones": [
+    "Comía solo tortillas y frijoles",
+    "Le preparaban más de trescientos platillos y comía detrás de un biombo",
+    "Comía platillos europeos",
+    "Comía en público ante todo el pueblo"
+   ],
+   "correcta": 1,
+   "explicacion": "En ambas, la mesa era un instrumento político."
+  },
+  {
+   "id": "oc-248",
+   "subtema": "4.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué anticipó la organización de las cocinas del palacio de Topkapi?",
+   "opciones": [
+    "El restaurante de Boulanger",
+    "La Guía Michelin",
+    "La brigada de cocina por estaciones de Escoffier",
+    "La comida rápida"
+   ],
+   "correcta": 2,
+   "explicacion": "Topkapi anticipó la brigada; el biryani se asocia con la corte mogol."
   },
   {
    "id": "oc-177",
@@ -361,6 +557,48 @@
    ],
    "correcta": 1,
    "explicacion": "Correcto: Ambos son circuitos de alimentación popular que existieron en paralelo a la alta cocina de su época."
+  },
+  {
+   "id": "oc-249",
+   "subtema": "4.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué demostró la historiadora Rebecca Spang sobre el primer restaurante?",
+   "opciones": [
+    "Que el primer restaurante fue el Café Procope",
+    "Que el restaurante nació en Nueva York",
+    "Que Boulanger nunca existió",
+    "Que el primer establecimiento documentado fue el de Roze de Chantoiseau, hacia 1766"
+   ],
+   "correcta": 3,
+   "explicacion": "Restaurant designaba el caldo; después, el lugar donde se servía."
+  },
+  {
+   "id": "oc-250",
+   "subtema": "4.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué cambio jurídico de la Revolución Francesa facilitó la multiplicación de restaurantes?",
+   "opciones": [
+    "La ley de pureza de la cerveza",
+    "La abolición de los gremios en 1791",
+    "La creación de la Guía Michelin",
+    "La prohibición de las posadas"
+   ],
+   "correcta": 1,
+   "explicacion": "La table d'hôte servía a hora fija lo que el dueño preparaba."
+  },
+  {
+   "id": "oc-251",
+   "subtema": "4.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué famosa fotografía de 1914 se asocia con Sanborns?",
+   "opciones": [
+    "La de Villa en el Café de Tacuba",
+    "La de Maximiliano en Chapultepec",
+    "La de Porfirio Díaz en el Centenario",
+    "La de los zapatistas desayunando en su fuente de sodas"
+   ],
+   "correcta": 3,
+   "explicacion": "Los zapatistas en Sanborns (1914); McDonald's llegó a México en 1985."
   },
   {
    "id": "oc-189",

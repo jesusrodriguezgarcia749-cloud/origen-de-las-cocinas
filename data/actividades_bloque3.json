@@ -2,20 +2,6 @@
  "bloque": 3,
  "reactivos": [
   {
-   "id": "oc-99",
-   "subtema": "3.1",
-   "tipo": "opcion_multiple",
-   "pregunta": "¿Cuál es el ingrediente emblemático del Magreb, de origen amazigh (bereber)?",
-   "opciones": [
-    "El teff",
-    "El cuscús",
-    "El ñame",
-    "El injera"
-   ],
-   "correcta": 1,
-   "explicacion": "Correcto: El cuscús."
-  },
-  {
    "id": "oc-100",
    "subtema": "3.1",
    "tipo": "opcion_multiple",
@@ -105,6 +91,139 @@
    ],
    "correcta": 1,
    "explicacion": "es un mosaico de tradiciones distintas que comparten ingredientes de fondo pero se expresan de forma muy distinta según la región."
+  },
+  {
+   "id": "oc-199",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuántos países reconocidos por la ONU tiene el continente africano?",
+   "opciones": [
+    "54",
+    "12",
+    "27",
+    "100"
+   ],
+   "correcta": 0,
+   "explicacion": "África tiene 54 países, unos 30 millones de km² y más de 1,400 millones de habitantes."
+  },
+  {
+   "id": "oc-200",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué cereales son la base del Sahel, la franja semiárida al sur del Sahara?",
+   "opciones": [
+    "El mijo y el sorgo",
+    "El trigo y la cebada",
+    "El teff y la avena",
+    "El maíz y el centeno"
+   ],
+   "correcta": 0,
+   "explicacion": "Son cereales capaces de crecer con muy poca lluvia."
+  },
+  {
+   "id": "oc-201",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuál de estos alimentos llegó a África desde América en el siglo XVI?",
+   "opciones": [
+    "La yuca",
+    "El sorgo",
+    "El teff",
+    "La okra"
+   ],
+   "correcta": 0,
+   "explicacion": "Maíz, yuca, cacahuate, chile, jitomate y camote llegaron de América en barcos portugueses."
+  },
+  {
+   "id": "oc-202",
+   "subtema": "3.1",
+   "tipo": "verdadero_falso",
+   "pregunta": "El café es originario de los bosques del suroeste de Etiopía.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 0,
+   "explicacion": "De la región de Kaffa pasó a Yemen en el siglo XV y de ahí al mundo."
+  },
+  {
+   "id": "oc-203",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué eran el pan y la cerveza en el antiguo Egipto, además de alimento?",
+   "opciones": [
+    "Parte del salario de los trabajadores",
+    "Ofrendas prohibidas al pueblo",
+    "Productos exclusivos de la nobleza",
+    "Mercancías traídas de Roma"
+   ],
+   "correcta": 0,
+   "explicacion": "Los constructores de las pirámides recibían raciones diarias de pan y cerveza."
+  },
+  {
+   "id": "oc-204",
+   "subtema": "3.1",
+   "tipo": "relacionar",
+   "pregunta": "Relaciona cada platillo con su región de África.",
+   "pares": [
+    {
+     "izquierda": "Jollof",
+     "derecha": "África Occidental"
+    },
+    {
+     "izquierda": "Tajín",
+     "derecha": "Magreb"
+    },
+    {
+     "izquierda": "Injera con wat",
+     "derecha": "Cuerno de África"
+    },
+    {
+     "izquierda": "Pollo moambe",
+     "derecha": "África Central"
+    }
+   ],
+   "explicacion": "Cada región tiene platillos propios según su clima e historia."
+  },
+  {
+   "id": "oc-205",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué país africano es hoy el mayor productor de vainilla del mundo, aunque la vainilla es originaria de Papantla, Veracruz?",
+   "opciones": [
+    "Madagascar",
+    "Egipto",
+    "Marruecos",
+    "Nigeria"
+   ],
+   "correcta": 0,
+   "explicacion": "En 1841 Edmond Albius inventó la polinización manual que hizo posible cultivarla fuera de México."
+  },
+  {
+   "id": "oc-206",
+   "subtema": "3.1",
+   "tipo": "verdadero_falso",
+   "pregunta": "La Constitución mexicana reconoce desde 2019 a los pueblos y comunidades afromexicanas.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 0,
+   "explicacion": "Son la «tercera raíz» de México, presentes en la Costa Chica y en Veracruz."
+  },
+  {
+   "id": "oc-99",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuál es el ingrediente emblemático del Magreb, de origen amazigh (bereber)?",
+   "opciones": [
+    "El teff",
+    "El cuscús",
+    "El ñame",
+    "El injera"
+   ],
+   "correcta": 1,
+   "explicacion": "Correcto: El cuscús."
   },
   {
    "id": "oc-107",
@@ -378,6 +497,132 @@
    "explicacion": "La respuesta es: calabaza."
   },
   {
+   "id": "oc-207",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Por qué los pueblos mesoamericanos no padecían pelagra aunque su dieta se basaba en el maíz?",
+   "opciones": [
+    "Porque cultivaban variedades de maíz sin cáscara",
+    "Porque comían el maíz siempre crudo y germinado",
+    "Porque combinaban el maíz con carne de cerdo todos los días",
+    "Porque nixtamalizaban el maíz, lo que libera la niacina"
+   ],
+   "correcta": 3,
+   "explicacion": "La nixtamalización libera la niacina; sin ella, una dieta de maíz provoca pelagra."
+  },
+  {
+   "id": "oc-208",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "En la milpa, ¿qué función cumple el frijol?",
+   "opciones": [
+    "Fija nitrógeno en el suelo",
+    "Cubre el suelo y frena la maleza",
+    "Sirve de soporte para que trepen las otras plantas",
+    "Atrae a los polinizadores con sus flores"
+   ],
+   "correcta": 0,
+   "explicacion": "El maíz sostiene, el frijol fija nitrógeno y la calabaza cubre el suelo."
+  },
+  {
+   "id": "oc-209",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué fuente escribió fray Bernardino de Sahagún con informantes nahuas y que registra decenas de tamales, hierbas e insectos?",
+   "opciones": [
+    "La Historia verdadera de la conquista de la Nueva España",
+    "El Popol Vuh",
+    "La Relación de las cosas de Yucatán",
+    "La Historia general de las cosas de Nueva España (Códice Florentino)"
+   ],
+   "correcta": 3,
+   "explicacion": "Sahagún trabajó con informantes nahuas; Landa escribió sobre Yucatán y el Popol Vuh es maya k'iche'."
+  },
+  {
+   "id": "oc-210",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Por qué la cochinita pibil actual se considera una adaptación posterior a la conquista?",
+   "opciones": [
+    "Porque la hoja de plátano llegó de Filipinas",
+    "Porque el achiote llegó de África",
+    "Porque los mayas prehispánicos no conocían el cerdo",
+    "Porque el pib es una técnica española"
+   ],
+   "correcta": 2,
+   "explicacion": "El cerdo llegó con los españoles; el pib y el achiote son mayas."
+  },
+  {
+   "id": "oc-211",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué tradición explica el origen del queso relleno campechano?",
+   "opciones": [
+    "Los piratas ingleses enseñaron a rellenar quesos",
+    "Los barcos traían quesos holandeses de bola cuya cáscara se rellenaba con picadillo",
+    "Los libaneses trajeron el queso de bola en el siglo XIX",
+    "Las monjas de Puebla lo inventaron para un virrey"
+   ],
+   "correcta": 1,
+   "explicacion": "Según la tradición, el queso tipo Edam llegaba por el comercio de palo de tinte."
+  },
+  {
+   "id": "oc-212",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Por qué se construyó la muralla de Campeche entre 1686 y 1704?",
+   "opciones": [
+    "Para resguardar el Galeón de Manila",
+    "Para proteger la ciudad tras más de un siglo de ataques piratas",
+    "Para controlar la entrada de esclavizados africanos",
+    "Para defenderse de los mayas de la península"
+   ],
+   "correcta": 1,
+   "explicacion": "La muralla hexagonal con ocho baluartes respondió a los ataques piratas."
+  },
+  {
+   "id": "oc-213",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué técnica andina permitía conservar la papa durante años?",
+   "opciones": [
+    "El chuño: congelar de noche, pisar y secar al sol",
+    "La nixtamalización: cocer con cal",
+    "El charqui: secar al sol y al viento",
+    "El pib: cocer bajo tierra"
+   ],
+   "correcta": 0,
+   "explicacion": "El chuño es papa liofilizada por heladas y sol; el charqui es carne seca."
+  },
+  {
+   "id": "oc-214",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué migración dio origen a la cocina chifa del Perú?",
+   "opciones": [
+    "La italiana, entre 1870 y 1930",
+    "La libanesa, desde finales del siglo XIX",
+    "La japonesa, desde 1899",
+    "La china, desde 1849"
+   ],
+   "correcta": 3,
+   "explicacion": "Chifa es china; nikkei es japonesa."
+  },
+  {
+   "id": "oc-215",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué técnica llegó a México con los migrantes libaneses y dio origen a los tacos al pastor?",
+   "opciones": [
+    "Asar carne en un trompo vertical",
+    "Marinar en vinagre (escabeche)",
+    "Cocer bajo tierra en pib",
+    "Freír en manteca de cerdo"
+   ],
+   "correcta": 0,
+   "explicacion": "El trompo es libanés; el cerdo, español; el achiote y la tortilla, mesoamericanos."
+  },
+  {
    "id": "oc-129",
    "subtema": "3.3",
    "tipo": "relacionar",
@@ -507,6 +752,104 @@
    "explicacion": "Verdadero, según el compendio."
   },
   {
+   "id": "oc-216",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Dónde se escribieron las recetas más antiguas que se conocen?",
+   "opciones": [
+    "En Roma, en el recetario de Apicio",
+    "En China, en tablillas de bambú de la dinastía Han",
+    "En Mesopotamia, en tablillas de barro de hacia 1750 a.C.",
+    "En Egipto, en papiros de hacia 3000 a.C."
+   ],
+   "correcta": 2,
+   "explicacion": "Las tablillas mesopotámicas de hacia 1750 a.C. son las recetas más antiguas conocidas."
+  },
+  {
+   "id": "oc-217",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué identificó Kikunae Ikeda en 1908 al estudiar el caldo de alga kombu?",
+   "opciones": [
+    "El picante de la pimienta de Sichuan",
+    "La fermentación del sushi",
+    "El umami, producido por el glutamato",
+    "El amargor del té verde"
+   ],
+   "correcta": 2,
+   "explicacion": "Ikeda identificó el umami (glutamato), presente en el dashi y otros alimentos."
+  },
+  {
+   "id": "oc-218",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cómo nació el sushi?",
+   "opciones": [
+    "Como narezushi, técnica para conservar pescado fermentándolo con arroz",
+    "Como comida de la corte imperial de Kioto",
+    "Como comida para marineros del Galeón de Manila",
+    "Como adaptación japonesa de un plato portugués"
+   ],
+   "correcta": 0,
+   "explicacion": "El narezushi conservaba el pescado; el arroz se desechaba. Siglos después nació el nigiri en Edo."
+  },
+  {
+   "id": "oc-219",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cómo llegó el chile a la cocina coreana?",
+   "opciones": [
+    "Era nativo de Corea",
+    "Desde América, entre los siglos XVI y XVII, a través del comercio con Japón",
+    "Desde la India, por la Ruta de la Seda",
+    "Desde China, en la dinastía Han"
+   ],
+   "correcta": 1,
+   "explicacion": "El chile es americano; llegó a Corea en los siglos XVI-XVII."
+  },
+  {
+   "id": "oc-220",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿De dónde viene el nombre del vindaloo de Goa?",
+   "opciones": [
+    "Del persa biryan, «frito»",
+    "Del tamil kari, «salsa»",
+    "Del inglés curry powder",
+    "Del portugués vinha d'alhos, «vino y ajo»"
+   ],
+   "correcta": 3,
+   "explicacion": "Vindaloo viene de vinha d'alhos, en la Goa portuguesa."
+  },
+  {
+   "id": "oc-221",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué viajó de Asia a México por el Galeón de Manila?",
+   "opciones": [
+    "El mango de Manila, la canela y la técnica de la tuba",
+    "El chile, el maíz y el cacao",
+    "La papa, la quinua y el cuy",
+    "El trigo, el cerdo y la vid"
+   ],
+   "correcta": 0,
+   "explicacion": "De México salieron chile, maíz, cacao y plata; de Asia llegaron mango, especias, coco y tuba."
+  },
+  {
+   "id": "oc-222",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Por qué la cocina japonesa tradicional se apoya tanto en pescado, soya y vegetales?",
+   "opciones": [
+    "Porque Japón no tenía tierras de pastoreo",
+    "Porque, por influencia budista, la carne de animales de cuatro patas estuvo restringida más de mil años",
+    "Porque el emperador Meiji prohibió la carne en 1872",
+    "Porque los portugueses monopolizaron el comercio de ganado"
+   ],
+   "correcta": 1,
+   "explicacion": "Meiji promovió la carne en 1872; antes estuvo restringida por influencia budista."
+  },
+  {
    "id": "oc-139",
    "subtema": "3.4",
    "tipo": "relacionar",
@@ -598,6 +941,90 @@
    ],
    "correcta": 0,
    "explicacion": "La respuesta es: asquenazí."
+  },
+  {
+   "id": "oc-223",
+   "subtema": "3.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué forma la llamada trilogía mediterránea?",
+   "opciones": [
+    "El aceite, el ajo y el jitomate",
+    "El pan, el queso y la cerveza",
+    "El trigo, el arroz y el maíz",
+    "El trigo, la vid y el olivo"
+   ],
+   "correcta": 3,
+   "explicacion": "La trilogía mediterránea es trigo (pan), vid (vino) y olivo (aceite)."
+  },
+  {
+   "id": "oc-224",
+   "subtema": "3.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuál de estos ingredientes llevaron los árabes a la península ibérica durante al-Ándalus?",
+   "opciones": [
+    "La papa",
+    "El jitomate",
+    "El arroz",
+    "El chile"
+   ],
+   "correcta": 2,
+   "explicacion": "Antes de 1492 no había ingredientes americanos en Europa; el arroz, el azafrán y la berenjena llegaron con los árabes."
+  },
+  {
+   "id": "oc-225",
+   "subtema": "3.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿De qué lengua viene la palabra escabeche?",
+   "opciones": [
+    "Del árabe (sikbaj)",
+    "Del náhuatl",
+    "Del francés (escabèche)",
+    "Del latín (esca)"
+   ],
+   "correcta": 0,
+   "explicacion": "El escabeche viene del sikbaj árabe y llegó a América por España."
+  },
+  {
+   "id": "oc-226",
+   "subtema": "3.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "La paprika húngara, base del gulash, se hace con…",
+   "opciones": [
+    "azafrán de al-Ándalus",
+    "pimienta negra de la India",
+    "pimienta de Sichuan",
+    "chile americano"
+   ],
+   "correcta": 3,
+   "explicacion": "La paprika y el pimentón son chile americano."
+  },
+  {
+   "id": "oc-227",
+   "subtema": "3.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué cocina judía se formó en la península ibérica y el Mediterráneo, y se dispersó tras 1492?",
+   "opciones": [
+    "La nórdica",
+    "La kosher",
+    "La sefardí",
+    "La asquenazí"
+   ],
+   "correcta": 2,
+   "explicacion": "Ambas siguen el kashrut; la sefardí es ibérico-mediterránea y la asquenazí centroeuropea."
+  },
+  {
+   "id": "oc-228",
+   "subtema": "3.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué movimiento revalorizó desde 2004 los ingredientes locales y estacionales de Escandinavia?",
+   "opciones": [
+    "La cocina molecular",
+    "El slow food",
+    "La cocina New Nordic",
+    "La nouvelle cuisine"
+   ],
+   "correcta": 2,
+   "explicacion": "New Nordic (2004) y Noma revalorizaron los ingredientes nórdicos."
   },
   {
    "id": "oc-146",
@@ -729,123 +1156,88 @@
    "explicacion": "La respuesta es: UNESCO."
   },
   {
-   "id": "oc-199",
-   "subtema": "3.1",
+   "id": "oc-229",
+   "subtema": "3.5",
    "tipo": "opcion_multiple",
-   "pregunta": "¿Cuántos países reconocidos por la ONU tiene el continente africano?",
+   "pregunta": "¿Qué eran las «plantas de canoa»?",
    "opciones": [
-    "54",
-    "12",
-    "27",
-    "100"
+    "Las especias que transportaba el Galeón de Manila",
+    "Las plantas que los navegantes del Pacífico llevaban para colonizar islas, como taro, coco y árbol del pan",
+    "Las plantas que llevaron los británicos a Australia en 1788",
+    "Las plantas que crecían en las canoas abandonadas"
    ],
-   "correcta": 0,
-   "explicacion": "África tiene 54 países, unos 30 millones de km² y más de 1,400 millones de habitantes."
+   "correcta": 1,
+   "explicacion": "Las plantas de canoa fueron la base de la colonización del Pacífico."
   },
   {
-   "id": "oc-200",
-   "subtema": "3.1",
+   "id": "oc-230",
+   "subtema": "3.5",
    "tipo": "opcion_multiple",
-   "pregunta": "¿Qué cereales son la base del Sahel, la franja semiárida al sur del Sahara?",
+   "pregunta": "¿Por qué el kumara polinesio es un misterio histórico?",
    "opciones": [
-    "El mijo y el sorgo",
-    "El trigo y la cebada",
-    "El teff y la avena",
-    "El maíz y el centeno"
+    "Porque es un taro africano",
+    "Porque es un ñame chino",
+    "Porque es un camote americano que ya se cultivaba en la Polinesia antes de Colón",
+    "Porque es una papa europea llegada con Cook"
    ],
-   "correcta": 0,
-   "explicacion": "Son cereales capaces de crecer con muy poca lluvia."
+   "correcta": 2,
+   "explicacion": "El camote es americano y llegó a la Polinesia antes de 1492."
   },
   {
-   "id": "oc-201",
-   "subtema": "3.1",
+   "id": "oc-231",
+   "subtema": "3.5",
    "tipo": "opcion_multiple",
-   "pregunta": "¿Cuál de estos alimentos llegó a África desde América en el siglo XVI?",
+   "pregunta": "¿Qué tienen en común el hāngī maorí, el pib maya y el curanto de Chiloé?",
    "opciones": [
-    "La yuca",
-    "El sorgo",
-    "El teff",
-    "La okra"
+    "Los inventaron los españoles",
+    "Son hornos de tierra con piedras calientes, desarrollados de manera independiente",
+    "Usan siempre cerdo",
+    "Los difundieron los navegantes polinesios"
    ],
-   "correcta": 0,
-   "explicacion": "Maíz, yuca, cacahuate, chile, jitomate y camote llegaron de América en barcos portugueses."
+   "correcta": 1,
+   "explicacion": "Es un caso de invención independiente."
   },
   {
-   "id": "oc-202",
-   "subtema": "3.1",
-   "tipo": "verdadero_falso",
-   "pregunta": "El café es originario de los bosques del suroeste de Etiopía.",
-   "opciones": [
-    "Verdadero",
-    "Falso"
-   ],
-   "correcta": 0,
-   "explicacion": "De la región de Kaffa pasó a Yemen en el siglo XV y de ahí al mundo."
-  },
-  {
-   "id": "oc-203",
-   "subtema": "3.1",
+   "id": "oc-232",
+   "subtema": "3.5",
    "tipo": "opcion_multiple",
-   "pregunta": "¿Qué eran el pan y la cerveza en el antiguo Egipto, además de alimento?",
+   "pregunta": "¿Por qué el Bounty viajó a Tahití en 1787?",
    "opciones": [
-    "Parte del salario de los trabajadores",
-    "Ofrendas prohibidas al pueblo",
-    "Productos exclusivos de la nobleza",
-    "Mercancías traídas de Roma"
+    "Para comerciar kava",
+    "Para fundar una colonia penal",
+    "Para buscar especias",
+    "Para llevar árboles del pan al Caribe"
    ],
-   "correcta": 0,
-   "explicacion": "Los constructores de las pirámides recibían raciones diarias de pan y cerveza."
+   "correcta": 3,
+   "explicacion": "Bligh lo llevó al Caribe en 1793, tras el motín del Bounty."
   },
   {
-   "id": "oc-204",
-   "subtema": "3.1",
-   "tipo": "relacionar",
-   "pregunta": "Relaciona cada platillo con su región de África.",
-   "pares": [
-    {
-     "izquierda": "Jollof",
-     "derecha": "África Occidental"
-    },
-    {
-     "izquierda": "Tajín",
-     "derecha": "Magreb"
-    },
-    {
-     "izquierda": "Injera con wat",
-     "derecha": "Cuerno de África"
-    },
-    {
-     "izquierda": "Pollo moambe",
-     "derecha": "África Central"
-    }
-   ],
-   "explicacion": "Cada región tiene platillos propios según su clima e historia."
-  },
-  {
-   "id": "oc-205",
-   "subtema": "3.1",
+   "id": "oc-233",
+   "subtema": "3.5",
    "tipo": "opcion_multiple",
-   "pregunta": "¿Qué país africano es hoy el mayor productor de vainilla del mundo, aunque la vainilla es originaria de Papantla, Veracruz?",
+   "pregunta": "¿Qué ingrediente nativo de Australia se asocia hoy con Hawái?",
    "opciones": [
-    "Madagascar",
-    "Egipto",
-    "Marruecos",
-    "Nigeria"
+    "La nuez de macadamia",
+    "La piña",
+    "El taro",
+    "El coco"
    ],
    "correcta": 0,
-   "explicacion": "En 1841 Edmond Albius inventó la polinización manual que hizo posible cultivarla fuera de México."
+   "explicacion": "La macadamia es australiana; el bushfood es la alimentación aborigen."
   },
   {
-   "id": "oc-206",
-   "subtema": "3.1",
-   "tipo": "verdadero_falso",
-   "pregunta": "La Constitución mexicana reconoce desde 2019 a los pueblos y comunidades afromexicanas.",
+   "id": "oc-234",
+   "subtema": "3.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué muestra el plate lunch hawaiano?",
    "opciones": [
-    "Verdadero",
-    "Falso"
+    "La cocina aborigen australiana",
+    "Las capas de migración japonesa, filipina, coreana y estadounidense sobre una base polinesia",
+    "La cocina de la corte del rey Kamehameha",
+    "La influencia del Galeón de Manila"
    ],
-   "correcta": 0,
-   "explicacion": "Son la «tercera raíz» de México, presentes en la Costa Chica y en Veracruz."
+   "correcta": 1,
+   "explicacion": "Hawái suma capas migrantes sobre la base polinesia."
   }
  ]
 }

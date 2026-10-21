@@ -25,7 +25,7 @@ function resaltarTexto(texto, termino) {
 }
 
 // **texto** se muestra en negritas (después de escapar el HTML).
-function conNegritas(html) { return html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>'); }
+function conNegritas(html) { return html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/(^|[^*\w])\*([^*\s][^*]*?)\*(?![*\w])/g, '$1<em>$2</em>'); }
 
 function tipoDeLinea(linea) {
   if (linea.startsWith('IMAGEN:')) return 'imagen';

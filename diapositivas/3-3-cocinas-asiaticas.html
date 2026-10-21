@@ -45,6 +45,23 @@ const PRESENTACION = {
       ],
       pasoAPaso: true },
 
+    { tipo: "imagen",
+      titulo: "Las regiones culinarias de Asia",
+      imagen: "img/asia-regiones.svg",
+      pie: "Unos 44 millones de km² y cerca del 60 % de la humanidad. La línea punteada marca la Ruta de la Seda.",
+      notas: "Señala el Everest, los monzones del sur y del sureste, las estepas de Asia Central y Manila, el puerto del Galeón. Pregunta: ¿por qué hablar de «comida asiática» es tan impreciso como hablar de «comida europea»?" },
+
+    { tipo: "tema",
+      titulo: "La Creciente Fértil y las primeras recetas",
+      notas: "Enlace con el Tema 1: la agricultura cambió la relación del ser humano con la comida.",
+      puntos: [
+        "Hace **10,000 a 11,500 años**, entre el Tigris y el Éufrates, se domesticaron el **trigo, la cebada, las lentejas y el garbanzo**, y la cabra, la oveja, el cerdo y la res.",
+        "En **Mesopotamia** se escribieron las **recetas más antiguas conocidas**: tablillas cuneiformes de hacia **1750 a.C.**, hoy en la Universidad de Yale.",
+        "Los sumerios dejaron el **Himno a Ninkasi**, diosa de la cerveza: plegaria y receta a la vez.",
+        "Es el punto de partida de la cocina de Europa, del norte de África y de buena parte de Asia."
+      ],
+      pasoAPaso: true },
+
     { tipo: "pregunta",
       pregunta: "¿Qué fruta que hoy parece muy mexicana llegó en barco desde Asia?",
       respuesta: "El **mango**. Llegó por el **Galeón de Manila**, que durante 250 años unió las Filipinas con Acapulco. Por eso existe el “mango manila”." },
@@ -82,6 +99,19 @@ const PRESENTACION = {
           ] }
       ] },
 
+    { tipo: "tabla",
+      titulo: "Las ocho grandes cocinas de China",
+      columnas: ["Cocina", "Región", "Rasgos"],
+      filas: [
+        ["Cantonesa", "Sur, Guangdong y Hong Kong", "Suave, salteado rápido, vapor, dim sum"],
+        ["Sichuan", "Suroeste", "Picante y pimienta de Sichuan, que adormece la lengua"],
+        ["Hunan", "Centro-sur", "Picante seco y ahumado"],
+        ["Shandong", "Noreste", "Caldos claros, mariscos, cocina de corte"],
+        ["Jiangsu y Zhejiang", "Este", "Elegancia, dulzor, pescados de río, vinagres"],
+        ["Fujian y Anhui", "Sureste e interior", "Sopas y caldos; hierbas y caza de montaña"]
+      ],
+      notas: "China domesticó el arroz asiático (hace unos 9,000 años), la soya y el té; los fideos más antiguos conocidos, de mijo, tienen unos 4,000 años (Lajia). Rasgos comunes: wok, fermentados, palillos y el equilibrio yin-yang." },
+
     { tipo: "tema",
       titulo: "Japón y Corea",
       puntos: [
@@ -106,6 +136,26 @@ const PRESENTACION = {
       ] },
 
     { tipo: "tema",
+      titulo: "Japón: el umami y el sushi",
+      notas: "Pregunta: ¿dónde más encuentran umami? Jitomate maduro, quesos curados, caldos de carne.",
+      puntos: [
+        "**Washoku:** Patrimonio Inmaterial de la UNESCO desde **2013**; esquema **ichijū sansai**: arroz, una sopa y tres platillos.",
+        "**1908:** el químico **Kikunae Ikeda** identificó en el caldo de kombu el **umami**, el quinto sabor, producido por el glutamato.",
+        "**El sushi** nació como **narezushi**: pescado fermentado con arroz que se desechaba; el nigiri apareció en Edo en el siglo XIX.",
+        "Por influencia budista, la carne de cuatro patas estuvo restringida más de mil años; el emperador **Meiji** la promovió en **1872**. La tempura es portuguesa."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
+      titulo: "Corea: el arte de la fermentación",
+      puntos: [
+        "El **kimchi** acompaña casi todas las comidas; el **kimjang**, su preparación colectiva para el invierno, es Patrimonio de la UNESCO desde **2013**.",
+        "Pastas fermentadas: **gochujang** (chile) y **doenjang** (soya); los **banchan** al centro de la mesa; el **bibimbap**.",
+        "El chile llegó a Corea apenas entre los **siglos XVI y XVII**, desde América: **antes, el kimchi no era rojo**."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tema",
       titulo: "Asia del Sur: India y el mundo del curry",
       minutos: "36-60", evaluacion: "Formativo",
       puntos: [
@@ -128,6 +178,16 @@ const PRESENTACION = {
             "**El chile en polvo es americano:** llegó con los portugueses en el siglo XVI, y hoy la India es el mayor productor de chile del mundo."
           ] }
       ] },
+
+    { tipo: "tema",
+      titulo: "La India: masalas, vegetarianismo y colonia",
+      puntos: [
+        "**Curry** probablemente viene del tamil *kari*, «salsa»; en la India se habla de **masalas**, como el garam masala.",
+        "Fuerte tradición **vegetariana** (hinduismo, jainismo, budismo); para la mayoría hindú, **la vaca es sagrada**.",
+        "El norte: ghee, yogur, paneer y el horno **tandoor** (naan); el sur: arroz, coco y lentejas.",
+        "**Goa**, colonia portuguesa: el **vindaloo** viene de *vinha d'alhos*, «vino y ajo»."
+      ],
+      pasoAPaso: true },
 
     { tipo: "pregunta",
       pregunta: "¿Existe una especia que se llame curry?",
@@ -155,6 +215,16 @@ const PRESENTACION = {
             "**Dato cruzado:** la **piña** y la **papaya** de la lancha son **americanas**; llegaron a Asia con los barcos europeos."
           ] }
       ] },
+
+    { tipo: "tema",
+      titulo: "Las islas de las especias y sus herencias",
+      puntos: [
+        "**Molucas (Indonesia):** únicas productoras de **clavo y nuez moscada** durante siglos; la **VOC** holandesa llegó a controlar su comercio.",
+        "**Tailandia:** influencias china, india y **portuguesa**; los dulces de yema como el foi thong se atribuyen a **Maria Guyomar de Pinha**.",
+        "**Vietnam:** la baguette francesa se volvió **bánh mì**; el pho lleva anís estrella y canela.",
+        "El **satay** se sirve con salsa de **cacahuate**, un ingrediente americano."
+      ],
+      pasoAPaso: true },
 
     { tipo: "tema",
       titulo: "Filipinas: la cocina de dos colonizaciones",
@@ -185,6 +255,18 @@ const PRESENTACION = {
             "**El error:** en el fuerte, arriba a la izquierda, ondea una bandera roja y amarilla, la de España actual, adoptada en 1785."
           ] }
       ] },
+
+    { tipo: "tabla",
+      titulo: "El chile mexicano en Asia",
+      columnas: ["Platillo asiático", "Ingrediente americano que lo hizo posible"],
+      filas: [
+        ["Kimchi rojo de Corea", "El chile"],
+        ["Mapo tofu y pollo kung pao de Sichuan", "El chile (la pimienta de Sichuan sí es asiática)"],
+        ["Vindaloo de Goa", "El chile, llevado por los portugueses"],
+        ["Satay de Indonesia", "El cacahuate"],
+        ["Curris tailandeses", "El chile"]
+      ],
+      notas: "El Galeón de Manila (1565-1815, tornaviaje de Urdaneta) llevó a Asia chile, maíz, cacao, camote y plata, y trajo el mango de Manila, la canela y la tuba que aún se vende en Colima y Guerrero." },
 
     { tipo: "pausa",
       titulo: "¡Pausa activa!",
