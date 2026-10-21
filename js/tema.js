@@ -25,6 +25,21 @@ function resaltarTexto(texto, termino) {
 }
 
 // **texto** se muestra en negritas (después de escapar el HTML).
+// Enlace al Atlas interactivo para los subtemas que tienen mapa, ruta o línea del tiempo
+const ATLAS = {
+  '3.1': [['mapa=africa', 'Explora las regiones de África en el mapa'], ['rutas=sahara', 'Sigue las caravanas del Sahara'], ['rutas=cafe', 'Sigue la ruta del café']],
+  '3.2': [['mapa=america', 'Explora las regiones de América en el mapa'], ['juego', 'Juega «¿De dónde viene?»']],
+  '3.3': [['mapa=asia', 'Explora las regiones de Asia en el mapa'], ['rutas=galeon', 'Navega con el Galeón de Manila'], ['rutas=chile', 'Sigue la vuelta al mundo del chile'], ['rutas=seda', 'Recorre la Ruta de la Seda']],
+  '3.4': [['mapa=europa', 'Explora las regiones de Europa en el mapa']],
+  '3.5': [['mapa=oceania', 'Explora las regiones de Oceanía en el mapa'], ['rutas=polinesia', 'Navega con los navegantes del Pacífico']],
+  '4.1': [['tiempo', 'Recorre la línea del tiempo']], '4.2': [['tiempo', 'Recorre la línea del tiempo']], '4.3': [['tiempo', 'Recorre la línea del tiempo']],
+  '4.4': [['tiempo', 'Recorre la línea del tiempo'], ['rutas=cafe', 'Sigue la ruta del café']], '4.5': [['tiempo', 'Recorre la línea del tiempo']],
+};
+function enlaceAtlas(id) {
+  const l = ATLAS[id]; if (!l) return '';
+  return `<div class="tema-atlas"><strong>En el Atlas:</strong> ${l.map(([h, t]) => `<a href="atlas.html#${h}">${t} →</a>`).join(' ')}</div>`;
+}
+
 function conNegritas(html) { return html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/(^|[^*\w])\*([^*\s][^*]*?)\*(?![*\w])/g, '$1<em>$2</em>'); }
 
 function tipoDeLinea(linea) {
@@ -124,6 +139,7 @@ async function init(idDirecto) {
       </div>
       ${notaBusqueda}
       ${renderContenido(s.contenido, termino)}
+      ${enlaceAtlas(s.id)}
     </article>
   `;
 

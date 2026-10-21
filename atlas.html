@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atlas — Origen de las Cocinas</title>
+<meta name="theme-color" content="#1C1B19">
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:image" content="https://jesusrodriguezgarcia749-cloud.github.io/origen-de-las-cocinas/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jesusrodriguezgarcia749-cloud.github.io/origen-de-las-cocinas/assets/og-image.png">
+<script>try{var t=localStorage.getItem('aula_tema');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Atlas — Origen de las Cocinas">
+<meta property="og:description" content="Atlas interactivo de Origen de las Cocinas: mapa de las regiones culinarias del mundo, el juego «¿De dónde viene?», rutas animadas y la línea del tiempo de la historia de la mesa.">
+<meta property="og:locale" content="es_MX">
+<meta name="description" content="Atlas interactivo de Origen de las Cocinas: mapa de las regiones culinarias del mundo, el juego «¿De dónde viene?», rutas animadas y la línea del tiempo de la historia de la mesa.">
+<link rel="canonical" href="https://jesusrodriguezgarcia749-cloud.github.io/origen-de-las-cocinas/atlas.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/atlas.css">
+<link rel="stylesheet" href="css/index.css">
+<link rel="stylesheet" href="css/extra.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">OC</span>
+      <span class="brand-text">Origen de las Cocinas</span>
+    </a>
+    <nav class="main-nav" aria-label="Navegación principal">
+      <a href="compendio.html">Compendio</a>
+      <a href="diapositivas/">Diapositivas</a>
+      <a href="calendario.html">Calendario</a>
+      <a href="proyecto.html">Proyecto</a>
+      <a href="actividades.html">Actividades</a>
+      <a href="atlas.html" aria-current="page">Atlas</a>
+      <a href="biblioteca.html">Biblioteca</a>
+      <a href="examen.html">Examen</a>
+      <a href="mi-progreso.html">Mi progreso</a>
+      <a href="admin.html" class="nav-admin">Panel docente</a>
+    </nav>
+    <div class="header-tools">
+      <button class="theme-toggle" type="button" aria-label="Cambiar a modo oscuro" title="Modo claro / oscuro">🌙</button>
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<section class="atlas-hero">
+  <div class="wrap">
+    <p class="eyebrow">Atlas</p>
+    <h1>La cocina del mundo, en el mapa</h1>
+    <p class="atlas-hero-sub">Explora las regiones culinarias del Tema 3, descubre de dónde viene cada ingrediente, sigue las rutas que movieron los sabores por el planeta y recorre la historia de la mesa del Tema 4.</p>
+  </div>
+</section>
+
+<main class="wrap atlas-main">
+  <nav class="atlas-tabs" role="tablist" aria-label="Secciones del Atlas">
+    <button role="tab" data-tab="mapa" aria-selected="true">🗺️ Mapa del mundo</button>
+    <button role="tab" data-tab="juego" aria-selected="false">🧭 ¿De dónde viene?</button>
+    <button role="tab" data-tab="rutas" aria-selected="false">⛵ Rutas</button>
+    <button role="tab" data-tab="tiempo" aria-selected="false">⏳ Línea del tiempo</button>
+  </nav>
+
+  <section class="atlas-panel" id="panel-mapa" role="tabpanel">
+    <p class="atlas-ayuda">Toca una región del mapa (o su nombre en la lista) para ver sus ingredientes, platillos y un dato clave. Usa los botones para acercarte a cada continente.</p>
+    <div class="atlas-zoom" id="mapa-zoom"></div>
+    <div class="atlas-grid">
+      <div class="atlas-mapa-caja"><svg id="mapa-svg" class="atlas-svg" role="img" aria-label="Mapa de las regiones culinarias del mundo"></svg><div class="atlas-tip" id="mapa-tip" hidden></div></div>
+      <aside class="atlas-ficha" id="mapa-ficha" aria-live="polite"></aside>
+    </div>
+    <div class="atlas-lista" id="mapa-lista"></div>
+  </section>
+
+  <section class="atlas-panel" id="panel-juego" role="tabpanel" hidden>
+    <div class="juego-cabeza">
+      <p class="atlas-ayuda" id="juego-instruccion">Elige un ingrediente y después toca en el mapa el lugar donde se domesticó. En computadora también puedes arrastrarlo.</p>
+      <div class="juego-marcador" id="juego-marcador"></div>
+    </div>
+    <div class="juego-bandeja" id="juego-bandeja"></div>
+    <div class="atlas-mapa-caja"><svg id="juego-svg" class="atlas-svg" role="img" aria-label="Mapa con los centros de origen de los ingredientes"></svg></div>
+    <div class="juego-zonas" id="juego-zonas"></div>
+    <div class="juego-aviso" id="juego-aviso" aria-live="polite"></div>
+  </section>
+
+  <section class="atlas-panel" id="panel-rutas" role="tabpanel" hidden>
+    <div class="atlas-zoom" id="rutas-sel"></div>
+    <h2 class="ruta-titulo" id="ruta-titulo"></h2>
+    <p class="atlas-ayuda" id="ruta-intro"></p>
+    <div class="atlas-mapa-caja"><svg id="ruta-svg" class="atlas-svg ruta-svg" role="img"></svg></div>
+    <div class="ruta-controles">
+      <button class="btn-ruta" id="ruta-ant" aria-label="Parada anterior">◀</button>
+      <button class="btn-ruta btn-play" id="ruta-play">▶ Reproducir</button>
+      <button class="btn-ruta" id="ruta-sig" aria-label="Parada siguiente">▶</button>
+      <div class="ruta-puntos" id="ruta-puntos"></div>
+    </div>
+    <div class="ruta-tarjeta" id="ruta-tarjeta" aria-live="polite"></div>
+  </section>
+
+  <section class="atlas-panel" id="panel-tiempo" role="tabpanel" hidden>
+    <div class="reto" id="reto"></div>
+    <div class="atlas-zoom" id="tiempo-filtros"></div>
+    <div class="linea" id="linea"></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>Aula Virtual · Origen de las Cocinas · LudoMente Studio</p>
+  </div>
+</footer>
+
+<audio id="bg-music" loop preload="none">
+  <source src="https://commons.wikimedia.org/wiki/Special:FilePath/Gymnopedie_No._1..ogg" type="audio/ogg">
+</audio>
+<button id="bg-music-toggle" class="music-toggle" aria-label="Activar música de fondo" aria-pressed="false">🎵</button>
+
+<script src="js/app.js"></script>
+<script src="js/atlas.js"></script>
+</body>
+</html>

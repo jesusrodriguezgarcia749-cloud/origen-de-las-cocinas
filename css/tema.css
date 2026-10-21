@@ -95,3 +95,7 @@
 .tema-tabla thead th{background:#1C1B19;color:#fff;font-weight:600}
 .tema-tabla tbody tr:nth-child(even) td{background:rgba(201,138,44,.07)}
 @media (prefers-color-scheme:dark){.tema-figura img{border-color:rgba(255,255,255,.15)}.tema-figura figcaption{color:#B9B0A4}.tema-tabla tbody tr:nth-child(even) td{background:rgba(201,138,44,.12)}}
+
+.tema-atlas{margin:26px 0 0; padding:14px 18px; border-radius:12px; background:rgba(47,102,144,.10); border-left:5px solid #2F6690; font-size:.92rem; display:flex; flex-wrap:wrap; gap:6px 16px; align-items:baseline;}
+.tema-atlas a{font-weight:700; color:#2F6690; text-decoration:none;}
+html[data-theme="dark"] .tema-atlas a{color:#8FB8DA;}

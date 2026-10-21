@@ -1,9 +1,9 @@
 // sw.js — permite instalar el Aula Virtual como app y leerla sin conexión.
 // Estrategia "primero la red": siempre se pide la versión en línea; solo si
 // no hay internet se usa la copia guardada. Firebase y Google nunca se cachean.
-const CACHE = 'aula-v3';
+const CACHE = 'aula-v4';
 const BASICOS = ['./', 'index.html', 'compendio.html', 'tema.html', 'calendario.html', 'proyecto.html', 'rubricas.html',
-  'biblioteca.html', 'actividades.html', 'css/styles.css', 'css/index.css', 'css/extra.css', 'css/compendio.css',
+  'biblioteca.html', 'actividades.html', 'atlas.html', 'css/atlas.css', 'js/atlas.js', 'data/atlas.json', 'css/styles.css', 'css/index.css', 'css/extra.css', 'css/compendio.css',
   'css/tema.css', 'js/app.js', 'js/curso.js', 'js/compendio.js', 'js/tema.js', 'js/lector.js', 'data/curso.json', 'assets/icon-192.png'];
 
 self.addEventListener('install', (e) => {
