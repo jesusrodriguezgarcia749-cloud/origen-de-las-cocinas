@@ -84,3 +84,14 @@
 .tema-bullet-list li::before{
   content:'✓'; position:absolute; left:0; color:var(--sage); font-weight:700;
                 }
+
+/* Figuras y tablas del compendio */
+.tema-figura{margin:22px 0;padding:0}
+.tema-figura img{width:100%;height:auto;display:block;border-radius:12px;border:1px solid rgba(0,0,0,.08);background:#fff}
+.tema-figura figcaption{margin-top:8px;font-size:.85rem;color:#6B6257;line-height:1.45}
+.tema-tabla-envol{overflow-x:auto;margin:18px 0;border-radius:12px;border:1px solid rgba(0,0,0,.1)}
+.tema-tabla{border-collapse:collapse;width:100%;min-width:520px;font-size:.92rem}
+.tema-tabla th,.tema-tabla td{padding:9px 11px;text-align:left;vertical-align:top;border-bottom:1px solid rgba(0,0,0,.08)}
+.tema-tabla thead th{background:#1C1B19;color:#fff;font-weight:600}
+.tema-tabla tbody tr:nth-child(even) td{background:rgba(201,138,44,.07)}
+@media (prefers-color-scheme:dark){.tema-figura img{border-color:rgba(255,255,255,.15)}.tema-figura figcaption{color:#B9B0A4}.tema-tabla tbody tr:nth-child(even) td{background:rgba(201,138,44,.12)}}

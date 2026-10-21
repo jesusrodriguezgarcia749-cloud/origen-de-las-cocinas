@@ -28,7 +28,7 @@ const PRESENTACION = {
       intro: "Hoy empiezas el recorrido por las 5 regiones del mundo, y arrancamos con África.",
       puntos: [
         "Vas a conocer el Magreb y el comercio transahariano.",
-        "Vas a distinguir 4 regiones africanas y sus rasgos distintivos.",
+        "Vas a distinguir 6 regiones africanas y entender cómo el clima decide su cocina.",
         "Vas a construir un mapa mural de África por equipos.",
         "Vas a investigar el origen africano de un platillo afrolatinoamericano."
       ] },
@@ -40,10 +40,38 @@ const PRESENTACION = {
       puntos: [
         "África tiene **54 países** y cientos de tradiciones culinarias distintas.",
         "No es una sola cocina: es un **mosaico** que comparte ingredientes de fondo como el sorgo, el mijo, el teff y el ñame.",
-        "Para estudiarla con orden la dividimos en **4 regiones**: Magreb, África Occidental, Cuerno de África y África Austral.",
+        "Para estudiarla con orden la dividimos en **6 regiones**: Norte de África, Occidental, Central, Oriental y Cuerno, Austral, e islas del Índico.",
         "El hilo de todo el Tema 3: casi ninguna cocina es “pura”; todas nacen del **comercio, la migración, la conquista y la adaptación al entorno**."
       ],
       pasoAPaso: true },
+
+    { tipo: "imagen",
+      titulo: "Las seis regiones culinarias de África",
+      imagen: "img/africa-regiones.svg",
+      pie: "Agrupación didáctica basada en las regiones de la ONU. 54 países, unos 30 millones de km².",
+      notas: "En África cabrían juntos Estados Unidos, China, India y buena parte de Europa. Señala el Sahara, el Sahel, la cuenca del Congo, el altiplano etíope y el Kalahari: el clima decide qué se cultiva." },
+
+    { tipo: "tabla",
+      titulo: "La geografía decide la mesa",
+      columnas: ["Paisaje", "Dónde", "Qué se cultiva y se come"],
+      filas: [
+        ["Costa mediterránea", "Magreb, Egipto y el Cabo", "Trigo, cebada, olivo, vid, cítricos"],
+        ["Desierto", "Sahara (9 millones de km²), Kalahari, Namib", "Dátiles de los oasis, camellos, cabras"],
+        ["Sahel", "Franja semiárida al sur del Sahara", "Mijo y sorgo, ganado trashumante"],
+        ["Selva tropical", "Cuenca del Congo y golfo de Guinea", "Tubérculos, plátano, aceite de palma, pescado de río"],
+        ["Tierras altas", "Altiplano etíope, Kilimanjaro (5,895 m)", "Teff y café"]
+      ],
+      notas: "El continente cruza el ecuador por la mitad: los climas se repiten como en espejo hacia el norte y hacia el sur." },
+
+    { tipo: "tabla",
+      titulo: "¿Es de África o llegó después?",
+      columnas: ["Origen", "Ingredientes"],
+      filas: [
+        ["Domesticados en África", "Sorgo, mijo, **arroz africano**, teff, ñame, caupí, **okra**, **sandía**, palma de aceite, **café**"],
+        ["Llegados de **América** (siglo XVI)", "Maíz, yuca, cacahuate, chile, jitomate, camote"],
+        ["Llegados de **Asia** por el Índico", "Plátano, arroz asiático, caña de azúcar, clavo, canela"]
+      ],
+      notas: "Gancho con México: el mafé se espesa con cacahuate americano y la vainilla de Madagascar es originaria de Papantla. La cocina africana actual también es mestiza." },
 
     { tipo: "pregunta",
       pregunta: "¿Qué ingrediente de origen africano crees que ya has comido sin saberlo?",
@@ -122,8 +150,8 @@ const PRESENTACION = {
       ] },
 
     { tipo: "dato",
-      cifra: "30,000",
-      texto: "camellos podía reunir una sola caravana transahariana en su mejor época.",
+      cifra: "1,600 a 2,000 km",
+      texto: "de desierto cruzaban las caravanas de **miles de camellos** que unían el Magreb con los imperios del Sahel.",
       fuente: "Libro de texto, Tema 3.1" },
 
     { tipo: "tema",
@@ -149,15 +177,17 @@ const PRESENTACION = {
       notas: "Alternativa más larga, también en español: “Historia del Imperio de Malí — Resumen”, https://www.youtube.com/watch?v=t-u_xFIVBIk" },
 
     { tipo: "tabla",
-      titulo: "Cuatro regiones de África",
+      titulo: "Seis regiones de África",
       minutos: "41-65", evaluacion: "Formativo",
       notas: "Presenta la tabla completa y luego baja con la flecha a cada región.",
       columnas: ["Región", "Ingredientes base", "Lo más representativo"],
       filas: [
-        ["Magreb", "Sémola de trigo, especias, aceitunas, cítricos", "Cuscús, tajín y la herencia bereber, árabe y otomana"],
-        ["África Occidental", "Arroz, mijo, sorgo, ñame, yuca, plátano, maní, aceite de palma", "Guisos muy especiados; arroz jollof y fufu"],
-        ["Cuerno de África", "Teff", "La injera, pan fermentado que también sirve de cubierto"],
-        ["África Austral", "Carnes, especias del Cabo", "El braai y el bobotie de la cocina del Cabo Malayo"]
+        ["Norte de África", "Trigo, especias, aceitunas, cítricos, dátiles", "Cuscús, tajín; en Egipto, ful medames y koshari"],
+        ["África Occidental", "Mijo, sorgo, arroz, ñame, aceite de palma (y yuca y maní americanos)", "Jollof, fufu, thieboudienne, mafé"],
+        ["África Central", "Yuca, plátano macho, hojas verdes, nuez de palma", "Pondu y pollo moambe"],
+        ["Oriental y Cuerno", "Teff, maíz, café, especias del Índico", "Injera con wat, ugali, pilau"],
+        ["África Austral", "Maíz, carnes, especias del Cabo", "Braai, pap, biltong, bobotie"],
+        ["Islas del Índico", "Arroz, vainilla, clavo", "Romazava de Madagascar"]
       ],
       subtemas: [
         { tipo: "tema",
@@ -188,7 +218,7 @@ const PRESENTACION = {
             "Etiopía y Eritrea, principalmente.",
             "El **teff** es uno de los granos más pequeños del mundo y es muy nutritivo.",
             "Con él se hace la **injera**: pan esponjoso y fermentado que es a la vez **plato, cubierto y alimento**.",
-            "Se acompaña de guisos estofados llamados **tsebhi**, o de otro pan plano, la **taita**.",
+            "Se acompaña de guisos llamados **wat** (en Eritrea, tsebhi), sazonados con **berbere**, mezcla de chile y especias.",
             "Etiopía es la tierra de origen del **café**. Su cocina muestra influencias otomanas e italianas."
           ],
           pasoAPaso: true },
@@ -203,6 +233,40 @@ const PRESENTACION = {
             "**Lentejas, garbanzos y hojas verdes:** abundan los guisos sin carne por los muchos días de ayuno de la Iglesia ortodoxa etíope.",
             "**Las tacitas sin asa** son de la ceremonia del café: Etiopía es su tierra de origen."
           ] },
+        { tipo: "tema",
+          titulo: "El café nació en Etiopía",
+          puntos: [
+            "La planta del café arábigo es originaria de los bosques de **Kaffa**, en el suroeste de Etiopía.",
+            "En el siglo XV pasó a **Yemen**, donde los sufíes lo bebían para sus rezos nocturnos; de ahí al Imperio otomano, a Europa y a América.",
+            "**La ceremonia del café**: se tuesta frente a los invitados, se muele y se sirven tres rondas en una jarra de barro, la jebena."
+          ],
+          pasoAPaso: true },
+        { tipo: "tema",
+          titulo: "La costa swahili: especias del Índico",
+          puntos: [
+            "**Kenia, Tanzania y Zanzíbar**: más de mil años de comercio con Arabia, Persia y la India.",
+            "**Pilau**, biryani, chapatis y samosas son parte de su mesa.",
+            "Zanzíbar, «la isla de las especias»: en el siglo XIX fue de los mayores productores de **clavo** del mundo.",
+            "Tierra adentro: **ugali** (masa de maíz), **nyama choma** (carne asada) y **matoke** (plátano de cocción)."
+          ],
+          pasoAPaso: true },
+        { tipo: "tema",
+          titulo: "Egipto: pan y cerveza",
+          puntos: [
+            "En el antiguo Egipto, el **pan y la cerveza** eran la base de la dieta y **parte del salario**: los constructores de las pirámides recibían raciones diarias.",
+            "Hoy: **ful medames** (habas), **taamiya** (falafel de habas) y **molokhia** (sopa de hojas).",
+            "**Koshari**: arroz, lentejas, pasta y jitomate en un solo plato del siglo XIX, una fusión de varias herencias."
+          ],
+          pasoAPaso: true },
+        { tipo: "tema",
+          titulo: "África Central: la cuenca del Congo",
+          puntos: [
+            "Selva húmeda con lluvia todo el año: más **tubérculos y hojas** que cereales.",
+            "La **yuca**, llegada de América, es el alimento central: **chikwangue** (masa fermentada) y **pondu** (guiso de sus hojas).",
+            "**Pollo moambe**, en salsa de nuez de palma: plato nacional de los dos Congos.",
+            "Pescado de río ahumado e **insectos comestibles**, como en México los chapulines."
+          ],
+          pasoAPaso: true },
         { tipo: "tema",
           titulo: "África Austral: el braai y el Cabo",
           puntos: [
@@ -246,6 +310,16 @@ const PRESENTACION = {
         "Extra: tracen la **ruta transahariana** entre el Magreb y el Sahel.",
         "Al terminar, cada equipo explica su mapa en un minuto."
       ] },
+
+    { tipo: "tema",
+      titulo: "Madagascar y la vainilla de Papantla",
+      puntos: [
+        "Madagascar la poblaron hace unos 1,500 años navegantes **austronesios** llegados desde **Borneo**: por eso su base es el **arroz**.",
+        "Hoy es el **mayor productor de vainilla del mundo**… pero la vainilla es originaria de **Papantla, Veracruz**.",
+        "Fuera de México la planta florecía sin dar fruto, hasta que en **1841 Edmond Albius**, un joven de 12 años esclavizado en la isla de la Reunión, inventó la **polinización manual** que todavía se usa."
+      ],
+      notas: "Excelente puente con el 3.2: un ingrediente totonaca que hoy sostiene la economía de una isla africana.",
+      pasoAPaso: true },
 
     { tipo: "tema",
       titulo: "La diáspora forzada",

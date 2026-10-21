@@ -24,7 +24,12 @@ function resaltarTexto(texto, termino) {
   return escapado.replace(re, '<mark class="tema-highlight">$1</mark>');
 }
 
+// **texto** se muestra en negritas (después de escapar el HTML).
+function conNegritas(html) { return html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>'); }
+
 function tipoDeLinea(linea) {
+  if (linea.startsWith('IMAGEN:')) return 'imagen';
+  if (linea.startsWith('TABLA:')) return 'tabla';
   if (linea.startsWith('§ ')) return 'titulo';
   if (/^(RECUERDA|IMPORTANTE|NOTA):/i.test(linea)) return 'callout';
   if (linea.startsWith('• ')) return 'bullet';
@@ -37,7 +42,7 @@ function renderContenido(contenido, termino) {
 
   const cerrarLista = () => {
     if (bulletBuffer.length) {
-      html += `<ul class="tema-bullet-list">${bulletBuffer.map(b => `<li>${resaltarTexto(b, termino)}</li>`).join('')}</ul>`;
+      html += `<ul class="tema-bullet-list">${bulletBuffer.map(b => `<li>${conNegritas(resaltarTexto(b, termino))}</li>`).join('')}</ul>`;
       bulletBuffer = [];
     }
   };
@@ -47,15 +52,24 @@ function renderContenido(contenido, termino) {
     if (tipo === 'bullet') { bulletBuffer.push(linea.slice(2)); return; }
     cerrarLista();
 
-    if (tipo === 'titulo') {
+    if (tipo === 'imagen') {
+      // IMAGEN: ruta | pie de figura
+      const [ruta, pie] = linea.slice(7).split('|').map(t => t.trim());
+      html += `<figure class="tema-figura"><a href="${escaparHTML(ruta)}" target="_blank" rel="noopener"><img src="${escaparHTML(ruta)}" alt="${escaparHTML(pie || '')}" loading="lazy"></a>${pie ? `<figcaption>${conNegritas(escaparHTML(pie))}</figcaption>` : ''}</figure>`;
+    } else if (tipo === 'tabla') {
+      // TABLA: encabezado | encabezado ¶ celda | celda ¶ ...
+      const filas = linea.slice(6).split('¶').map(f => f.split('|').map(c => c.trim()));
+      const [cab, ...cuerpo] = filas;
+      html += `<div class="tema-tabla-envol"><table class="tema-tabla"><thead><tr>${cab.map(c => `<th>${conNegritas(resaltarTexto(c, termino))}</th>`).join('')}</tr></thead><tbody>${cuerpo.map(f => `<tr>${f.map(c => `<td>${conNegritas(resaltarTexto(c, termino))}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+    } else if (tipo === 'titulo') {
       html += `<h3 class="tema-section-title">${resaltarTexto(linea.slice(2), termino)}</h3>`;
     } else if (tipo === 'callout') {
       const m = linea.match(/^(RECUERDA|IMPORTANTE|NOTA):\s*(.*)$/i);
       const etiqueta = m[1].toUpperCase();
       const resto = m[2];
-      html += `<div class="tema-callout"><span class="tema-callout-tag">${etiqueta}</span><p>${resaltarTexto(resto, termino)}</p></div>`;
+      html += `<div class="tema-callout"><span class="tema-callout-tag">${etiqueta}</span><p>${conNegritas(resaltarTexto(resto, termino))}</p></div>`;
     } else {
-      html += `<p>${resaltarTexto(linea, termino)}</p>`;
+      html += `<p>${conNegritas(resaltarTexto(linea, termino))}</p>`;
     }
   });
 

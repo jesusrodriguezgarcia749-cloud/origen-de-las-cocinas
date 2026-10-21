@@ -727,6 +727,125 @@
    ],
    "correcta": 0,
    "explicacion": "La respuesta es: UNESCO."
+  },
+  {
+   "id": "oc-199",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuántos países reconocidos por la ONU tiene el continente africano?",
+   "opciones": [
+    "54",
+    "12",
+    "27",
+    "100"
+   ],
+   "correcta": 0,
+   "explicacion": "África tiene 54 países, unos 30 millones de km² y más de 1,400 millones de habitantes."
+  },
+  {
+   "id": "oc-200",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué cereales son la base del Sahel, la franja semiárida al sur del Sahara?",
+   "opciones": [
+    "El mijo y el sorgo",
+    "El trigo y la cebada",
+    "El teff y la avena",
+    "El maíz y el centeno"
+   ],
+   "correcta": 0,
+   "explicacion": "Son cereales capaces de crecer con muy poca lluvia."
+  },
+  {
+   "id": "oc-201",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuál de estos alimentos llegó a África desde América en el siglo XVI?",
+   "opciones": [
+    "La yuca",
+    "El sorgo",
+    "El teff",
+    "La okra"
+   ],
+   "correcta": 0,
+   "explicacion": "Maíz, yuca, cacahuate, chile, jitomate y camote llegaron de América en barcos portugueses."
+  },
+  {
+   "id": "oc-202",
+   "subtema": "3.1",
+   "tipo": "verdadero_falso",
+   "pregunta": "El café es originario de los bosques del suroeste de Etiopía.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 0,
+   "explicacion": "De la región de Kaffa pasó a Yemen en el siglo XV y de ahí al mundo."
+  },
+  {
+   "id": "oc-203",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué eran el pan y la cerveza en el antiguo Egipto, además de alimento?",
+   "opciones": [
+    "Parte del salario de los trabajadores",
+    "Ofrendas prohibidas al pueblo",
+    "Productos exclusivos de la nobleza",
+    "Mercancías traídas de Roma"
+   ],
+   "correcta": 0,
+   "explicacion": "Los constructores de las pirámides recibían raciones diarias de pan y cerveza."
+  },
+  {
+   "id": "oc-204",
+   "subtema": "3.1",
+   "tipo": "relacionar",
+   "pregunta": "Relaciona cada platillo con su región de África.",
+   "pares": [
+    {
+     "izquierda": "Jollof",
+     "derecha": "África Occidental"
+    },
+    {
+     "izquierda": "Tajín",
+     "derecha": "Magreb"
+    },
+    {
+     "izquierda": "Injera con wat",
+     "derecha": "Cuerno de África"
+    },
+    {
+     "izquierda": "Pollo moambe",
+     "derecha": "África Central"
+    }
+   ],
+   "explicacion": "Cada región tiene platillos propios según su clima e historia."
+  },
+  {
+   "id": "oc-205",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué país africano es hoy el mayor productor de vainilla del mundo, aunque la vainilla es originaria de Papantla, Veracruz?",
+   "opciones": [
+    "Madagascar",
+    "Egipto",
+    "Marruecos",
+    "Nigeria"
+   ],
+   "correcta": 0,
+   "explicacion": "En 1841 Edmond Albius inventó la polinización manual que hizo posible cultivarla fuera de México."
+  },
+  {
+   "id": "oc-206",
+   "subtema": "3.1",
+   "tipo": "verdadero_falso",
+   "pregunta": "La Constitución mexicana reconoce desde 2019 a los pueblos y comunidades afromexicanas.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 0,
+   "explicacion": "Son la «tercera raíz» de México, presentes en la Costa Chica y en Veracruz."
   }
  ]
-  }
+}
