@@ -13,7 +13,7 @@
     "Del número de comensales"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: De la frecuencia y el contexto en que se prepara."
+   "explicacion": "El régimen depende de cuándo y para quién se cocina: diario, dominical o festivo."
   },
   {
    "id": "oc-62",
@@ -48,7 +48,7 @@
     "El Año Nuevo chino"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: El iftar."
+   "explicacion": "El iftar rompe cada tarde el ayuno del Ramadán."
   },
   {
    "id": "oc-64",
@@ -60,7 +60,7 @@
     "Falso"
    ],
    "correcta": 0,
-   "explicacion": "Verdadero, según el compendio."
+   "explicacion": "Un mole puede ser comida diaria en una casa y platillo de fiesta en otra."
   },
   {
    "id": "oc-65",
@@ -74,7 +74,7 @@
     "Iftar"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: Pésaj."
+   "explicacion": "El séder de Pésaj recuerda el Éxodo con alimentos simbólicos como el pan ácimo y las hierbas amargas."
   },
   {
    "id": "oc-67",
@@ -88,7 +88,7 @@
     "Deconstrucción y foraging"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: Mezcla intensa de especias importadas."
+   "explicacion": "La cocina noble medieval se reconoce por la mezcla de especias importadas."
   },
   {
    "id": "oc-68",
@@ -139,7 +139,7 @@
     "Scappi"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: Escoffier."
+   "explicacion": "Escoffier codificó salsas madre, brigada y orden del menú."
   },
   {
    "id": "oc-72",
@@ -153,7 +153,7 @@
     "Menú fijo de precio único"
    ],
    "correcta": 0,
-   "explicacion": "Correcto: Espectáculo visual del banquete y postres fríos elaborados."
+   "explicacion": "El banquete renacentista era un espectáculo visual con postres fríos elaborados."
   },
   {
    "id": "oc-73",
@@ -167,7 +167,7 @@
     "Vivir en zonas templadas"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: Ser rumiante y de pezuña partida."
+   "explicacion": "El kashrut exige las dos condiciones: rumiar y tener pezuña partida."
   },
   {
    "id": "oc-74",
@@ -181,7 +181,7 @@
     "halal"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: shejitá."
+   "explicacion": "La shejitá es el sacrificio ritual judío que busca drenar la sangre."
   },
   {
    "id": "oc-75",
@@ -195,7 +195,7 @@
     "Langar"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: Dhabihah."
+   "explicacion": "La dhabihah es el sacrificio ritual islámico, invocando el nombre de Dios."
   },
   {
    "id": "oc-76",
@@ -207,7 +207,7 @@
     "Falso"
    ],
    "correcta": 0,
-   "explicacion": "Verdadero, según el compendio."
+   "explicacion": "El islam prohíbe el cerdo, la sangre y la carne sacrificada sin invocar a Dios."
   },
   {
    "id": "oc-77",
@@ -238,7 +238,7 @@
     "El nirvana"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: El ahimsa (no violencia)."
+   "explicacion": "El ahimsa, la no violencia hacia todo ser vivo, guía la dieta jainista."
   },
   {
    "id": "oc-79",
@@ -252,7 +252,7 @@
     "la semilla"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: planta."
+   "explicacion": "Arrancar un tubérculo mata a la planta completa; por eso los jainistas devotos lo evitan."
   },
   {
    "id": "oc-80",
@@ -278,7 +278,7 @@
     "El iftar"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: El langar."
+   "explicacion": "El langar es el comedor comunitario gratuito del sikhismo, donde todos comen juntos."
   },
   {
    "id": "oc-83",
@@ -292,7 +292,7 @@
     "El garum"
    ],
    "correcta": 0,
-   "explicacion": "Correcto: El hamín."
+   "explicacion": "Como no se enciende fuego en sabbat, el hamín se deja cociendo desde el viernes."
   },
   {
    "id": "oc-84",
@@ -306,7 +306,7 @@
     "Slow"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: Ital."
+   "explicacion": "La dieta ital rastafari busca alimentos naturales, sin cerdo, alcohol ni sal añadida."
   },
   {
    "id": "oc-85",
@@ -332,7 +332,7 @@
     "La cocina de fusión"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: La cocina clásica francesa de Escoffier."
+   "explicacion": "La cocina clásica de Escoffier es la base de la gastronomía profesional occidental."
   },
   {
    "id": "oc-89",
@@ -346,7 +346,7 @@
     "Ital"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: Slow Food."
+   "explicacion": "Slow Food nació en Italia en 1989 contra la comida rápida."
   },
   {
    "id": "oc-90",
@@ -360,7 +360,7 @@
     "Cocina de la corte imperial de Japón"
    ],
    "correcta": 0,
-   "explicacion": "Correcto: Fusión entre técnicas japonesas y sazón peruana."
+   "explicacion": "La cocina nikkei nació de la migración japonesa al Perú."
   },
   {
    "id": "oc-91",
@@ -386,7 +386,7 @@
     "Japón"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: Singapur."
+   "explicacion": "Singapur aprobó en 2020 la venta de carne cultivada."
   },
   {
    "id": "oc-94",
@@ -400,7 +400,7 @@
     "La dieta Ital"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: La cocina de fusión."
+   "explicacion": "Wolfgang Puck impulsó la cocina de fusión entre Asia y California."
   },
   {
    "id": "oc-95",
@@ -412,7 +412,7 @@
     "Falso"
    ],
    "correcta": 0,
-   "explicacion": "Verdadero, según el compendio."
+   "explicacion": "La nouvelle cuisine reaccionó a Escoffier; Slow Food, a la comida rápida."
   },
   {
    "id": "oc-97",
@@ -426,7 +426,7 @@
     "geográfica"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: dietética no religiosa."
+   "explicacion": "Vegetarianismo y veganismo son restricciones por ética, salud o ambiente, no por religión."
   },
   {
    "id": "oc-98",
@@ -440,7 +440,7 @@
     "Nacionalidad del chef"
    ],
    "correcta": 3,
-   "explicacion": "Correcto: Nacionalidad del chef."
+   "explicacion": "Los criterios del Tema 2 son régimen, época, religión y corriente; la nacionalidad del chef no es uno."
   },
   {
    "id": "oc-88",

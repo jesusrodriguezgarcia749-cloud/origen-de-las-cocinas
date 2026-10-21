@@ -1,302 +1,1316 @@
 {
-  "parcial": "final",
-  "titulo": "Examen Final — Integrador de los 4 temas de Origen de las Cocinas",
-  "config": { "preguntasPorExamen": 30, "minutos": 60 },
-  "reactivos": [
-
-    { "id": "pf-001", "subtema": "1.1", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué aporta Fisiología del gusto (1825) de Brillat-Savarin a la historia de la gastronomía, según el compendio?",
-      "opciones": [
-        "Convirtió el acto de comer en objeto de reflexión filosófica, fundando la literatura gastronómica moderna",
-        "Es el primer recetario documentado de la historia occidental",
-        "Es un tratado exclusivamente sobre técnicas de conservación de alimentos",
-        "Fue escrito en colaboración directa con Auguste Escoffier"
-      ], "correcta": 0,
-      "explicacion": "Brillat-Savarin es el fundador de la literatura gastronómica moderna precisamente por tratar el comer como objeto de reflexión, no solo de instrucción." },
-
-    { "id": "pf-002", "subtema": "1.2.1", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué revela la organización de De re coquinaria en diez libros, con unas 470 recetas, sobre la sociedad romana?",
-      "opciones": [
-        "Documenta una dieta patricia mucho más variada que la de la plebe, que subsistía de gachas, legumbres y salazones",
-        "Demuestra que toda la población romana comía exactamente igual, sin distinción de clase",
-        "Prueba que los romanos no consumían ningún tipo de ave o caza",
-        "Confirma que el libro fue escrito íntegramente por esclavos sin ninguna intervención de Apicio"
-      ], "correcta": 0,
-      "explicacion": "El repertorio sofisticado de aves exóticas y caza refleja la dieta patricia, muy distinta de la dieta popular basada en cereales y legumbres." },
-
-    { "id": "pf-003", "subtema": "1.2.4", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué cambio de fondo representó La Varenne respecto a la cocina medieval, más allá de sustituir unas especias por otras?",
-      "opciones": [
-        "Escribió el primer texto europeo dedicado por completo a instruir a otros cocineros en el oficio, no a la dietética o la medicina",
-        "Fue el primero en usar por escrito la palabra \"restaurante\"",
-        "Prohibió el uso de cualquier hierba local en sus recetas",
-        "Trabajó exclusivamente para la corte otomana, no para la francesa"
-      ], "correcta": 0,
-      "explicacion": "A diferencia de libros anteriores centrados en la dietética, Le Cuisinier François (1651) es el primero dedicado por completo a enseñar el oficio." },
-
-    { "id": "pf-004", "subtema": "1.6", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué patrón comparten la nouvelle cuisine (1973) y el manifiesto New Nordic (2004), según el compendio?",
-      "opciones": [
-        "Ambos nacieron como reacción a la corriente que los precedía: el exceso clásico y la hegemonía francesa, respectivamente",
-        "Ambos fueron fundados por el mismo grupo de chefs franceses",
-        "Ninguno de los dos tuvo ninguna influencia posterior en la gastronomía contemporánea",
-        "Ambos prohíben el uso de cualquier ingrediente importado"
-      ], "correcta": 0,
-      "explicacion": "Cada gran movimiento gastronómico contemporáneo nace como reacción a lo que lo precede, un patrón que se repite una y otra vez en el Tema 1." },
-
-    { "id": "pf-005", "subtema": "2.1", "tipo": "opcion_multiple",
-      "pregunta": "¿Por qué el mismo platillo puede considerarse, según el compendio, tanto cocina cotidiana como cocina de festejo?",
-      "opciones": [
-        "Porque el régimen depende de la frecuencia y el contexto en que se prepara, no del ingrediente en sí",
-        "Porque todos los platillos pertenecen simultáneamente a ambos regímenes por definición",
-        "Porque el régimen se determina exclusivamente por el precio de los ingredientes",
-        "Porque la cocina de festejo y la cotidiana son técnicamente idénticas"
-      ], "correcta": 0,
-      "explicacion": "El mismo mole puede ser comida diaria en una fonda o el plato central de una boda, dependiendo de cuándo y para quién se prepare." },
-
-    { "id": "pf-006", "subtema": "2.3", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué tienen en común las leyes de kashrut judías y las normas halal islámicas, más allá de pertenecer a religiones distintas?",
-      "opciones": [
-        "Ambas exigen un método de sacrificio ritual específico, aunque con procedimientos técnicos propios de cada tradición",
-        "Ambas prohíben exactamente los mismos animales, sin ninguna diferencia",
-        "Ninguna de las dos tiene relación con el sacrificio animal",
-        "Ambas se originaron en el mismo siglo y en la misma región geográfica"
-      ], "correcta": 0,
-      "explicacion": "Comparten la lógica del sacrificio ritual (shejitá y dhabihah respectivamente), pero cada una con su propio procedimiento técnico." },
-
-    { "id": "pf-007", "subtema": "2.4", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué pregunta sin resolver plantea la carne cultivada en laboratorio, aprobada comercialmente por primera vez en Singapur en 2020?",
-      "opciones": [
-        "Si sigue siendo \"carne\" en el sentido religioso de kashrut o halal, y a qué corriente gastronómica pertenece realmente",
-        "Si su producción es más cara que la carne convencional en todos los países",
-        "Si algún país distinto a Singapur permitirá su venta en el futuro",
-        "Si reemplazará por completo el consumo de carne animal en menos de un año"
-      ], "correcta": 0,
-      "explicacion": "El compendio señala estas preguntas como un recordatorio de que la tipología de la cocina sigue ajustándose conforme cambian tecnología y sociedad." },
-
-    { "id": "pf-008", "subtema": "3.2", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué tienen en común el pib maya y el hangi neozelandés, según el compendio?",
-      "opciones": [
-        "Ambos son técnicas de horno de tierra desarrolladas de forma completamente independiente en regiones distintas del mundo",
-        "El pib fue copiado directamente del hangi por comerciantes coloniales",
-        "Ambos requieren el uso exclusivo de cerdo como proteína principal",
-        "Ninguno de los dos tiene relación con la cocción en tierra"
-      ], "correcta": 0,
-      "explicacion": "Comparten la misma lógica de cocción lenta en un hoyo con piedras calientes, pero se desarrollaron de forma independiente en Mesoamérica y Oceanía." },
-
-    { "id": "pf-009", "subtema": "3.2", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué revela el caso del queso relleno campechano sobre la lógica general del Tema 3?",
-      "opciones": [
-        "Que ninguna cocina regional se explica por una sola herencia: combina un queso importado con técnicas y condimentos de raíz mestiza",
-        "Que Campeche nunca tuvo ningún contacto comercial con Europa",
-        "Que todos los quesos rellenos del mundo tienen el mismo origen campechano",
-        "Que el queso relleno es una receta exclusivamente prehispánica sin ninguna influencia posterior"
-      ], "correcta": 0,
-      "explicacion": "El maestro Meneses documenta siete influencias en la cocina campechana — el queso relleno resume esa lógica de mestizaje en un solo platillo." },
-
-    { "id": "pf-010", "subtema": "3.4", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué confirma el caso de la cocina francesa —enriquecida por Catalina de Médici y codificada por La Varenne— sobre las tradiciones culinarias europeas en general?",
-      "opciones": [
-        "Que ninguna gran tradición culinaria europea, ni siquiera la más \"clásica\", se desarrolló en aislamiento total de sus vecinos",
-        "Que Francia desarrolló su cocina sin ninguna influencia externa en toda su historia",
-        "Que Italia copió por completo su gastronomía de Francia en el siglo XX",
-        "Que la cocina francesa nació ya completamente codificada en el siglo XVI"
-      ], "correcta": 0,
-      "explicacion": "La cocina francesa, hoy vista como la más clásica, se construyó con aportes italianos del Renacimiento antes de codificarse técnicamente en el siglo XVII." },
-
-    { "id": "pf-011", "subtema": "4.3", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué idea conecta el grand couvert de Versalles con la cocina de palacio otomana y la corte imperial china, según el Tema 4?",
-      "opciones": [
-        "Que el poder político tiende a expresarse, en distintas cortes del mundo, en la sofisticación y el protocolo de la mesa",
-        "Que las tres cortes usaban exactamente el mismo menú y protocolo",
-        "Que ninguna de las tres tuvo relación con el poder político real",
-        "Que solo la corte francesa desarrolló un sistema de organización culinaria"
-      ], "correcta": 0,
-      "explicacion": "La lógica de la mesa como instrumento de poder se repite en cortes tan distintas como la francesa, la otomana, la china y la mogol." },
-
-    { "id": "pf-012", "subtema": "4.4", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué relación existe entre los thermopolia romanos (Tema 1) y las fondas del Porfiriato mexicano (Tema 4)?",
-      "opciones": [
-        "Ambos son circuitos de alimentación popular que existieron en paralelo a la alta cocina de su época respectiva",
-        "No existe ninguna relación entre ambos casos",
-        "Ambos fueron inventados por la misma persona en distintos siglos",
-        "Ambos son instituciones exclusivamente religiosas"
-      ], "correcta": 0,
-      "explicacion": "El compendio señala este paralelismo explícitamente: un circuito de alimentación popular casi nunca documentado con el mismo detalle que la alta cocina de su época." },
-
-    { "id": "pf-013", "subtema": "4.5", "tipo": "opcion_multiple",
-      "pregunta": "¿Por qué se dice que la profesionalización de la cocina, iniciada por Escoffier, es \"la razón última\" por la que existe esta licenciatura?",
-      "opciones": [
-        "Porque convirtió un oficio transmitido solo de forma oral y empírica en una disciplina enseñable de manera sistemática, con escuelas formales como Le Cordon Bleu",
-        "Porque Escoffier fundó personalmente esta institución educativa",
-        "Porque antes de Escoffier no existía ningún tipo de cocina profesional en el mundo",
-        "Porque la profesionalización eliminó por completo la necesidad de estudiar historia de la cocina"
-      ], "correcta": 0,
-      "explicacion": "Antes de la codificación de Escoffier, el oficio se aprendía solo por observación y repetición, lo que dificultaba que el conocimiento circulara entre cocinas." },
-
-    { "id": "pf-014", "subtema": "4.5", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué distingue a Le Cordon Bleu (1895) del Culinary Institute of America (1946), según el compendio?",
-      "opciones": [
-        "Le Cordon Bleu es la primera gran escuela culinaria formal del mundo; el CIA consolidó un modelo equivalente cinco décadas después en el ámbito anglosajón",
-        "El CIA se fundó primero, y Le Cordon Bleu lo imitó después",
-        "Ambas escuelas fueron fundadas por Auguste Escoffier en persona",
-        "Le Cordon Bleu nunca ha aceptado alumnas mujeres en toda su historia"
-      ], "correcta": 0,
-      "explicacion": "Le Cordon Bleu (1895, fundada por Marthe Distel) antecede por más de cinco décadas al Culinary Institute of America (1946)." },
-
-    { "id": "pf-015", "subtema": "4.5", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué revela la historia de las mujeres en la cocina profesional, según el cierre del compendio?",
-      "opciones": [
-        "Una historia de exclusión durante más de un siglo, con apertura progresiva acelerada en la segunda mitad del siglo XX gracias a figuras como Julia Child",
-        "Que las mujeres siempre tuvieron el mismo acceso que los hombres a la alta cocina profesional",
-        "Que Marthe Distel fue la primera mujer en dirigir una cocina de restaurante",
-        "Que la cocina doméstica y la profesional nunca tuvieron ninguna diferencia de género"
-      ], "correcta": 0,
-      "explicacion": "Mientras la cocina doméstica se asignaba históricamente a las mujeres, la alta cocina profesional fue casi exclusivamente masculina durante más de un siglo." },
-
-    { "id": "pf-016", "subtema": "4.5", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué reconocimiento recibió la cocina tradicional mexicana por parte de la UNESCO, y en qué año?",
-      "opciones": [
-        "Patrimonio Cultural Inmaterial de la Humanidad, en 2010",
-        "Patrimonio Cultural Inmaterial de la Humanidad, en 2020",
-        "Ningún reconocimiento formal hasta la fecha",
-        "El título de \"mejor cocina del mundo\" otorgado por la Guía Michelin"
-      ], "correcta": 0,
-      "explicacion": "La cocina tradicional mexicana fue reconocida en 2010, el mismo año que la comida gastronómica de los franceses." },
-
-    { "id": "pf-017", "subtema": "4.5", "tipo": "verdadero_falso",
-      "pregunta": "El Bocuse d'Or, fundado en 1987 por Paul Bocuse, es considerado el campeonato mundial de cocina más prestigioso, celebrado cada dos años en Lyon.",
-      "opciones": ["Verdadero", "Falso"], "correcta": 0,
-      "explicacion": "Confirmado por el compendio: Paul Bocuse, el mismo chef que ayudó a fundar la nouvelle cuisine, fundó también este campeonato mundial." },
-
-    { "id": "pf-018", "subtema": "4.5", "tipo": "relacionar",
-      "pregunta": "Relaciona cada hito de la profesionalización de la cocina con su año o período.",
-      "pares": [
-        { "izquierda": "Fundación de Le Cordon Bleu", "derecha": "1895" },
-        { "izquierda": "Fundación del Culinary Institute of America", "derecha": "1946" },
-        { "izquierda": "Julia Child estrena The French Chef en televisión", "derecha": "1963" },
-        { "izquierda": "Paul Bocuse funda el Bocuse d'Or", "derecha": "1987" }
-      ],
-      "explicacion": "Cada hito marca una etapa distinta de la profesionalización y difusión pública del oficio culinario a lo largo del siglo XX." },
-
-    { "id": "pf-019", "subtema": "1.4", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué tienen en común el descubrimiento del microondas y la invención de la primera estufa eléctrica doméstica?",
-      "opciones": [
-        "Ambos muestran que una tecnología puede tardar décadas en volverse cotidiana después de su invención inicial",
-        "Ambos fueron inventados por la misma persona en el mismo año",
-        "Ninguno de los dos tuvo relación con la industria militar o de radares",
-        "Ambos se popularizaron de forma inmediata, sin ningún retraso"
-      ], "correcta": 0,
-      "explicacion": "La cocina eléctrica se inventó en el siglo XIX pero tardó más de sesenta años en volverse cotidiana; el microondas doméstico tardó décadas tras su descubrimiento accidental en 1945." },
-
-    { "id": "pf-020", "subtema": "3.1", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué papel jugó el comercio transahariano en la historia de África occidental, según el compendio?",
-      "opciones": [
-        "Conectó al Magreb con los imperios de Ghana, Malí y Songhay, siendo también el canal de difusión del islam y de saberes culinarios",
-        "Fue exclusivamente una ruta de esclavitud sin ningún otro propósito comercial",
-        "Conectó África con Asia, sin ninguna relación con Europa o el Magreb",
-        "Fue una ruta marítima operada por comerciantes portugueses"
-      ], "correcta": 0,
-      "explicacion": "El comercio transahariano, basado en oro y sal, fue el motor que convirtió pequeños reinos del Sahel en imperios y el canal por el que el islam llegó a África occidental." },
-
-    { "id": "pf-021", "subtema": "3.3", "tipo": "opcion_multiple",
-      "pregunta": "¿Por qué se compara hablar de \"cocina asiática\" con hablar de \"cocina europea\" sin distinguir países, según el compendio?",
-      "opciones": [
-        "Porque Asia alberga subregiones (Oriental, del Sur, Sureste, Medio Oriente, Central) con lógicas culinarias propias y distintas entre sí",
-        "Porque en realidad Asia tiene menos variedad culinaria que cualquier otro continente",
-        "Porque todos los países asiáticos comparten exactamente los mismos ingredientes",
-        "Porque el término \"Asia\" no incluye ninguna tradición culinaria documentada"
-      ], "correcta": 0,
-      "explicacion": "Asia es el continente más extenso y poblado del mundo, con una diversidad interna comparable a la de toda Europa." },
-
-    { "id": "pf-022", "subtema": "2.2", "tipo": "opcion_multiple",
-      "pregunta": "¿Con qué propósito citan los chefs de vanguardia, de forma deliberada, técnicas o estéticas de épocas históricas concretas?",
-      "opciones": [
-        "Como recurso narrativo para contar una historia a través del menú",
-        "Porque la legislación gastronómica internacional los obliga a hacerlo",
-        "Porque no existen técnicas contemporáneas disponibles",
-        "Para evitar cualquier innovación dentro de su propio restaurante"
-      ], "correcta": 0,
-      "explicacion": "Cada época deja una \"firma\" reconocible que puede citarse deliberadamente como recurso narrativo, tal como plantea el Tema 2." },
-
-    { "id": "pf-023", "subtema": "1.2.3", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué hace especialmente valiosa a la Opera dell'arte del cucinare (1570) de Scappi como documento histórico?",
-      "opciones": [
-        "Incluye, por primera vez en la historia editorial de la cocina, ilustraciones detalladas de la organización de una cocina profesional real",
-        "Es el único libro de cocina que se conserva completo de todo el Renacimiento",
-        "Fue escrito en colaboración directa con Catalina de Médici",
-        "Prohíbe explícitamente cualquier banquete de más de cien invitados"
-      ], "correcta": 0,
-      "explicacion": "Scappi documentó, con ilustraciones, cómo se organizaba físicamente una cocina profesional real — algo sin precedente editorial hasta entonces." },
-
-    { "id": "pf-024", "subtema": "3.5", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué ilustra el \"plate lunch\" hawaiano sobre la gastronomía de Oceanía, según el compendio?",
-      "opciones": [
-        "La lógica de capas históricas: sobre la base polinesia se superpuso la cocina de trabajadores migrantes de las plantaciones de azúcar y piña",
-        "Que Hawái nunca tuvo ninguna influencia externa a la cultura polinesia original",
-        "Que el horno de tierra es exclusivo de Hawái, no compartido con otras islas del Pacífico",
-        "Que la cocina hawaiana es completamente idéntica a la cocina japonesa"
-      ], "correcta": 0,
-      "explicacion": "El plate lunch combina arroz japonés, ensalada de macarrón estadounidense y carnes filipinas o coreanas — una fusión migrante tan legítima como la nikkei." },
-
-    { "id": "pf-025", "subtema": "2.4", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué papel cumple la corriente clásica de Escoffier respecto a las corrientes gastronómicas posteriores, según el compendio?",
-      "opciones": [
-        "Es la corriente fundacional frente a la cual se definen, en oposición o continuidad, casi todas las corrientes posteriores",
-        "Desapareció por completo tras la aparición de la nouvelle cuisine",
-        "No tiene ninguna relación con las corrientes de ruptura del siglo XX",
-        "Fue superada y olvidada antes de que existiera Le Cordon Bleu"
-      ], "correcta": 0,
-      "explicacion": "Escoffier estableció la brigada de cocina y una gramática de técnicas que se enseña hasta hoy — el punto de partida frente al cual se definen las demás corrientes." },
-
-    { "id": "pf-026", "subtema": "1.1", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué distingue el enfoque de Jeffrey Pilcher del de Paul Freedman, según los autores de referencia del Tema 1?",
-      "opciones": [
-        "Pilcher estudia la construcción de la identidad culinaria mexicana; Freedman estudia la historia del gusto y las preferencias sensoriales",
-        "Ambos autores estudian exclusivamente la cocina francesa clásica",
-        "Freedman es quien documenta la identidad mexicana, y Pilcher el gusto sensorial",
-        "No existe ninguna diferencia entre los enfoques de ambos autores"
-      ], "correcta": 0,
-      "explicacion": "Cada autor de referencia contemporáneo tiene una línea de investigación documentada y distinta, aunque todos forman parte del mismo campo académico reciente." },
-
-    { "id": "pf-027", "subtema": "3.2", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué distingue a la cocina mexica del Valle de México de la cocina maya de la península, dentro del mismo tronco mesoamericano?",
-      "opciones": [
-        "La mexica usaba comal de barro y chinampas; la maya desarrolló el pib (horno de tierra) y el sistema pet kot",
-        "Ambas culturas usaban exactamente las mismas técnicas agrícolas y de cocción",
-        "La cocina maya no conocía el maíz, a diferencia de la mexica",
-        "La mexica desarrolló el pib, y la maya las chinampas"
-      ], "correcta": 0,
-      "explicacion": "Ambas compartían el tronco maíz-frijol-chile, pero desarrollaron técnicas, condimentos y sistemas agrícolas propios y distintos entre sí." },
-
-    { "id": "pf-028", "subtema": "1.5", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué antecedente arqueológico documentado tiene la cocina de calle contemporánea, según el compendio?",
-      "opciones": [
-        "Los thermopolia de la Antigua Roma, documentados en las excavaciones de Pompeya",
-        "Las cocinas económicas mexicanas del siglo XX",
-        "El restaurante Delmonico's de Nueva York",
-        "La corte otomana del Topkapi"
-      ], "correcta": 0,
-      "explicacion": "Los thermopolia romanos son el antecedente arqueológico más antiguo documentado de la misma lógica de consumo rápido en la calle." },
-
-    { "id": "pf-029", "subtema": "3.4", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué distingue a la cocina judía sefardí de la asquenazí, según el compendio?",
-      "opciones": [
-        "Ambas cumplen las mismas leyes de kashrut, pero con repertorios de ingredientes completamente distintos según su geografía de desarrollo",
-        "La asquenazí se desarrolló en España, y la sefardí en Rusia",
-        "Solo la sefardí sigue normas religiosas; la asquenazí no tiene ninguna restricción",
-        "Ambas son idénticas, con la única diferencia del idioma hablado por sus comunidades"
-      ], "correcta": 0,
-      "explicacion": "Es un ejemplo de cómo una misma norma religiosa produce tradiciones culinarias distintas según la geografía en la que se desarrolla la comunidad." },
-
-    { "id": "pf-030", "subtema": "4.4", "tipo": "opcion_multiple",
-      "pregunta": "¿Qué distingue al modelo de Boulanger (1765) del de McDonald's (1940), aunque ambos sean parte de la historia del restaurante?",
-      "opciones": [
-        "Boulanger introdujo la libertad de elegir y sentarse cuando se quisiera; McDonald's estandarizó el menú y la producción, invirtiendo esa misma lógica",
-        "Ambos modelos son exactamente idénticos, solo cambia la fecha de fundación",
-        "McDonald's fue fundado antes que el establecimiento de Boulanger",
-        "Ninguno de los dos tuvo ninguna influencia en la historia de la restauración"
-      ], "correcta": 0,
-      "explicacion": "El contraste entre Delmonico's/Boulanger y McDonald's resume dos extremos opuestos de la misma pregunta: ¿para qué comemos fuera de casa?" }
-  ]
+ "parcial": "final",
+ "titulo": "Examen Final — Integrador de los 4 temas de Origen de las Cocinas",
+ "config": {
+  "preguntasPorExamen": 40,
+  "minutos": 60,
+  "seleccion": "por_subtema"
+ },
+ "reactivos": [
+  {
+   "id": "fin-001",
+   "subtema": "1.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "Si un trabajo de investigación cita la obra fundadora de la literatura gastronómica moderna, ¿qué autor y fecha debe aparecer?",
+   "opciones": [
+    "Escoffier, 1903",
+    "Grimod de La Reynière, 1803",
+    "La Varenne, 1651",
+    "Brillat-Savarin, 1825"
+   ],
+   "correcta": 3,
+   "explicacion": "Brillat-Savarin publicó la Fisiología del gusto en 1825.",
+   "gemela": "oc-1"
+  },
+  {
+   "id": "fin-002",
+   "subtema": "1.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué idea resume el aforismo «Dime lo que comes y te diré quién eres»?",
+   "opciones": [
+    "Que cada persona debería comer solo lo que produce su región",
+    "Que el gusto es una sensación física igual en todos los humanos",
+    "Que la comida revela la identidad de una persona o un pueblo",
+    "Que la salud depende sobre todo de la cantidad que se come"
+   ],
+   "correcta": 2,
+   "explicacion": "Para Brillat-Savarin, la comida expresa quién eres.",
+   "gemela": "oc-3"
+  },
+  {
+   "id": "fin-003",
+   "subtema": "1.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué distingue a las recetas mesopotámicas de hacia 1750 a.C. de un recetario moderno?",
+   "opciones": [
+    "Fueron escritas por cocineros griegos de Alejandría",
+    "No indican medidas exactas de los ingredientes",
+    "Están escritas en papiro y no en tablillas de barro",
+    "No mencionan ningún tipo de carne ni de ave"
+   ],
+   "correcta": 1,
+   "explicacion": "Las tablillas listan ingredientes y pasos, pero no cantidades precisas.",
+   "gemela": "oc-4"
+  },
+  {
+   "id": "fin-004",
+   "subtema": "1.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "Una alumna quiere estudiar cómo la cocina se relaciona con los imperios y la religión a lo largo de miles de años. ¿A qué historiadora debe leer?",
+   "opciones": [
+    "Massimo Montanari",
+    "Paul Freedman",
+    "Jeffrey Pilcher",
+    "Rachel Laudan"
+   ],
+   "correcta": 3,
+   "explicacion": "Laudan, Cuisine and Empire (2013).",
+   "gemela": "oc-6"
+  },
+  {
+   "id": "fin-005",
+   "subtema": "1.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Por qué hay que leer con cuidado La cocina cristiana de Occidente de Álvaro Cunqueiro como fuente histórica?",
+   "opciones": [
+    "Porque solo trata de recetas de monasterios medievales",
+    "Porque contradice todo lo que dice Brillat-Savarin",
+    "Porque fue escrita en latín y no se ha traducido",
+    "Porque mezcla hechos reales con anécdotas inventadas"
+   ],
+   "correcta": 3,
+   "explicacion": "Cunqueiro tiene un estilo literario, no de historiador.",
+   "gemela": "oc-7"
+  },
+  {
+   "id": "fin-006",
+   "subtema": "1.2.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuál es la descripción correcta de De re coquinaria?",
+   "opciones": [
+    "Recetario medieval atribuido a Taillevent, en diez libros",
+    "Tratado renacentista de Scappi, en seis libros",
+    "Recetario romano atribuido a Lúculo, en once libros",
+    "Recetario romano atribuido a Apicio, en diez libros"
+   ],
+   "correcta": 3,
+   "explicacion": "Atribuido a Apicio, unas 470 recetas en diez libros.",
+   "gemela": "oc-9"
+  },
+  {
+   "id": "fin-007",
+   "subtema": "1.2.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "En una cena romana, ¿en qué tiempo se servían los huevos, las aceitunas y el vino endulzado?",
+   "opciones": [
+    "En la prima mensa",
+    "En la annona",
+    "En la gustatio",
+    "En la secunda mensa"
+   ],
+   "correcta": 2,
+   "explicacion": "La gustatio era la entrada.",
+   "gemela": "oc-13"
+  },
+  {
+   "id": "fin-008",
+   "subtema": "1.2.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "Un arqueólogo encuentra en Pompeya un mostrador con tinajas empotradas abierto a la calle. ¿Qué encontró?",
+   "opciones": [
+    "Un thermopolium",
+    "Una insula",
+    "Una ánfora de garum",
+    "Un triclinio"
+   ],
+   "correcta": 0,
+   "explicacion": "Los thermopolia vendían comida caliente en la calle.",
+   "gemela": "oc-14"
+  },
+  {
+   "id": "fin-009",
+   "subtema": "1.2.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Por qué la nobleza medieval consumía tantas especias?",
+   "opciones": [
+    "Para conservar la carne sin sal",
+    "Para mostrar riqueza y estatus",
+    "Para sustituir el azúcar, que no existía",
+    "Para cumplir las normas de la Iglesia"
+   ],
+   "correcta": 1,
+   "explicacion": "Las especias eran símbolo de estatus, no un método de conservación.",
+   "gemela": "oc-18"
+  },
+  {
+   "id": "fin-010",
+   "subtema": "1.2.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué papel tuvieron los monasterios en la alimentación medieval?",
+   "opciones": [
+    "Organizaban los banquetes públicos del rey",
+    "Prohibieron el uso de especias en toda Europa",
+    "Fueron centros de innovación agrícola y de conservación",
+    "Fueron los primeros restaurantes públicos con carta y precios fijos"
+   ],
+   "correcta": 2,
+   "explicacion": "Salazón, ahumado, quesos, cerveza y huertos.",
+   "gemela": "oc-22"
+  },
+  {
+   "id": "fin-011",
+   "subtema": "1.2.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuál de estos ingredientes NO podía estar en una mesa medieval europea?",
+   "opciones": [
+    "El azafrán de al-Ándalus",
+    "La pimienta",
+    "La canela",
+    "La vainilla"
+   ],
+   "correcta": 3,
+   "explicacion": "La vainilla es americana; llegó después de 1492.",
+   "gemela": "oc-20"
+  },
+  {
+   "id": "fin-012",
+   "subtema": "1.2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Por qué la Opera de Scappi (1570) se llama la «Biblia de la cocina renacentista»?",
+   "opciones": [
+    "Por haber sido escrita por encargo personal de Catalina de Médici",
+    "Por sus recetas, menús y grabados de una cocina profesional",
+    "Por ser el primer libro impreso sobre la cocina de corte",
+    "Por incluir los primeros ingredientes llegados de América"
+   ],
+   "correcta": 1,
+   "explicacion": "Scappi incluyó ilustraciones de utensilios y de la organización de la cocina.",
+   "gemela": "oc-23"
+  },
+  {
+   "id": "fin-013",
+   "subtema": "1.2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué postura es la más rigurosa sobre Catalina de Médici y la cocina francesa?",
+   "opciones": [
+    "Su llegada en 1533 no tuvo relación con la cocina",
+    "La influencia italiana fue real, pero muchos detalles son leyenda",
+    "Llevó a Francia el tenedor, los helados, la bechamel y sus cocineros florentinos",
+    "Escribió el primer recetario de la corte francesa"
+   ],
+   "correcta": 1,
+   "explicacion": "Se le atribuye mucho que los historiadores consideran leyenda.",
+   "gemela": "oc-25"
+  },
+  {
+   "id": "fin-014",
+   "subtema": "1.2.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuál de estos pares viajó en la misma dirección en el intercambio colombino?",
+   "opciones": [
+    "Trigo y cacao, del resto del mundo a América",
+    "Maíz y ganado, de América al resto del mundo",
+    "Trigo y maíz, del resto del mundo a América",
+    "Maíz y cacao, de América al resto del mundo"
+   ],
+   "correcta": 3,
+   "explicacion": "Maíz y cacao salieron de América; trigo y ganado llegaron.",
+   "gemela": "oc-30"
+  },
+  {
+   "id": "fin-015",
+   "subtema": "1.2.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué cambio marcó La Varenne con Le Cuisinier françois (1651)?",
+   "opciones": [
+    "Cambió las especias exóticas por hierbas locales frescas",
+    "Creó la brigada de cocina por estaciones",
+    "Introdujo el chile y el jitomate americanos en la cocina de corte",
+    "Abrió el primer restaurante de París"
+   ],
+   "correcta": 0,
+   "explicacion": "Perejil, tomillo, laurel y estragón en lugar de especias medievales.",
+   "gemela": "oc-31"
+  },
+  {
+   "id": "fin-016",
+   "subtema": "1.2.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Por qué Antoine Parmentier promovió la papa en Francia?",
+   "opciones": [
+    "La conoció como alimento siendo prisionero de guerra",
+    "La recomendó la Iglesia para la Cuaresma",
+    "La vio en los banquetes de Versalles",
+    "La trajo personalmente de América en un viaje de exploración científica"
+   ],
+   "correcta": 0,
+   "explicacion": "Sobrevivió comiéndola en prisión y la defendió después.",
+   "gemela": "oc-34"
+  },
+  {
+   "id": "fin-017",
+   "subtema": "1.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "Cuando el compendio habla de «cocina económica», ¿a qué se refiere?",
+   "opciones": [
+    "A un recetario de pobres y a una cocina conventual",
+    "A una cocina sin carne y a un menú de temporada",
+    "A un fogón de leña y a un comedor popular barato",
+    "A una estufa eléctrica y a una cocina industrial"
+   ],
+   "correcta": 2,
+   "explicacion": "El término tiene dos significados.",
+   "gemela": "oc-37"
+  },
+  {
+   "id": "fin-018",
+   "subtema": "1.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué raíz tienen en México las cocinas económicas como negocio?",
+   "opciones": [
+    "Comedores fundados por la Iglesia en el virreinato",
+    "Cafeterías abiertas por los migrantes españoles del exilio hacia 1950",
+    "Fondas creadas por decreto durante la Revolución",
+    "Redes de mujeres organizadas desde finales del siglo XIX"
+   ],
+   "correcta": 3,
+   "explicacion": "Así lo documenta el compendio.",
+   "gemela": "oc-39"
+  },
+  {
+   "id": "fin-019",
+   "subtema": "1.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cómo se descubrió el efecto del microondas?",
+   "opciones": [
+    "Por accidente, trabajando con tubos de radar en 1945",
+    "Al estudiar la cocina de inducción en los años setenta",
+    "En un laboratorio de alimentos de la NASA en 1969",
+    "Buscando un método para esterilizar latas en 1930"
+   ],
+   "correcta": 0,
+   "explicacion": "Percy Spencer, Raytheon, 1945.",
+   "gemela": "oc-42"
+  },
+  {
+   "id": "fin-020",
+   "subtema": "1.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuál es el orden correcto de estos hitos de la cocina eléctrica?",
+   "opciones": [
+    "Estufa doméstica, microondas, patente de Simpson",
+    "Patente de Simpson, microondas de Spencer, estufa eléctrica doméstica",
+    "Patente de Simpson, estufa doméstica, microondas",
+    "Microondas, patente de Simpson, estufa doméstica"
+   ],
+   "correcta": 2,
+   "explicacion": "1859, finales del siglo XIX, 1945.",
+   "gemela": "oc-44"
+  },
+  {
+   "id": "fin-021",
+   "subtema": "1.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿En qué década se popularizó comercialmente la cocina de inducción?",
+   "opciones": [
+    "En los años cincuenta",
+    "En los años noventa",
+    "En los años setenta",
+    "En los años treinta"
+   ],
+   "correcta": 2,
+   "explicacion": "De la mano de Westinghouse.",
+   "gemela": "oc-45"
+  },
+  {
+   "id": "fin-022",
+   "subtema": "1.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "Un comedor escolar debe atender a 800 alumnos con un presupuesto fijo y requisitos nutricionales. ¿Qué tipo de cocina es?",
+   "opciones": [
+    "De calle",
+    "De mercado y temporada",
+    "De autor",
+    "Institucional"
+   ],
+   "correcta": 3,
+   "explicacion": "La institucional prioriza volumen, costo y nutrición.",
+   "gemela": "oc-47"
+  },
+  {
+   "id": "fin-023",
+   "subtema": "1.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué distingue a la cocina de banquetes y eventos?",
+   "opciones": [
+    "Se basa en lo que haya en el mercado de temporada",
+    "Se improvisa cada día según el número de clientes que lleguen sin reservar",
+    "Se planea conociendo de antemano el número de comensales",
+    "Sirve siempre a una sola persona a la vez"
+   ],
+   "correcta": 2,
+   "explicacion": "El banquete se organiza con un número conocido de invitados.",
+   "gemela": "oc-49"
+  },
+  {
+   "id": "fin-024",
+   "subtema": "1.6",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué corriente publicó en 1973 un manifiesto de diez mandamientos?",
+   "opciones": [
+    "La cocina molecular",
+    "La cocina New Nordic",
+    "El movimiento Slow Food",
+    "La nouvelle cuisine"
+   ],
+   "correcta": 3,
+   "explicacion": "Gault y Millau, 1973.",
+   "gemela": "oc-51"
+  },
+  {
+   "id": "fin-025",
+   "subtema": "1.6",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Por qué cerró El Bulli como restaurante en 2011?",
+   "opciones": [
+    "Por una sanción de las autoridades sanitarias",
+    "Por falta de clientes durante la crisis",
+    "Para dedicarse a la creación e investigación",
+    "Por la muerte de su chef, Ferran Adrià"
+   ],
+   "correcta": 2,
+   "explicacion": "Cerró en su mejor momento para convertirse en fundación creativa.",
+   "gemela": "oc-54"
+  },
+  {
+   "id": "fin-026",
+   "subtema": "1.6",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Contra qué reaccionó el movimiento Slow Food, fundado en Italia en 1989?",
+   "opciones": [
+    "Contra la cocina molecular de El Bulli y sus técnicas de laboratorio",
+    "Contra la comida rápida y la pérdida de la tradición local",
+    "Contra la nouvelle cuisine y sus porciones pequeñas",
+    "Contra el vegetarianismo y la carne cultivada"
+   ],
+   "correcta": 1,
+   "explicacion": "Carlo Petrini lo fundó tras la llegada de la comida rápida a Roma.",
+   "gemela": "oc-56"
+  },
+  {
+   "id": "fin-027",
+   "subtema": "2.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "Un mismo mole puede ser comida de diario en Puebla y platillo de fiesta en otra casa. ¿Qué criterio explica la diferencia?",
+   "opciones": [
+    "El régimen, según la frecuencia y el contexto",
+    "La religión de quien lo prepara",
+    "La corriente gastronómica a la que pertenece el cocinero",
+    "La época histórica en que se inventó"
+   ],
+   "correcta": 0,
+   "explicacion": "El régimen depende de cuándo y para quién se prepara.",
+   "gemela": "oc-61"
+  },
+  {
+   "id": "fin-028",
+   "subtema": "2.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué es el iftar?",
+   "opciones": [
+    "El ayuno cristiano del Miércoles de Ceniza y del Viernes Santo",
+    "La comida ritual judía de la Pascua",
+    "La comida que rompe el ayuno diario del Ramadán",
+    "El comedor comunitario del sikhismo"
+   ],
+   "correcta": 2,
+   "explicacion": "Es un ejemplo de régimen festivo y ritual del islam.",
+   "gemela": "oc-63"
+  },
+  {
+   "id": "fin-029",
+   "subtema": "2.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué comida ritual recuerda el relato del Éxodo con alimentos simbólicos?",
+   "opciones": [
+    "El séder de Pésaj",
+    "El hamín del sabbat",
+    "El iftar del Ramadán",
+    "El langar sikh"
+   ],
+   "correcta": 0,
+   "explicacion": "El séder se celebra en la Pascua judía.",
+   "gemela": "oc-65"
+  },
+  {
+   "id": "fin-030",
+   "subtema": "2.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué firma culinaria corresponde a la vanguardia New Nordic?",
+   "opciones": [
+    "Recolección silvestre y fermentación artesanal",
+    "Salsas fermentadas intensas y banquete organizado en tres fases",
+    "Especias importadas en grandes cantidades",
+    "Salsas madre y orden estricto del menú"
+   ],
+   "correcta": 0,
+   "explicacion": "Foraging y fermentación; las salsas madre son de Escoffier.",
+   "gemela": "oc-68"
+  },
+  {
+   "id": "fin-031",
+   "subtema": "2.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿En qué se diferencia clasificar por épocas de clasificar por régimen?",
+   "opciones": [
+    "Las épocas atienden a la religión; el régimen, al momento histórico",
+    "Son lo mismo: las dos dependen de la frecuencia de preparación",
+    "Las épocas atienden al estilo del chef; el régimen, al tipo de restaurante",
+    "Las épocas atienden al momento histórico; el régimen, a la frecuencia"
+   ],
+   "correcta": 3,
+   "explicacion": "Son criterios distintos.",
+   "gemela": "oc-69"
+  },
+  {
+   "id": "fin-032",
+   "subtema": "2.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué aportó la codificación clásica francesa asociada a Escoffier?",
+   "opciones": [
+    "La fermentación artesanal y los ingredientes silvestres",
+    "La esferificación y las espumas de laboratorio",
+    "Las salsas madre, la brigada y el orden del menú",
+    "Las especias exóticas y los entremeses de azúcar"
+   ],
+   "correcta": 2,
+   "explicacion": "Es la base de la cocina profesional occidental.",
+   "gemela": "oc-71"
+  },
+  {
+   "id": "fin-033",
+   "subtema": "2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "Según el kashrut, ¿cuál de estos animales terrestres es apto?",
+   "opciones": [
+    "Uno rumiante y de pezuña partida, como la res",
+    "Uno de pezuña partida que no rumia, como el cerdo",
+    "Cualquiera, siempre que se cocine sin lácteos",
+    "Uno que rumia sin pezuña partida, como el camello"
+   ],
+   "correcta": 0,
+   "explicacion": "Debe cumplir ambas condiciones.",
+   "gemela": "oc-73"
+  },
+  {
+   "id": "fin-034",
+   "subtema": "2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué tienen en común la shejitá judía y la dhabihah islámica?",
+   "opciones": [
+    "Son reglas para separar la carne de los lácteos en la cocina y en la mesa",
+    "Son sacrificios rituales que buscan drenar la sangre",
+    "Son ayunos que se rompen al ponerse el sol",
+    "Son comidas comunitarias gratuitas para todos"
+   ],
+   "correcta": 1,
+   "explicacion": "Ambas regulan el sacrificio para que la carne sea apta.",
+   "gemela": "oc-75"
+  },
+  {
+   "id": "fin-035",
+   "subtema": "2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Por qué los jainistas más devotos evitan la cebolla y el ajo?",
+   "opciones": [
+    "Porque arrancarlos de raíz mata a la planta entera",
+    "Porque su olor fuerte distrae de la meditación",
+    "Porque son ingredientes llegados de otras tierras",
+    "Porque se consideran alimentos de la casta guerrera"
+   ],
+   "correcta": 0,
+   "explicacion": "El ahimsa, la no violencia, llevado al extremo.",
+   "gemela": "oc-79"
+  },
+  {
+   "id": "fin-036",
+   "subtema": "2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué afirmación sobre el budismo y la carne es correcta?",
+   "opciones": [
+    "Todas sus ramas son estrictamente veganas",
+    "Todas sus ramas prohíben solo la carne de res, por ser un animal sagrado",
+    "Hay ramas vegetarianas y otras que permiten la carne",
+    "Ninguna de sus ramas tiene reglas sobre la comida"
+   ],
+   "correcta": 2,
+   "explicacion": "Depende de la rama y del país.",
+   "gemela": "oc-80"
+  },
+  {
+   "id": "fin-037",
+   "subtema": "2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "Un templo ofrece comida gratuita a cualquier visitante, sentado en el suelo junto a todos. ¿De qué tradición se trata?",
+   "opciones": [
+    "Del iftar islámico",
+    "Del séder judío",
+    "Del langar sikh",
+    "De la dieta ital rastafari"
+   ],
+   "correcta": 2,
+   "explicacion": "El langar expresa igualdad.",
+   "gemela": "oc-81"
+  },
+  {
+   "id": "fin-038",
+   "subtema": "2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Por qué se cocina lentamente el hamín sefardí desde el viernes?",
+   "opciones": [
+    "Porque la carne kosher necesita más cocción",
+    "Porque así lo exige el ayuno de veinticinco horas del Yom Kipur",
+    "Porque está prohibido encender fuego en sabbat",
+    "Porque se sirve frío en la cena del Pésaj"
+   ],
+   "correcta": 2,
+   "explicacion": "Nace de la prohibición de cocinar en sabbat.",
+   "gemela": "oc-83"
+  },
+  {
+   "id": "fin-039",
+   "subtema": "2.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué caracteriza a la dieta ital del movimiento rastafari?",
+   "opciones": [
+    "Vegetarianismo estricto sin cebolla ni ajo",
+    "Carne halal, sin cerdo, y ayuno diurno durante un mes al año",
+    "Alimentos naturales, sin cerdo, alcohol ni sal añadida",
+    "Comidas comunitarias gratuitas en el templo"
+   ],
+   "correcta": 2,
+   "explicacion": "Ital viene de vital.",
+   "gemela": "oc-84"
+  },
+  {
+   "id": "fin-040",
+   "subtema": "2.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuál es el orden cronológico correcto de estas corrientes?",
+   "opciones": [
+    "Escoffier, nouvelle cuisine, Slow Food, New Nordic",
+    "Nouvelle cuisine, Escoffier, New Nordic, Slow Food",
+    "Slow Food, Escoffier, New Nordic, nouvelle cuisine",
+    "Escoffier, Slow Food, la nouvelle cuisine y New Nordic"
+   ],
+   "correcta": 0,
+   "explicacion": "Principios del XX, 1973, 1989 y 2004.",
+   "gemela": "oc-88"
+  },
+  {
+   "id": "fin-041",
+   "subtema": "2.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "Un restaurante sirve tiradito con salsa de soya, ají amarillo y técnica de corte japonesa. ¿Qué cocina es?",
+   "opciones": [
+    "Kaiseki",
+    "Chifa",
+    "Nikkei",
+    "Fusión californiana"
+   ],
+   "correcta": 2,
+   "explicacion": "Nikkei: técnica japonesa y sazón peruana.",
+   "gemela": "oc-90"
+  },
+  {
+   "id": "fin-042",
+   "subtema": "2.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué país aprobó primero, en 2020, la venta de carne cultivada en laboratorio?",
+   "opciones": [
+    "Estados Unidos",
+    "Israel",
+    "Países Bajos",
+    "Singapur"
+   ],
+   "correcta": 3,
+   "explicacion": "Singapur, 2020.",
+   "gemela": "oc-92"
+  },
+  {
+   "id": "fin-043",
+   "subtema": "2.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "Según el Tema 2, ¿cómo suele nacer una corriente gastronómica?",
+   "opciones": [
+    "Como reacción a la corriente que la precede",
+    "Por la llegada de un ingrediente exótico",
+    "Por decreto de una academia de cocina",
+    "Por la invención de un aparato nuevo de cocina, como el microondas"
+   ],
+   "correcta": 0,
+   "explicacion": "La nouvelle cuisine reaccionó a Escoffier; Slow Food, a la comida rápida.",
+   "gemela": "oc-95"
+  },
+  {
+   "id": "fin-044",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué grano africano es la base del injera etíope?",
+   "opciones": [
+    "El mijo",
+    "El fonio",
+    "El teff",
+    "El sorgo"
+   ],
+   "correcta": 2,
+   "explicacion": "El teff es un grano del altiplano etíope.",
+   "gemela": "oc-102"
+  },
+  {
+   "id": "fin-045",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué práctica sudafricana cumple la misma función social que el asado del Cono Sur?",
+   "opciones": [
+    "El potjie",
+    "El biltong",
+    "El bobotie",
+    "El braai"
+   ],
+   "correcta": 3,
+   "explicacion": "El braai es la parrillada social del sur de África.",
+   "gemela": "oc-104"
+  },
+  {
+   "id": "fin-046",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "En el antiguo Egipto, el pan y la cerveza eran además…",
+   "opciones": [
+    "ofrendas exclusivas para los faraones",
+    "productos importados de Mesopotamia",
+    "parte del salario de los trabajadores",
+    "alimentos prohibidos para los esclavos"
+   ],
+   "correcta": 2,
+   "explicacion": "Se pagaba con pan y cerveza.",
+   "gemela": "oc-203"
+  },
+  {
+   "id": "fin-047",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué paradoja ilustra la vainilla de Madagascar?",
+   "opciones": [
+    "Es de origen indio, pero la cultivan en África occidental",
+    "Es de origen africano, pero llegó a México con los esclavizados",
+    "Es de origen mexicano, pero Madagascar es el mayor productor",
+    "Es de origen malgache, pero México es el mayor productor"
+   ],
+   "correcta": 2,
+   "explicacion": "La vainilla viene de Papantla, Veracruz.",
+   "gemela": "oc-205"
+  },
+  {
+   "id": "fin-048",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué cifra del Códice Florentino desmiente la idea de una dieta prehispánica pobre?",
+   "opciones": [
+    "Tres variedades de maíz cultivadas",
+    "Una sola forma de preparar el cacao, siempre caliente",
+    "Casi un centenar de insectos comestibles",
+    "Diez hierbas comestibles en total"
+   ],
+   "correcta": 2,
+   "explicacion": "Sahagún registra casi cien insectos y más de setenta hierbas.",
+   "gemela": "oc-108"
+  },
+  {
+   "id": "fin-049",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué eran las chinampas?",
+   "opciones": [
+    "Terrazas de cultivo en las laderas de los cerros",
+    "Parcelas artificiales construidas en el lago",
+    "Huertos forestales rodeados de muros de piedra",
+    "Almacenes de grano junto a los caminos"
+   ],
+   "correcta": 1,
+   "explicacion": "Todavía se cultivan en Xochimilco.",
+   "gemela": "oc-109"
+  },
+  {
+   "id": "fin-050",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cómo se bebía el cacao en Mesoamérica?",
+   "opciones": [
+    "Mezclado con vino y canela de Asia",
+    "Caliente, con leche de cabra y azúcar de caña de Cuba",
+    "Fermentado, como una cerveza dulce",
+    "Espumoso, amargo y frío, a veces con chile"
+   ],
+   "correcta": 3,
+   "explicacion": "El chocolate dulce con leche es europeo y posterior.",
+   "gemela": "oc-111"
+  },
+  {
+   "id": "fin-051",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Quién fue «Lorencillo»?",
+   "opciones": [
+    "El navegante que trajo el palo de tinte",
+    "El pirata cuyo saqueo de 1685 devastó Campeche",
+    "El virrey de la Nueva España que ordenó construir la muralla",
+    "El cocinero que inventó el queso relleno"
+   ],
+   "correcta": 1,
+   "explicacion": "Laurens de Graaf.",
+   "gemela": "oc-118"
+  },
+  {
+   "id": "fin-052",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué palabra inglesa viene del charqui andino?",
+   "opciones": [
+    "Jerky",
+    "Pemmican",
+    "Chowder",
+    "Barbecue"
+   ],
+   "correcta": 0,
+   "explicacion": "El charqui es carne seca de llama o alpaca.",
+   "gemela": "oc-123"
+  },
+  {
+   "id": "fin-053",
+   "subtema": "3.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿De dónde viene el ganado del asado del Cono Sur?",
+   "opciones": [
+    "De la domesticación prehispánica de la llama",
+    "De la ganadería que llevaron los españoles",
+    "De los rebaños de bisontes de las pampas",
+    "De la migración italiana del siglo XIX"
+   ],
+   "correcta": 1,
+   "explicacion": "No había reses en América antes de 1492.",
+   "gemela": "oc-125"
+  },
+  {
+   "id": "fin-054",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Por qué el norte de la India usa más lácteos y panes de trigo?",
+   "opciones": [
+    "Por la llegada del trigo americano en el Galeón",
+    "Por la herencia de la corte mogol, persa y centroasiática",
+    "Por la tradición vegetariana del jainismo",
+    "Por la influencia de la antigua colonia portuguesa de Goa"
+   ],
+   "correcta": 1,
+   "explicacion": "Ghee, yogur, naan y tandoor.",
+   "gemela": "oc-132"
+  },
+  {
+   "id": "fin-055",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué comparte la cocina de Medio Oriente con la del Magreb?",
+   "opciones": [
+    "El uso abundante del chile y del maíz americanos",
+    "Las normas halal y la herencia otomana",
+    "El kashrut y la cocina asquenazí",
+    "La pimienta de Sichuan y la soya"
+   ],
+   "correcta": 1,
+   "explicacion": "Ambas son de mayoría islámica.",
+   "gemela": "oc-134"
+  },
+  {
+   "id": "fin-056",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué es el kumis?",
+   "opciones": [
+    "Leche de yegua fermentada de los nómadas de Asia Central",
+    "Té con mantequilla de los monjes del Tíbet",
+    "Pasta fermentada de chile de Corea",
+    "Arroz con cordero, cebolla y zanahoria de Uzbekistán"
+   ],
+   "correcta": 0,
+   "explicacion": "Es un lácteo fermentado de las estepas.",
+   "gemela": "oc-136"
+  },
+  {
+   "id": "fin-057",
+   "subtema": "3.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Desde qué época se documenta el pato laqueado de Pekín?",
+   "opciones": [
+    "Desde la República Popular, en el siglo XX",
+    "Desde la dinastía Han, hace dos mil años",
+    "Desde la dinastía Qing, en el siglo XIX",
+    "Desde la dinastía Yuan, siglos XIII y XIV"
+   ],
+   "correcta": 3,
+   "explicacion": "Se asocia a la cocina de palacio.",
+   "gemela": "oc-130"
+  },
+  {
+   "id": "fin-058",
+   "subtema": "3.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Por qué en Sarajevo o Belgrado se come burek y ćevapi?",
+   "opciones": [
+    "Por la migración de los pueblos balcánicos a Turquía en el siglo XX",
+    "Por cinco siglos de dominio otomano en los Balcanes",
+    "Por el comercio veneciano en el Adriático",
+    "Por la influencia austrohúngara del siglo XIX"
+   ],
+   "correcta": 1,
+   "explicacion": "Herencia otomana.",
+   "gemela": "oc-140"
+  },
+  {
+   "id": "fin-059",
+   "subtema": "3.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué era el caviar en la Rusia zarista?",
+   "opciones": [
+    "Un dulce de miel y mantequilla servido con el té del samovar",
+    "Un pan de centeno que comía la población rural",
+    "Un lujo de huevas de esturión reservado a la nobleza",
+    "Una sopa de betabel de origen ucraniano"
+   ],
+   "correcta": 2,
+   "explicacion": "Huevas de esturión del Caspio.",
+   "gemela": "oc-141"
+  },
+  {
+   "id": "fin-060",
+   "subtema": "3.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué diferencia tradicional hay entre el norte y el sur de Italia?",
+   "opciones": [
+    "El norte usa aceite y pasta seca; el sur, mantequilla, arroz y polenta",
+    "El norte es vegetariano; el sur se basa en la carne",
+    "El norte usa mantequilla y arroz; el sur, aceite y pasta seca",
+    "El norte usa jitomate; el sur nunca lo adoptó"
+   ],
+   "correcta": 2,
+   "explicacion": "Italia era un mosaico regional.",
+   "gemela": "oc-142"
+  },
+  {
+   "id": "fin-061",
+   "subtema": "3.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Dónde se formó la cocina judía asquenazí?",
+   "opciones": [
+    "En Marruecos y Túnez",
+    "En España, Portugal y el Mediterráneo",
+    "En Alemania, Polonia y Rusia",
+    "En Grecia y Turquía"
+   ],
+   "correcta": 2,
+   "explicacion": "La sefardí es ibérico-mediterránea.",
+   "gemela": "oc-145"
+  },
+  {
+   "id": "fin-062",
+   "subtema": "3.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Por qué el kumara fue clave para los maoríes de Nueva Zelanda?",
+   "opciones": [
+    "Servía para fermentar la kava de las ceremonias",
+    "Era la única planta que crecía en las islas volcánicas",
+    "Lo llevaron los británicos en el siglo XIX como alimento de los colonos",
+    "Se adaptó al clima frío y se guardaba en fosas en invierno"
+   ],
+   "correcta": 3,
+   "explicacion": "El kumara se conservaba en fosas.",
+   "gemela": "oc-147"
+  },
+  {
+   "id": "fin-063",
+   "subtema": "3.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué es el bushfood?",
+   "opciones": [
+    "La cocina de los trabajadores de las plantaciones de Hawái",
+    "El horno de tierra de los maoríes de Nueva Zelanda",
+    "El repertorio británico de carne y té que llegó con la colonia de 1788",
+    "La alimentación aborigen con ingredientes nativos de Australia"
+   ],
+   "correcta": 3,
+   "explicacion": "Wattleseed, macadamia, ciruela de Kakadu.",
+   "gemela": "oc-148"
+  },
+  {
+   "id": "fin-064",
+   "subtema": "3.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué región NO se estudia entre las cinco del Tema 3?",
+   "opciones": [
+    "Oceanía y el Pacífico",
+    "Asia",
+    "África",
+    "La Antártida"
+   ],
+   "correcta": 3,
+   "explicacion": "África, América, Asia, Europa y Oceanía.",
+   "gemela": "oc-153"
+  },
+  {
+   "id": "fin-065",
+   "subtema": "3.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué idea atraviesa todo el Tema 3?",
+   "opciones": [
+    "Las cocinas dependen solo del clima",
+    "Casi ninguna cocina se desarrolló aislada",
+    "Las cocinas europeas influyeron en todas las demás",
+    "Cada cocina nació pura y luego se degradó"
+   ],
+   "correcta": 1,
+   "explicacion": "Comercio, migración y conquista explican cada cocina.",
+   "gemela": "oc-154"
+  },
+  {
+   "id": "fin-066",
+   "subtema": "4.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "Para Brillat-Savarin, el gusto combina…",
+   "opciones": [
+    "lo religioso, lo político y lo económico",
+    "lo biológico, lo químico y lo genético",
+    "lo dulce, lo salado, lo ácido y lo amargo",
+    "lo físico, lo psicológico y lo social"
+   ],
+   "correcta": 3,
+   "explicacion": "Por eso habla del placer de la mesa.",
+   "gemela": "oc-157"
+  },
+  {
+   "id": "fin-067",
+   "subtema": "4.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué idea del Tema 4 contradice la frase «comer es solo nutrirse»?",
+   "opciones": [
+    "Comer dejó de ser una necesidad al nacer la agricultura",
+    "Comer se volvió también identidad, religión, economía y vínculo",
+    "Comer depende sobre todo de la cantidad de calorías",
+    "Comer es un acto individual, biológico, sin una relación real con la cultura"
+   ],
+   "correcta": 1,
+   "explicacion": "La gastronomía nace en el cruce de lo biológico y lo cultural.",
+   "gemela": "oc-158"
+  },
+  {
+   "id": "fin-068",
+   "subtema": "4.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Quién tuvo históricamente acceso al refinamiento gastronómico?",
+   "opciones": [
+    "Quien vivía en épocas de hambruna",
+    "Quien practicaba una religión sin prohibiciones",
+    "Quien vivía en el campo, cerca de los cultivos",
+    "Quien ya tenía resuelta la necesidad básica"
+   ],
+   "correcta": 3,
+   "explicacion": "La nobleza, la corte, la clase mercantil.",
+   "gemela": "oc-162"
+  },
+  {
+   "id": "fin-069",
+   "subtema": "4.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué cultivo falló en la gran hambruna irlandesa de 1845-1852?",
+   "opciones": [
+    "El maíz",
+    "El trigo",
+    "La avena",
+    "La papa"
+   ],
+   "correcta": 3,
+   "explicacion": "El tizón tardío destruyó las cosechas de papa.",
+   "gemela": "oc-161"
+  },
+  {
+   "id": "fin-070",
+   "subtema": "4.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Por qué Roma es el gran antecedente de una cocina refinada?",
+   "opciones": [
+    "Porque fue la primera civilización en domesticar el trigo y la vid en Europa",
+    "Porque trató el comer como disciplina con reglas escritas",
+    "Porque prohibió los banquetes ostentosos",
+    "Porque inventó el restaurante con carta"
+   ],
+   "correcta": 1,
+   "explicacion": "Reglas, jerarquías y textos.",
+   "gemela": "oc-163"
+  },
+  {
+   "id": "fin-071",
+   "subtema": "4.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Dónde estaban las grandes fábricas de garum?",
+   "opciones": [
+    "En Grecia y Asia Menor",
+    "En Egipto y Siria",
+    "En Galia, Britania y Germania",
+    "En Hispania y el norte de África"
+   ],
+   "correcta": 3,
+   "explicacion": "Baelo Claudia y Gades (Cádiz).",
+   "gemela": "oc-164"
+  },
+  {
+   "id": "fin-072",
+   "subtema": "4.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cómo comía el pueblo romano?",
+   "opciones": [
+    "En triclinios privados con tres lechos y nueve comensales",
+    "En restaurantes con carta y precios",
+    "En thermopolia y con el grano de la annona",
+    "En monasterios y cocinas conventuales"
+   ],
+   "correcta": 2,
+   "explicacion": "La comida popular era callejera y subsidiada.",
+   "gemela": "oc-165"
+  },
+  {
+   "id": "fin-073",
+   "subtema": "4.2",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Sobre qué base se construyó la cocina medieval de Le Viandier?",
+   "opciones": [
+    "Sobre la cocina china de la Ruta de la Seda",
+    "Sobre la cocina mexica que llegó a Europa tras la conquista",
+    "Sobre la cocina nórdica de los vikingos",
+    "Sobre la herencia difundida por el Imperio romano"
+   ],
+   "correcta": 3,
+   "explicacion": "Roma difundió cultivos y técnicas.",
+   "gemela": "oc-167"
+  },
+  {
+   "id": "fin-074",
+   "subtema": "4.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué tienen en común las especias medievales y el grand couvert de Versalles?",
+   "opciones": [
+    "Ambos buscaban conservar los alimentos",
+    "Ambos nacieron en la corte otomana",
+    "Ambos usan la mesa para exhibir poder",
+    "Ambos eran costumbres del pueblo llano"
+   ],
+   "correcta": 2,
+   "explicacion": "La mesa como instrumento político.",
+   "gemela": "oc-169"
+  },
+  {
+   "id": "fin-075",
+   "subtema": "4.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué corte tenía sus cocinas en el palacio de Topkapi?",
+   "opciones": [
+    "La otomana, en Estambul",
+    "La persa, en Isfahán",
+    "La mogol, en Delhi y Agra",
+    "La china, en Pekín"
+   ],
+   "correcta": 0,
+   "explicacion": "Topkapi, Estambul.",
+   "gemela": "oc-171"
+  },
+  {
+   "id": "fin-076",
+   "subtema": "4.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué se sabe del banquete manchú-han de la corte Qing?",
+   "opciones": [
+    "Era la comida diaria del pueblo de Pekín",
+    "Lo inventó un cocinero francés contratado por la corte de Pekín",
+    "Se conoce más por la tradición que por documentos",
+    "Se sirvió una sola vez, en el siglo XX"
+   ],
+   "correcta": 2,
+   "explicacion": "Según la tradición, más de cien platos en varios días.",
+   "gemela": "oc-174"
+  },
+  {
+   "id": "fin-077",
+   "subtema": "4.3",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué figura italiana se asocia con el refinamiento de la corte francesa en el Renacimiento?",
+   "opciones": [
+    "Marco Gavio Apicio",
+    "Bartolomeo Scappi, el cocinero papal",
+    "Francesco Procopio",
+    "Catalina de Médici"
+   ],
+   "correcta": 3,
+   "explicacion": "Llegó en 1533; parte del relato es leyenda.",
+   "gemela": "oc-175"
+  },
+  {
+   "id": "fin-078",
+   "subtema": "4.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué designaba al principio la palabra «restaurant»?",
+   "opciones": [
+    "Una posada de camino",
+    "Un menú impreso",
+    "Una mesa individual con mantel",
+    "Un caldo reconstituyente"
+   ],
+   "correcta": 3,
+   "explicacion": "Prometía «restaurar» al comensal.",
+   "gemela": "oc-178"
+  },
+  {
+   "id": "fin-079",
+   "subtema": "4.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cómo se comía fuera de casa antes del restaurante?",
+   "opciones": [
+    "En fondas con servicio a domicilio",
+    "En comedores con carta y mesas individuales",
+    "En cafés con menú degustación",
+    "En posadas, a hora fija y en mesa común"
+   ],
+   "correcta": 3,
+   "explicacion": "La table d'hôte.",
+   "gemela": "oc-180"
+  },
+  {
+   "id": "fin-080",
+   "subtema": "4.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué papel tuvieron las fondas durante el Porfiriato?",
+   "opciones": [
+    "Sirvieron los banquetes oficiales en francés",
+    "Fueron prohibidas por el gobierno de Díaz",
+    "Sostuvieron la comida popular de la mayoría",
+    "Atendieron solo a los extranjeros ricos"
+   ],
+   "correcta": 2,
+   "explicacion": "La élite cenaba en francés; el pueblo, en fondas.",
+   "gemela": "oc-186"
+  },
+  {
+   "id": "fin-081",
+   "subtema": "4.4",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué une a los thermopolia romanos con las fondas mexicanas?",
+   "opciones": [
+    "Ambos alimentaban al pueblo junto a la alta cocina",
+    "Ambos servían menús escritos en francés",
+    "Ambos nacieron como consecuencia de la Revolución Francesa",
+    "Ambos eran comedores de la nobleza"
+   ],
+   "correcta": 0,
+   "explicacion": "Circuitos populares paralelos.",
+   "gemela": "oc-188"
+  },
+  {
+   "id": "fin-082",
+   "subtema": "4.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué aportó Escoffier a la cocina profesional?",
+   "opciones": [
+    "La primera escuela de cocina para mujeres",
+    "El primer restaurante de lujo de París",
+    "La brigada y un cuerpo de técnicas enseñables",
+    "El sistema de tres estrellas de la Guía Michelin"
+   ],
+   "correcta": 2,
+   "explicacion": "Por eso se puede estudiar gastronomía.",
+   "gemela": "oc-189"
+  },
+  {
+   "id": "fin-083",
+   "subtema": "4.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cómo nació Le Cordon Bleu en 1895?",
+   "opciones": [
+    "Como restaurante de Escoffier en Londres",
+    "Como clases para suscriptores de una revista de cocina",
+    "Como academia militar para cocineros",
+    "Como escuela para los cocineros de la corte de Luis XIV"
+   ],
+   "correcta": 1,
+   "explicacion": "Marthe Distel y La Cuisinière Cordon Bleu.",
+   "gemela": "oc-190"
+  },
+  {
+   "id": "fin-084",
+   "subtema": "4.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Por qué Julia Child es importante en la historia de la cocina profesional?",
+   "opciones": [
+    "Llevó la cocina francesa a la televisión de masas",
+    "Ganó el primer Bocuse d'Or",
+    "Creó la brigada de cocina por estaciones",
+    "Fundó Le Cordon Bleu en París junto con Marthe Distel"
+   ],
+   "correcta": 0,
+   "explicacion": "The French Chef, 1963.",
+   "gemela": "oc-191"
+  },
+  {
+   "id": "fin-085",
+   "subtema": "4.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuál es el orden de fundación de estas escuelas?",
+   "opciones": [
+    "Las dos se fundaron en 1895",
+    "Las dos se fundaron después de 1950",
+    "El CIA (1946) y después Le Cordon Bleu (1895), en ese orden",
+    "Le Cordon Bleu (1895) y después el CIA (1946)"
+   ],
+   "correcta": 3,
+   "explicacion": "Primero París, después Estados Unidos.",
+   "gemela": "oc-192"
+  },
+  {
+   "id": "fin-086",
+   "subtema": "4.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué es el Bocuse d'Or?",
+   "opciones": [
+    "Un premio de la UNESCO a las cocinas",
+    "Un campeonato mundial de cocina en Lyon",
+    "Una guía francesa de restaurantes con estrellas",
+    "Una escuela de cocina en Nueva York"
+   ],
+   "correcta": 1,
+   "explicacion": "Fundado por Paul Bocuse en 1987.",
+   "gemela": "oc-193"
+  },
+  {
+   "id": "fin-087",
+   "subtema": "4.5",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cómo fue la entrada de las mujeres a la cocina profesional?",
+   "opciones": [
+    "Inmediata: desde Escoffier hubo paridad",
+    "Temprana: las cocinas de corte las preferían como jefas de cocina",
+    "Tardía: la alta cocina fue un espacio casi masculino",
+    "Igual en todas las cocinas del mundo"
+   ],
+   "correcta": 2,
+   "explicacion": "Se abrió sobre todo en la segunda mitad del siglo XX.",
+   "gemela": "oc-196"
+  }
+ ]
 }

@@ -13,7 +13,7 @@
     "Solo la nutrición"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: Lo físico, lo psicológico y lo social."
+   "explicacion": "Brillat-Savarin entendía el gusto como algo físico, psicológico y social."
   },
   {
    "id": "oc-158",
@@ -39,7 +39,7 @@
     "Paul Freedman"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: Rachel Laudan."
+   "explicacion": "Rachel Laudan, Cuisine and Empire (2013)."
   },
   {
    "id": "oc-161",
@@ -53,7 +53,7 @@
     "La hambruna del Sahel"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: La gran hambruna irlandesa."
+   "explicacion": "Entre 1845 y 1852 el tizón tardío destruyó la papa en Irlanda: un millón de muertos y otro de emigrantes."
   },
   {
    "id": "oc-162",
@@ -65,7 +65,7 @@
     "Falso"
    ],
    "correcta": 0,
-   "explicacion": "Verdadero, según el compendio."
+   "explicacion": "Comer con refinamiento fue privilegio de quien tenía resuelta la necesidad básica."
   },
   {
    "id": "oc-235",
@@ -149,7 +149,7 @@
     "Porque prohibió el consumo de carne"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: Porque trató el comer como una disciplina documentada por escrito."
+   "explicacion": "Roma sujetó la mesa a reglas y jerarquías y la dejó por escrito."
   },
   {
    "id": "oc-164",
@@ -163,7 +163,7 @@
     "el vinagre"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: garum."
+   "explicacion": "El garum se producía en Hispania y el norte de África y se exportaba a todo el imperio."
   },
   {
    "id": "oc-165",
@@ -189,7 +189,7 @@
     "bizantino"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: romano."
+   "explicacion": "La cocina medieval se construyó sobre la herencia romana de cultivos y técnicas."
   },
   {
    "id": "oc-240",
@@ -273,7 +273,7 @@
     "La secunda mensa"
    ],
    "correcta": 0,
-   "explicacion": "Correcto: El grand couvert."
+   "explicacion": "En el grand couvert el rey comía en público y la cercanía a su mesa marcaba jerarquía."
   },
   {
    "id": "oc-169",
@@ -285,7 +285,7 @@
     "Falso"
    ],
    "correcta": 0,
-   "explicacion": "Verdadero, según el compendio."
+   "explicacion": "Especias caras y banquetes públicos responden a la misma lógica: la mesa exhibe poder."
   },
   {
    "id": "oc-170",
@@ -324,7 +324,7 @@
     "La corte inca"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: La corte otomana."
+   "explicacion": "El palacio de Topkapi, en Estambul, era la sede de la corte otomana."
   },
   {
    "id": "oc-172",
@@ -338,25 +338,25 @@
     "el tagine"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: biryani."
+   "explicacion": "El biryani se asocia con la corte mogol: técnica persa del arroz con especias indias."
   },
   {
    "id": "oc-174",
    "subtema": "4.3",
    "tipo": "opcion_multiple",
-   "pregunta": "Los banquetes de la Ciudad Prohibida en China podían incluir más de cien platillos distintos en una sola sesión.",
+   "pregunta": "Según la tradición, el banquete manchú-han de la corte Qing combinaba más de cien platos a lo largo de varios días.",
    "opciones": [
     "Verdadero",
     "Falso"
    ],
    "correcta": 0,
-   "explicacion": "Verdadero, según el compendio."
+   "explicacion": "Es lo que dice la tradición sobre el banquete manchú-han; se conoce más por leyenda que por documentos."
   },
   {
    "id": "oc-175",
    "subtema": "4.3",
    "tipo": "opcion_multiple",
-   "pregunta": "¿Qué llevó la lógica de \"la mesa como poder\" a un nuevo nivel de sofisticación en el Renacimiento, según el Tema 4?",
+   "pregunta": "¿Qué figura se asocia tradicionalmente con la llegada del refinamiento italiano a la corte francesa en el Renacimiento?",
    "opciones": [
     "La llegada de Catalina de Médici a la corte francesa",
     "La invención del microondas",
@@ -364,7 +364,7 @@
     "La fundación de Le Cordon Bleu"
    ],
    "correcta": 0,
-   "explicacion": "Correcto: La llegada de Catalina de Médici a la corte francesa."
+   "explicacion": "Catalina de Médici se asocia con la influencia italiana, aunque parte del relato es leyenda."
   },
   {
    "id": "oc-245",
@@ -426,7 +426,7 @@
    "id": "oc-177",
    "subtema": "4.4",
    "tipo": "opcion_multiple",
-   "pregunta": "¿En qué año se considera que abrió el primer restaurante moderno, atribuido a Boulanger?",
+   "pregunta": "Según el relato más difundido, ¿en qué año abrió Boulanger su establecimiento de caldos «restaurativos»?",
    "opciones": [
     "1651",
     "1765",
@@ -434,7 +434,7 @@
     "1837"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: 1765."
+   "explicacion": "Es el relato más difundido; Rebecca Spang documenta a Roze de Chantoiseau hacia 1766."
   },
   {
    "id": "oc-178",
@@ -448,7 +448,7 @@
     "saciar"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: restaurar."
+   "explicacion": "Restaurant era un caldo que prometía «restaurar»; después nombró al lugar."
   },
   {
    "id": "oc-179",
@@ -462,7 +462,7 @@
     "Auguste Escoffier"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: Grimod de La Reynière."
+   "explicacion": "Grimod publicó el Almanach des gourmands entre 1803 y 1812."
   },
   {
    "id": "oc-180",
@@ -488,13 +488,13 @@
     "1804"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: 1789."
+   "explicacion": "La Revolución de 1789 y la abolición de los gremios multiplicaron los restaurantes."
   },
   {
    "id": "oc-182",
    "subtema": "4.4",
    "tipo": "opcion_multiple",
-   "pregunta": "¿En qué ciudad y año abrió Delmonico's, el primer restaurante de lujo de Estados Unidos?",
+   "pregunta": "¿En qué ciudad inauguró Delmonico's en 1837 el gran edificio del primer restaurante de lujo de Estados Unidos?",
    "opciones": [
     "Boston, 1820",
     "Nueva York, 1837",
@@ -502,33 +502,33 @@
     "Filadelfia, 1800"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: Nueva York, 1837."
+   "explicacion": "Delmonico's abrió en Nueva York en 1827 y estrenó su gran edificio en 1837."
   },
   {
    "id": "oc-184",
    "subtema": "4.4",
    "tipo": "opcion_multiple",
-   "pregunta": "¿Qué chef del Porfiriato cocinó para 1,700 invitados en el Centenario de la Independencia de 1910?",
+   "pregunta": "Durante el Porfiriato, ¿en qué idioma se escribían los menús de los banquetes oficiales?",
    "opciones": [
-    "Sylvain Daumont",
-    "Auguste Escoffier",
-    "Charles Ranhofer",
-    "Grimod de La Reynière"
+    "Francés",
+    "Español",
+    "Inglés",
+    "Italiano"
    ],
    "correcta": 0,
-   "explicacion": "Correcto: Sylvain Daumont."
+   "explicacion": "Los menús oficiales del Porfiriato se escribían en francés, signo de estatus."
   },
   {
    "id": "oc-185",
    "subtema": "4.4",
    "tipo": "opcion_multiple",
-   "pregunta": "Durante el Porfiriato, la élite mexicana despreciaba en público los frijoles y la tortilla, aunque los consumía en privado.",
+   "pregunta": "Durante el Porfiriato, la élite mexicana miraba con desdén en la vida pública los frijoles, la tortilla y el chile.",
    "opciones": [
     "Verdadero",
     "Falso"
    ],
    "correcta": 0,
-   "explicacion": "Verdadero, según el compendio."
+   "explicacion": "La élite despreciaba en público la comida popular y cenaba en francés."
   },
   {
    "id": "oc-186",
@@ -542,7 +542,7 @@
     "las cantinas"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: fondas."
+   "explicacion": "Fondas y figones alimentaban a la mayoría mientras la élite cenaba en francés."
   },
   {
    "id": "oc-188",
@@ -556,7 +556,7 @@
     "Ambos fueron inventados por Escoffier"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: Ambos son circuitos de alimentación popular que existieron en paralelo a la alta cocina de su época."
+   "explicacion": "Thermopolia y fondas son circuitos populares paralelos a la alta cocina."
   },
   {
    "id": "oc-249",
@@ -612,7 +612,7 @@
     "Marco Gavio Apicio"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: Auguste Escoffier."
+   "explicacion": "Escoffier organizó la brigada por estaciones y codificó técnicas enseñables."
   },
   {
    "id": "oc-190",
@@ -626,7 +626,7 @@
     "1910"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: 1895."
+   "explicacion": "Marthe Distel fundó Le Cordon Bleu en 1895 a partir de su revista."
   },
   {
    "id": "oc-191",
@@ -640,7 +640,7 @@
     "Rachel Laudan"
    ],
    "correcta": 0,
-   "explicacion": "Correcto: Julia Child."
+   "explicacion": "Julia Child estudió en Le Cordon Bleu y llevó la cocina francesa a la televisión con The French Chef."
   },
   {
    "id": "oc-192",
@@ -666,7 +666,7 @@
     "Le Cordon Bleu"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: Bocuse d'Or."
+   "explicacion": "Paul Bocuse fundó en 1987 el Bocuse d'Or, que se celebra en Lyon."
   },
   {
    "id": "oc-194",
@@ -680,7 +680,7 @@
     "2020"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: 2010."
+   "explicacion": "La cocina tradicional mexicana fue inscrita en 2010, el mismo año que la comida francesa."
   },
   {
    "id": "oc-196",
@@ -706,7 +706,7 @@
     "Charles Ranhofer"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: Grimod de La Reynière."
+   "explicacion": "Grimod de La Reynière, con su Almanach, inventó la crítica gastronómica."
   },
   {
    "id": "oc-198",
@@ -720,7 +720,7 @@
     "Que la tecnología es lo único que ha cambiado en la historia de la cocina"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: Que el poder político tiende a expresarse en la sofisticación de la mesa, y que ese oficio terminó profesionalizándose."
+   "explicacion": "El Tema 4 muestra que el poder se expresa en la mesa y que el oficio se profesionalizó."
   }
  ]
 }

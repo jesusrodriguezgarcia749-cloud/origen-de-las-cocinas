@@ -2,6 +2,20 @@
  "bloque": 3,
  "reactivos": [
   {
+   "id": "oc-99",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Cuál es el ingrediente emblemático del Magreb, de origen amazigh (bereber)?",
+   "opciones": [
+    "El teff",
+    "El cuscús",
+    "El ñame",
+    "El injera"
+   ],
+   "correcta": 1,
+   "explicacion": "El cuscús es de origen bereber (amazigh); la UNESCO lo inscribió en 2020."
+  },
+  {
    "id": "oc-100",
    "subtema": "3.1",
    "tipo": "opcion_multiple",
@@ -13,7 +27,7 @@
     "otomano"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: transahariano."
+   "explicacion": "El comercio transahariano cambiaba oro del sur por sal del norte y llevó el islam al Sahel."
   },
   {
    "id": "oc-101",
@@ -39,7 +53,7 @@
     "El arroz"
    ],
    "correcta": 0,
-   "explicacion": "Correcto: El teff."
+   "explicacion": "El teff es un grano diminuto del altiplano etíope; con él se hace el injera fermentado."
   },
   {
    "id": "oc-103",
@@ -78,7 +92,7 @@
     "El tsebhi"
    ],
    "correcta": 0,
-   "explicacion": "Correcto: El braai."
+   "explicacion": "El braai es la parrillada social del sur de África, equivalente al asado del Cono Sur."
   },
   {
    "id": "oc-106",
@@ -212,18 +226,88 @@
    "explicacion": "Son la «tercera raíz» de México, presentes en la Costa Chica y en Veracruz."
   },
   {
-   "id": "oc-99",
+   "id": "oc-252",
    "subtema": "3.1",
    "tipo": "opcion_multiple",
-   "pregunta": "¿Cuál es el ingrediente emblemático del Magreb, de origen amazigh (bereber)?",
+   "pregunta": "¿Cuál es el desierto cálido más grande del mundo, que divide al norte de África del resto del continente?",
    "opciones": [
-    "El teff",
-    "El cuscús",
-    "El ñame",
-    "El injera"
+    "El Namib",
+    "El desierto de Libia",
+    "El Kalahari",
+    "El Sahara"
+   ],
+   "correcta": 3,
+   "explicacion": "El Sahara mide unos 9 millones de km²; en sus oasis se cultivan dátiles."
+  },
+  {
+   "id": "oc-253",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué imperio africano gobernó Mansa Musa, famoso por su riqueza en oro y sal?",
+   "opciones": [
+    "El Reino del Congo",
+    "El Imperio otomano",
+    "El Imperio de Malí",
+    "El Imperio de Etiopía"
+   ],
+   "correcta": 2,
+   "explicacion": "Las caravanas transaharianas cambiaban oro del sur por sal del norte."
+  },
+  {
+   "id": "oc-254",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué grano es la base de la mesa del Sahel, la franja semiárida al sur del Sahara?",
+   "opciones": [
+    "El trigo y la cebada",
+    "El arroz asiático",
+    "El maíz americano",
+    "El mijo y el sorgo"
+   ],
+   "correcta": 3,
+   "explicacion": "Mijo y sorgo resisten la sequía."
+  },
+  {
+   "id": "oc-255",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Qué fruto, hoy bebido en todo el mundo, es originario de los bosques del suroeste de Etiopía?",
+   "opciones": [
+    "La vainilla",
+    "El café",
+    "El té",
+    "El cacao"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: El cuscús."
+   "explicacion": "Nació en Etiopía y se difundió desde Yemen."
+  },
+  {
+   "id": "oc-256",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿De dónde vienen la palabra gumbo y la okra de la cocina de Luisiana?",
+   "opciones": [
+    "De Francia, con los colonos cajún",
+    "De los pueblos indígenas del Misisipi",
+    "De África, con las personas esclavizadas",
+    "De España, con los colonos de Florida"
+   ],
+   "correcta": 2,
+   "explicacion": "La trata transatlántica llevó a América ingredientes, técnicas y palabras africanas."
+  },
+  {
+   "id": "oc-257",
+   "subtema": "3.1",
+   "tipo": "opcion_multiple",
+   "pregunta": "¿Dónde vive hoy buena parte de la población afromexicana, reconocida en la Constitución desde 2019?",
+   "opciones": [
+    "En el Bajío, en Guanajuato",
+    "En el norte, en Sonora y Chihuahua",
+    "En la Costa Chica y en Veracruz",
+    "En la península de Yucatán"
+   ],
+   "correcta": 2,
+   "explicacion": "La tercera raíz es la africana, junto a la indígena y la española."
   },
   {
    "id": "oc-107",
@@ -237,7 +321,7 @@
     "El Chilam Balam"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: La Historia general de las cosas de Nueva España (Códice Florentino), de Sahagún."
+   "explicacion": "Sahagún escribió con informantes nahuas el Códice Florentino, terminado hacia 1577."
   },
   {
    "id": "oc-108",
@@ -251,7 +335,7 @@
     "30"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: 96."
+   "explicacion": "Sahagún registró casi un centenar de insectos comestibles."
   },
   {
    "id": "oc-109",
@@ -265,7 +349,7 @@
     "El pib"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: Las chinampas."
+   "explicacion": "Las chinampas eran parcelas construidas con lodo y vegetación sobre el lago; siguen en Xochimilco."
   },
   {
    "id": "oc-110",
@@ -316,7 +400,7 @@
     "el pib"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: pet kot."
+   "explicacion": "El pet kot maya era un huerto forestal rodeado de piedra."
   },
   {
    "id": "oc-113",
@@ -330,7 +414,7 @@
     "El grand couvert"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: El pib (horno de tierra)."
+   "explicacion": "El pib es un horno bajo tierra con piedras calientes, propio de la península."
   },
   {
    "id": "oc-115",
@@ -344,7 +428,7 @@
     "un"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: dos."
+   "explicacion": "La cocina mexicana es mestiza: nació del encuentro de la tradición indígena y la española."
   },
   {
    "id": "oc-116",
@@ -358,7 +442,7 @@
     "Ninguno documentado"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: Más de 20."
+   "explicacion": "Campeche sufrió más de veinte ataques piratas entre 1558 y 1685."
   },
   {
    "id": "oc-117",
@@ -372,7 +456,7 @@
     "Portugal"
    ],
    "correcta": 2,
-   "explicacion": "Correcto: Holanda."
+   "explicacion": "Según la tradición, el queso de bola tipo Edam llegaba de Holanda por el puerto."
   },
   {
    "id": "oc-118",
@@ -386,7 +470,7 @@
     "El Draque"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: Lorencillo."
+   "explicacion": "Laurens de Graaf, «Lorencillo», saqueó Campeche en 1685."
   },
   {
    "id": "oc-119",
@@ -412,7 +496,7 @@
     "Diez"
    ],
    "correcta": 2,
-   "explicacion": "Correcto: Siete."
+   "explicacion": "Meneses López identifica siete: maya, española, árabe, francesa, holandesa, africana y caribeña."
   },
   {
    "id": "oc-122",
@@ -426,7 +510,7 @@
     "El braai"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: El chuño."
+   "explicacion": "El chuño se congela de noche, se pisa y se seca al sol; dura años."
   },
   {
    "id": "oc-123",
@@ -440,7 +524,7 @@
     "la cecina"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: charqui."
+   "explicacion": "El charqui es carne seca de llama o alpaca; de ahí viene jerky."
   },
   {
    "id": "oc-124",
@@ -454,7 +538,7 @@
     "El Cono Sur"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: El Caribe."
+   "explicacion": "El Caribe reúne la base taína, la herencia europea y una fuerte presencia africana."
   },
   {
    "id": "oc-125",
@@ -480,7 +564,7 @@
     "La papa"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: La yuca."
+   "explicacion": "La yuca o mandioca es la base de la fariña, la farofa y el beiju."
   },
   {
    "id": "oc-127",
@@ -494,7 +578,7 @@
     "el cacao"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: calabaza."
+   "explicacion": "Maíz, frijol y calabaza: las tres hermanas, también en Mesoamérica (milpa)."
   },
   {
    "id": "oc-207",
@@ -655,7 +739,7 @@
     "Ming"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: Yuan."
+   "explicacion": "El pato laqueado se documenta desde la dinastía Yuan (siglos XIII-XIV)."
   },
   {
    "id": "oc-131",
@@ -669,7 +753,7 @@
     "el gochujang"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: kimchi."
+   "explicacion": "El kimchi es col u otras verduras fermentadas con sal, ajo y chile."
   },
   {
    "id": "oc-132",
@@ -683,7 +767,7 @@
     "El comercio con Rusia"
    ],
    "correcta": 0,
-   "explicacion": "Correcto: La herencia mogol (persa y centroasiática)."
+   "explicacion": "La corte mogol llevó al norte de la India ghee, yogur, panes de trigo y el horno tandoor."
   },
   {
    "id": "oc-133",
@@ -709,7 +793,7 @@
     "Sigue el ahimsa jainista"
    ],
    "correcta": 0,
-   "explicacion": "Correcto: Sigue las normas halal del islam."
+   "explicacion": "Medio Oriente es de mayoría islámica: sigue las normas halal."
   },
   {
    "id": "oc-135",
@@ -723,7 +807,7 @@
     "la dolma"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: plov."
+   "explicacion": "El plov se cocina en una gran olla para la comunidad; es patrimonio de la UNESCO."
   },
   {
    "id": "oc-136",
@@ -737,7 +821,7 @@
     "El garum"
    ],
    "correcta": 0,
-   "explicacion": "Correcto: El kumis."
+   "explicacion": "El kumis es leche de yegua fermentada de los nómadas de las estepas."
   },
   {
    "id": "oc-138",
@@ -749,7 +833,7 @@
     "Falso"
    ],
    "correcta": 0,
-   "explicacion": "Verdadero, según el compendio."
+   "explicacion": "La cocina otomana dejó huella en el Magreb y los Balcanes: kebab, dolmas, baklava."
   },
   {
    "id": "oc-216",
@@ -886,13 +970,13 @@
     "Paella y gazpacho"
    ],
    "correcta": 0,
-   "explicacion": "Correcto: Burek y cevapi."
+   "explicacion": "Burek y ćevapi son herencia de cinco siglos de dominio otomano."
   },
   {
    "id": "oc-141",
    "subtema": "3.4",
    "tipo": "opcion_multiple",
-   "pregunta": "La bebida rusa de huevas de esturión, reservada históricamente a la nobleza zarista, se llama _______.",
+   "pregunta": "El producto ruso de huevas de esturión, reservado históricamente a la nobleza zarista, se llama _______.",
    "opciones": [
     "caviar",
     "el blini",
@@ -900,7 +984,7 @@
     "el borscht"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: caviar."
+   "explicacion": "El caviar son huevas de esturión del Caspio, lujo de la nobleza zarista."
   },
   {
    "id": "oc-142",
@@ -918,7 +1002,7 @@
    "id": "oc-143",
    "subtema": "3.4",
    "tipo": "opcion_multiple",
-   "pregunta": "¿Qué evento del Tema 1 confirma que la cocina francesa \"clásica\" no se desarrolló en aislamiento?",
+   "pregunta": "¿Qué hecho del Tema 1 suele citarse para mostrar que la cocina francesa «clásica» no se desarrolló aislada?",
    "opciones": [
     "La llegada de Catalina de Médici desde Italia",
     "El descubrimiento del microondas",
@@ -926,7 +1010,7 @@
     "El manifiesto New Nordic"
    ],
    "correcta": 0,
-   "explicacion": "Correcto: La llegada de Catalina de Médici desde Italia."
+   "explicacion": "La influencia italiana del Renacimiento muestra que la cocina francesa no nació aislada."
   },
   {
    "id": "oc-145",
@@ -940,7 +1024,7 @@
     "ortodoxa"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: asquenazí."
+   "explicacion": "La asquenazí se formó en Centroeuropa y Europa del Este; la sefardí, en la península ibérica."
   },
   {
    "id": "oc-223",
@@ -1059,7 +1143,7 @@
     "El maíz"
    ],
    "correcta": 0,
-   "explicacion": "Correcto: El kumara."
+   "explicacion": "El kumara, camote americano, se guardaba en fosas durante el invierno neozelandés."
   },
   {
    "id": "oc-148",
@@ -1073,7 +1157,7 @@
     "el umu"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: bushfood."
+   "explicacion": "El bushfood es la alimentación aborigen con ingredientes nativos de Australia."
   },
   {
    "id": "oc-149",
@@ -1085,7 +1169,7 @@
     "Falso"
    ],
    "correcta": 0,
-   "explicacion": "Verdadero, según el compendio."
+   "explicacion": "Sobre la base polinesia se sumaron los trabajadores migrantes de las plantaciones."
   },
   {
    "id": "oc-150",
@@ -1099,7 +1183,7 @@
     "El grand couvert"
    ],
    "correcta": 0,
-   "explicacion": "Correcto: El horno de tierra."
+   "explicacion": "Hāngī, umu, lovo e imu: el horno de tierra une al Pacífico."
   },
   {
    "id": "oc-152",
@@ -1113,7 +1197,7 @@
     "vietnamita"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: filipino."
+   "explicacion": "El plate lunch mezcla arroz japonés, ensalada de macarrón y carnes adobadas filipinas o coreanas."
   },
   {
    "id": "oc-153",
@@ -1127,7 +1211,7 @@
     "La Antártida"
    ],
    "correcta": 3,
-   "explicacion": "Correcto: La Antártida."
+   "explicacion": "Las cinco regiones son África, América, Asia, Europa y Oceanía."
   },
   {
    "id": "oc-154",
@@ -1139,7 +1223,7 @@
     "Falso"
    ],
    "correcta": 0,
-   "explicacion": "Verdadero, según el compendio."
+   "explicacion": "Comercio, migración y conquista explican casi todas las cocinas del mundo."
   },
   {
    "id": "oc-156",
@@ -1153,7 +1237,7 @@
     "la ONU"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: UNESCO."
+   "explicacion": "La UNESCO inscribió la cocina tradicional mexicana en 2010."
   },
   {
    "id": "oc-229",

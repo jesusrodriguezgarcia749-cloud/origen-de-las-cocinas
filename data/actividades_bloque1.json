@@ -13,7 +13,7 @@
     "Bartolomeo Scappi"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: Jean-Anthelme Brillat-Savarin."
+   "explicacion": "Brillat-Savarin publicó en 1825 la Fisiología del gusto, la primera reflexión moderna sobre la gastronomía."
   },
   {
    "id": "oc-2",
@@ -27,7 +27,7 @@
     "El banquete perpetuo"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: Fisiología del gusto."
+   "explicacion": "Fisiología del gusto (1825) une ciencia, anécdota y filosofía sobre el placer de comer."
   },
   {
    "id": "oc-3",
@@ -41,7 +41,7 @@
     "\"Quien no arriesga, no cocina\""
    ],
    "correcta": 1,
-   "explicacion": "Correcto: \"Dime lo que comes y te diré lo que eres\"."
+   "explicacion": "El aforismo dice que la comida revela la identidad de una persona o de un pueblo."
   },
   {
    "id": "oc-4",
@@ -67,7 +67,7 @@
     "950"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: 1750."
+   "explicacion": "Las tablillas de Yale son de hacia 1750 a.C.: las recetas escritas más antiguas que se conocen."
   },
   {
    "id": "oc-6",
@@ -106,7 +106,7 @@
     "Periodístico de investigación"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: Literario, mezcla hechos reales con anécdotas inventadas."
+   "explicacion": "Cunqueiro escribe como literato: mezcla datos con anécdotas inventadas, por eso hay que contrastarlo con otras fuentes."
   },
   {
    "id": "oc-9",
@@ -120,21 +120,21 @@
     "Plinio el Viejo"
    ],
    "correcta": 0,
-   "explicacion": "Correcto: Marco Gavio Apicio."
+   "explicacion": "Apicio fue un gastrónomo del siglo I; el recetario que lleva su nombre se compiló hacia los siglos IV-V."
   },
   {
    "id": "oc-10",
    "subtema": "1.2.1",
    "tipo": "opcion_multiple",
-   "pregunta": "De re coquinaria se organiza en _______ libros temáticos, con más de 400 recetas.",
+   "pregunta": "De re coquinaria se organiza en _______ libros temáticos, con unas 470 recetas.",
    "opciones": [
-    "11 (once)",
+    "10 (diez)",
     "8",
     "15",
     "6"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: 11 (once)."
+   "explicacion": "De re coquinaria tiene diez libros con nombres griegos y reúne unas 470 recetas."
   },
   {
    "id": "oc-11",
@@ -148,7 +148,7 @@
     "Muria"
    ],
    "correcta": 0,
-   "explicacion": "Correcto: Garum."
+   "explicacion": "El garum era salsa de pescado fermentado con sal; se producía sobre todo en Hispania y se exportaba en ánforas."
   },
   {
    "id": "oc-12",
@@ -160,7 +160,7 @@
     "Falso"
    ],
    "correcta": 0,
-   "explicacion": "Verdadero, según el compendio."
+   "explicacion": "Gustatio (entrada), prima mensa (platos fuertes) y secunda mensa (postres): de ahí el orden moderno del menú."
   },
   {
    "id": "oc-13",
@@ -195,7 +195,7 @@
     "Mercados de especias importadas"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: Mostradores de comida callejera con tinajas empotradas."
+   "explicacion": "Los thermopolia eran mostradores abiertos a la calle con tinajas para mantener calientes guisos y vino."
   },
   {
    "id": "oc-15",
@@ -209,7 +209,7 @@
     "Ostia"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: Pompeya."
+   "explicacion": "La erupción del Vesubio (79 d.C.) conservó en Pompeya decenas de thermopolia."
   },
   {
    "id": "oc-17",
@@ -223,7 +223,7 @@
     "Marco Gavio Apicio"
    ],
    "correcta": 0,
-   "explicacion": "Correcto: Guillaume Tirel, \"Taillevent\"."
+   "explicacion": "Guillaume Tirel, «Taillevent», fue cocinero de los reyes de Francia en el siglo XIV."
   },
   {
    "id": "oc-18",
@@ -249,7 +249,7 @@
     "80"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: 130."
+   "explicacion": "Le Viandier recopila más de 130 recetas de la cocina noble medieval."
   },
   {
    "id": "oc-20",
@@ -263,7 +263,7 @@
     "Clavo"
    ],
    "correcta": 2,
-   "explicacion": "Correcto: Vainilla."
+   "explicacion": "La vainilla es americana (Papantla); en la Edad Media aún no llegaba a Europa."
   },
   {
    "id": "oc-22",
@@ -277,7 +277,7 @@
     "los gremios"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: monasterios."
+   "explicacion": "Los monasterios conservaron saberes agrícolas y técnicas como la salazón, el ahumado, los quesos y la cerveza."
   },
   {
    "id": "oc-23",
@@ -291,7 +291,7 @@
     "Le Cuisinier François"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: Opera dell'arte del cucinare de Bartolomeo Scappi."
+   "explicacion": "La Opera de Scappi (1570) reúne más de mil recetas, menús de banquetes y grabados de utensilios."
   },
   {
    "id": "oc-24",
@@ -305,7 +305,7 @@
     "1610"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: 1570."
+   "explicacion": "Scappi, cocinero de los papas, publicó su Opera en 1570."
   },
   {
    "id": "oc-25",
@@ -317,7 +317,7 @@
     "Falso"
    ],
    "correcta": 0,
-   "explicacion": "Verdadero, según el compendio."
+   "explicacion": "Es verdad que la tradición se lo atribuye; pero los historiadores consideran buena parte de ese relato una leyenda posterior."
   },
   {
    "id": "oc-26",
@@ -331,7 +331,7 @@
     "1789"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: 1533."
+   "explicacion": "Catalina de Médici llegó a Francia en 1533 para casarse con el futuro Enrique II."
   },
   {
    "id": "oc-28",
@@ -345,7 +345,7 @@
     "mapas de rutas comerciales"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: ilustraciones."
+   "explicacion": "Los grabados de Scappi muestran por primera vez cómo se organizaba una cocina profesional."
   },
   {
    "id": "oc-29",
@@ -359,7 +359,7 @@
     "1550"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: 1492."
+   "explicacion": "El viaje de Colón en 1492 inició el intercambio de plantas, animales y personas entre América y el resto del mundo."
   },
   {
    "id": "oc-30",
@@ -398,7 +398,7 @@
     "Antoine Parmentier"
    ],
    "correcta": 0,
-   "explicacion": "Correcto: François Pierre de La Varenne."
+   "explicacion": "La Varenne publicó Le Cuisinier françois en 1651 y abandonó las especias medievales por hierbas locales."
   },
   {
    "id": "oc-32",
@@ -412,7 +412,7 @@
     "jengibre"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: estragón."
+   "explicacion": "Perejil, tomillo, laurel y estragón: hierbas frescas en lugar de especias importadas."
   },
   {
    "id": "oc-33",
@@ -438,7 +438,7 @@
     "La calabaza"
    ],
    "correcta": 0,
-   "explicacion": "Correcto: La papa."
+   "explicacion": "Parmentier sobrevivió comiendo papa como prisionero y después la promovió en Francia."
   },
   {
    "id": "oc-37",
@@ -452,7 +452,7 @@
     "Un estilo de menú y una receta tradicional"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: Un fogón doméstico de leña y un comedor popular de bajo costo."
+   "explicacion": "Cocina económica nombra tanto el fogón doméstico de leña como el comedor popular de bajo costo."
   },
   {
    "id": "oc-38",
@@ -466,7 +466,7 @@
     "1920"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: 1886."
+   "explicacion": "La Cocina Económica de La Coruña se fundó en 1886 para alimentar a personas pobres."
   },
   {
    "id": "oc-39",
@@ -478,7 +478,7 @@
     "Falso"
    ],
    "correcta": 0,
-   "explicacion": "Verdadero, según el compendio."
+   "explicacion": "En México, redes de mujeres organizaron comedores populares desde finales del siglo XIX."
   },
   {
    "id": "oc-41",
@@ -492,7 +492,7 @@
     "1907"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: 1859."
+   "explicacion": "George B. Simpson patentó en 1859 un calentador eléctrico de cocina."
   },
   {
    "id": "oc-42",
@@ -506,7 +506,7 @@
     "Michael Faraday"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: Percy Spencer."
+   "explicacion": "Percy Spencer notó en 1945 que el radar derretía una barra de chocolate en su bolsillo."
   },
   {
    "id": "oc-43",
@@ -518,7 +518,7 @@
     "Falso"
    ],
    "correcta": 0,
-   "explicacion": "Verdadero, según el compendio."
+   "explicacion": "Spencer trabajaba con magnetrones de radar en Raytheon."
   },
   {
    "id": "oc-45",
@@ -532,7 +532,7 @@
     "1990"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: 1970."
+   "explicacion": "Westinghouse comercializó la cocina de inducción en los años setenta."
   },
   {
    "id": "oc-47",
@@ -571,7 +571,7 @@
     "Los bazares árabes"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: Los thermopolia romanos."
+   "explicacion": "Los thermopolia romanos son el antecedente arqueológico más antiguo de la comida callejera."
   },
   {
    "id": "oc-49",
@@ -597,7 +597,7 @@
     "2004"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: 1973."
+   "explicacion": "Gault y Millau publicaron en 1973 los diez mandamientos de la nouvelle cuisine."
   },
   {
    "id": "oc-52",
@@ -611,7 +611,7 @@
     "2010"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: 2004."
+   "explicacion": "El manifiesto New Nordic se firmó en 2004 en Copenhague."
   },
   {
    "id": "oc-53",
@@ -625,7 +625,7 @@
     "René Redzepi y Noma"
    ],
    "correcta": 1,
-   "explicacion": "Correcto: Ferran Adrià y El Bulli."
+   "explicacion": "Ferran Adrià convirtió El Bulli en el laboratorio de la cocina de vanguardia (esferificación, espumas)."
   },
   {
    "id": "oc-54",
@@ -651,7 +651,7 @@
     "Slow Life"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: Slow Food."
+   "explicacion": "Carlo Petrini fundó Slow Food en 1989 como reacción a la comida rápida."
   },
   {
    "id": "oc-57",
@@ -665,7 +665,7 @@
     "La disponibilidad de telégrafo"
    ],
    "correcta": 3,
-   "explicacion": "Correcto: La disponibilidad de telégrafo."
+   "explicacion": "El telégrafo no aparece entre las fuerzas que mueven las cocinas actuales (redes sociales, turismo, sustentabilidad)."
   },
   {
    "id": "oc-58",
@@ -679,7 +679,7 @@
     "el índice Zagat"
    ],
    "correcta": 0,
-   "explicacion": "La respuesta es: The World's 50 Best Restaurants."
+   "explicacion": "The World's 50 Best Restaurants y la Guía Michelin orientan el turismo gastronómico."
   },
   {
    "id": "oc-59",
@@ -691,7 +691,7 @@
     "Falso"
    ],
    "correcta": 0,
-   "explicacion": "Verdadero, según el compendio."
+   "explicacion": "Las redes acercan técnicas, pero pueden simplificar tradiciones complejas."
   },
   {
    "id": "oc-36",
