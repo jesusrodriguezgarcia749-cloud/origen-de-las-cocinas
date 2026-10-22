@@ -90,6 +90,7 @@
     <button class="tab-btn" data-tab="participacion">Participación</button>
     <button class="tab-btn" data-tab="proyecto">Proyecto</button>
     <button class="tab-btn" data-tab="miatlas">Mi atlas</button>
+    <button class="tab-btn" data-tab="monitor">🟢 Monitor en vivo</button>
     <button class="tab-btn" data-tab="asistencia">Asistencia</button>
     <button class="tab-btn" data-tab="uniformes">Uniformes</button>
     <button class="tab-btn" data-tab="practico">Examen práctico</button>
@@ -228,6 +229,22 @@
     </div>
   </div>
 
+  <div id="tab-monitor" class="tab-panel">
+    <p class="field-hint">Lo que los equipos y los alumnos están haciendo en Mi atlas, en vivo: los mapas se colorean en tu pantalla al mismo tiempo que ellos pintan. Toca una tarjeta para ver su trabajo completo.</p>
+    <div class="mon-filtros">
+      <div class="mon-chips" id="mon-conts"></div>
+      <div class="mon-chips" id="mon-ver">
+        <button type="button" class="chip-mon" data-v="todos" aria-pressed="true">Todos</button>
+        <button type="button" class="chip-mon" data-v="equipos" aria-pressed="false">Solo equipos</button>
+        <button type="button" class="chip-mon" data-v="individual" aria-pressed="false">Solo individual</button>
+        <button type="button" class="chip-mon" id="mon-full" aria-pressed="false">⛶ Pantalla completa</button>
+      </div>
+    </div>
+    <p class="mon-resumen" id="mon-resumen"></p>
+    <div class="mon-grid" id="mon-grid"></div>
+    <p class="field-hint" id="mon-sin"></p>
+  </div>
+
   <div id="tab-asistencia" class="tab-panel">
     <label for="asis-parcial" class="field-label">Parcial</label>
     <select id="asis-parcial">
@@ -347,6 +364,12 @@
 <button id="bg-music-toggle" class="music-toggle" aria-label="Activar música de fondo" aria-pressed="false">🎵</button>
 
 <script src="js/app.js"></script>
+<div id="mon-detalle" class="mon-detalle" hidden role="dialog" aria-modal="true" aria-labelledby="mon-det-titulo">
+  <div class="mon-det-caja">
+    <div class="mon-det-cab"><div><h2 id="mon-det-titulo"></h2><p id="mon-det-sub"></p></div><button type="button" class="btn" id="mon-det-cerrar">Cerrar ✕</button></div>
+    <div class="mon-det-cuerpo" id="mon-det-cuerpo"></div>
+  </div>
+</div>
 <div id="qr-proyeccion" class="qr-proyeccion" hidden>
   <div class="qr-cab"><div><b>Únete a tu equipo</b><span>Escanea el código con tu celular (o entra a Atlas → ✏️ Mi atlas y escribe el código de 4 letras).</span></div><button type="button" class="btn" id="qr-cerrar">Cerrar ✕</button></div>
   <div class="qr-grid" id="qr-grid"></div>

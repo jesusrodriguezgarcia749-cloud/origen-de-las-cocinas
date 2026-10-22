@@ -33,6 +33,9 @@ const CAMPOS_PAIS = [['platillos', 'Platillos de este país'], ['notas', 'Notas 
 
 let editando = null;
 // ---- modo equipo: el atlas vive en grupos/{g}/equipos/{e}/atlas/{continente} y se edita en vivo
+let ultimaNota = '';
+const nota = d => { ultimaNota = d; };
+const nomCampo = f => ({ nombre: 'el nombre', ...Object.fromEntries(CAMPOS_REGION.map(([k, t]) => [k, t])) })[f] || f;
 let codigoPendiente = null, abiertos = true, eqDocUnsub = null, msgModo = '';
 let modo = 'personal', EQ = null, TE = {}, unsub = null, pend = new Map(), pendT = null, existe = {};
 let A = null, sesion = null, T = null, cont = 'africa', regSel = null, paisSel = null, timer = null, iniciado = false;
@@ -231,7 +234,7 @@ async function flushEquipo() {
     if (!existe[k]) { const s0 = await getDoc(ref); if (!s0.exists()) await setDoc(ref, { regiones: {}, asign: {}, paises: {}, por: {}, ultimoAutor: sesion.alumnoId, ultimoPin: sesion.pin, actualizado: serverTimestamp() }); existe[k] = true; }
     const args = [];
     lote.forEach(([ruta, v]) => { args.push(new FieldPath(...ruta), v === null ? deleteField() : v); });
-    args.push('ultimoAutor', sesion.alumnoId, 'ultimoPin', sesion.pin, 'actualizado', serverTimestamp());
+    args.push('ultimoAutor', sesion.alumnoId, 'ultimoPin', sesion.pin, 'ultimoNombre', sesion.nombre, 'ultimoCambio', ultimaNota, 'actualizado', serverTimestamp());
     await updateDoc(ref, ...args);
     if (!pend.size) estado('Sincronizado con tu equipo ✓', 'ok');
   } catch (e) {
@@ -287,7 +290,7 @@ async function guardarYa() {
   if (sesion.anon) { estado('Guardado en este dispositivo ✓', 'ok'); return; }
   try {
     await setDoc(doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'atlas', 'mi-atlas'), {
-      pinVerificado: sesion.pin, nombre: sesion.nombre, equipo: (T.equipo || '').trim(), datos: T, avance: resumen(), actualizado: serverTimestamp()
+      pinVerificado: sesion.pin, nombre: sesion.nombre, equipo: (T.equipo || '').trim(), datos: T, avance: resumen(), ultimoCambio: ultimaNota, ultimoCont: cont, actualizado: serverTimestamp()
     });
     estado('Guardado en tu cuenta ✓', 'ok');
   } catch {
@@ -359,6 +362,7 @@ function tocarPais(id) {
   const c = C();
   if (regSel) {
     const nuevo = c.asign[id] === regSel ? null : regSel;
+    nota(`${nuevo ? 'pintó' : 'quitó'} ${corto(PAIS[id].n)} ${nuevo ? 'en' : 'de'} ${(c.regiones.find(r => r.id === regSel) || {}).nombre || 'una región'}`);
     if (nuevo) c.asign[id] = nuevo; else delete c.asign[id];
     if (modo === 'equipo') encolar(['asign', id], nuevo, true); else cambio();
     paisSel = id; colorear(); panel(); fichas();
@@ -395,7 +399,7 @@ function panel() {
     fe.querySelector('[data-cancel]').addEventListener('click', () => { editando = null; panel(); });
     fe.addEventListener('submit', e => {
       e.preventDefault(); const n = fe.querySelector('input').value.trim(); if (!n) { fe.querySelector('input').focus(); return; }
-      r.nombre = n; r.color = col; editando = null;
+      nota(`renombró la región «${n}»`); r.nombre = n; r.color = col; editando = null;
       if (modo === 'equipo') { encolar(['regiones', r.id, 'nombre'], n, true); encolar(['regiones', r.id, 'color'], col, true); } else cambio();
       panel(); fichas(); colorear();
       estado('Región actualizada ✓', 'ok');
@@ -406,13 +410,13 @@ function panel() {
   $('#ma-nueva').addEventListener('submit', e => {
     e.preventDefault(); const n = $('#ma-nueva-n').value.trim(); if (!n) { $('#ma-nueva-n').focus(); return; }
     const id = 'r' + Date.now().toString(36);
-    const nueva = { nombre: n, color, orden: Date.now() };
+    const nueva = { nombre: n, color, orden: Date.now() }; nota(`creó la región «${n}»`);
     C().regiones.push({ id, ...nueva }); regSel = id;
     if (modo === 'equipo') encolar(['regiones', id], nueva, true); else cambio();
     panel(); fichas(); colorear();
     const f = document.getElementById('ficha-' + id); if (f) f.open = true;
   });
-  $$('[data-pf]', p).forEach(t => t.addEventListener('input', () => { const c2 = C(); c2.paises[paisSel] = c2.paises[paisSel] || {}; c2.paises[paisSel][t.dataset.pf] = t.value; if (modo === 'equipo') encolar(['paises', paisSel, t.dataset.pf], t.value); else cambio(); }));
+  $$('[data-pf]', p).forEach(t => t.addEventListener('input', () => { const c2 = C(); c2.paises[paisSel] = c2.paises[paisSel] || {}; c2.paises[paisSel][t.dataset.pf] = t.value; nota(`escribe sobre ${corto(PAIS[paisSel].n)}`); if (modo === 'equipo') encolar(['paises', paisSel, t.dataset.pf], t.value); else cambio(); }));
 }
 function siguienteColor() { const usados = C().regiones.map(r => r.color); const i = COLORES.findIndex(c => !usados.includes(c)); return i < 0 ? C().regiones.length % COLORES.length : i; }
 
@@ -435,7 +439,7 @@ function fichas() {
       </div></details>`;
   }).join('');
   $$('#ma-fichas [data-rf]').forEach(t => t.addEventListener('input', () => {
-    const r = C().regiones.find(x => x.id === t.closest('details').dataset.id); r[t.dataset.rf] = t.value;
+    const r = C().regiones.find(x => x.id === t.closest('details').dataset.id); r[t.dataset.rf] = t.value; nota(`escribe ${nomCampo(t.dataset.rf).toLowerCase()} de «${r.nombre}»`);
     if (modo === 'equipo') { encolar(['regiones', r.id, t.dataset.rf], t.value); if (t.dataset.rf !== 'nombre') { const c3 = C(); c3.por[r.id] = c3.por[r.id] || {}; c3.por[r.id][t.dataset.rf] = sesion.nombre; encolar(['por', r.id, t.dataset.rf], sesion.nombre); pintarAutores(); } } else cambio();
     if (t.dataset.rf === 'nombre') { panel(); t.closest('details').querySelector('summary b').textContent = t.value; }
     else t.closest('details').querySelector('.ma-cuenta').textContent = CAMPOS_REGION.reduce((x, [f]) => x + palabras(r[f]), 0) + ' palabras';
@@ -444,7 +448,7 @@ function fichas() {
   $$('#ma-fichas [data-del]').forEach(b => b.addEventListener('click', () => {
     const c2 = C(), r = c2.regiones.find(x => x.id === b.dataset.del);
     if (!confirm(`¿Eliminar la región «${r.nombre}»? Sus países quedarán sin región y se borrará lo que escribiste en su ficha.`)) return;
-    c2.regiones = c2.regiones.filter(x => x.id !== r.id);
+    nota(`eliminó la región «${r.nombre}»`); c2.regiones = c2.regiones.filter(x => x.id !== r.id);
     Object.keys(c2.asign).forEach(i => { if (c2.asign[i] === r.id) { delete c2.asign[i]; if (modo === 'equipo') encolar(['asign', i], null, true); } });
     if (modo === 'equipo') { encolar(['regiones', r.id], null, true); encolar(['por', r.id], null, true); } else cambio();
     if (regSel === r.id) regSel = null; colorear(); panel(); fichas();

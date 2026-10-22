@@ -120,6 +120,7 @@ function cargarTabActiva() {
   if (tab === 'participacion') cargarCatalogo('participaciones');
   if (tab === 'proyecto') cargarProyecto();
   if (tab === 'miatlas') cargarMiAtlas();
+  if (tab === 'monitor') iniciarMonitor(); else detenerMonitor();
   if (tab === 'asistencia') cargarAsistencia();
   if (tab === 'uniformes') cargarUniformes();
   if (tab === 'enlinea') { cargarExamenesAbiertos(); cargarIntentos(); }
@@ -864,6 +865,142 @@ function abrirProyeccion(imprimir) { pintarProyeccion(); const o = document.getE
 on('eq-proyectar', 'click', () => abrirProyeccion(false));
 on('eq-imprimir', 'click', () => abrirProyeccion(true));
 on('qr-cerrar', 'click', () => { document.getElementById('qr-proyeccion').hidden = true; document.body.classList.remove('con-qr'); });
+
+// ---- Monitor en vivo de Mi atlas: equipos e individual, con mapas que se colorean al instante
+const MON = { cont: 'africa', ver: 'todos', subs: [], datos: {}, equipos: [], grupo: null, reloj: null, abierto: null };
+let MON_ATLAS = null, MON_PAIS = {};
+async function iniciarMonitor() {
+  if (!grupoActivo) { document.getElementById('mon-grid').innerHTML = '<p class="empty-inline">Elige un grupo primero.</p>'; return; }
+  if (!MON_ATLAS) {
+    try { MON_ATLAS = ATLAS_DATA || await fetch('data/atlas.json').then(r => r.json()); } catch { document.getElementById('mon-grid').innerHTML = '<p class="empty-inline">No se pudo cargar el Atlas.</p>'; return; }
+    Object.values(MON_ATLAS.regiones).forEach(r => r.paises.forEach(p => { MON_PAIS[p.id] = { n: p.n.replace(/ \(.*\)$/, ''), cont: r.cont }; }));
+    const cc = document.getElementById('mon-conts');
+    cc.innerHTML = Object.entries(MON_ATLAS.continentes).map(([k, c]) => `<button type="button" class="chip-mon" data-c="${k}" aria-pressed="${k === MON.cont}">${escaparHTML(c.nombre)}</button>`).join('');
+    cc.querySelectorAll('[data-c]').forEach(b => b.addEventListener('click', () => { MON.cont = b.dataset.c; cc.querySelectorAll('[data-c]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); suscribirEquiposCont(); pintarMonitor(true); }));
+    document.querySelectorAll('#mon-ver [data-v]').forEach(b => b.addEventListener('click', () => { MON.ver = b.dataset.v; document.querySelectorAll('#mon-ver [data-v]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); pintarMonitor(true); }));
+    document.getElementById('mon-full').addEventListener('click', e => { const on = document.body.classList.toggle('mon-completo'); e.currentTarget.setAttribute('aria-pressed', String(on)); e.currentTarget.textContent = on ? '✕ Salir de pantalla completa' : '⛶ Pantalla completa'; });
+    document.getElementById('mon-det-cerrar').addEventListener('click', cerrarDetalle);
+    document.getElementById('mon-detalle').addEventListener('click', e => { if (e.target.id === 'mon-detalle') cerrarDetalle(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && MON.abierto) cerrarDetalle(); });
+  }
+  detenerMonitor();
+  MON.grupo = grupoActivo; MON.datos = {}; MON.equipos = [];
+  const g = grupoActivo;
+  // individual: un oyente por alumno
+  alumnosCache.forEach(a => MON.subs.push(onSnapshot(doc(db, 'grupos', g, 'alumnos', a.id, 'atlas', 'mi-atlas'), sn => {
+    MON.datos['a:' + a.id] = sn.exists() ? sn.data() : null; programarPintado('a:' + a.id);
+  }, () => {})));
+  // equipos
+  MON.eqSub = onSnapshot(collection(db, 'grupos', g, 'equipos'), sn => {
+    MON.equipos = sn.docs.map(d => ({ id: d.id, ...d.data() })).sort((x, y) => (x.numero || 999) - (y.numero || 999) || (x.nombre || '').localeCompare(y.nombre || '', 'es'));
+    suscribirEquiposCont(); pintarMonitor(true);
+  }, () => {});
+  MON.reloj = setInterval(() => pintarTiempos(), 10000);
+  pintarMonitor(true);
+}
+function suscribirEquiposCont() {
+  (MON.eqSubs || []).forEach(u => u()); MON.eqSubs = [];
+  MON.equipos.forEach(eq => MON.eqSubs.push(onSnapshot(doc(db, 'grupos', MON.grupo, 'equipos', eq.id, 'atlas', MON.cont), sn => {
+    MON.datos['e:' + eq.id] = sn.exists() ? sn.data() : null; programarPintado('e:' + eq.id);
+  }, () => {})));
+}
+function detenerMonitor() {
+  document.body.classList.remove('mon-completo'); const mf = document.getElementById('mon-full'); if (mf) { mf.setAttribute('aria-pressed', 'false'); mf.textContent = '⛶ Pantalla completa'; }
+  MON.subs.forEach(u => u()); MON.subs = []; (MON.eqSubs || []).forEach(u => u()); MON.eqSubs = [];
+  if (MON.eqSub) { MON.eqSub(); MON.eqSub = null; }
+  clearInterval(MON.reloj); MON.reloj = null;
+}
+// convierte los datos guardados a un formato común: {regiones:[...], asign, por, act, ultimo, autor}
+function monVista(clave) {
+  const d = MON.datos[clave]; if (!d) return null;
+  if (clave.startsWith('e:')) {
+    const regs = Object.entries(d.regiones || {}).map(([id, r]) => ({ ...r, id })).sort((a, b) => (a.orden || 0) - (b.orden || 0));
+    return { regiones: regs, asign: d.asign || {}, por: d.por || {}, paises: d.paises || {}, act: d.actualizado, ultimo: d.ultimoCambio || '', autor: d.ultimoNombre || '' };
+  }
+  const c = ((d.datos || {}).conts || {})[MON.cont] || null;
+  return { regiones: c ? c.regiones || [] : [], asign: c ? c.asign || {} : {}, por: {}, paises: c ? c.paises || {} : {}, act: d.actualizado, ultimo: d.ultimoCont === MON.cont || !d.ultimoCont ? (d.ultimoCambio || '') : '', autor: '', vacio: !c };
+}
+const MON_CAMPOS = [['clima', 'Clima y paisaje'], ['ingredientes', 'Ingredientes base'], ['platillos', 'Platillos'], ['tecnicas', 'Técnicas y utensilios'], ['historia', 'Historia e influencias'], ['dato', 'Dato curioso'], ['fuentes', 'Fuentes']];
+function monMapa(v, clase) {
+  const k = MON.cont, [x, y, w, h] = MON_ATLAS.mundo.cajas[k];
+  const col = id => { const rid = v && v.asign[id]; const r = rid && v.regiones.find(z => z.id === rid); return r ? r.color : ''; };
+  let s = `<svg class="${clase}" viewBox="${x - w * .03} ${y - h * .03} ${w * 1.06} ${h * 1.06}" aria-hidden="true">`;
+  MON_ATLAS.mundo.paises.forEach(p => { if (p.i && MON_PAIS[p.i] && MON_PAIS[p.i].cont === k) { const c = col(p.i); s += `<path d="${p.d}" data-i="${p.i}"${c ? ` style="fill:${c}"` : ''}><title>${escaparHTML(MON_PAIS[p.i].n)}</title></path>`; } });
+  MON_ATLAS.mundo.islas.forEach(i => { if (MON_PAIS[i.i] && MON_PAIS[i.i].cont === k) { const c = col(i.i); s += `<circle cx="${i.x}" cy="${i.y}" r="${w / 70}" data-i="${escaparHTML(i.i)}"${c ? ` style="fill:${c}"` : ''}/>`; } });
+  return s + '</svg>';
+}
+function monStats(v) {
+  const total = Object.values(MON_PAIS).filter(p => p.cont === MON.cont).length;
+  const cl = v ? Object.keys(v.asign).filter(i => MON_PAIS[i] && MON_PAIS[i].cont === MON.cont).length : 0;
+  const fi = v ? v.regiones.filter(r => MON_CAMPOS.filter(([f]) => (r[f] || '').trim()).length >= 4).length : 0;
+  const pal = v ? v.regiones.reduce((s, r) => s + MON_CAMPOS.reduce((x, [f]) => x + ((r[f] || '').trim().match(/\S+/g) || []).length, 0), 0) : 0;
+  return { total, cl, fi, pal, regs: v ? v.regiones.length : 0 };
+}
+function hace(ts) {
+  if (!ts || !ts.toMillis) return { txt: 'sin actividad', cls: 'gris' };
+  const s = Math.max(0, Math.round((Date.now() - ts.toMillis()) / 1000));
+  const txt = s < 60 ? `hace ${s} s` : s < 3600 ? `hace ${Math.round(s / 60)} min` : ts.toDate().toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+  return { txt, cls: s < 120 ? 'verde' : s < 300 ? 'amarillo' : 'gris' };
+}
+function monTarjetas() {
+  const out = [];
+  if (MON.ver !== 'individual') MON.equipos.forEach(eq => out.push({ clave: 'e:' + eq.id, titulo: eq.nombre, sub: (eq.nombres || []).join(', ') || 'sin integrantes', tipo: 'equipo' }));
+  if (MON.ver !== 'equipos') alumnosCache.forEach(a => { const d = MON.datos['a:' + a.id]; if (d) out.push({ clave: 'a:' + a.id, titulo: a.nombre, sub: d.equipo ? `👥 ${d.equipo}` : 'trabajo individual', tipo: 'alumno' }); });
+  return out;
+}
+let monPend = new Set(), monT = null;
+function programarPintado(clave) { monPend.add(clave); clearTimeout(monT); monT = setTimeout(() => { const ks = [...monPend]; monPend.clear(); ks.forEach(actualizarTarjeta); if (MON.abierto && ks.includes(MON.abierto)) pintarDetalle(); pintarResumen(); }, 150); }
+function pintarMonitor(todo) {
+  const grid = document.getElementById('mon-grid'); if (!grid || MON.grupo !== grupoActivo && MON.grupo) return;
+  const ts = monTarjetas();
+  grid.innerHTML = ts.length ? ts.map(t => `<button type="button" class="mon-card" data-clave="${t.clave}"><div class="mon-card-cab"><span class="mon-tipo">${t.tipo === 'equipo' ? '👥' : '👤'}</span><div><b>${escaparHTML(t.titulo)}</b><small>${escaparHTML(t.sub)}</small></div><span class="mon-punto" data-punto></span></div>
+      <div class="mon-mapa" data-mapa></div><div class="mon-barra"><i data-barra></i></div><p class="mon-num" data-num></p><p class="mon-ult" data-ult></p></button>`).join('')
+    : '<p class="empty-inline">Todavía no hay equipos ni alumnos trabajando en Mi atlas.</p>';
+  grid.querySelectorAll('.mon-card').forEach(b => { actualizarTarjeta(b.dataset.clave, true); b.addEventListener('click', () => abrirDetalle(b.dataset.clave)); });
+  const sin = alumnosCache.filter(a => !MON.datos['a:' + a.id] && !MON.equipos.some(e => (e.integrantes || []).includes(a.id)));
+  document.getElementById('mon-sin').textContent = MON.ver !== 'equipos' && sin.length ? `Sin equipo y sin entrar a Mi atlas: ${sin.map(a => a.nombre).join(', ')}.` : '';
+  pintarResumen();
+}
+function actualizarTarjeta(clave, nuevo) {
+  const card = document.querySelector(`.mon-card[data-clave="${clave}"]`);
+  if (!card) { if (clave.startsWith('a:') && MON.ver !== 'equipos' && MON.datos[clave]) pintarMonitor(true); return; }
+  const v = monVista(clave), st = monStats(v);
+  const mapa = card.querySelector('[data-mapa]');
+  if (nuevo || !mapa.firstChild) mapa.innerHTML = monMapa(v, 'mon-svg');
+  else mapa.querySelectorAll('[data-i]').forEach(e => { const rid = v && v.asign[e.dataset.i]; const r = rid && v.regiones.find(z => z.id === rid); const c = r ? r.color : ''; if (e.style.fill !== c) { e.style.fill = c; if (c) { e.classList.remove('mon-nuevo'); void e.getBBox; e.classList.add('mon-nuevo'); } } });
+  card.querySelector('[data-barra]').style.width = (st.total ? Math.round(100 * st.cl / st.total) : 0) + '%';
+  card.querySelector('[data-num]').innerHTML = `<b>${st.cl}/${st.total}</b> países · ${st.regs} ${st.regs === 1 ? 'región' : 'regiones'} · ${st.fi} ficha${st.fi === 1 ? '' : 's'} · ${st.pal} palabras`;
+  const ul = card.querySelector('[data-ult]');
+  ul.innerHTML = v && v.ultimo ? `✍️ ${v.autor ? `<b>${escaparHTML(v.autor)}</b> ` : ''}${escaparHTML(v.ultimo)}` : (v && !v.vacio ? '' : '<i>todavía no empieza este continente</i>');
+  card.dataset.act = v && v.act && v.act.toMillis ? v.act.toMillis() : '';
+  pintarTiempo(card, v ? v.act : null);
+  if (!nuevo) { card.classList.remove('mon-latido'); void card.offsetWidth; card.classList.add('mon-latido'); }
+}
+function pintarTiempo(card, ts) { const h = hace(ts), p = card.querySelector('[data-punto]'); p.className = 'mon-punto ' + h.cls; p.textContent = h.txt; }
+function pintarTiempos() { document.querySelectorAll('.mon-card').forEach(c => { const v = monVista(c.dataset.clave); pintarTiempo(c, v ? v.act : null); }); pintarResumen(); }
+function pintarResumen() {
+  const el = document.getElementById('mon-resumen'); if (!el) return;
+  const ts = monTarjetas(); const activos = ts.filter(t => { const v = monVista(t.clave); return v && hace(v.act).cls === 'verde'; }).length;
+  el.innerHTML = `<span class="mon-punto verde"></span> <b>${activos}</b> trabajando ahora (últimos 2 min) · ${ts.length} en total · ${escaparHTML(MON_ATLAS ? MON_ATLAS.continentes[MON.cont].nombre : '')}`;
+}
+function abrirDetalle(clave) { MON.abierto = clave; document.getElementById('mon-detalle').hidden = false; document.body.classList.add('con-qr'); pintarDetalle(true); }
+function cerrarDetalle() { MON.abierto = null; document.getElementById('mon-detalle').hidden = true; document.body.classList.remove('con-qr'); }
+function pintarDetalle(nuevo) {
+  const clave = MON.abierto; if (!clave) return;
+  const t = monTarjetas().find(x => x.clave === clave) || { titulo: '', sub: '' }, v = monVista(clave), st = monStats(v);
+  document.getElementById('mon-det-titulo').textContent = t.titulo;
+  document.getElementById('mon-det-sub').textContent = `${t.sub} · ${MON_ATLAS.continentes[MON.cont].nombre} · ${st.cl}/${st.total} países · ${hace(v && v.act).txt}`;
+  const cuerpo = document.getElementById('mon-det-cuerpo');
+  const abiertas = new Set([...cuerpo.querySelectorAll('details[open]')].map(d => d.dataset.id));
+  const e = x => escaparHTML(x || '').replace(/\n/g, '<br>');
+  cuerpo.innerHTML = `<div class="mon-det-grid"><div class="mon-det-mapa">${monMapa(v, 'mon-svg grande')}${v && v.ultimo ? `<p class="mon-ult">✍️ ${v.autor ? `<b>${escaparHTML(v.autor)}</b> ` : ''}${escaparHTML(v.ultimo)}</p>` : ''}</div>
+    <div class="mon-det-fichas">${v && v.regiones.length ? v.regiones.map(r => {
+      const ps = Object.entries(v.asign).filter(([, x]) => x === r.id).map(([i]) => (MON_PAIS[i] || {}).n || i).sort((a, b) => a.localeCompare(b, 'es'));
+      const por = v.por[r.id] || {}, llenos = MON_CAMPOS.filter(([f]) => (r[f] || '').trim()).length;
+      return `<details data-id="${r.id}" ${abiertas.has(r.id) || nuevo && v.regiones.length <= 2 ? 'open' : ''} style="--c:${escaparHTML(r.color)}"><summary><i></i><b>${escaparHTML(r.nombre)}</b><small>${ps.length} países · ${llenos}/7</small></summary>
+        <p><b>Países:</b> ${escaparHTML(ps.join(', ') || '—')}</p>${MON_CAMPOS.map(([f, tt]) => `<p><b>${tt}</b>${por[f] ? ` <small class="mon-autor">✍️ ${escaparHTML(por[f])}</small>` : ''}<br>${(r[f] || '').trim() ? e(r[f]) : '<span class="mon-vacio">—</span>'}</p>`).join('')}</details>`;
+    }).join('') : '<p class="empty-inline">Todavía no crean regiones en este continente.</p>'}</div></div>`;
+}
 
 async function cargarProyecto() {
   const empty = document.getElementById('proyecto-empty');
