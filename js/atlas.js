@@ -20,8 +20,8 @@
     if (!document.getElementById('panel-' + nombre)) nombre = 'mapa';
     tabs.forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === nombre)));
     document.querySelectorAll('.atlas-panel').forEach(p => { p.hidden = p.id !== 'panel-' + nombre; });
-    if (!listo[nombre]) { listo[nombre] = true; ({ mapa: iniciarMapa, juego: iniciarJuego, donde: iniciarDonde, comparar: iniciarComparar, rutas: iniciarRutas, tiempo: iniciarTiempo })[nombre](extra); }
-    else if (extra) ({ mapa: (x) => (A.regiones[x] ? elegirRegion(x) : zoomA(x, true)), rutas: (x) => elegirRuta(x), comparar: (x) => compararDesdeHash(x), juego() {}, donde() {}, tiempo() {} })[nombre](extra);
+    if (!listo[nombre]) { listo[nombre] = true; ({ mapa: iniciarMapa, juego: iniciarJuego, donde: iniciarDonde, comparar: iniciarComparar, miatlas: () => window.dispatchEvent(new Event('abrir-miatlas')), rutas: iniciarRutas, tiempo: iniciarTiempo })[nombre](extra); }
+    else if (extra) ({ mapa: (x) => (A.regiones[x] ? elegirRegion(x) : zoomA(x, true)), rutas: (x) => elegirRuta(x), comparar: (x) => compararDesdeHash(x), juego() {}, donde() {}, miatlas() {}, tiempo() {} })[nombre](extra);
   }
   tabs.forEach(b => b.addEventListener('click', () => { history.replaceState(null, '', '#' + b.dataset.tab); abrir(b.dataset.tab); }));
 

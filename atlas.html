@@ -73,6 +73,7 @@
     <button role="tab" data-tab="juego" aria-selected="false">🧭 ¿De dónde viene?</button>
     <button role="tab" data-tab="donde" aria-selected="false">📍 ¿Dónde queda?</button>
     <button role="tab" data-tab="comparar" aria-selected="false">⚖️ Comparar regiones</button>
+    <button role="tab" data-tab="miatlas" aria-selected="false">✏️ Mi atlas</button>
     <button role="tab" data-tab="rutas" aria-selected="false">⛵ Rutas</button>
     <button role="tab" data-tab="tiempo" aria-selected="false">⏳ Línea del tiempo</button>
   </nav>
@@ -126,6 +127,46 @@
     <div class="comp-pensar" id="comp-pensar"></div>
   </section>
 
+  <section class="atlas-panel" id="panel-miatlas" role="tabpanel" hidden>
+    <div id="ma-acceso" class="ma-acceso">
+      <div class="ma-login">
+        <h2>Mi atlas</h2>
+        <p class="atlas-ayuda">Un mapa en blanco para que tú armes tus propias regiones culinarias y escribas todo lo que investigues. Se guarda en tu cuenta y al final lo descargas en Word para entregarlo.</p>
+        <form id="ma-form">
+          <label for="ma-grupo">Tu grupo</label>
+          <select id="ma-grupo"><option value="">Cargando grupos…</option></select>
+          <label for="ma-nombre">Tu nombre completo</label>
+          <input id="ma-nombre" type="text" placeholder="Como te registró tu docente" autocomplete="name">
+          <label for="ma-pin">PIN</label>
+          <input id="ma-pin" type="text" inputmode="numeric" placeholder="4 dígitos">
+          <button type="submit" class="btn-at">Entrar a Mi atlas</button>
+          <p id="ma-error" class="ma-error" hidden></p>
+        </form>
+        <p class="ma-sin"><button type="button" class="ma-link" id="ma-sin-cuenta">Probar sin cuenta</button> (lo que hagas se guardará solo en este dispositivo)</p>
+      </div>
+    </div>
+    <div id="ma-app" hidden>
+      <div class="ma-barra">
+        <span>Hola, <b id="ma-quien"></b></span>
+        <span class="ma-estado" id="ma-estado" aria-live="polite"></span>
+        <button type="button" class="btn-ruta" id="ma-word">⬇ Descargar en Word</button>
+        <button type="button" class="btn-ruta" id="ma-salir">Salir</button>
+      </div>
+      <div class="atlas-zoom" id="ma-conts"></div>
+      <ol class="ma-pasos">
+        <li><b>Crea tus regiones</b> con nombre y color (por ejemplo, «Magreb»).</li>
+        <li><b>Elige una región y toca los países</b> que le pertenecen. Si tocas uno que ya era suyo, se lo quitas.</li>
+        <li><b>Llena la ficha</b> de cada región y, si quieres, la de cada país.</li>
+      </ol>
+      <p class="ma-progreso" id="ma-progreso"></p>
+      <div class="atlas-grid">
+        <div class="atlas-mapa-caja"><svg id="ma-svg" class="atlas-svg ma-svg" role="img" aria-label="Mapa en blanco para clasificar países"></svg><div class="atlas-tip" id="ma-tip" hidden></div></div>
+        <aside class="atlas-ficha ma-panel" id="ma-panel"></aside>
+      </div>
+      <div class="ma-fichas" id="ma-fichas"></div>
+    </div>
+  </section>
+
   <section class="atlas-panel" id="panel-rutas" role="tabpanel" hidden>
     <div class="atlas-zoom" id="rutas-sel"></div>
     <h2 class="ruta-titulo" id="ruta-titulo"></h2>
@@ -160,5 +201,6 @@
 
 <script src="js/app.js"></script>
 <script src="js/atlas.js"></script>
+<script type="module" src="js/mi-atlas.js"></script>
 </body>
 </html>

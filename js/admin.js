@@ -119,6 +119,7 @@ function cargarTabActiva() {
   if (tab === 'tareas') cargarCatalogo('tareas');
   if (tab === 'participacion') cargarCatalogo('participaciones');
   if (tab === 'proyecto') cargarProyecto();
+  if (tab === 'miatlas') cargarMiAtlas();
   if (tab === 'asistencia') cargarAsistencia();
   if (tab === 'uniformes') cargarUniformes();
   if (tab === 'enlinea') { cargarExamenesAbiertos(); cargarIntentos(); }
@@ -673,6 +674,47 @@ async function guardarPractico() {
 // ---------- PROYECTO: MI PLATO, MI HISTORIA ----------
 const ENTREGAS_PROYECTO = ['entrega1', 'entrega2', 'entregaFinal'];
 ENTREGAS_PROYECTO.forEach(entrega => { on(`btn-guardar-${entrega}`, 'click', () => guardarEntregaProyecto(entrega)); });
+
+// ---- Mi atlas (grupos/{g}/alumnos/{a}/atlas/mi-atlas)
+let ATLAS_DATA = null;
+async function cargarMiAtlas() {
+  const cont = document.getElementById('miatlas-avance');
+  if (!cont) return;
+  if (!grupoActivo) { cont.innerHTML = '<p class="empty-inline">Elige un grupo primero.</p>'; return; }
+  if (!alumnosCache.length) { cont.innerHTML = '<p class="empty-inline">Este grupo aún no tiene alumnos.</p>'; return; }
+  cont.innerHTML = '<p class="empty-inline">Cargando…</p>';
+  try { ATLAS_DATA = ATLAS_DATA || await fetch('data/atlas.json').then(r => r.json()); } catch { cont.innerHTML = '<p class="empty-inline">No se pudo cargar el Atlas.</p>'; return; }
+  const NOM = {}; Object.values(ATLAS_DATA.regiones).forEach(r => r.paises.forEach(p => { NOM[p.id] = p.n.replace(/ \(.*\)$/, ''); }));
+  const CONTS = ATLAS_DATA.continentes, ks = Object.keys(CONTS);
+  const filas = await Promise.all(alumnosCache.map(async a => {
+    try { const s = await getDoc(doc(db, 'grupos', grupoActivo, 'alumnos', a.id, 'atlas', 'mi-atlas')); return [a, s.exists() ? s.data() : null]; }
+    catch { return [a, null]; }
+  }));
+  const fecha = t => t && t.toDate ? t.toDate().toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—';
+  const celda = av => av ? `<td class="${av.clasificados === av.total && av.total ? 'ok' : ''}">${av.clasificados}/${av.total}<br><small>${av.regiones} reg. · ${av.fichas} ficha${av.fichas === 1 ? '' : 's'}</small></td>` : '<td>—</td>';
+  const empezaron = filas.filter(([, d]) => d).length;
+  cont.innerHTML = `<p class="field-hint"><b>${empezaron} de ${filas.length}</b> alumnos ya entraron a Mi atlas.</p>
+    <div class="taller-tabla-wrap"><table class="taller-tabla"><thead><tr><th>Alumno</th>${ks.map(k => `<th>${escaparHTML(CONTS[k].nombre)}</th>`).join('')}<th>Última vez</th><th></th></tr></thead><tbody>
+    ${filas.map(([a, d]) => !d ? `<tr class="sin"><td>${escaparHTML(a.nombre)}</td><td colspan="${ks.length + 2}"><i>Aún no entra a Mi atlas</i></td></tr>`
+      : `<tr><td>${escaparHTML(a.nombre)}</td>${ks.map(k => celda((d.avance || {})[k])).join('')}<td>${fecha(d.actualizado)}</td><td><button type="button" class="btn btn-small taller-ver" data-id="${a.id}">Ver</button></td></tr>
+         <tr class="taller-det" id="madet-${a.id}" hidden><td colspan="${ks.length + 3}"></td></tr>`).join('')}</tbody></table></div>`;
+  const datos = Object.fromEntries(filas.map(([a, d]) => [a.id, d]));
+  const e = x => escaparHTML(x || '').replace(/\n/g, '<br>') || '<i>—</i>';
+  const CAMPOS = [['clima', 'Clima y paisaje'], ['ingredientes', 'Ingredientes base'], ['platillos', 'Platillos'], ['tecnicas', 'Técnicas y utensilios'], ['historia', 'Historia e influencias'], ['dato', 'Dato curioso'], ['fuentes', 'Fuentes']];
+  cont.querySelectorAll('.taller-ver').forEach(b => b.addEventListener('click', () => {
+    const tr = document.getElementById('madet-' + b.dataset.id), T = (datos[b.dataset.id].datos || {}).conts || {};
+    if (!tr.hidden) { tr.hidden = true; b.textContent = 'Ver'; return; }
+    tr.firstElementChild.innerHTML = `<div class="taller-detalle">${ks.filter(k => T[k] && T[k].regiones && T[k].regiones.length).map(k => {
+      const c = T[k];
+      return `<h4 style="margin:.4rem 0">${escaparHTML(CONTS[k].nombre)}</h4>${c.regiones.map(r => {
+        const ps = Object.entries(c.asign || {}).filter(([, x]) => x === r.id).map(([i]) => NOM[i] || i).sort((x, y) => x.localeCompare(y, 'es'));
+        return `<details><summary><span style="display:inline-block;width:11px;height:11px;border-radius:3px;background:${escaparHTML(r.color)}"></span> <b>${escaparHTML(r.nombre)}</b> · ${ps.length} países</summary>
+          <p><b>Países:</b> ${escaparHTML(ps.join(', ') || '—')}</p>${CAMPOS.map(([f, t]) => `<p><b>${t}:</b> ${e(r[f])}</p>`).join('')}</details>`;
+      }).join('')}`;
+    }).join('') || '<p><i>Todavía no crea regiones.</i></p>'}</div>`;
+    tr.hidden = false; b.textContent = 'Ocultar';
+  }));
+}
 
 async function cargarProyecto() {
   const empty = document.getElementById('proyecto-empty');

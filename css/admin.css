@@ -508,3 +508,17 @@
 
 /* Comentarios del proyecto para el alumno */
 .proy-comentario{flex-basis:100%; width:100%; min-height:54px; padding:8px 10px; border-radius:8px; border:1.5px solid var(--line); font:inherit; font-size:.88rem; resize:vertical; background:#fff;}
+
+/* Avance en Mi atlas */
+.taller-tabla-wrap { overflow-x: auto; }
+.taller-tabla { width: 100%; border-collapse: collapse; font-size: .88rem; }
+.taller-tabla th, .taller-tabla td { padding: .45rem .5rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.taller-tabla th { font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-soft); }
+.taller-tabla td small { color: var(--ink-soft); }
+.taller-tabla td.ok { color: #3F7A4F; font-weight: 700; }
+.taller-tabla tr.sin td { color: var(--ink-soft); }
+.taller-tabla .taller-ver { padding: 4px 12px; font-size: .82rem; }
+.taller-detalle { background: var(--cream); border-radius: 8px; padding: .8rem 1rem; }
+.taller-detalle p { margin: .3rem 0; }
+.taller-detalle details { margin: .35rem 0; }
+.taller-detalle summary { cursor: pointer; }
