@@ -71,12 +71,19 @@
   <nav class="atlas-tabs" role="tablist" aria-label="Secciones del Atlas">
     <button role="tab" data-tab="mapa" aria-selected="true">🗺️ Mapa del mundo</button>
     <button role="tab" data-tab="juego" aria-selected="false">🧭 ¿De dónde viene?</button>
+    <button role="tab" data-tab="donde" aria-selected="false">📍 ¿Dónde queda?</button>
+    <button role="tab" data-tab="comparar" aria-selected="false">⚖️ Comparar regiones</button>
     <button role="tab" data-tab="rutas" aria-selected="false">⛵ Rutas</button>
     <button role="tab" data-tab="tiempo" aria-selected="false">⏳ Línea del tiempo</button>
   </nav>
 
   <section class="atlas-panel" id="panel-mapa" role="tabpanel">
-    <p class="atlas-ayuda">Toca una región del mapa (o su nombre en la lista) para ver sus ingredientes, platillos y un dato clave. Usa los botones para acercarte a cada continente.</p>
+    <p class="atlas-ayuda">Toca una región del mapa (o su nombre en la lista) para ver sus ingredientes, platillos, países y un dato clave. Usa los botones para acercarte a cada continente o busca un país por su nombre.</p>
+    <div class="atlas-buscar">
+      <label for="mapa-buscar" class="sr-only">Buscar un país</label>
+      <input id="mapa-buscar" type="search" autocomplete="off" placeholder="🔎 Busca un país: Marruecos, Perú, Tailandia…" role="combobox" aria-expanded="false" aria-controls="mapa-sugerencias" aria-autocomplete="list">
+      <ul id="mapa-sugerencias" class="atlas-sug" role="listbox" hidden></ul>
+    </div>
     <div class="atlas-zoom" id="mapa-zoom"></div>
     <div class="atlas-grid">
       <div class="atlas-mapa-caja"><svg id="mapa-svg" class="atlas-svg" role="img" aria-label="Mapa de las regiones culinarias del mundo"></svg><div class="atlas-tip" id="mapa-tip" hidden></div></div>
@@ -94,6 +101,29 @@
     <div class="atlas-mapa-caja"><svg id="juego-svg" class="atlas-svg" role="img" aria-label="Mapa con los centros de origen de los ingredientes"></svg></div>
     <div class="juego-zonas" id="juego-zonas"></div>
     <div class="juego-aviso" id="juego-aviso" aria-live="polite"></div>
+  </section>
+
+  <section class="atlas-panel" id="panel-donde" role="tabpanel" hidden>
+    <p class="atlas-ayuda">El mapa te dice el nombre de un país y tú lo tocas. Elige todo el mundo o un solo continente para practicar. Si te atoras, pide una pista.</p>
+    <div class="atlas-zoom" id="donde-filtros"></div>
+    <div class="juego-cabeza">
+      <p class="donde-pregunta" id="donde-pregunta" aria-live="polite"></p>
+      <div class="juego-marcador" id="donde-marcador"></div>
+    </div>
+    <div class="atlas-mapa-caja"><svg id="donde-svg" class="atlas-svg donde-svg" role="img" aria-label="Mapa para ubicar países"></svg></div>
+    <div class="donde-botones"><button class="btn-ruta" type="button" id="donde-pista">💡 Pista</button><button class="btn-at" type="button" id="donde-sig" hidden>Siguiente país →</button></div>
+    <div class="juego-aviso" id="donde-aviso" aria-live="polite"></div>
+  </section>
+
+  <section class="atlas-panel" id="panel-comparar" role="tabpanel" hidden>
+    <p class="atlas-ayuda">Elige dos regiones culinarias y compáralas lado a lado: clima, ingredientes, platillos y países.</p>
+    <div class="comp-sel">
+      <label>Región A<select id="comp-a"></select></label>
+      <button class="btn-ruta" type="button" id="comp-cambiar" aria-label="Intercambiar regiones">⇄</button>
+      <label>Región B<select id="comp-b"></select></label>
+    </div>
+    <div class="comp-wrap" id="comp-tabla"></div>
+    <div class="comp-pensar" id="comp-pensar"></div>
   </section>
 
   <section class="atlas-panel" id="panel-rutas" role="tabpanel" hidden>

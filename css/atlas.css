@@ -145,3 +145,76 @@ html[data-theme="dark"] .era{color:var(--saffron);}
 .evento p{margin:0; font-size:.9rem;}
 .evento .st{float:right; font-size:.72rem; font-weight:700; padding:2px 8px; border-radius:999px; background:var(--parchment); border:1px solid var(--line); margin-left:8px;}
 .evento.oculto{display:none;}
+
+/* ---- Países: ficha, buscador y selección */
+.ficha-mini{font-size:.8rem; color:var(--ink-soft); margin:0 0 6px;}
+.ficha-paises{display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px;}
+.ficha-paises button{font:600 .8rem var(--font-body); padding:4px 10px; border-radius:999px; border:1px solid var(--line); background:var(--parchment); color:var(--ink); cursor:pointer;}
+.ficha-paises button:hover{border-color:var(--ficha-color, var(--saffron));}
+.ficha-paises button[aria-pressed="true"]{background:var(--ficha-color, var(--saffron)); border-color:var(--ficha-color, var(--saffron)); color:#1C1B19;}
+.ficha-pais{margin:8px 0 12px; padding:10px 12px; border-radius:10px; border:1.5px solid var(--ficha-color, var(--saffron)); background:var(--parchment);}
+.ficha-pais .fp-nombre{font-weight:800; margin:0 0 2px; font-size:1rem;}
+.ficha-pais .fp-nota{font-size:.8rem; color:var(--ink-soft); margin:0 0 6px;}
+.ficha-pais .fp-tit{font:700 .72rem var(--font-body); letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); margin:6px 0 5px;}
+.ficha-pais .fp-reto{font-size:.86rem; margin:4px 0 0;}
+.atlas-svg .pais.pais-sel, .atlas-svg .isla.pais-sel{stroke:#1C1B19; stroke-width:2.4; filter:brightness(1.15); animation:destello 1.4s ease-in-out 3;}
+html[data-theme="dark"] .atlas-svg .pais.pais-sel, html[data-theme="dark"] .atlas-svg .isla.pais-sel{stroke:#FAF7F0;}
+@keyframes destello{50%{filter:brightness(1.6);}}
+.atlas-buscar{position:relative; max-width:460px; margin:0 0 12px;}
+.atlas-buscar input{width:100%; box-sizing:border-box; font:inherit; font-size:.95rem; padding:10px 14px; border-radius:999px; border:1.5px solid var(--line); background:var(--cream); color:var(--ink);}
+.atlas-buscar input:focus{outline:3px solid var(--saffron); outline-offset:1px;}
+.atlas-sug{position:absolute; z-index:20; left:0; right:0; top:calc(100% + 4px); margin:0; padding:6px; list-style:none; background:var(--cream); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow-card);}
+.atlas-sug li{display:flex; align-items:center; gap:8px; padding:7px 9px; border-radius:8px; cursor:pointer; font-size:.92rem;}
+.atlas-sug li.act, .atlas-sug li[data-i]:hover{background:var(--parchment);}
+.atlas-sug li i{width:11px; height:11px; border-radius:3px; flex:none;}
+.atlas-sug li small{margin-left:auto; color:var(--ink-soft); font-size:.76rem; text-align:right;}
+.atlas-sug li.sin{color:var(--ink-soft); cursor:default;}
+
+/* ---- ¿Dónde queda? */
+.donde-pregunta{font-size:1.25rem; margin:0 0 12px; line-height:1.3;}
+.donde-pregunta span{display:block; font:700 .74rem var(--font-body); letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:2px;}
+.donde-pregunta strong{color:var(--saffron-dark);}
+.donde-svg .pais, .donde-svg .isla-d{cursor:pointer;}
+.donde-svg .isla-d{fill:var(--tierra); stroke:var(--ink-soft); stroke-width:1;}
+.donde-svg .pais:hover, .donde-svg .isla-d:hover{filter:brightness(1.18);}
+.donde-svg .d-pista{fill:#E7C27A;}
+html[data-theme="dark"] .donde-svg .d-pista{fill:#7A6431;}
+.donde-svg .d-ok{fill:#3F9A55 !important; stroke:#1C1B19; stroke-width:1.8; animation:destello 1.2s ease-in-out 3;}
+.donde-svg .d-mal{fill:#C0503F !important;}
+.donde-botones{display:flex; gap:8px; margin:12px 0 0; flex-wrap:wrap;}
+
+/* ---- Comparar */
+.comp-sel{display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap; margin:0 0 14px;}
+.comp-sel label{display:grid; gap:4px; font:700 .8rem var(--font-body); color:var(--ink-soft); flex:1 1 220px;}
+.comp-sel select{font:inherit; font-size:.95rem; padding:9px 10px; border-radius:10px; border:1.5px solid var(--line); background:var(--cream); color:var(--ink);}
+.comp-wrap{overflow-x:auto;}
+.comp-tabla{width:100%; border-collapse:separate; border-spacing:0; background:var(--cream); border-radius:var(--radius); box-shadow:var(--shadow-card); font-size:.92rem; table-layout:fixed;}
+.comp-tabla th, .comp-tabla td{padding:12px 14px; vertical-align:top; text-align:left; border-bottom:1px solid var(--line);}
+.comp-tabla thead th{font-size:1rem; line-height:1.25; border-bottom:3px solid var(--c, var(--line));}
+.comp-tabla thead th small{display:block; font:600 .74rem var(--font-body); color:var(--ink-soft); margin-top:3px;}
+.comp-tabla thead th:first-child{width:130px;}
+.comp-color{display:inline-block; width:12px; height:12px; border-radius:3px; background:var(--c); margin-right:6px;}
+.comp-tabla tbody th{font:700 .74rem var(--font-body); letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft);}
+.comp-tabla ul{margin:0; padding-left:18px;}
+.comp-paises{font-size:.84rem; color:var(--ink-soft); margin:4px 0 0;}
+.comp-pensar{margin-top:18px; background:var(--cream); border-radius:var(--radius); padding:16px 20px; box-shadow:var(--shadow-card);}
+.comp-pensar h3{margin:0 0 8px; font-size:1.05rem;}
+.comp-pensar ol{margin:0; padding-left:20px; font-size:.93rem;}
+@media (max-width:700px){
+  #donde-svg{aspect-ratio:1/1;}
+  .comp-tabla{font-size:.84rem;}
+  .comp-tabla thead th:first-child{width:76px;}
+  .comp-tabla th, .comp-tabla td{padding:9px 8px;}
+  .comp-tabla tbody th{font-size:.64rem; letter-spacing:.02em;}
+}
+@media (max-width:700px){
+  .comp-tabla, .comp-tabla thead, .comp-tabla tbody{display:block;}
+  .comp-tabla tr{display:grid; grid-template-columns:1fr 1fr;}
+  .comp-tabla thead th:first-child{display:none;}
+  .comp-tabla tbody th{grid-column:1 / -1; padding:10px 10px 0; border-bottom:0; font-size:.68rem; letter-spacing:.06em;}
+  .comp-tabla tbody td{padding:6px 10px 12px;}
+  .comp-tabla tbody td + td{border-left:1px dashed var(--line);}
+  .comp-sel{flex-wrap:nowrap; align-items:flex-end;}
+  .comp-sel label{flex:1 1 0; min-width:0;}
+  .comp-sel select{width:100%; font-size:.85rem;}
+}

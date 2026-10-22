@@ -20,8 +20,8 @@
     if (!document.getElementById('panel-' + nombre)) nombre = 'mapa';
     tabs.forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === nombre)));
     document.querySelectorAll('.atlas-panel').forEach(p => { p.hidden = p.id !== 'panel-' + nombre; });
-    if (!listo[nombre]) { listo[nombre] = true; ({ mapa: iniciarMapa, juego: iniciarJuego, rutas: iniciarRutas, tiempo: iniciarTiempo })[nombre](extra); }
-    else if (extra) ({ mapa: (x) => zoomA(x, true), rutas: (x) => elegirRuta(x), juego() {}, tiempo() {} })[nombre](extra);
+    if (!listo[nombre]) { listo[nombre] = true; ({ mapa: iniciarMapa, juego: iniciarJuego, donde: iniciarDonde, comparar: iniciarComparar, rutas: iniciarRutas, tiempo: iniciarTiempo })[nombre](extra); }
+    else if (extra) ({ mapa: (x) => (A.regiones[x] ? elegirRegion(x) : zoomA(x, true)), rutas: (x) => elegirRuta(x), comparar: (x) => compararDesdeHash(x), juego() {}, donde() {}, tiempo() {} })[nombre](extra);
   }
   tabs.forEach(b => b.addEventListener('click', () => { history.replaceState(null, '', '#' + b.dataset.tab); abrir(b.dataset.tab); }));
 
@@ -43,7 +43,7 @@
       const reg = conRegiones && p.r ? A.regiones[p.r] : null;
       const e = el('path', { d: p.d, class: 'pais' + (reg ? ' con-region' : '') }, g);
       if (reg) { e.style.fill = reg.color; e.dataset.r = p.r; }
-      e.dataset.n = p.n;
+      e.dataset.n = p.n; if (p.i) e.dataset.i = p.i;
     });
     return g;
   }
@@ -56,7 +56,7 @@
     const gi = el('g', {}, mapaSvg);
     A.mundo.islas.forEach(i => {
       const c = el('circle', { class: 'isla', cx: i.x, cy: i.y, r: 4.5 }, gi);
-      c.style.fill = A.regiones[i.r].color; c.dataset.r = i.r; c.dataset.n = i.n;
+      c.style.fill = A.regiones[i.r].color; c.dataset.r = i.r; c.dataset.n = i.n; c.dataset.i = i.i;
     });
     vb = [0, 0, A.mundo.w, A.mundo.h];
     const tip = $('#mapa-tip'), caja = mapaSvg.parentElement;
@@ -67,7 +67,15 @@
       tip.style.left = (ev.clientX - r.left) + 'px'; tip.style.top = (ev.clientY - r.top) + 'px'; tip.hidden = false;
     });
     mapaSvg.addEventListener('pointerleave', () => { tip.hidden = true; });
-    mapaSvg.addEventListener('click', ev => { const r = ev.target.dataset && ev.target.dataset.r; if (r) elegirRegion(r); });
+    let tipT = null;
+    mapaSvg.addEventListener('click', ev => {
+      const t = ev.target, r = t.dataset && t.dataset.r; if (!r) return;
+      elegirRegion(r, t.dataset.i, false);
+      const rc = caja.getBoundingClientRect();
+      tip.textContent = `${t.dataset.n} · ${A.regiones[r].nombre}`; tip.style.left = (ev.clientX - rc.left) + 'px'; tip.style.top = (ev.clientY - rc.top) + 'px'; tip.hidden = false;
+      clearTimeout(tipT); tipT = setTimeout(() => { tip.hidden = true; }, 2600);
+    });
+    iniciarBuscador();
 
     // botones de continente
     const z = $('#mapa-zoom');
@@ -92,7 +100,7 @@
     const f = $('#mapa-ficha'); f.style.removeProperty('--ficha-color');
     f.innerHTML = `<p class="ficha-sub">Tema 3 · Cocinas en el mundo</p><h2>Elige una región</h2><p class="ficha-vacia">El mundo está dividido en ${Object.keys(A.regiones).length} regiones culinarias de los cinco continentes que estudiamos. Cada color es una región: tócala para conocer su clima, sus ingredientes, sus platillos y un dato que no debes olvidar.</p>`;
   }
-  function elegirRegion(k) {
+  function elegirRegion(k, paisId, zoomPais = true) {
     const r = A.regiones[k]; if (!r) return;
     mapaSvg.classList.add('hay-activa');
     mapaSvg.querySelectorAll('[data-r]').forEach(p => p.classList.toggle('activa', p.dataset.r === k));
@@ -104,25 +112,82 @@
       <h3>Ingredientes base</h3><div class="ficha-chips">${r.ingredientes.map(i => `<span>${esc(i)}</span>`).join('')}</div>
       <h3>Platillos representativos</h3><ul>${r.platillos.map(p => `<li>${esc(p)}</li>`).join('')}</ul>
       <p class="ficha-dato"><strong>Dato clave:</strong> ${esc(r.dato)}</p>
+      <h3>Países de esta región (${r.paises.length})</h3>
+      <p class="ficha-mini">Toca un país para verlo en el mapa y conocer sus platillos emblemáticos.</p>
+      <div class="ficha-paises">${r.paises.map(p => `<button type="button" data-id="${esc(p.id)}" aria-pressed="false">${esc(p.n.replace(/ \(.*\)$/, ''))}</button>`).join('')}</div>
+      <div class="ficha-pais" id="ficha-pais" aria-live="polite" hidden></div>
       <a class="ficha-link" href="tema.html?id=${r.sub}">Leer el subtema ${r.sub} en el compendio →</a>`;
+    f.querySelectorAll('.ficha-paises button').forEach(b => b.addEventListener('click', () => marcarPais(b.dataset.id, true)));
     history.replaceState(null, '', '#mapa=' + k);
+    if (paisId) marcarPais(paisId, zoomPais);
   }
-  let anim = null;
+  function marcarPais(id, acercar) {
+    const k = PAIS[id] && PAIS[id].r, r = A.regiones[k]; if (!r) return;
+    const p = r.paises.find(x => x.id === id);
+    mapaSvg.querySelectorAll('.pais-sel').forEach(e => e.classList.remove('pais-sel'));
+    const els = [...mapaSvg.querySelectorAll(`[data-i="${CSS.escape(id)}"]`)];
+    els.forEach(e => { e.classList.add('pais-sel'); e.parentNode.appendChild(e); });
+    document.querySelectorAll('#mapa-ficha .ficha-paises button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.id === id)));
+    const fp = $('#ficha-pais');
+    if (fp) {
+      fp.hidden = false;
+      const nota = (p.n.match(/\((.*)\)$/) || [])[1];
+      fp.innerHTML = `<p class="fp-nombre">📍 ${esc(p.n.replace(/ \(.*\)$/, ''))}</p>${nota ? `<p class="fp-nota">${esc(nota.charAt(0).toUpperCase() + nota.slice(1))}.</p>` : ''}
+        ${p.p ? `<p class="fp-tit">Platillos emblemáticos</p><div class="ficha-chips">${p.p.map(x => `<span>${esc(x)}</span>`).join('')}</div>`
+        : '<p class="fp-reto"><strong>Reto:</strong> aún no registramos un platillo emblemático de este país. ¡Investígalo y compártelo en clase!</p>'}`;
+    }
+    if (acercar && els.length) {
+      let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+      els.forEach(e => { const b = e.getBBox(); x0 = Math.min(x0, b.x); y0 = Math.min(y0, b.y); x1 = Math.max(x1, b.x + b.width); y1 = Math.max(y1, b.y + b.height); });
+      if (x1 - x0 > A.mundo.w / 2) return; // países que cruzan el mapa (Rusia, EE. UU. con Alaska): basta el continente
+      const min = 150, cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, w = Math.max(min, (x1 - x0) * 1.6), hh = Math.max(min * .6, (y1 - y0) * 1.6);
+      zoomCaja([cx - w / 2, cy - hh / 2, w, hh], true);
+    }
+  }
+  // ---- índice de países y buscador
+  const PAIS = {};
+  const norm = t => String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  function indexarPaises() { if (Object.keys(PAIS).length) return; Object.entries(A.regiones).forEach(([k, r]) => r.paises.forEach(p => { PAIS[p.id] = { ...p, r: k }; })); }
+  function iniciarBuscador() {
+    indexarPaises();
+    const inp = $('#mapa-buscar'), ul = $('#mapa-sugerencias'); let act = -1, res = [];
+    const cerrar = () => { ul.hidden = true; ul.innerHTML = ''; act = -1; inp.setAttribute('aria-expanded', 'false'); };
+    const elegir = p => { inp.value = p.n.replace(/ \(.*\)$/, ''); cerrar(); elegirRegion(p.r, p.id, true); mapaSvg.scrollIntoView({ behavior: reducido ? 'auto' : 'smooth', block: 'center' }); };
+    inp.addEventListener('input', () => {
+      const q = norm(inp.value.trim()); if (!q) return cerrar();
+      const todos = Object.values(PAIS);
+      res = [...todos.filter(p => norm(p.n).startsWith(q)), ...todos.filter(p => !norm(p.n).startsWith(q) && norm(p.n).includes(q))].slice(0, 8);
+      ul.innerHTML = res.length ? res.map((p, i) => `<li role="option" id="sug-${i}" data-i="${i}"><i style="background:${A.regiones[p.r].color}"></i><span>${esc(p.n.replace(/ \(.*\)$/, ''))}</span><small>${esc(A.regiones[p.r].nombre)}</small></li>`).join('')
+        : '<li class="sin">No encontramos ese país. Revisa cómo se escribe.</li>';
+      ul.hidden = false; act = -1; inp.setAttribute('aria-expanded', 'true');
+      ul.querySelectorAll('li[data-i]').forEach(li => li.addEventListener('mousedown', e => { e.preventDefault(); elegir(res[+li.dataset.i]); }));
+    });
+    inp.addEventListener('keydown', e => {
+      const lis = [...ul.querySelectorAll('li[data-i]')]; if (ul.hidden || !lis.length) return;
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); act = (act + (e.key === 'ArrowDown' ? 1 : -1) + lis.length) % lis.length; lis.forEach((l, i) => l.classList.toggle('act', i === act)); inp.setAttribute('aria-activedescendant', 'sug-' + act); }
+      else if (e.key === 'Enter') { e.preventDefault(); elegir(res[act >= 0 ? act : 0]); }
+      else if (e.key === 'Escape') cerrar();
+    });
+    inp.addEventListener('blur', () => setTimeout(cerrar, 150));
+  }
   function zoomA(k, animar) {
     if (!mapaSvg) return;
     document.querySelectorAll('#mapa-zoom .chip-at').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.k === k)));
     if (k === 'mundo') { mapaSvg.classList.remove('hay-activa'); mapaSvg.querySelectorAll('.activa').forEach(p => p.classList.remove('activa')); fichaVacia(); }
-    let dest = k === 'mundo' || !A.mundo.cajas[k] ? [0, 0, A.mundo.w, A.mundo.h] : A.mundo.cajas[k].slice();
+    zoomCaja(k === 'mundo' || !A.mundo.cajas[k] ? [0, 0, A.mundo.w, A.mundo.h] : A.mundo.cajas[k].slice(), animar, k === 'mundo' ? 0 : 0.08);
+  }
+  function zoomCaja(dest, animar, m = 0, svg = mapaSvg) {
     // conservar la proporción del mapa y dejar margen
-    const rc = mapaSvg.getBoundingClientRect(); const ar = rc.width && rc.height ? rc.width / rc.height : A.mundo.w / A.mundo.h; let [x, y, w, hh] = dest; const m = k === 'mundo' ? 0 : 0.08;
+    const rc = svg.getBoundingClientRect(); const ar = rc.width && rc.height ? rc.width / rc.height : A.mundo.w / A.mundo.h; let [x, y, w, hh] = dest;
     x -= w * m; y -= hh * m; w *= 1 + 2 * m; hh *= 1 + 2 * m;
     if (w / hh > ar) { const n = w / ar; y -= (n - hh) / 2; hh = n; } else { const n = hh * ar; x -= (n - w) / 2; w = n; }
     dest = [x, y, w, hh];
-    cancelAnimationFrame(anim);
-    if (!animar || reducido) { vb = dest; mapaSvg.setAttribute('viewBox', vb.join(' ')); return; }
-    const ini = vb.slice(), t0 = performance.now(), dur = 650;
-    const paso = t => { const p = Math.min(1, (t - t0) / dur), e = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; vb = ini.map((v, i) => v + (dest[i] - v) * e); mapaSvg.setAttribute('viewBox', vb.join(' ')); if (p < 1) anim = requestAnimationFrame(paso); };
-    anim = requestAnimationFrame(paso);
+    const st = svg === mapaSvg ? { get: () => vb, set: v => { vb = v; } } : { get: () => svg.getAttribute('viewBox').split(' ').map(Number), set: () => {} };
+    cancelAnimationFrame(svg._anim);
+    if (!animar || reducido) { st.set(dest); svg.setAttribute('viewBox', dest.join(' ')); return; }
+    const ini = st.get().slice(), t0 = performance.now(), dur = 650;
+    const paso = t => { const p = Math.min(1, (t - t0) / dur), e = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; const v = ini.map((a, i) => a + (dest[i] - a) * e); st.set(v); svg.setAttribute('viewBox', v.join(' ')); if (p < 1) svg._anim = requestAnimationFrame(paso); };
+    svg._anim = requestAnimationFrame(paso);
   }
 
   // ================= 2. ¿DE DÓNDE VIENE?
@@ -210,6 +275,112 @@
       if (fantasma) { fantasma.remove(); fantasma = null; b.dataset.arrastrado = '1'; juegoSvg.querySelectorAll('.zona.sobre').forEach(g => g.classList.remove('sobre')); const z = zonaEn(ev.clientX, ev.clientY); zonaSobre = null; if (z) colocar(z, id); }
     };
     b.addEventListener('pointerup', fin); b.addEventListener('pointercancel', () => { inicio = null; if (fantasma) { fantasma.remove(); fantasma = null; } });
+  }
+
+  // ================= 2b. ¿DÓNDE QUEDA?
+  const RONDA_D = 10, EXCLUIR = ['SAH', 'SOL', 'CYN', 'FLK'];
+  let DQ = null, dondeSvg = null, dondeCont = 'mundo';
+  function iniciarDonde() {
+    indexarPaises();
+    dondeSvg = $('#donde-svg');
+    dibujarMundo(dondeSvg, false);
+    const gi = el('g', {}, dondeSvg);
+    A.mundo.islas.forEach(i => { const c = el('circle', { class: 'isla isla-d', cx: i.x, cy: i.y, r: 4.5 }, gi); c.dataset.i = i.i; c.dataset.n = i.n; });
+    const f = $('#donde-filtros');
+    [['mundo', 'Todo el mundo'], ...Object.entries(A.continentes).map(([k, c]) => [k, c.nombre])].forEach(([k, n]) => {
+      const b = h('button', { class: 'chip-at', type: 'button', 'aria-pressed': String(k === dondeCont), 'data-k': k }, esc(n));
+      b.addEventListener('click', () => { dondeCont = k; f.querySelectorAll('.chip-at').forEach(x => x.setAttribute('aria-pressed', String(x === b))); rondaDonde(); });
+      f.appendChild(b);
+    });
+    dondeSvg.addEventListener('click', ev => { const id = ev.target.dataset && ev.target.dataset.i; if (id) responderDonde(id, ev.target.dataset.n); });
+    $('#donde-pista').addEventListener('click', pistaDonde);
+    $('#donde-sig').addEventListener('click', siguienteDonde);
+    rondaDonde();
+  }
+  function rondaDonde() {
+    const pool = Object.values(PAIS).filter(p => !EXCLUIR.includes(p.id) && (dondeCont === 'mundo' || A.regiones[p.r].cont === dondeCont));
+    for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
+    DQ = { items: pool.slice(0, RONDA_D), i: 0, aciertos: 0, pistas: 0, fallos: [] };
+    zoomCaja(dondeCont === 'mundo' ? [0, 0, A.mundo.w, A.mundo.h] : A.mundo.cajas[dondeCont].slice(), true, dondeCont === 'mundo' ? 0 : 0.06, dondeSvg);
+    $('#donde-aviso').innerHTML = '';
+    preguntaDonde();
+  }
+  function preguntaDonde() {
+    dondeSvg.querySelectorAll('.d-ok,.d-mal,.d-pista').forEach(e => e.classList.remove('d-ok', 'd-mal', 'd-pista'));
+    DQ.resp = false; DQ.pista = false;
+    const p = DQ.items[DQ.i];
+    $('#donde-pregunta').innerHTML = `<span>País ${DQ.i + 1} de ${DQ.items.length}</span>¿Dónde queda <strong>${esc(p.n.replace(/ \(.*\)$/, ''))}</strong>?`;
+    $('#donde-pista').hidden = false; $('#donde-sig').hidden = true;
+    $('#donde-aviso').innerHTML = '';
+    marcadorDonde();
+  }
+  function marcadorDonde() {
+    const mejor = lee('atlas_donde_' + dondeCont) || '—';
+    $('#donde-marcador').textContent = `Aciertos ${DQ.aciertos} · tu mejor ronda aquí: ${mejor}/${RONDA_D}`;
+  }
+  function pistaDonde() {
+    if (DQ.resp || DQ.pista) return;
+    const p = DQ.items[DQ.i], r = A.regiones[p.r]; DQ.pista = true; DQ.pistas++;
+    dondeSvg.querySelectorAll('[data-i]').forEach(e => { if (PAIS[e.dataset.i] && PAIS[e.dataset.i].r === p.r) e.classList.add('d-pista'); });
+    if (dondeCont === 'mundo') zoomCaja(A.mundo.cajas[r.cont].slice(), true, 0.06, dondeSvg);
+    $('#donde-aviso').innerHTML = `<div class="aviso">Pista: está en <strong>${esc(r.nombre)}</strong> (${esc(A.continentes[r.cont].nombre)}). La región quedó resaltada.</div>`;
+    $('#donde-pista').hidden = true;
+  }
+  function responderDonde(id, nombre) {
+    if (DQ.resp) return;
+    const p = DQ.items[DQ.i], bien = id === p.id; DQ.resp = true;
+    if (bien) DQ.aciertos++; else DQ.fallos.push(p);
+    dondeSvg.querySelectorAll('.d-pista').forEach(e => e.classList.remove('d-pista'));
+    const correcto = [...dondeSvg.querySelectorAll(`[data-i="${CSS.escape(p.id)}"]`)];
+    correcto.forEach(e => { e.classList.add('d-ok'); e.parentNode.appendChild(e); });
+    if (!bien) dondeSvg.querySelectorAll(`[data-i="${CSS.escape(id)}"]`).forEach(e => e.classList.add('d-mal'));
+    const pl = p.p ? ` Platillos emblemáticos: ${p.p.slice(0, 2).join(', ')}.` : '';
+    $('#donde-aviso').innerHTML = `<div class="aviso ${bien ? 'ok' : 'mal'}"><strong>${bien ? '¡Correcto!' : `Tocaste ${esc(nombre)}. ${esc(p.n.replace(/ \(.*\)$/, ''))} está marcado en verde.`}</strong> Está en ${esc(A.regiones[p.r].nombre)}.${esc(pl)}</div>`;
+    $('#donde-pista').hidden = true; $('#donde-sig').hidden = false;
+    $('#donde-sig').textContent = DQ.i + 1 < DQ.items.length ? 'Siguiente país →' : 'Ver resultado';
+    $('#donde-sig').focus({ preventScroll: true });
+    marcadorDonde();
+  }
+  function siguienteDonde() {
+    if (DQ.i + 1 < DQ.items.length) { DQ.i++; preguntaDonde(); return; }
+    const clave = 'atlas_donde_' + dondeCont, prev = Number(lee(clave) || 0); if (DQ.aciertos > prev) guarda(clave, String(DQ.aciertos));
+    const n = DQ.items.length;
+    $('#donde-pregunta').innerHTML = `<span>Ronda terminada</span><strong>${DQ.aciertos} de ${n}</strong> países ubicados${DQ.pistas ? ` (usaste ${DQ.pistas} pista${DQ.pistas > 1 ? 's' : ''})` : ''}`;
+    $('#donde-sig').hidden = true;
+    $('#donde-aviso').innerHTML = `<div class="resumen"><p>${DQ.aciertos === n ? '¡Ronda perfecta! Ya ubicas muy bien esta parte del mundo.' : 'Repasa los que fallaste: en el Mapa del mundo puedes buscarlos y ver sus platillos.'}</p>${DQ.fallos.length ? `<ul>${DQ.fallos.map(p => `<li><strong>${esc(p.n.replace(/ \(.*\)$/, ''))}</strong>: ${esc(A.regiones[p.r].nombre)}</li>`).join('')}</ul>` : ''}<button class="btn-at" id="donde-otra" type="button">Otra ronda</button></div>`;
+    $('#donde-otra').addEventListener('click', rondaDonde);
+    marcadorDonde();
+  }
+
+  // ================= 2c. COMPARAR REGIONES
+  function iniciarComparar(extra) {
+    indexarPaises();
+    const opts = Object.entries(A.continentes).map(([ck, c]) => `<optgroup label="${esc(c.nombre)}">${Object.entries(A.regiones).filter(([, r]) => r.cont === ck).map(([k, r]) => `<option value="${k}">${esc(r.nombre)}</option>`).join('')}</optgroup>`).join('');
+    ['#comp-a', '#comp-b'].forEach(s => { $(s).innerHTML = opts; $(s).addEventListener('change', pintarComparar); });
+    $('#comp-a').value = 'am-meso'; $('#comp-b').value = 'am-and';
+    $('#comp-cambiar').addEventListener('click', () => { const a = $('#comp-a').value; $('#comp-a').value = $('#comp-b').value; $('#comp-b').value = a; pintarComparar(); });
+    if (extra) compararDesdeHash(extra); else pintarComparar();
+  }
+  function compararDesdeHash(x) { const [a, b] = String(x).split(','); if (A.regiones[a]) $('#comp-a').value = a; if (A.regiones[b]) $('#comp-b').value = b; pintarComparar(); }
+  function pintarComparar() {
+    const ka = $('#comp-a').value, kb = $('#comp-b').value, a = A.regiones[ka], b = A.regiones[kb];
+    history.replaceState(null, '', `#comparar=${ka},${kb}`);
+    const fila = (t, fa, fb) => `<tr><th scope="row">${t}</th><td>${fa(a)}</td><td>${fb ? fb(b) : fa(b)}</td></tr>`;
+    const chips = r => `<div class="ficha-chips">${r.ingredientes.map(i => `<span>${esc(i)}</span>`).join('')}</div>`;
+    const lista = r => `<ul>${r.platillos.map(p => `<li>${esc(p)}</li>`).join('')}</ul>`;
+    const paises = r => `<p class="comp-paises">${r.paises.map(p => esc(p.n.replace(/ \(.*\)$/, ''))).join(', ')}</p>`;
+    $('#comp-tabla').innerHTML = `<table class="comp-tabla"><thead><tr><th></th>${[a, b].map((r, i) => `<th scope="col" style="--c:${r.color}"><span class="comp-color"></span>${esc(r.nombre)}<small>${esc(A.continentes[r.cont].nombre)} · subtema ${r.sub}</small></th>`).join('')}</tr></thead><tbody>
+      ${fila('Clima y paisaje', r => esc(r.clima))}
+      ${fila('Ingredientes base', chips)}
+      ${fila('Platillos representativos', lista)}
+      ${fila(`Países e islas`, r => `<b>${r.paises.length}</b>${paises(r)}`)}
+      ${fila('Dato clave', r => esc(r.dato))}
+    </tbody></table>`;
+    const igual = ka === kb;
+    $('#comp-pensar').innerHTML = igual ? '<p class="aviso">Elegiste la misma región dos veces: cambia una para comparar.</p>' : `<h3>Para pensar y comentar en clase</h3><ol>
+      <li>¿Qué diferencia de clima y paisaje ves entre ${esc(a.nombre)} y ${esc(b.nombre)}? ¿Cómo explica eso sus ingredientes base?</li>
+      <li>¿Comparten algún ingrediente o técnica? Si es así, ¿fue por el clima, por el comercio o por la conquista y la migración?</li>
+      <li>Elige un platillo de cada región: ¿qué dice de la historia y la forma de vida de quienes lo crearon?</li></ol>`;
   }
 
   // ================= 3. RUTAS
