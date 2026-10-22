@@ -22,6 +22,35 @@ service cloud.firestore {
         allow write: if esDocente();
       }
 
+      // Equipos: el docente los crea. Mientras las inscripciones estén
+      // abiertas, un alumno (con su PIN) solo puede unirse él mismo sin pasar
+      // el máximo, o salirse él mismo. Un integrante puede cambiar el nombre.
+      match /equipos/{equipoId} {
+        allow read: if true;
+        allow write: if esDocente();
+        allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['integrantes', 'nombres', 'nombre', 'ultimoAutor', 'ultimoPin'])
+          && request.resource.data.ultimoPin == get(/databases/$(database)/documents/grupos/$(grupoId)/alumnos/$(request.resource.data.ultimoAutor)).data.pin
+          && (
+            // cambiar el nombre: lo hace un integrante, sin tocar la lista
+            (request.resource.data.integrantes == resource.data.integrantes
+              && request.resource.data.ultimoAutor in resource.data.integrantes)
+            || (get(/databases/$(database)/documents/grupos/$(grupoId)).data.get('equiposAbiertos', true) == true
+              && (
+                // unirse: agrega solo a sí mismo
+                (request.resource.data.integrantes.size() == resource.data.integrantes.size() + 1
+                  && request.resource.data.integrantes.hasAll(resource.data.integrantes)
+                  && request.resource.data.ultimoAutor in request.resource.data.integrantes
+                  && !(request.resource.data.ultimoAutor in resource.data.integrantes)
+                  && request.resource.data.integrantes.size() <= resource.data.get('max', 100))
+                // salirse: se quita solo a sí mismo
+                || (request.resource.data.integrantes.size() == resource.data.integrantes.size() - 1
+                  && resource.data.integrantes.hasAll(request.resource.data.integrantes)
+                  && request.resource.data.ultimoAutor in resource.data.integrantes
+                  && !(request.resource.data.ultimoAutor in request.resource.data.integrantes))
+              ))
+          );
+      }
+
       // Atlas de equipo: lo escriben solo los integrantes del equipo
       // (el docente arma los equipos), cada uno con su PIN correcto.
       match /equipos/{equipoId}/atlas/{continente} {

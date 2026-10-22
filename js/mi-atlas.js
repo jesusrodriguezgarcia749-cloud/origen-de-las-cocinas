@@ -33,6 +33,7 @@ const CAMPOS_PAIS = [['platillos', 'Platillos de este país'], ['notas', 'Notas 
 
 let editando = null;
 // ---- modo equipo: el atlas vive en grupos/{g}/equipos/{e}/atlas/{continente} y se edita en vivo
+let codigoPendiente = null, abiertos = true, eqDocUnsub = null, msgModo = '';
 let modo = 'personal', EQ = null, TE = {}, unsub = null, pend = new Map(), pendT = null, existe = {};
 let A = null, sesion = null, T = null, cont = 'africa', regSel = null, paisSel = null, timer = null, iniciado = false;
 let PAIS = {}, CONT_DE = {};
@@ -42,6 +43,8 @@ async function iniciar() {
   if (iniciado) return; iniciado = true;
   A = await fetch('data/atlas.json').then(r => r.json());
   Object.entries(A.regiones).forEach(([k, r]) => r.paises.forEach(p => { PAIS[p.id] = { ...p, cont: r.cont }; }));
+  const mc = location.hash.match(/unir-([A-Z0-9]{4})/i); if (mc) codigoPendiente = mc[1].toUpperCase();
+  if (codigoPendiente) { const av = document.createElement('p'); av.className = 'ma-aviso-unir'; av.innerHTML = `👥 Vas a unirte al equipo con el código <b>${esc(codigoPendiente)}</b>. Entra con tu nombre y PIN.`; $('.ma-login h2').after(av); }
   let s = null; try { s = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null'); } catch { s = null; }
   if (s && s.grupoId && s.alumnoId && s.pin) { sesion = s; entrar(); } else cargarGrupos();
 }
@@ -98,20 +101,87 @@ async function entrar() {
       sn.forEach(d => { const x = d.data(); if ((x.integrantes || []).includes(sesion.alumnoId)) EQ = { id: d.id, ...x }; });
     } catch { /* sin equipos */ }
   }
+  if (!sesion.anon) { try { const g = await getDoc(doc(db, 'grupos', sesion.grupoId)); abiertos = !g.exists() || g.data().equiposAbiertos !== false; } catch { /* */ } }
   if (EQ) modo = lsGet('miatlas_modo') === 'personal' ? 'personal' : 'equipo';
-  pintarModo(); pintarConts(); cambiarModo(modo);
+  pintarConts(); await cambiarModo(modo);
+  if (codigoPendiente && !sesion.anon) { const c = codigoPendiente; codigoPendiente = null; history.replaceState(null, '', '#miatlas'); await unirse(c); }
+}
+// ---- unirse a un equipo con su código (o el QR, que trae el código en la dirección)
+const refEquipo = id => doc(db, 'grupos', sesion.grupoId, 'equipos', id);
+const firmaAlumno = () => ({ ultimoAutor: sesion.alumnoId, ultimoPin: sesion.pin });
+async function unirse(codigo) {
+  codigo = String(codigo || '').trim().toUpperCase();
+  if (!/^[A-Z0-9]{4}$/.test(codigo)) { avisoModo('El código de equipo tiene 4 letras o números.', 'mal'); return; }
+  try {
+    const sn = await getDocs(collection(db, 'grupos', sesion.grupoId, 'equipos'));
+    let t = null; sn.forEach(d => { if ((d.data().codigo || '').toUpperCase() === codigo) t = { id: d.id, ...d.data() }; });
+    if (!t) { avisoModo(`No encontramos un equipo con el código ${codigo} en tu grupo. Revísalo con tu maestro.`, 'mal'); return; }
+    const integ = t.integrantes || [], noms = t.nombres || [];
+    if (integ.includes(sesion.alumnoId)) { EQ = t; avisoModo(`Ya eres parte de «${t.nombre}».`, 'ok'); await cambiarModo('equipo'); return; }
+    const g = await getDoc(doc(db, 'grupos', sesion.grupoId)); abiertos = !g.exists() || g.data().equiposAbiertos !== false;
+    if (!abiertos) { avisoModo('Las inscripciones a equipos ya están cerradas. Pídele a tu maestro que te cambie.', 'mal'); return; }
+    if (t.max && integ.length >= t.max) { avisoModo(`«${t.nombre}» ya está completo (${t.max} integrantes). Elige otro equipo.`, 'mal'); return; }
+    if (EQ && EQ.id !== t.id) {   // salir del equipo anterior
+      const v = await getDoc(refEquipo(EQ.id));
+      if (v.exists()) { const vi = v.data().integrantes || [], vn = v.data().nombres || [], k = vi.indexOf(sesion.alumnoId);
+        if (k >= 0) await updateDoc(refEquipo(EQ.id), { integrantes: vi.filter((_, i) => i !== k), nombres: vn.filter((_, i) => i !== k), ...firmaAlumno() }); }
+    }
+    await updateDoc(refEquipo(t.id), { integrantes: [...integ, sesion.alumnoId], nombres: [...noms, sesion.nombre], ...firmaAlumno() });
+    EQ = { ...t, integrantes: [...integ, sesion.alumnoId], nombres: [...noms, sesion.nombre] };
+    avisoModo(`¡Listo! Ya eres parte de «${t.nombre}». ${t.nombre.startsWith('Equipo ') ? 'Pónganle nombre a su equipo con ✏️.' : ''}`, 'ok');
+    await cambiarModo('equipo');
+  } catch (e) { avisoModo('No se pudo unir al equipo: ' + (e.message || e), 'mal'); }
+}
+function avisoModo(t, c) { msgModo = t ? `<p class="ma-msg ${c || ''}">${esc(t)}</p>` : ''; pintarModo(); }
+function escucharEquipo() {
+  if (eqDocUnsub) { eqDocUnsub(); eqDocUnsub = null; }
+  if (!EQ || sesion.anon) return;
+  eqDocUnsub = onSnapshot(refEquipo(EQ.id), sn => {
+    if (!sn.exists()) { EQ = null; if (modo === 'equipo') cambiarModo('personal'); else pintarModo(); return; }
+    const d = sn.data();
+    if (!(d.integrantes || []).includes(sesion.alumnoId)) { EQ = null; avisoModo('Ya no formas parte de ese equipo.', 'mal'); if (modo === 'equipo') cambiarModo('personal'); return; }
+    const cambio = d.nombre !== EQ.nombre || JSON.stringify(d.nombres) !== JSON.stringify(EQ.nombres);
+    EQ = { id: sn.id, ...d };
+    const act = document.activeElement;
+    if (cambio && !(act && $('#ma-modo').contains(act))) pintarModo();
+  });
 }
 function pintarModo() {
   const m = $('#ma-modo');
-  if (!EQ) { m.hidden = true; return; }
+  if (!sesion || sesion.anon) { m.hidden = true; return; }
   m.hidden = false;
-  m.innerHTML = [['equipo', `👥 Atlas del equipo «${esc(EQ.nombre)}»`], ['personal', '👤 Mi atlas personal']].map(([k, t]) => `<button type="button" class="chip-at" data-m="${k}" aria-pressed="${k === modo}">${t}</button>`).join('')
-    + `<p class="ma-integrantes">${modo === 'equipo' ? `Integrantes: ${esc((EQ.nombres || []).join(', '))}. Todo lo que escriban se ve en vivo en los celulares de todos.` : 'Este es tu trabajo individual: tu equipo no lo ve.'}</p>`;
-  $$('button', m).forEach(b => b.addEventListener('click', () => { if (b.dataset.m !== modo) cambiarModo(b.dataset.m); }));
+  const formCodigo = (txt, bot) => `<form class="ma-unir" id="ma-unir"><label for="ma-codigo">${txt}</label><div><input id="ma-codigo" maxlength="4" autocomplete="off" autocapitalize="characters" placeholder="ABCD" aria-label="Código del equipo"><button type="submit" class="btn-at">${bot}</button></div></form>`;
+  if (!EQ) {
+    m.innerHTML = msgModo + (abiertos ? formCodigo('👥 ¿Tu maestro formó equipos? Escanea el QR de tu equipo o escribe su código de 4 letras:', 'Unirme') : '<p class="ma-integrantes">Trabajas en tu atlas personal. (Las inscripciones a equipos están cerradas.)</p>');
+  } else {
+    m.innerHTML = [['equipo', `👥 Atlas del equipo «${esc(EQ.nombre)}»`], ['personal', '👤 Mi atlas personal']].map(([k, t]) => `<button type="button" class="chip-at" data-m="${k}" aria-pressed="${k === modo}">${t}</button>`).join('')
+      + `<p class="ma-integrantes">${modo === 'equipo' ? `Integrantes: ${esc((EQ.nombres || []).join(', '))}. Todo lo que escriban se ve en vivo en los celulares de todos.` : 'Este es tu trabajo individual: tu equipo no lo ve.'}</p>`
+      + msgModo
+      + `<div class="ma-eq-acc"><button type="button" class="ma-link" id="ma-renombrar">✏️ Cambiar el nombre del equipo</button>${abiertos ? '<button type="button" class="ma-link" id="ma-cambiar">🔁 Cambiarme de equipo</button>' : ''}</div><div id="ma-eq-form"></div>`;
+    $$('[data-m]', m).forEach(b => b.addEventListener('click', () => { if (b.dataset.m !== modo) { msgModo = ''; cambiarModo(b.dataset.m); } }));
+    $('#ma-renombrar').addEventListener('click', () => {
+      $('#ma-eq-form').innerHTML = `<form class="ma-unir" id="ma-ren-form"><label for="ma-ren">Nombre del equipo</label><div><input id="ma-ren" maxlength="40" value="${esc(EQ.nombre)}"><button type="submit" class="btn-at">Guardar</button></div></form>`;
+      const i = $('#ma-ren'); i.focus(); i.select();
+      $('#ma-ren-form').addEventListener('submit', async e => {
+        e.preventDefault(); const n = i.value.trim(); if (!n) return;
+        try { await updateDoc(refEquipo(EQ.id), { nombre: n, ...firmaAlumno() }); EQ.nombre = n; avisoModo('Nombre del equipo actualizado ✓', 'ok'); }
+        catch (er) { avisoModo('No se pudo cambiar el nombre: ' + (er.message || er), 'mal'); }
+      });
+    });
+    const bc = $('#ma-cambiar');
+    if (bc) bc.addEventListener('click', () => { $('#ma-eq-form').innerHTML = formCodigo('Escribe el código del equipo al que te quieres cambiar:', 'Cambiarme'); conectarCodigo(); $('#ma-codigo').focus(); });
+  }
+  conectarCodigo();
+}
+function conectarCodigo() {
+  const f = $('#ma-unir'); if (!f || f._listo || f.id !== 'ma-unir') return; f._listo = true;
+  f.addEventListener('submit', e => { e.preventDefault(); unirse($('#ma-codigo').value); });
 }
 async function cambiarModo(mo) {
   await flushEquipo(); if (timer) await guardarYa();
+  if (mo === 'equipo' && !EQ) mo = 'personal';
   modo = mo; lsSet('miatlas_modo', mo); regSel = null; paisSel = null; editando = null;
+  escucharEquipo();
   $('.ma-equipo').hidden = modo === 'equipo';
   pintarModo();
   if (modo === 'equipo') { estado('Conectando con tu equipo…'); escuchar(); }

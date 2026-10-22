@@ -195,8 +195,19 @@
     <p class="field-hint">Lo que cada alumno lleva en <a href="atlas.html#miatlas" target="_blank" rel="noopener">Mi atlas</a>: sus regiones culinarias propias, cuántos países clasificó y lo que escribió. Una ficha cuenta como completa cuando tiene al menos 4 de sus 7 apartados. Toca «Ver» para leer todo su trabajo. Si trabajan en equipo, el trabajo aparece en el alumno que lo capturó y abajo de su nombre ves a los integrantes.</p>
     <div class="bloques-activos-card">
       <h3 class="section-title" style="margin-top:0;">Equipos</h3>
-      <p class="field-hint">Arma los equipos del grupo. Los integrantes de un equipo comparten un mismo atlas y lo editan al mismo tiempo desde sus celulares; cada apartado registra quién lo escribió.</p>
+      <p class="field-hint">Los integrantes de un equipo comparten un mismo atlas y lo editan al mismo tiempo desde sus celulares; cada apartado registra quién lo escribió. Hay dos formas de formar equipos: <b>generarlos con código QR</b> para que los alumnos se unan solos, o <b>armarlos tú</b> eligiendo a los integrantes.</p>
+      <div class="eq-generar">
+        <span>Generar</span><input id="eq-n" type="number" min="1" max="20" value="6" aria-label="Número de equipos"><span>equipos de máximo</span><input id="eq-max" type="number" min="1" max="15" value="4" aria-label="Máximo de integrantes"><span>integrantes</span>
+        <button type="button" class="btn btn-primary" id="eq-generar">Generar con QR</button>
+      </div>
+      <div class="eq-acciones">
+        <button type="button" class="btn" id="eq-abierto" aria-pressed="true">🔓 Inscripciones abiertas</button>
+        <button type="button" class="btn" id="eq-proyectar">📽️ Proyectar códigos</button>
+        <button type="button" class="btn" id="eq-imprimir">🖨️ Imprimir tarjetas</button>
+      </div>
+      <p class="field-hint" id="eq-sin">Sin equipo todavía: <span id="eq-sin-lista"></span></p>
       <div id="equipos-lista"></div>
+      <h4 class="eq-sub">Armar o editar un equipo a mano</h4>
       <form id="equipo-form" class="equipo-form">
         <input type="hidden" id="equipo-id">
         <label class="field-label" for="equipo-nombre">Nombre del equipo</label>
@@ -336,6 +347,11 @@
 <button id="bg-music-toggle" class="music-toggle" aria-label="Activar música de fondo" aria-pressed="false">🎵</button>
 
 <script src="js/app.js"></script>
+<div id="qr-proyeccion" class="qr-proyeccion" hidden>
+  <div class="qr-cab"><div><b>Únete a tu equipo</b><span>Escanea el código con tu celular (o entra a Atlas → ✏️ Mi atlas y escribe el código de 4 letras).</span></div><button type="button" class="btn" id="qr-cerrar">Cerrar ✕</button></div>
+  <div class="qr-grid" id="qr-grid"></div>
+</div>
+<script src="js/vendor/qrcode.js"></script>
 <script type="module" src="js/admin.js"></script>
 </body>
 </html>

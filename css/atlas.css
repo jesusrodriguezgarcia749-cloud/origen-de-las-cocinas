@@ -286,3 +286,12 @@ html[data-theme="dark"] .ma-svg .ma-de-sel, html[data-theme="dark"] .ma-svg .ma-
 .ma-integrantes{flex-basis:100%; margin:2px 0 0; font-size:.86rem; color:var(--ink-soft);}
 .ma-campo > span{display:flex; justify-content:space-between; gap:8px;}
 .ma-autor{font-weight:600; color:#3F7A4F;}
+.ma-aviso-unir{background:rgba(63,154,85,.12); border:1px solid rgba(63,154,85,.4); border-radius:10px; padding:8px 12px; font-size:.92rem;}
+.ma-unir{display:grid; gap:6px; flex-basis:100%; font:600 .88rem var(--font-body);}
+.ma-unir div{display:flex; gap:8px;}
+.ma-unir input{flex:1; min-width:0; max-width:220px; font:700 1.05rem ui-monospace, monospace; letter-spacing:.2em; text-transform:uppercase; padding:8px 10px; border-radius:10px; border:1.5px solid var(--line); background:var(--cream); color:var(--ink);}
+.ma-unir #ma-ren{font:inherit; letter-spacing:normal; text-transform:none; max-width:320px;}
+.ma-eq-acc{display:flex; flex-wrap:wrap; gap:6px 16px; flex-basis:100%; font-size:.86rem;}
+#ma-eq-form{flex-basis:100%;}
+.ma-msg{flex-basis:100%; margin:2px 0; font-size:.9rem; font-weight:600;}
+.ma-msg.ok{color:#3F7A4F;} .ma-msg.mal{color:#A63D2F;}

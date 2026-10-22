@@ -718,24 +718,62 @@ async function cargarMiAtlas() {
 }
 
 // ---- Equipos de Mi atlas (grupos/{g}/equipos/{id}; su atlas en .../equipos/{id}/atlas/{continente})
+// Se forman generándolos con código QR (los alumnos se unen solos) o a mano desde aquí.
 const CAMPOS_EQ = [['clima', 'Clima y paisaje'], ['ingredientes', 'Ingredientes base'], ['platillos', 'Platillos'], ['tecnicas', 'Técnicas y utensilios'], ['historia', 'Historia e influencias'], ['dato', 'Dato curioso'], ['fuentes', 'Fuentes']];
-let EQUIPOS = [];
+const LETRAS_COD = 'ACDEFHJKMNPRTUVWXY3479';
+let EQUIPOS = [], eqUnsub = null, eqGrupo = null, eqAbiertos = true, eqCtx = null;
+const urlUnir = cod => new URL('atlas.html#miatlas=unir-' + cod, location.href).href;
+function qrSvg(texto, celda) {
+  if (typeof qrcode !== 'function') return '<p class="empty-inline">QR no disponible</p>';
+  const q = qrcode(0, 'M'); q.addData(texto); q.make(); return q.createSvgTag(celda, 2);
+}
+function nuevoCodigo() { const usados = new Set(EQUIPOS.map(e => e.codigo)); let c; do { c = Array.from({ length: 4 }, () => LETRAS_COD[Math.floor(Math.random() * LETRAS_COD.length)]).join(''); } while (usados.has(c)); usados.add(c); return c; }
 async function cargarEquipos(NOM, CONTS, ks) {
-  const lista = document.getElementById('equipos-lista'), prog = document.getElementById('miatlas-equipos');
-  try { const sn = await getDocs(collection(db, 'grupos', grupoActivo, 'equipos')); EQUIPOS = sn.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (a.nombre || '').localeCompare(b.nombre || '', 'es')); }
-  catch { EQUIPOS = []; }
+  eqCtx = { NOM, CONTS, ks };
+  if (eqGrupo !== grupoActivo || !eqUnsub) {
+    if (eqUnsub) eqUnsub();
+    eqGrupo = grupoActivo;
+    try { const g = await getDoc(doc(db, 'grupos', grupoActivo)); eqAbiertos = g.exists() ? g.data().equiposAbiertos !== false : true; } catch { eqAbiertos = true; }
+    eqUnsub = onSnapshot(collection(db, 'grupos', grupoActivo, 'equipos'), sn => {
+      EQUIPOS = sn.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (a.numero || 999) - (b.numero || 999) || (a.nombre || '').localeCompare(b.nombre || '', 'es'));
+      pintarEquipos();
+      clearTimeout(window._eqAv); window._eqAv = setTimeout(avanceEquipos, 1200);
+    });
+  } else pintarEquipos();
+  avanceEquipos();
+}
+function pintarEquipos() {
+  const lista = document.getElementById('equipos-lista'); if (!lista) return;
   const nombreDe = id => (alumnosCache.find(a => a.id === id) || {}).nombre || id;
-  lista.innerHTML = EQUIPOS.length ? `<div class="equipos-grid">${EQUIPOS.map(eq => `<div class="equipo-card"><b>${escaparHTML(eq.nombre)}</b><p>${(eq.integrantes || []).map(i => escaparHTML(nombreDe(i))).join(', ') || '<i>sin integrantes</i>'}</p><div><button type="button" class="btn btn-small" data-eq-edit="${eq.id}">Editar</button> <button type="button" class="btn btn-small" data-eq-del="${eq.id}">Eliminar</button></div></div>`).join('')}</div>` : '<p class="empty-inline">Aún no hay equipos en este grupo.</p>';
-  pintarFormEquipo(null);
+  const ab = document.getElementById('eq-abierto');
+  ab.setAttribute('aria-pressed', String(eqAbiertos)); ab.textContent = eqAbiertos ? '🔓 Inscripciones abiertas' : '🔒 Inscripciones cerradas';
+  const enEquipo = new Set(EQUIPOS.flatMap(e => e.integrantes || []));
+  const sin = alumnosCache.filter(a => !enEquipo.has(a.id));
+  document.getElementById('eq-sin-lista').textContent = sin.length ? sin.map(a => a.nombre).join(', ') : 'nadie, ¡todos tienen equipo!';
+  lista.innerHTML = EQUIPOS.length ? `<div class="equipos-grid">${EQUIPOS.map(eq => {
+    const n = (eq.integrantes || []).length, lleno = eq.max && n >= eq.max;
+    return `<div class="equipo-card"><div class="eq-card-cab"><div><b>${escaparHTML(eq.nombre)}</b>${eq.codigo ? `<span class="eq-codigo">${escaparHTML(eq.codigo)}</span>` : ''}</div>${eq.codigo ? `<div class="eq-qr-mini" title="Código QR del equipo">${qrSvg(urlUnir(eq.codigo), 2)}</div>` : ''}</div>
+      <p class="eq-cupo ${lleno ? 'lleno' : ''}">${n}${eq.max ? ` de ${eq.max}` : ''} integrante${n === 1 && !eq.max ? '' : 's'}${lleno ? ' · completo' : ''}</p>
+      <p>${(eq.integrantes || []).map(i => escaparHTML(nombreDe(i))).join(', ') || '<i>sin integrantes</i>'}</p>
+      <div><button type="button" class="btn btn-small" data-eq-edit="${eq.id}">Editar</button> <button type="button" class="btn btn-small" data-eq-del="${eq.id}">Eliminar</button></div></div>`;
+  }).join('')}</div>` : '<p class="empty-inline">Aún no hay equipos en este grupo.</p>';
+  const ed = document.getElementById('equipo-id').value;
+  if (!ed) pintarFormEquipo(null);
   lista.querySelectorAll('[data-eq-edit]').forEach(b => b.addEventListener('click', () => { pintarFormEquipo(EQUIPOS.find(x => x.id === b.dataset.eqEdit)); document.getElementById('equipo-nombre').focus(); }));
   lista.querySelectorAll('[data-eq-del]').forEach(b => b.addEventListener('click', async () => {
     const eq = EQUIPOS.find(x => x.id === b.dataset.eqDel);
     if (!confirm(`¿Eliminar el equipo «${eq.nombre}»? Sus integrantes ya no verán el atlas del equipo (lo que escribieron no se borra).`)) return;
-    await deleteDoc(doc(db, 'grupos', grupoActivo, 'equipos', eq.id)); cargarMiAtlas();
+    await deleteDoc(doc(db, 'grupos', grupoActivo, 'equipos', eq.id));
   }));
-  // avance por equipo
-  if (!EQUIPOS.length) { prog.innerHTML = '<p class="empty-inline">Cuando armes equipos, aquí verás su avance.</p>'; return; }
-  const filas = await Promise.all(EQUIPOS.map(async eq => {
+  if (!document.getElementById('qr-proyeccion').hidden) pintarProyeccion();
+}
+async function avanceEquipos() {
+  const prog = document.getElementById('miatlas-equipos'); if (!prog || !eqCtx) return;
+  const { NOM, CONTS, ks } = eqCtx;
+  let lista = EQUIPOS;
+  if (!lista.length) { try { const sn = await getDocs(collection(db, 'grupos', grupoActivo, 'equipos')); lista = sn.docs.map(d => ({ id: d.id, ...d.data() })); } catch { lista = []; } }
+  if (!lista.length) { prog.innerHTML = '<p class="empty-inline">Cuando haya equipos, aquí verás su avance.</p>'; return; }
+  const filas = await Promise.all(lista.map(async eq => {
     const d = {};
     await Promise.all(ks.map(async k => { try { const s = await getDoc(doc(db, 'grupos', grupoActivo, 'equipos', eq.id, 'atlas', k)); if (s.exists()) d[k] = s.data(); } catch { /* */ } }));
     return [eq, d];
@@ -743,10 +781,11 @@ async function cargarEquipos(NOM, CONTS, ks) {
   const total = k => Object.values(ATLAS_DATA.regiones).filter(r => r.cont === k).reduce((s, r) => s + r.paises.length, 0);
   const fecha = t => t && t.toDate ? t.toDate().toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—';
   const celda = (x, k) => { if (!x) return '<td>—</td>'; const regs = Object.values(x.regiones || {}), cl = Object.keys(x.asign || {}).length, fi = regs.filter(r => CAMPOS_EQ.filter(([f]) => (r[f] || '').trim()).length >= 4).length, t = total(k); return `<td class="${cl === t ? 'ok' : ''}">${cl}/${t}<br><small>${regs.length} reg. · ${fi} ficha${fi === 1 ? '' : 's'}</small></td>`; };
-  prog.innerHTML = `<div class="taller-tabla-wrap"><table class="taller-tabla"><thead><tr><th>Equipo</th>${ks.map(k => `<th>${escaparHTML(CONTS[k].nombre)}</th>`).join('')}<th>Última vez</th><th></th></tr></thead><tbody>
+  prog.innerHTML = `<p class="field-hint"><button type="button" class="btn btn-small" id="eq-refrescar">↻ Actualizar avance</button></p><div class="taller-tabla-wrap"><table class="taller-tabla"><thead><tr><th>Equipo</th>${ks.map(k => `<th>${escaparHTML(CONTS[k].nombre)}</th>`).join('')}<th>Última vez</th><th></th></tr></thead><tbody>
     ${filas.map(([eq, d]) => { const ult = Object.values(d).map(x => x.actualizado).filter(Boolean).sort((a, b) => b.toMillis() - a.toMillis())[0];
       return `<tr><td><b>${escaparHTML(eq.nombre)}</b><br><small>${escaparHTML((eq.nombres || []).join(', '))}</small></td>${ks.map(k => celda(d[k], k)).join('')}<td>${fecha(ult)}</td><td><button type="button" class="btn btn-small taller-ver" data-eqv="${eq.id}">Ver</button></td></tr>
       <tr class="taller-det" id="eqdet-${eq.id}" hidden><td colspan="${ks.length + 3}"></td></tr>`; }).join('')}</tbody></table></div>`;
+  document.getElementById('eq-refrescar').addEventListener('click', avanceEquipos);
   const porId = Object.fromEntries(filas.map(([eq, d]) => [eq.id, d]));
   const e = x => escaparHTML(x || '').replace(/\n/g, '<br>') || '<i>—</i>';
   prog.querySelectorAll('[data-eqv]').forEach(b => b.addEventListener('click', () => {
@@ -773,6 +812,7 @@ function pintarFormEquipo(eq) {
   const mios = new Set(eq ? eq.integrantes || [] : []);
   document.getElementById('equipo-alumnos').innerHTML = alumnosCache.map(a => `<label class="${enOtro[a.id] ? 'en-otro' : ''}"><input type="checkbox" value="${a.id}" ${mios.has(a.id) ? 'checked' : ''}> ${escaparHTML(a.nombre)}${enOtro[a.id] ? ` <small>(en «${escaparHTML(enOtro[a.id])}»)</small>` : ''}</label>`).join('');
 }
+const nombresDe = ids => ids.map(i => (alumnosCache.find(a => a.id === i) || {}).nombre || i);
 on('equipo-cancelar', 'click', () => pintarFormEquipo(null));
 on('equipo-form', 'submit', async ev => {
   ev.preventDefault();
@@ -780,18 +820,50 @@ on('equipo-form', 'submit', async ev => {
   const nombre = document.getElementById('equipo-nombre').value.trim();
   const ids = [...document.querySelectorAll('#equipo-alumnos input:checked')].map(i => i.value);
   if (!nombre || !ids.length) { msg.textContent = 'Escribe el nombre del equipo y elige al menos un integrante.'; msg.hidden = false; return; }
-  const id = document.getElementById('equipo-id').value || ('e' + Date.now().toString(36));
+  const idEd = document.getElementById('equipo-id').value, id = idEd || ('e' + Date.now().toString(36));
+  const previo = EQUIPOS.find(x => x.id === idEd) || {};
   try {
     // un alumno solo puede estar en un equipo: se quita de los demás
     await Promise.all(EQUIPOS.filter(x => x.id !== id && (x.integrantes || []).some(i => ids.includes(i))).map(x => {
       const integ = x.integrantes.filter(i => !ids.includes(i));
-      return setDoc(doc(db, 'grupos', grupoActivo, 'equipos', x.id), { nombre: x.nombre, integrantes: integ, nombres: integ.map(i => (alumnosCache.find(a => a.id === i) || {}).nombre || i) });
+      return updateDoc(doc(db, 'grupos', grupoActivo, 'equipos', x.id), { integrantes: integ, nombres: nombresDe(integ) });
     }));
-    await setDoc(doc(db, 'grupos', grupoActivo, 'equipos', id), { nombre, integrantes: ids, nombres: ids.map(i => (alumnosCache.find(a => a.id === i) || {}).nombre || i), actualizado: serverTimestamp() });
+    await setDoc(doc(db, 'grupos', grupoActivo, 'equipos', id), {
+      nombre, integrantes: ids, nombres: nombresDe(ids), codigo: previo.codigo || nuevoCodigo(), max: Math.max(previo.max || 0, ids.length) || ids.length,
+      numero: previo.numero || (Math.max(0, ...EQUIPOS.map(x => x.numero || 0)) + 1), actualizado: serverTimestamp()
+    });
+    pintarFormEquipo(null);
     msg.textContent = 'Equipo guardado ✓'; msg.hidden = false; setTimeout(() => { msg.hidden = true; }, 2500);
-    cargarMiAtlas();
   } catch (e) { msg.textContent = 'No se pudo guardar: ' + (e.message || e); msg.hidden = false; }
 });
+on('eq-generar', 'click', async () => {
+  if (!grupoActivo) return;
+  const n = Math.min(20, Math.max(1, parseInt(document.getElementById('eq-n').value, 10) || 0)), max = Math.min(15, Math.max(1, parseInt(document.getElementById('eq-max').value, 10) || 0));
+  if (!confirm(`¿Generar ${n} equipo${n === 1 ? '' : 's'} nuevo${n === 1 ? '' : 's'} de máximo ${max} integrantes, cada uno con su código QR?${EQUIPOS.length ? ' Los equipos que ya existen se conservan.' : ''}`)) return;
+  const base = Math.max(0, ...EQUIPOS.map(x => x.numero || 0));
+  const usados = new Set(EQUIPOS.map(e => e.codigo));
+  await Promise.all(Array.from({ length: n }, (_, i) => {
+    let c; do { c = Array.from({ length: 4 }, () => LETRAS_COD[Math.floor(Math.random() * LETRAS_COD.length)]).join(''); } while (usados.has(c)); usados.add(c);
+    return setDoc(doc(db, 'grupos', grupoActivo, 'equipos', 'e' + Date.now().toString(36) + i), { nombre: `Equipo ${base + i + 1}`, numero: base + i + 1, codigo: c, max, integrantes: [], nombres: [], actualizado: serverTimestamp() });
+  }));
+  if (!eqAbiertos) await alternarInscripciones(true);
+});
+async function alternarInscripciones(valor) {
+  eqAbiertos = typeof valor === 'boolean' ? valor : !eqAbiertos;
+  await setDoc(doc(db, 'grupos', grupoActivo), { equiposAbiertos: eqAbiertos }, { merge: true });
+  pintarEquipos();
+}
+on('eq-abierto', 'click', () => alternarInscripciones());
+function pintarProyeccion() {
+  const grid = document.getElementById('qr-grid');
+  const conCod = EQUIPOS.filter(e => e.codigo);
+  grid.innerHTML = conCod.length ? conCod.map(eq => { const n = (eq.integrantes || []).length; return `<div class="qr-card"><h3>${escaparHTML(eq.nombre)}</h3>${qrSvg(urlUnir(eq.codigo), 6)}<p class="qr-cod">${escaparHTML(eq.codigo)}</p><p class="qr-cupo">${n}${eq.max ? ` / ${eq.max}` : ''} integrantes${eq.max && n >= eq.max ? ' · completo' : ''}</p></div>`; }).join('')
+    : '<p>Primero genera los equipos.</p>';
+}
+function abrirProyeccion(imprimir) { pintarProyeccion(); const o = document.getElementById('qr-proyeccion'); o.hidden = false; document.body.classList.add('con-qr'); if (imprimir) setTimeout(() => window.print(), 300); }
+on('eq-proyectar', 'click', () => abrirProyeccion(false));
+on('eq-imprimir', 'click', () => abrirProyeccion(true));
+on('qr-cerrar', 'click', () => { document.getElementById('qr-proyeccion').hidden = true; document.body.classList.remove('con-qr'); });
 
 async function cargarProyecto() {
   const empty = document.getElementById('proyecto-empty');
