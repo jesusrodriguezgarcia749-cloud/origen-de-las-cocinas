@@ -522,3 +522,11 @@
 .taller-detalle p { margin: .3rem 0; }
 .taller-detalle details { margin: .35rem 0; }
 .taller-detalle summary { cursor: pointer; }
+.equipos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: .6rem; margin-bottom: 1rem; }
+.equipo-card { background: var(--cream); border: 1px solid var(--line); border-radius: 10px; padding: .7rem .8rem; }
+.equipo-card p { margin: .3rem 0 .5rem; font-size: .88rem; color: var(--ink-soft); }
+.equipo-form { border-top: 1px dashed var(--line); padding-top: .8rem; }
+.equipo-alumnos { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: .3rem .8rem; }
+.equipo-alumnos label { display: flex; gap: .4rem; align-items: center; font-size: .92rem; }
+.equipo-alumnos label.en-otro { color: var(--ink-soft); }
+.equipo-botones { display: flex; gap: .5rem; margin-top: .8rem; }

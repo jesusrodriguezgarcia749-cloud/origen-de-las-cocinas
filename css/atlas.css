@@ -281,3 +281,8 @@ html[data-theme="dark"] .ma-svg .ma-de-sel, html[data-theme="dark"] .ma-svg .ma-
 .ma-edit{display:grid; gap:8px; padding:10px; border-radius:10px; border:2px solid var(--c); background:var(--parchment);}
 .ma-edit input{width:100%; box-sizing:border-box; font:inherit; font-size:.95rem; color:var(--ink); background:var(--cream); border:1.5px solid var(--line); border-radius:10px; padding:8px 10px;}
 .ma-edit-bot{display:flex; align-items:center; gap:12px;}
+.ma-modo{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 12px; padding:10px 12px; border-radius:12px; background:rgba(63,154,85,.1); border:1px solid rgba(63,154,85,.35);}
+.ma-modo[hidden], .ma-equipo[hidden]{display:none;}
+.ma-integrantes{flex-basis:100%; margin:2px 0 0; font-size:.86rem; color:var(--ink-soft);}
+.ma-campo > span{display:flex; justify-content:space-between; gap:8px;}
+.ma-autor{font-weight:600; color:#3F7A4F;}

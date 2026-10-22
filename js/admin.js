@@ -699,6 +699,7 @@ async function cargarMiAtlas() {
       : `<tr><td>${escaparHTML(a.nombre)}${d.equipo ? `<br><small>👥 ${escaparHTML(d.equipo)}</small>` : ''}</td>${ks.map(k => celda((d.avance || {})[k])).join('')}<td>${fecha(d.actualizado)}</td><td><button type="button" class="btn btn-small taller-ver" data-id="${a.id}">Ver</button></td></tr>
          <tr class="taller-det" id="madet-${a.id}" hidden><td colspan="${ks.length + 3}"></td></tr>`).join('')}</tbody></table></div>`;
   const datos = Object.fromEntries(filas.map(([a, d]) => [a.id, d]));
+  cargarEquipos(NOM, CONTS, ks);
   const e = x => escaparHTML(x || '').replace(/\n/g, '<br>') || '<i>—</i>';
   const CAMPOS = [['clima', 'Clima y paisaje'], ['ingredientes', 'Ingredientes base'], ['platillos', 'Platillos'], ['tecnicas', 'Técnicas y utensilios'], ['historia', 'Historia e influencias'], ['dato', 'Dato curioso'], ['fuentes', 'Fuentes']];
   cont.querySelectorAll('.taller-ver').forEach(b => b.addEventListener('click', () => {
@@ -715,6 +716,82 @@ async function cargarMiAtlas() {
     tr.hidden = false; b.textContent = 'Ocultar';
   }));
 }
+
+// ---- Equipos de Mi atlas (grupos/{g}/equipos/{id}; su atlas en .../equipos/{id}/atlas/{continente})
+const CAMPOS_EQ = [['clima', 'Clima y paisaje'], ['ingredientes', 'Ingredientes base'], ['platillos', 'Platillos'], ['tecnicas', 'Técnicas y utensilios'], ['historia', 'Historia e influencias'], ['dato', 'Dato curioso'], ['fuentes', 'Fuentes']];
+let EQUIPOS = [];
+async function cargarEquipos(NOM, CONTS, ks) {
+  const lista = document.getElementById('equipos-lista'), prog = document.getElementById('miatlas-equipos');
+  try { const sn = await getDocs(collection(db, 'grupos', grupoActivo, 'equipos')); EQUIPOS = sn.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (a.nombre || '').localeCompare(b.nombre || '', 'es')); }
+  catch { EQUIPOS = []; }
+  const nombreDe = id => (alumnosCache.find(a => a.id === id) || {}).nombre || id;
+  lista.innerHTML = EQUIPOS.length ? `<div class="equipos-grid">${EQUIPOS.map(eq => `<div class="equipo-card"><b>${escaparHTML(eq.nombre)}</b><p>${(eq.integrantes || []).map(i => escaparHTML(nombreDe(i))).join(', ') || '<i>sin integrantes</i>'}</p><div><button type="button" class="btn btn-small" data-eq-edit="${eq.id}">Editar</button> <button type="button" class="btn btn-small" data-eq-del="${eq.id}">Eliminar</button></div></div>`).join('')}</div>` : '<p class="empty-inline">Aún no hay equipos en este grupo.</p>';
+  pintarFormEquipo(null);
+  lista.querySelectorAll('[data-eq-edit]').forEach(b => b.addEventListener('click', () => { pintarFormEquipo(EQUIPOS.find(x => x.id === b.dataset.eqEdit)); document.getElementById('equipo-nombre').focus(); }));
+  lista.querySelectorAll('[data-eq-del]').forEach(b => b.addEventListener('click', async () => {
+    const eq = EQUIPOS.find(x => x.id === b.dataset.eqDel);
+    if (!confirm(`¿Eliminar el equipo «${eq.nombre}»? Sus integrantes ya no verán el atlas del equipo (lo que escribieron no se borra).`)) return;
+    await deleteDoc(doc(db, 'grupos', grupoActivo, 'equipos', eq.id)); cargarMiAtlas();
+  }));
+  // avance por equipo
+  if (!EQUIPOS.length) { prog.innerHTML = '<p class="empty-inline">Cuando armes equipos, aquí verás su avance.</p>'; return; }
+  const filas = await Promise.all(EQUIPOS.map(async eq => {
+    const d = {};
+    await Promise.all(ks.map(async k => { try { const s = await getDoc(doc(db, 'grupos', grupoActivo, 'equipos', eq.id, 'atlas', k)); if (s.exists()) d[k] = s.data(); } catch { /* */ } }));
+    return [eq, d];
+  }));
+  const total = k => Object.values(ATLAS_DATA.regiones).filter(r => r.cont === k).reduce((s, r) => s + r.paises.length, 0);
+  const fecha = t => t && t.toDate ? t.toDate().toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—';
+  const celda = (x, k) => { if (!x) return '<td>—</td>'; const regs = Object.values(x.regiones || {}), cl = Object.keys(x.asign || {}).length, fi = regs.filter(r => CAMPOS_EQ.filter(([f]) => (r[f] || '').trim()).length >= 4).length, t = total(k); return `<td class="${cl === t ? 'ok' : ''}">${cl}/${t}<br><small>${regs.length} reg. · ${fi} ficha${fi === 1 ? '' : 's'}</small></td>`; };
+  prog.innerHTML = `<div class="taller-tabla-wrap"><table class="taller-tabla"><thead><tr><th>Equipo</th>${ks.map(k => `<th>${escaparHTML(CONTS[k].nombre)}</th>`).join('')}<th>Última vez</th><th></th></tr></thead><tbody>
+    ${filas.map(([eq, d]) => { const ult = Object.values(d).map(x => x.actualizado).filter(Boolean).sort((a, b) => b.toMillis() - a.toMillis())[0];
+      return `<tr><td><b>${escaparHTML(eq.nombre)}</b><br><small>${escaparHTML((eq.nombres || []).join(', '))}</small></td>${ks.map(k => celda(d[k], k)).join('')}<td>${fecha(ult)}</td><td><button type="button" class="btn btn-small taller-ver" data-eqv="${eq.id}">Ver</button></td></tr>
+      <tr class="taller-det" id="eqdet-${eq.id}" hidden><td colspan="${ks.length + 3}"></td></tr>`; }).join('')}</tbody></table></div>`;
+  const porId = Object.fromEntries(filas.map(([eq, d]) => [eq.id, d]));
+  const e = x => escaparHTML(x || '').replace(/\n/g, '<br>') || '<i>—</i>';
+  prog.querySelectorAll('[data-eqv]').forEach(b => b.addEventListener('click', () => {
+    const tr = document.getElementById('eqdet-' + b.dataset.eqv), D = porId[b.dataset.eqv];
+    if (!tr.hidden) { tr.hidden = true; b.textContent = 'Ver'; return; }
+    tr.firstElementChild.innerHTML = `<div class="taller-detalle">${ks.filter(k => D[k] && Object.keys(D[k].regiones || {}).length).map(k => {
+      const c = D[k], regs = Object.entries(c.regiones).map(([id, r]) => ({ ...r, id })).sort((a, b) => (a.orden || 0) - (b.orden || 0));
+      return `<h4 style="margin:.4rem 0">${escaparHTML(CONTS[k].nombre)}</h4>${regs.map(r => {
+        const ps = Object.entries(c.asign || {}).filter(([, x]) => x === r.id).map(([i]) => NOM[i] || i).sort((x, y) => x.localeCompare(y, 'es'));
+        const por = (c.por || {})[r.id] || {};
+        return `<details><summary><span style="display:inline-block;width:11px;height:11px;border-radius:3px;background:${escaparHTML(r.color)}"></span> <b>${escaparHTML(r.nombre)}</b> · ${ps.length} países</summary>
+          <p><b>Países:</b> ${escaparHTML(ps.join(', ') || '—')}</p>${CAMPOS_EQ.map(([f, t]) => `<p><b>${t}:</b>${por[f] ? ` <small style="color:#3F7A4F">(✍️ ${escaparHTML(por[f])})</small>` : ''} ${e(r[f])}</p>`).join('')}</details>`;
+      }).join('')}`;
+    }).join('') || '<p><i>Todavía no crean regiones.</i></p>'}</div>`;
+    tr.hidden = false; b.textContent = 'Ocultar';
+  }));
+}
+function pintarFormEquipo(eq) {
+  document.getElementById('equipo-id').value = eq ? eq.id : '';
+  document.getElementById('equipo-nombre').value = eq ? eq.nombre : '';
+  document.getElementById('equipo-guardar').textContent = eq ? 'Guardar cambios' : 'Crear equipo';
+  document.getElementById('equipo-cancelar').hidden = !eq;
+  const enOtro = {}; EQUIPOS.forEach(x => { if (!eq || x.id !== eq.id) (x.integrantes || []).forEach(i => { enOtro[i] = x.nombre; }); });
+  const mios = new Set(eq ? eq.integrantes || [] : []);
+  document.getElementById('equipo-alumnos').innerHTML = alumnosCache.map(a => `<label class="${enOtro[a.id] ? 'en-otro' : ''}"><input type="checkbox" value="${a.id}" ${mios.has(a.id) ? 'checked' : ''}> ${escaparHTML(a.nombre)}${enOtro[a.id] ? ` <small>(en «${escaparHTML(enOtro[a.id])}»)</small>` : ''}</label>`).join('');
+}
+on('equipo-cancelar', 'click', () => pintarFormEquipo(null));
+on('equipo-form', 'submit', async ev => {
+  ev.preventDefault();
+  const msg = document.getElementById('equipo-msg');
+  const nombre = document.getElementById('equipo-nombre').value.trim();
+  const ids = [...document.querySelectorAll('#equipo-alumnos input:checked')].map(i => i.value);
+  if (!nombre || !ids.length) { msg.textContent = 'Escribe el nombre del equipo y elige al menos un integrante.'; msg.hidden = false; return; }
+  const id = document.getElementById('equipo-id').value || ('e' + Date.now().toString(36));
+  try {
+    // un alumno solo puede estar en un equipo: se quita de los demás
+    await Promise.all(EQUIPOS.filter(x => x.id !== id && (x.integrantes || []).some(i => ids.includes(i))).map(x => {
+      const integ = x.integrantes.filter(i => !ids.includes(i));
+      return setDoc(doc(db, 'grupos', grupoActivo, 'equipos', x.id), { nombre: x.nombre, integrantes: integ, nombres: integ.map(i => (alumnosCache.find(a => a.id === i) || {}).nombre || i) });
+    }));
+    await setDoc(doc(db, 'grupos', grupoActivo, 'equipos', id), { nombre, integrantes: ids, nombres: ids.map(i => (alumnosCache.find(a => a.id === i) || {}).nombre || i), actualizado: serverTimestamp() });
+    msg.textContent = 'Equipo guardado ✓'; msg.hidden = false; setTimeout(() => { msg.hidden = true; }, 2500);
+    cargarMiAtlas();
+  } catch (e) { msg.textContent = 'No se pudo guardar: ' + (e.message || e); msg.hidden = false; }
+});
 
 async function cargarProyecto() {
   const empty = document.getElementById('proyecto-empty');

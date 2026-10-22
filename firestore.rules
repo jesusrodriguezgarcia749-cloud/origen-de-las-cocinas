@@ -5,7 +5,7 @@ rules_version = '2';
 // día se le dé de alta un usuario aquí, ese correo nunca puede escribir.
 // Alumno (sin sesión, entra con nombre y PIN): solo lee, y solo escribe
 // su intento de examen, la calificación de su examen en línea, los
-// temas de repaso que termina y su trabajo en Mi atlas.
+// temas de repaso que termina y su trabajo en Mi atlas (individual y de equipo).
 service cloud.firestore {
   match /databases/{database}/documents {
     function esDocente() {
@@ -20,6 +20,15 @@ service cloud.firestore {
       match /{coleccion}/{docId} {
         allow read: if true;
         allow write: if esDocente();
+      }
+
+      // Atlas de equipo: lo escriben solo los integrantes del equipo
+      // (el docente arma los equipos), cada uno con su PIN correcto.
+      match /equipos/{equipoId}/atlas/{continente} {
+        allow read: if true;
+        allow write: if esDocente();
+        allow create, update: if request.resource.data.ultimoAutor in get(/databases/$(database)/documents/grupos/$(grupoId)/equipos/$(equipoId)).data.integrantes
+          && request.resource.data.ultimoPin == get(/databases/$(database)/documents/grupos/$(grupoId)/alumnos/$(request.resource.data.ultimoAutor)).data.pin;
       }
 
       match /alumnos/{alumnoId} {

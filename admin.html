@@ -193,7 +193,28 @@
   <!-- ===== ASISTENCIA ===== -->
   <div id="tab-miatlas" class="tab-panel">
     <p class="field-hint">Lo que cada alumno lleva en <a href="atlas.html#miatlas" target="_blank" rel="noopener">Mi atlas</a>: sus regiones culinarias propias, cuántos países clasificó y lo que escribió. Una ficha cuenta como completa cuando tiene al menos 4 de sus 7 apartados. Toca «Ver» para leer todo su trabajo. Si trabajan en equipo, el trabajo aparece en el alumno que lo capturó y abajo de su nombre ves a los integrantes.</p>
-    <div class="bloques-activos-card"><div id="miatlas-avance" class="taller-avance"></div></div>
+    <div class="bloques-activos-card">
+      <h3 class="section-title" style="margin-top:0;">Equipos</h3>
+      <p class="field-hint">Arma los equipos del grupo. Los integrantes de un equipo comparten un mismo atlas y lo editan al mismo tiempo desde sus celulares; cada apartado registra quién lo escribió.</p>
+      <div id="equipos-lista"></div>
+      <form id="equipo-form" class="equipo-form">
+        <input type="hidden" id="equipo-id">
+        <label class="field-label" for="equipo-nombre">Nombre del equipo</label>
+        <input id="equipo-nombre" type="text" maxlength="40" placeholder="Ejemplo: Los Mayas">
+        <p class="field-label" style="margin-top:10px">Integrantes</p>
+        <div id="equipo-alumnos" class="equipo-alumnos"></div>
+        <div class="equipo-botones"><button type="submit" class="btn btn-primary" id="equipo-guardar">Crear equipo</button><button type="button" class="btn" id="equipo-cancelar" hidden>Cancelar</button></div>
+        <p id="equipo-msg" class="save-msg" hidden></p>
+      </form>
+    </div>
+    <div class="bloques-activos-card">
+      <h3 class="section-title" style="margin-top:0;">Avance por equipo</h3>
+      <div id="miatlas-equipos" class="taller-avance"></div>
+    </div>
+    <div class="bloques-activos-card">
+      <h3 class="section-title" style="margin-top:0;">Avance individual</h3>
+      <div id="miatlas-avance" class="taller-avance"></div>
+    </div>
   </div>
 
   <div id="tab-asistencia" class="tab-panel">
