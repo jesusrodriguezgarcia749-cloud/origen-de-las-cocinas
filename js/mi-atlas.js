@@ -31,6 +31,7 @@ const CAMPOS_REGION = [
 ];
 const CAMPOS_PAIS = [['platillos', 'Platillos de este país'], ['notas', 'Notas e investigación']];
 
+let editando = null;
 let A = null, sesion = null, T = null, cont = 'africa', regSel = null, paisSel = null, timer = null, iniciado = false;
 let PAIS = {}, CONT_DE = {};
 
@@ -132,7 +133,7 @@ function pintarConts() {
   Object.entries(A.continentes).forEach(([k, c]) => {
     const b = document.createElement('button'); b.className = 'chip-at'; b.type = 'button'; b.setAttribute('aria-pressed', String(k === cont));
     b.textContent = `${c.nombre} · ${c.sub}`;
-    b.addEventListener('click', () => { cont = k; regSel = null; paisSel = null; T.ultimo = k; $$('#ma-conts .chip-at').forEach(x => x.setAttribute('aria-pressed', String(x === b))); dibujar(); });
+    b.addEventListener('click', () => { cont = k; regSel = null; paisSel = null; editando = null; T.ultimo = k; $$('#ma-conts .chip-at').forEach(x => x.setAttribute('aria-pressed', String(x === b))); dibujar(); });
     z.appendChild(b);
   });
 }
@@ -197,7 +198,11 @@ function panel() {
   const c = C(), p = $('#ma-panel');
   const listaReg = c.regiones.map(r => {
     const n = Object.values(c.asign).filter(x => x === r.id).length;
-    return `<button type="button" class="ma-reg" data-id="${r.id}" aria-pressed="${r.id === regSel}" style="--c:${r.color}"><i></i><span>${esc(r.nombre)}</span><small>${pl(n, 'país', 'países')}</small></button>`;
+    if (r.id === editando) return `<form class="ma-edit" data-id="${r.id}" style="--c:${r.color}">
+      <input type="text" maxlength="60" value="${esc(r.nombre)}" aria-label="Nuevo nombre de la región">
+      <div class="ma-colores" role="radiogroup" aria-label="Color de la región">${COLORES.map((col, i) => `<button type="button" role="radio" aria-checked="${col === r.color}" aria-label="Color ${i + 1}" data-c="${col}" style="--c:${col}"></button>`).join('')}</div>
+      <div class="ma-edit-bot"><button type="submit" class="btn-at">Guardar cambios</button><button type="button" class="ma-link" data-cancel>Cancelar</button></div></form>`;
+    return `<div class="ma-reg-fila"><button type="button" class="ma-reg" data-id="${r.id}" aria-pressed="${r.id === regSel}" style="--c:${r.color}"><i></i><span>${esc(r.nombre)}</span><small>${pl(n, 'país', 'países')}</small></button><button type="button" class="ma-editar" data-edit="${r.id}" aria-label="Cambiar nombre o color de ${esc(r.nombre)}" title="Cambiar nombre o color">✏️</button></div>`;
   }).join('');
   const pais = paisSel && PAIS[paisSel], regP = paisSel && regionDe(paisSel);
   p.innerHTML = `<p class="ficha-sub">${esc(A.continentes[cont].nombre)}</p><h2>Mis regiones</h2>
@@ -210,6 +215,18 @@ function panel() {
     ${pais ? `<div class="ma-pais-card"><p class="fp-nombre">📍 ${esc(corto(pais.n))}</p><p class="ficha-mini">${regP ? `En tu región <b>${esc(regP.nombre)}</b>` : 'Todavía no está en ninguna de tus regiones.'}</p>
       ${CAMPOS_PAIS.map(([f, t]) => `<label class="ma-campo">${t}<textarea data-pf="${f}" rows="2" placeholder="${f === 'platillos' ? 'Ejemplo: tajín, cuscús…' : 'Lo que investigaste de este país'}">${esc(((C().paises[paisSel] || {})[f]) || '')}</textarea></label>`).join('')}</div>` : ''}`;
   $$('.ma-reg', p).forEach(b => b.addEventListener('click', () => { regSel = regSel === b.dataset.id ? null : b.dataset.id; colorear(); panel(); }));
+  $$('[data-edit]', p).forEach(b => b.addEventListener('click', () => { editando = b.dataset.edit; panel(); const i = $('.ma-edit input', p); if (i) { i.focus(); i.select(); } }));
+  const fe = $('.ma-edit', p);
+  if (fe) {
+    const r = C().regiones.find(x => x.id === fe.dataset.id); let col = r.color;
+    $$('.ma-colores button', fe).forEach(b => b.addEventListener('click', () => { col = b.dataset.c; $$('.ma-colores button', fe).forEach(x => x.setAttribute('aria-checked', String(x === b))); fe.style.setProperty('--c', col); }));
+    fe.querySelector('[data-cancel]').addEventListener('click', () => { editando = null; panel(); });
+    fe.addEventListener('submit', e => {
+      e.preventDefault(); const n = fe.querySelector('input').value.trim(); if (!n) { fe.querySelector('input').focus(); return; }
+      r.nombre = n; r.color = col; editando = null; cambio(); panel(); fichas(); colorear();
+      estado('Región actualizada ✓', 'ok');
+    });
+  }
   let color = COLORES[siguienteColor()];
   $$('.ma-colores button', p).forEach(b => b.addEventListener('click', () => { color = b.dataset.c; $$('.ma-colores button', p).forEach(x => x.setAttribute('aria-checked', String(x === b))); }));
   $('#ma-nueva').addEventListener('submit', e => {
