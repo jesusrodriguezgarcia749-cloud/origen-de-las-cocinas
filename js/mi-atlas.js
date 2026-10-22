@@ -87,6 +87,8 @@ async function entrar() {
   T.conts = T.conts || {};
   cont = T.ultimo && A.continentes[T.ultimo] ? T.ultimo : 'africa';
   estado(sesion.anon ? 'Se guarda solo en este dispositivo' : 'Tu trabajo se guarda en tu cuenta');
+  const eq = $('#ma-equipo'); eq.value = T.equipo || '';
+  if (!eq._listo) { eq._listo = true; eq.addEventListener('input', () => { T.equipo = eq.value; cambio(); }); }
   pintarConts(); dibujar();
 }
 
@@ -114,7 +116,7 @@ async function guardarYa() {
   if (sesion.anon) { estado('Guardado en este dispositivo ✓', 'ok'); return; }
   try {
     await setDoc(doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'atlas', 'mi-atlas'), {
-      pinVerificado: sesion.pin, nombre: sesion.nombre, datos: T, avance: resumen(), actualizado: serverTimestamp()
+      pinVerificado: sesion.pin, nombre: sesion.nombre, equipo: (T.equipo || '').trim(), datos: T, avance: resumen(), actualizado: serverTimestamp()
     });
     estado('Guardado en tu cuenta ✓', 'ok');
   } catch {
@@ -304,7 +306,9 @@ async function descargarWord() {
   try {
     const imgs = [], cuerpo = [];
     cuerpo.push(wP('Mi atlas de las cocinas del mundo', { estilo: 'Titulo', centro: true }));
-    cuerpo.push(wP(sesion.anon ? 'Alumno: ____________________' : `Alumno: ${sesion.nombre}`, { centro: true }));
+    const equipo = (T.equipo || '').split(/[,;\n]+/).map(x => x.trim()).filter(Boolean);
+    if (equipo.length) { cuerpo.push(wP('Equipo:', { centro: true, negrita: true })); equipo.forEach(n => cuerpo.push(wP(n, { centro: true }))); }
+    else cuerpo.push(wP(sesion.anon ? 'Alumno: ____________________' : `Alumno: ${sesion.nombre}`, { centro: true }));
     cuerpo.push(wP('Origen de las Cocinas · ITES René Descartes', { centro: true }));
     cuerpo.push(wP(new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' }), { centro: true }));
     for (const k of conts) {
@@ -350,7 +354,7 @@ async function descargarWord() {
       ...imgs.map((bytes, i) => [`word/media/mapa${i + 1}.png`, bytes]),
     ]);
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-    a.download = `Mi_atlas_${slug(sesion.anon ? 'borrador' : sesion.nombre)}.docx`; document.body.appendChild(a); a.click(); a.remove();
+    a.download = `Mi_atlas_${slug((T.equipo || '').trim() ? 'equipo ' + (sesion.anon ? '' : sesion.nombre) : (sesion.anon ? 'borrador' : sesion.nombre))}.docx`; document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 4000);
   } catch (e) { alert('No se pudo generar el Word: ' + (e.message || e)); }
   finally { b.disabled = false; b.textContent = '⬇ Descargar en Word'; }

@@ -696,7 +696,7 @@ async function cargarMiAtlas() {
   cont.innerHTML = `<p class="field-hint"><b>${empezaron} de ${filas.length}</b> alumnos ya entraron a Mi atlas.</p>
     <div class="taller-tabla-wrap"><table class="taller-tabla"><thead><tr><th>Alumno</th>${ks.map(k => `<th>${escaparHTML(CONTS[k].nombre)}</th>`).join('')}<th>Última vez</th><th></th></tr></thead><tbody>
     ${filas.map(([a, d]) => !d ? `<tr class="sin"><td>${escaparHTML(a.nombre)}</td><td colspan="${ks.length + 2}"><i>Aún no entra a Mi atlas</i></td></tr>`
-      : `<tr><td>${escaparHTML(a.nombre)}</td>${ks.map(k => celda((d.avance || {})[k])).join('')}<td>${fecha(d.actualizado)}</td><td><button type="button" class="btn btn-small taller-ver" data-id="${a.id}">Ver</button></td></tr>
+      : `<tr><td>${escaparHTML(a.nombre)}${d.equipo ? `<br><small>👥 ${escaparHTML(d.equipo)}</small>` : ''}</td>${ks.map(k => celda((d.avance || {})[k])).join('')}<td>${fecha(d.actualizado)}</td><td><button type="button" class="btn btn-small taller-ver" data-id="${a.id}">Ver</button></td></tr>
          <tr class="taller-det" id="madet-${a.id}" hidden><td colspan="${ks.length + 3}"></td></tr>`).join('')}</tbody></table></div>`;
   const datos = Object.fromEntries(filas.map(([a, d]) => [a.id, d]));
   const e = x => escaparHTML(x || '').replace(/\n/g, '<br>') || '<i>—</i>';
