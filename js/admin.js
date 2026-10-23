@@ -1016,7 +1016,7 @@ function actualizarTarjeta(clave, nuevo) {
   if (!nuevo) { card.classList.remove('mon-latido'); void card.offsetWidth; card.classList.add('mon-latido'); }
 }
 // ---- cuadro comparativo mexica–maya en el monitor
-const CU_FILAS = [['territorio', 'Territorio y clima'], ['cultivo', 'Cómo cultivaban'], ['coccion', 'Cómo cocinaban'], ['ingredientes', 'Ingredientes'], ['bebidas', 'Bebidas'], ['herencia', 'Herencia hoy'], ['fuentes', 'Fuentes']];
+const CU_FILAS = CUADRO_MM.filas.map(([f, t, , inv]) => [f, t, inv]);
 const CU_COLS = [['mexica', 'Mexica', '#A63D2F'], ['maya', 'Maya', '#2E6FA8'], ['parecido', 'Se parecen', '#3F7A4F']];
 function actualizarCuadro(card, clave, nuevo) {
   const d = MON.datos[clave] || {}, cel = d.celdas || {};
@@ -1081,7 +1081,7 @@ function pintarDetalle(nuevo) {
     document.getElementById('mon-det-titulo').textContent = t.titulo;
     document.getElementById('mon-det-sub').textContent = `${t.sub} · Cuadro comparativo mexica–maya · ${hace(d.actualizado).txt}`;
     const e = x => escaparHTML(x || '').replace(/\n/g, '<br>');
-    document.getElementById('mon-det-cuerpo').innerHTML = `<div class="taller-tabla-wrap"><table class="cu-det"><thead><tr><th></th>${CU_COLS.map(([, n, col]) => `<th style="color:${col}">${n}</th>`).join('')}</tr></thead><tbody>${CU_FILAS.map(([f, n]) => `<tr><th>${n}</th>${CU_COLS.map(([c]) => { const k = `${f}_${c}`; return `<td>${(cel[k] || '').trim() ? e(cel[k]) : '<span class="mon-vacio">—</span>'}${por[k] ? `<br><small class="mon-autor">✍️ ${escaparHTML(por[k])}</small>` : ''}</td>`; }).join('')}</tr>`).join('')}</tbody></table></div>`;
+    document.getElementById('mon-det-cuerpo').innerHTML = `<div class="taller-tabla-wrap"><table class="cu-det"><thead><tr><th></th>${CU_COLS.map(([, n, col]) => `<th style="color:${col}">${n}</th>`).join('')}</tr></thead><tbody>${CU_FILAS.map(([f, n, inv]) => `<tr><th>${inv ? '🔎 ' : ''}${n}${inv ? `<br><small class="mon-autor">📚 ${(cel[f + '_fuente'] || '').trim() ? escaparHTML(cel[f + '_fuente']) : '<i>sin fuente</i>'}</small>` : ''}</th>${CU_COLS.map(([c]) => { const k = `${f}_${c}`; return `<td>${(cel[k] || '').trim() ? e(cel[k]) : '<span class="mon-vacio">—</span>'}${por[k] ? `<br><small class="mon-autor">✍️ ${escaparHTML(por[k])}</small>` : ''}</td>`; }).join('')}</tr>`).join('')}</tbody></table></div>`;
     return;
   }
   const t = monTarjetas().find(x => x.clave === clave) || { titulo: '', sub: '' }, v = monVista(clave), st = monStats(v);

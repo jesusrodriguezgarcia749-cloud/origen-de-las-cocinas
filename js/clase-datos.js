@@ -11,10 +11,16 @@ export const CUADRO_MM = {
     ['coccion', 'Cómo cocinaban', 'Técnicas de cocción y utensilios.'],
     ['ingredientes', 'Ingredientes emblemáticos', 'Plantas, animales, condimentos.'],
     ['bebidas', 'Bebidas', 'Qué bebían, quién y en qué ocasiones.'],
+    ['religion', 'Religión y ofrendas', 'Qué comida ofrecían a sus dioses, en qué ceremonias y qué significado tenía el maíz.', true],
+    ['comercio', 'Comercio y tributo', 'Cómo conseguían lo que no cultivaban: mercados, comerciantes, rutas, tributo y moneda.', true],
+    ['mesa', 'La mesa del noble y la del pueblo', 'Qué comía la clase alta y qué comía la gente común.', true],
     ['herencia', 'Platillos que heredamos hoy', 'Qué seguimos comiendo de cada tradición.'],
+    ['fiestas', 'Fiestas y comida de hoy', 'Cómo sigue viva esa cocina en las celebraciones actuales (en la columna mexica, piensen en el centro de México).', true],
     ['fuentes', 'Fuentes históricas', '¿Quién lo escribió, cuándo y qué problema tiene esa fuente?'],
   ],
-  // Clave según el compendio (3.2). La libera el docente desde el Monitor en vivo.
+  // Clave según el compendio (3.2); las filas con true al final son «🔎 Investiga»: no vienen en
+  // el compendio, los alumnos las buscan en línea y anotan su fuente (celda {fila}_fuente).
+  // La libera el docente desde el Monitor en vivo.
   respuestas: {
     territorio: [
       'Altiplano central. Tenochtitlan, fundada en 1325 en medio del lago de Texcoco, llegó a tener unos 200,000 habitantes.',
@@ -41,10 +47,30 @@ export const CUADRO_MM = {
       'Pozol o k\'eyem (masa de maíz disuelta en agua), bebidas de cacao con maíz y chile, y el balché, bebida ritual fermentada con miel.',
       'El cacao era bebida de élite y también moneda; ambos preparaban bebidas de maíz.',
     ],
+    religion: [
+      'La comida era ofrenda: en la fiesta de Huitzilopochtli (Panquetzaliztli) se hacía su figura con masa de amaranto (tzoalli) y miel, y luego se repartía y se comía. A Tláloc, dios de la lluvia, se le ofrecía etzalli (guiso de maíz y frijol) en la fiesta de Etzalcualiztli.',
+      'El maíz era sagrado: según el Popol Vuh, los dioses formaron a los primeros humanos con masa de maíz. En los rituales se bebía balché (corteza del árbol balché fermentada con miel) y a Chaac, dios de la lluvia, se le ofrecían bebidas de maíz; la ceremonia del Ch\'a Cháak (petición de lluvia) sigue viva en la península.',
+      'Para ambos la comida era sagrada: el maíz tenía origen divino y se ofrecía a los dioses de la lluvia (Tláloc y Chaac) para asegurar la cosecha.',
+    ],
+    comercio: [
+      'El gran mercado (tianguis) de Tlatelolco reunía a decenas de miles de personas cada día; los pochtecas (comerciantes) traían productos de tierras lejanas y los pueblos sometidos pagaban tributo en maíz, frijol, chía, cacao, mantas y otros bienes (Códice Mendoza).',
+      'Comercio por mar en grandes canoas alrededor de la península, con puertos como Xicalango (Campeche) y Cozumel; cambiaban sal de las costas de Yucatán, miel, cera y algodón por cacao, obsidiana y plumas.',
+      'Ambos usaban granos de cacao como moneda y tenían redes de comercio de larga distancia que unían a toda Mesoamérica.',
+    ],
+    mesa: [
+      'Bernal Díaz del Castillo cuenta que a Moctezuma le servían más de trescientos platillos (guajolote, venado, aves, pescado, frutas) y cacao espumoso en jícaras; el macehual (la gente común) comía sobre todo tortillas, frijol, chile, quelites y atole.',
+      'Los nobles y sacerdotes tenían acceso a carne de venado, cacao y bebidas de fiesta; la gente común comía maíz en tortillas, pozol y atole, con frijol, calabaza y chile, y carne solo de la caza o en ocasiones especiales.',
+      'En los dos la carne y el cacao eran de la élite, pero la base de todos era la misma: maíz, frijol, calabaza y chile.',
+    ],
     herencia: [
       'Tortillas, tamales, atoles y los moles (mōlli significa «salsa» en náhuatl).',
       'Mucbipollo, carne pibil (la cochinita, ya con cerdo, es posterior a la conquista), tikin xic, sikil p\'aak y papadzules.',
       'Tamales, tortillas y salsas de chile siguen en la mesa de todo México.',
+    ],
+    fiestas: [
+      'Día de Muertos con ofrendas de tamales, mole, pan, calabaza en tacha y atole; el 2 de febrero (la Candelaria) se comen tamales, y en el centro del país sigue la alegría de amaranto, heredera del tzoalli.',
+      'Hanal Pixán («comida de las ánimas»), a finales de octubre y principios de noviembre: se prepara el mucbipollo o pib, un gran tamal cocido en el horno de tierra, y se ofrecen atole, chocolate y comida a los difuntos.',
+      'En los dos la comida une a vivos y muertos: el maíz y el tamal siguen al centro de la fiesta, mezclados con el calendario católico.',
     ],
     fuentes: [
       'Bernardino de Sahagún, Códice Florentino (hacia 1577), escrito con informantes nahuas; también Bernal Díaz del Castillo, testigo de la mesa de Moctezuma.',
@@ -161,7 +187,8 @@ export function sugerirAtlas(c, totalPaises) {
 export function sugerirCuadro(celdas) {
   const total = CUADRO_MM.filas.length * CUADRO_MM.columnas.length;
   const llenas = CUADRO_MM.filas.flatMap(([f]) => CUADRO_MM.columnas.map(([c]) => (celdas || {})[`${f}_${c}`])).filter(v => (v || '').trim()).length;
-  return { nota: r1(10 * llenas / total), detalle: `${llenas}/${total} celdas llenas` };
+  const inv = CUADRO_MM.filas.filter(x => x[3]), fu = inv.filter(([f]) => ((celdas || {})[`${f}_fuente`] || '').trim()).length;
+  return { nota: r1(10 * llenas / total), detalle: `${llenas}/${total} celdas llenas · ${fu}/${inv.length} fuentes de investigación` };
 }
 // Desarma: 3 por clasificar ingredientes (al menos 3), 3 por clasificarlos todos, 4 por la conclusión (40 palabras o más).
 export function sugerirDesarma(m) {

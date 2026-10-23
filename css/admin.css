@@ -669,3 +669,8 @@ body.mon-completo .mon-grid { grid-template-columns: repeat(auto-fill, minmax(21
 .td-eqacc { display: flex; flex-wrap: wrap; gap: .4rem; }
 :root[data-theme="dark"] #eq-abierto[aria-pressed="true"] { border-color: #7BC48E; color: #8FD3A0; }
 :root[data-theme="dark"] #eq-abierto[aria-pressed="false"] { border-color: #E58C7E; color: #F0A296; }
+
+/* Tareas digitales: los botones bajan de renglón en el celular */
+.td-fila { display: flex !important; flex-wrap: wrap; }
+.td-fila .td-nom { flex: 1 1 100%; }
+@media (min-width: 760px) { .td-fila .td-nom { flex: 1 1 220px; } }

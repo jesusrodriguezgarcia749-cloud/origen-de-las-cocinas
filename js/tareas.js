@@ -250,12 +250,13 @@ function cuadro(cont, eq) {
   cont.innerHTML = `<div class="ma-barra"><span>${eq ? `👥 <b>${esc(eq.nombre)}</b>: ${esc((eq.nombres || []).join(', '))}` : `👤 <b>${esc(sesion.nombre)}</b> (individual)`}</span><span class="ma-estado" id="cu-estado"></span>
       <button type="button" class="btn-ruta" id="cu-word">⬇ Descargar en Word</button></div>
     <div data-entrega></div>
-    <p class="atlas-ayuda">Escriban con sus palabras lo que aprendieron en clase y en el compendio (subtema 3.2). Se guarda solo${eq ? ' y todos ven al instante lo que escriben los demás' : ''}.</p>
+    <p class="atlas-ayuda">Escriban con sus palabras lo que aprendieron en clase y en el compendio (subtema 3.2). Las filas marcadas <b>🔎 Investiga</b> no vienen en el compendio: búsquenlas en internet${eq ? ', repártanselas entre el equipo' : ''} y anoten de dónde sacaron la información. Se guarda solo${eq ? ' y todos ven al instante lo que escriben los demás' : ''}.</p>
     <p class="cu-progreso" id="cu-progreso"></p>
     <div class="cu-clave" id="cu-clave" hidden><b>🔑 Su maestro liberó la clave.</b> <button type="button" class="btn-at" id="cu-ver-clave" aria-pressed="false">Comparar con la clave</button></div>
-    <div class="cu-tabla">${A.filas.map(([f, t, ayuda]) => `<section class="cu-fila"><h3>${esc(t)}<small>${esc(ayuda)}</small></h3>
+    <div class="cu-tabla">${A.filas.map(([f, t, ayuda, inv]) => `<section class="cu-fila ${inv ? 'cu-inv' : ''}"><h3>${inv ? '<span class="cu-tag">🔎 Investiga</span>' : ''}${esc(t)}<small>${esc(ayuda)}</small></h3>
       <div class="cu-celdas">${A.columnas.map(([c, nc], ci) => `<label class="cu-celda cu-${c}"><span>${esc(nc)} <small class="ma-autor" data-autor="${f}_${c}"></small></span><textarea data-k="${f}_${c}" rows="3"></textarea>
-        <p class="cu-resp" data-resp="${f}_${c}" hidden><b>Según el compendio:</b> ${esc(A.respuestas[f][ci])}</p></label>`).join('')}</div></section>`).join('')}</div>`;
+        <p class="cu-resp" data-resp="${f}_${c}" hidden><b>${inv ? 'Respuesta de referencia' : 'Según el compendio'}:</b> ${esc(A.respuestas[f][ci])}</p></label>`).join('')}</div>
+      ${inv ? `<label class="cu-fuente"><span>📚 Fuente: ¿de dónde lo sacaron? <small class="ma-autor" data-autor="${f}_fuente"></small></span><input data-k="${f}_fuente" type="text" placeholder="Autor o sitio, título y enlace (URL)"></label>` : ''}</section>`).join('')}</div>`;
   const estado = (t, c = '') => { const e = $('#cu-estado'); if (e) { e.textContent = t; e.className = 'ma-estado ' + c; } };
   const pintar = () => {
     const act = document.activeElement;
@@ -288,7 +289,7 @@ function cuadro(cont, eq) {
   $$('[data-k]', cont).forEach(t => t.addEventListener('input', () => {
     if (!abierta(a.id)) return;
     const k = t.dataset.k; S.celdas[k] = t.value; S.por[k] = sesion.nombre;
-    const [f, c] = k.split('_'); ultima = `escribe ${A.filas.find(x => x[0] === f)[1].toLowerCase()} (${A.columnas.find(x => x[0] === c)[1]})`;
+    const [f, c] = k.split('_'); ultima = `escribe ${A.filas.find(x => x[0] === f)[1].toLowerCase()} (${c === 'fuente' ? 'la fuente' : A.columnas.find(x => x[0] === c)[1]})`;
     pend.set('celdas|' + k, [['celdas', k], t.value]); pend.set('por|' + k, [['por', k], sesion.nombre]);
     estado('Guardando…'); clearTimeout(pendT); pendT = setTimeout(flush, 700); pintar();
   }));
@@ -316,9 +317,10 @@ function cuadro(cont, eq) {
     D.portada({ kicker: 'Tema 3.2 · México prehispánico y mestizo', titulo: 'Cocina mexica y cocina maya', subtitulo: 'Cuadro comparativo', etiqueta: eq ? `Equipo «${eq.nombre}»` : 'Alumno', personas: eq ? eq.nombres || [] : [sesion.nombre] });
     D.h1('Cuadro comparativo', 'Dos tradiciones del mismo tronco mesoamericano: maíz, frijol y chile.');
     const celda = k => { const t = (S.celdas[k] || '').trim(), au = eq && S.por[k]; return { runs: [[t || '(sin escribir)', t ? {} : { i: true, color: '9A9389' }], ...(au ? [[`\n✍ ${au}`, { color: '3F7A4F', tam: 8 }]] : [])] }; };
-    D.tabla([['Apartado', ...A.columnas.map(c => c[1])], ...A.filas.map(([f, t]) => [{ t, b: true, fondo: 'F4EFE4' }, ...A.columnas.map(([c]) => celda(`${f}_${c}`))])], { anchos: [1700, 2560, 2560, 2540] });
+    const cab = (f, t, inv) => { const fu = (S.celdas[`${f}_fuente`] || '').trim(); return inv ? { runs: [[t, { b: true }], [`\n🔎 Investigación${fu ? ' · Fuente: ' + fu : ' · sin fuente'}`, { color: '6B6358', tam: 8, i: !fu }]], fondo: 'F4EFE4' } : { t, b: true, fondo: 'F4EFE4' }; };
+    D.tabla([['Apartado', ...A.columnas.map(c => c[1])], ...A.filas.map(([f, t, , inv]) => [cab(f, t, inv), ...A.columnas.map(([c]) => celda(`${f}_${c}`))])], { anchos: [1700, 2560, 2560, 2540] });
     if (clave) {
-      D.h1('Comparación con el compendio', 'La clave que liberó el maestro, para revisar lo que escribimos.');
+      D.h1('Comparación con la clave', 'La clave que liberó el maestro (del compendio y, en las filas de investigación, respuestas de referencia), para revisar lo que escribimos.');
       D.tabla([['Apartado', ...A.columnas.map(c => c[1])], ...A.filas.map(([f, t]) => [{ t, b: true, fondo: 'F4EFE4' }, ...A.respuestas[f]])], { anchos: [1700, 2560, 2560, 2540] });
     }
     D.descargar(`Cuadro_mexica_maya_${slug(eq ? 'equipo ' + eq.nombre : sesion.nombre)}`);
