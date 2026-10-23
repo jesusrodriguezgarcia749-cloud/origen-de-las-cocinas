@@ -12,6 +12,7 @@ import { firebaseConfig } from "./firebase-config.js";
 import { CUADRO_MM, PLATILLOS, TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, sugerirCuadro, MIN_PALABRAS_CELDA, INFLUENCIAS, sugerirInfluencias } from "./clase-datos.js";
 import { DocITES } from "./docx-ites.js";
 import { INGREDIENTES, CONTINENTES } from "./aporto-datos.js";
+import { BALUARTES, CAMPECHE, QUE_INFLUENCIA, PAISES_AM, PLATILLOS_AM } from "./america-datos.js";
 import { formacionDe, formaciones, formacionDeTarea, abiertas as inscAbiertas, equipoDe, equiposDe, tareasDeFormacion, enEquipo } from "./equipos.js";
 
 const db = getFirestore(initializeApp(firebaseConfig));
@@ -182,7 +183,7 @@ function ruta() {
   const c = $('#cl-actividad');
   c.innerHTML = `<a class="cl-volver" href="#">← Todas las tareas</a><p class="cl-fecha">Tema ${esc(a.tema)} · ${esc(a.titulo)} · ${esc(a.fechaTexto)}</p><h2 class="cl-h2">${a.icono} ${esc(a.nombre)}</h2>
     ${califica(a) ? '<p class="cl-vale">📌 Cuenta como una tarea del Parcial 2.</p>' : '<p class="cl-vale cl-vale-p">🎯 Práctica para repasar: no lleva calificación.</p>'}<div id="cl-cuerpo"></div>`;
-  ({ cuadro: actCuadro, practica: actAporto, desarma: actDesarma, influencias: actInfluencias })[a.tipo]($('#cl-cuerpo'));
+  (a.tipo === 'practica' ? { aporto: actAporto, campeche: actCampeche, 'que-influencia': actQueInfluencia, 'platillos-america': actPlatillosAmerica }[a.id] : { cuadro: actCuadro, desarma: actDesarma, influencias: actInfluencias }[a.tipo])($('#cl-cuerpo'));
   window.scrollTo({ top: 0 });
 }
 // El QR de un equipo abre tareas.html#unir-CODIGO (vía unir.html): entra, se une y va a su tarea.
@@ -600,6 +601,153 @@ async function wordDesarma(F, calificada) {
   DE_PREG.forEach(([k, t]) => { D.h2(t); D.texto(F[k]); });
   D.h1('Fuentes consultadas'); D.texto(F.fuentes);
   D.descargar(`${calificada ? 'Desarma_el_platillo' : 'Mi_platillo_pregunta14'}_${slug(F.nombre)}_${slug(sesion.nombre)}`);
+}
+
+// ======================================================= JUEGOS DE PRÁCTICA del 3.2 (segunda parte)
+// Motor común: niveles, modo reto con reloj, mejor marca, repaso de fallos y tabla para estudiar.
+function juegoPreguntas(cont, C) {
+  const SEG = C.seg || 15;
+  let reto = lsGet('clase_' + C.clave + '_reto') === '1', N = null, items = [], i = 0, bien = 0, pts = 0, racha = 0, mejorRacha = 0, fallos = [], reloj = null, t0 = 0, malos = 0;
+  const parar = () => { clearInterval(reloj); reloj = null; };
+  detener = parar;
+  const mejor = id => lsGet(`clase_${C.clave}_mejor_${id}`) || '—';
+  const inicio = () => {
+    parar();
+    cont.innerHTML = `<p class="atlas-ayuda">${C.intro}</p>
+      <div class="ap-niveles">${C.niveles.map(nv => `<button type="button" class="ap-nivel" data-n="${nv.id}"><span>${nv.ico}</span><b>${nv.n}</b><small>${esc(nv.desc)}</small><em>Tu mejor marca: ${mejor(nv.id)}</em></button>`).join('')}</div>
+      <label class="ap-reto"><input type="checkbox" id="ap-reto" ${reto ? 'checked' : ''}> ⏱ <b>Modo reto:</b> ${SEG} segundos por pregunta; respondiendo rápido ganas más puntos y sumas racha.</label>
+      <button type="button" class="btn-ruta" id="ap-estudiar">📚 ${esc(C.estudiar.boton)}</button>`;
+    $('#ap-reto').addEventListener('change', e => { reto = e.target.checked; lsSet('clase_' + C.clave + '_reto', reto ? '1' : '0'); });
+    $$('.ap-nivel', cont).forEach(b => b.addEventListener('click', () => { N = C.niveles.find(x => x.id === b.dataset.n); nueva(); }));
+    $('#ap-estudiar').addEventListener('click', estudiar);
+  };
+  const nueva = () => { items = barajar(C.items.filter(N.filtro)).slice(0, N.preg); i = 0; bien = 0; pts = 0; racha = 0; mejorRacha = 0; fallos = []; malos = 0; pregunta(); };
+  const marcador = () => `${C.cabecera ? C.cabecera(bien, malos) : ''}<div class="ap-marcador"><span>${N.ico} ${N.n} · ${C.termina ? `pregunta ${i + 1}` : `${Math.min(i + 1, items.length)} de ${items.length}`}</span><span>✅ ${bien}</span>${reto ? `<span>⭐ ${pts} pts · 🔥 racha ${racha}</span>` : ''}</div>`;
+  const terminado = () => i >= items.length || (C.termina && C.termina(bien, malos));
+  const pregunta = () => {
+    parar();
+    if (terminado()) return fin();
+    const x = items[i], P = C.preparar(x);
+    cont.innerHTML = `<div id="ap-mk">${marcador()}</div>${reto ? '<div class="ap-tiempo"><i id="ap-t"></i></div>' : ''}
+      <div class="ap-carta jp-carta">${P.carta}</div>
+      <div class="jp-opciones ${P.clase || ''}">${P.opciones.map(o => `<button type="button" class="ap-bot jp-op" data-v="${esc(o.v)}" ${o.style ? `style="${o.style}"` : ''}>${o.t}</button>`).join('')}</div>
+      <div id="ap-fb" aria-live="polite"></div>`;
+    $$('.jp-op', cont).forEach(b => b.addEventListener('click', () => responder(b.dataset.v, P)));
+    if (reto) { t0 = Date.now(); reloj = setInterval(() => { const q = Math.max(0, SEG - (Date.now() - t0) / 1000), b = $('#ap-t'); if (b) b.style.width = (100 * q / SEG) + '%'; if (q <= 0) { parar(); responder(null, P); } }, 100); }
+  };
+  const responder = (v, P) => {
+    const q = reto ? Math.max(0, SEG - (Date.now() - t0) / 1000) : 0; parar();
+    const x = items[i], ok = v !== null && P.correctas.includes(v);
+    $$('.jp-op', cont).forEach(b => { b.disabled = true; if (P.correctas.includes(b.dataset.v)) b.classList.add('ok'); else if (b.dataset.v === v) b.classList.add('mal'); });
+    if (ok) { bien++; racha++; mejorRacha = Math.max(mejorRacha, racha); if (reto) pts += 100 + Math.round(10 * q); } else { malos++; racha = 0; fallos.push(x); }
+    const tit = v === null ? '⏱ Se acabó el tiempo.' : ok ? (C.bien ? C.bien(x, bien) : '¡Correcto!') : (C.mal ? C.mal(x, malos) : 'No es esa.');
+    $('#ap-fb').innerHTML = `<div class="aviso ${ok ? 'ok' : 'mal'}"><strong>${tit}</strong>${C.explicar(x, ok)}</div><div id="jp-extra"></div><button class="btn-at" id="ap-sig" type="button">${terminado() || i + 1 >= items.length ? 'Ver resultado' : 'Siguiente →'}</button>`;
+    if (C.despues) C.despues(x, v, $('#jp-extra'));
+    $('#ap-mk').innerHTML = marcador();
+    $('#ap-sig').addEventListener('click', () => { i++; pregunta(); }); $('#ap-sig').focus({ preventScroll: true });
+  };
+  const fin = () => {
+    parar();
+    const marca = reto ? pts : bien, clave = `clase_${C.clave}_mejor_${N.id}`, previa = Number((lsGet(clave) || '0').split(/[ /]/)[0]) || 0, record = marca > previa;
+    if (record) lsSet(clave, reto ? `${pts} pts` : `${bien}/${Math.min(i, items.length)}`);
+    cont.innerHTML = `<div class="resumen">${C.final ? C.final(bien, malos) : ''}<h3>${N.ico} ${N.n}: ${bien} acierto${bien === 1 ? '' : 's'} de ${Math.min(i, items.length)}</h3>
+      <p>${reto ? `⭐ <b>${pts} puntos</b> · mejor racha: ${mejorRacha}. ` : ''}${record ? '🏅 ¡Nueva mejor marca!' : ''}</p>
+      <p>${!fallos.length ? '¡Sin errores! Ya dominas este nivel.' : 'Estudia los que fallaste:'}</p>
+      ${fallos.length ? `<ul class="ap-fallos">${fallos.map(x => `<li>${C.repaso(x)}</li>`).join('')}</ul>` : ''}
+      <div class="ap-fin-bot"><button class="btn-at" id="ap-otra" type="button">Otra ronda</button>${C.niveles.length > 1 ? '<button class="btn-ruta" id="ap-niv" type="button">Cambiar de nivel</button>' : ''}<button class="btn-ruta" id="ap-est" type="button">📚 Estudiar</button></div></div>`;
+    $('#ap-otra').addEventListener('click', nueva); const bn = $('#ap-niv'); if (bn) bn.addEventListener('click', inicio); $('#ap-est').addEventListener('click', estudiar);
+  };
+  const estudiar = () => {
+    parar();
+    const E = C.estudiar; let f = E.filtros[0][0], qq = '';
+    cont.innerHTML = `<button type="button" class="ma-link" id="ap-volver">← Volver al juego</button>
+      <p class="atlas-ayuda">${E.intro}</p>
+      ${E.filtros.length > 1 ? `<div class="atlas-zoom" id="ap-filtros">${E.filtros.map(([k, n]) => `<button type="button" class="chip-at" data-f="${k}" aria-pressed="${k === f}">${n}</button>`).join('')}</div>` : ''}
+      <input id="ap-buscar" class="ap-buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+      <p class="ap-cuenta" id="ap-cuenta"></p><div class="ap-tabla ${E.clase || ''}" id="ap-tabla"></div>`;
+    const sin = t => String(t).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    const pintar = () => {
+      const fn = E.filtros.find(x => x[0] === f)[2];
+      const xs = C.items.filter(x => fn(x) && (!qq || sin(E.texto(x)).includes(sin(qq))));
+      $('#ap-cuenta').textContent = `${xs.length} ${xs.length === 1 ? E.uno : E.varios}`;
+      $('#ap-tabla').innerHTML = xs.map(E.fila).join('') || '<p class="atlas-ayuda">No hay resultados.</p>';
+    };
+    $$('#ap-filtros .chip-at').forEach(b => b.addEventListener('click', () => { f = b.dataset.f; $$('#ap-filtros .chip-at').forEach(x => x.setAttribute('aria-pressed', String(x === b))); pintar(); }));
+    $('#ap-buscar').addEventListener('input', e => { qq = e.target.value.trim(); pintar(); });
+    $('#ap-volver').addEventListener('click', inicio);
+    pintar(); window.scrollTo({ top: 0 });
+  };
+  inicio();
+}
+
+// ---- 🏰 Defiende Campeche: cada acierto levanta un baluarte; cada error acerca un barco pirata
+function actCampeche(cont) {
+  const META = BALUARTES.length, BARCOS = 4;
+  juegoPreguntas(cont, {
+    clave: 'campeche', seg: 20,
+    intro: 'Es 1686: después del saqueo de Lorencillo, la Corona decide amurallar Campeche. <b>Cada respuesta correcta levanta uno de los 8 baluartes</b>; cada error acerca un barco pirata. Si llegan <b>4 barcos</b> antes de terminar la muralla, ¡saquean la villa!',
+    niveles: [{ id: 'muralla', n: 'Defender la muralla', ico: '🏰', preg: 40, desc: 'Levanta los 8 baluartes antes de que lleguen 4 barcos piratas.', filtro: () => true }],
+    items: CAMPECHE,
+    termina: (b, m) => b >= META || m >= BARCOS,
+    cabecera: (b, m) => `<div class="cp-muralla" aria-label="${Math.min(b, META)} de ${META} baluartes y ${Math.min(m, BARCOS)} de ${BARCOS} barcos">
+      <div class="cp-bal">${BALUARTES.map((n, k) => `<span class="${k < b ? 'si' : ''}" title="Baluarte de ${n}">${k < b ? '🏰' : '🧱'}</span>`).join('')}</div>
+      <div class="cp-mar">${Array.from({ length: BARCOS }, (_, k) => `<span class="${k < m ? 'si' : ''}">${k < m ? '🏴‍☠️' : '🌊'}</span>`).join('')}</div></div>`,
+    preparar: x => { const ops = barajar(x.o); return { carta: `<span class="jp-q">${esc(x.q)}</span>`, opciones: ops.map(o => ({ v: o, t: esc(o) })), correctas: [x.o[0]], clase: 'jp-lista' }; },
+    bien: (x, b) => b <= META ? `¡Correcto! Se levanta el baluarte de ${BALUARTES[b - 1]}.` : '¡Correcto!',
+    mal: (x, m) => `No. 🏴‍☠️ Se acerca un barco pirata (${Math.min(m, BARCOS)} de ${BARCOS}). La respuesta era: ${esc(x.o[0])}.`,
+    explicar: x => `<p class="ap-dato">${esc(x.x)}</p>`,
+    final: (b, m) => b >= META ? '<p class="cp-final ok">🏰 ¡Campeche quedó amurallado! Los piratas ya no pudieron entrar.</p>' : m >= BARCOS ? '<p class="cp-final mal">🏴‍☠️ ¡Llegaron los piratas y saquearon la villa! Estudia y vuelve a defenderla.</p>' : '',
+    repaso: x => `<b>${esc(x.q)}</b><br>✔ ${esc(x.o[0])}. <span class="ap-dato">${esc(x.x)}</span>`,
+    estudiar: { boton: 'Estudiar la historia de Campeche', intro: 'Todas las preguntas del juego con su respuesta. Salen del compendio, subtema 3.2: «Campeche: piratas, murallas y mestizaje de puerto» y «El recetario campechano».', filtros: [['todos', 'Todas', () => true]], uno: 'pregunta', varios: 'preguntas', texto: x => x.q + ' ' + x.o[0] + ' ' + x.x,
+      fila: x => `<div class="ap-fila"><span class="ap-fe">🏰</span><div><b>${esc(x.q)}</b><p class="ap-orig">✔ ${esc(x.o[0])}</p><p class="ap-dato">${esc(x.x)}</p></div></div>` },
+  });
+}
+
+// ---- ⚖️ ¿Qué influencia es?: las siete influencias de la cocina campechana
+function actQueInfluencia(cont) {
+  const L = INFLUENCIAS.lista, nom = k => (L.find(x => x[0] === k) || [])[1];
+  juegoPreguntas(cont, {
+    clave: 'influencia', seg: 12,
+    intro: 'El maestro Rafael E. Meneses López identifica <b>siete influencias</b> en la cocina campechana. Aparece un ingrediente, una técnica, un platillo o un hecho: ¿a qué influencia corresponde? Es el calentamiento para la tarea en equipo de las siete influencias.',
+    niveles: [{ id: 'ronda', n: 'Ronda de 15', ico: '⚖️', preg: 15, desc: '15 preguntas al azar de las siete influencias.', filtro: () => true }, { id: 'todas', n: 'Todas', ico: '🏆', preg: 99, desc: `Las ${QUE_INFLUENCIA.length} preguntas, para dominarlas.`, filtro: () => true }],
+    items: QUE_INFLUENCIA,
+    preparar: x => ({ carta: `<span class="ap-emo">${x.e}</span><b class="jp-q">${esc(x.q)}</b>`, opciones: L.map(([k, n, col]) => ({ v: k, t: esc(n), style: `--c:${col}` })), correctas: [x.c], clase: 'jp-infl' }),
+    mal: x => `No: es la influencia ${nom(x.c).toLowerCase()}.`,
+    explicar: x => `<p class="ap-dato">${esc(x.x)}</p>`,
+    repaso: x => `${x.e} <b>${esc(x.q)}</b> → ${esc(nom(x.c))}. <span class="ap-dato">${esc(x.x)}</span>`,
+    estudiar: { boton: 'Estudiar las siete influencias', intro: 'Cada influencia con su explicación del compendio y los ejemplos del juego.', filtros: [['todos', 'Todas', () => true], ...L.map(([k, n]) => [k, n, x => x.c === k])], uno: 'ejemplo', varios: 'ejemplos', texto: x => x.q + ' ' + nom(x.c),
+      fila: x => { const I = L.find(y => y[0] === x.c); return `<div class="ap-fila" style="border-left-color:${I[2]}"><span class="ap-fe">${x.e}</span><div><b>${esc(x.q)}</b> <small class="ap-tag">${esc(I[1])}</small><p class="ap-dato">${esc(x.x)}</p></div></div>`; } },
+  });
+}
+
+// ---- 🌎 Platillos de América: ¿de qué país es? Al responder se ilumina en el mapa
+let MAPA_AM = null;
+async function mapaAmerica() {
+  if (MAPA_AM) return MAPA_AM;
+  const A = await fetch('data/atlas.json').then(r => r.json()), ids = new Set();
+  Object.values(A.regiones).forEach(r => { if (r.cont === 'america') r.paises.forEach(p => ids.add(p.id)); });
+  MAPA_AM = { A, ids }; return MAPA_AM;
+}
+function actPlatillosAmerica(cont) {
+  const todos = Object.keys(PAISES_AM);
+  juegoPreguntas(cont, {
+    clave: 'platillosam', seg: 12,
+    intro: 'Un recorrido por la mesa de América: Centroamérica, el Caribe, los Andes, la Amazonía y Brasil, el Cono Sur, Norteamérica y las migraciones. Aparece un platillo: <b>¿de qué país es?</b> Al responder se ilumina en el mapa y ves qué raíces tiene. Te sirve para tu Mi atlas: América.',
+    niveles: [{ id: 'basico', n: 'Básico', ico: '🌱', preg: 10, desc: 'Los platillos más famosos del continente.', filtro: x => x.niv === 1 }, { id: 'experto', n: 'Experto', ico: '🏆', preg: 16, desc: 'Todos, incluidas las cocinas chifa, nikkei, andina, amazónica y de las migraciones.', filtro: () => true }],
+    items: PLATILLOS_AM,
+    preparar: x => { const malas = barajar(todos.filter(k => !x.ok.includes(k))).slice(0, 3), ops = barajar([x.ok[0], ...malas]); return { carta: `<span class="ap-emo">${x.e}</span><b>${esc(x.p)}</b><small class="jp-pista">${esc(x.d)}</small>`, opciones: ops.map(k => ({ v: k, t: esc(PAISES_AM[k]) })), correctas: x.ok }; },
+    mal: x => `No: es de ${x.ok.map(k => PAISES_AM[k]).join(' y ')}.`,
+    explicar: x => `<p class="ap-orig">🌱 <b>Raíces:</b> ${esc(x.raices)}</p><p class="ap-dato">${esc(x.x)}</p>`,
+    despues: async (x, v, el) => {
+      try {
+        const { A, ids } = await mapaAmerica(), [bx, by, bw, bh] = A.mundo.cajas.america;
+        el.innerHTML = `<svg class="jp-mapa" viewBox="${bx} ${by} ${bw} ${bh}" role="img" aria-label="Mapa de América: ${esc(x.ok.map(k => PAISES_AM[k]).join(' y '))}">${A.mundo.paises.filter(p => p.i && ids.has(p.i)).map(p => `<path d="${p.d}" class="${x.ok.includes(p.i) ? 'si' : p.i === v ? 'no' : ''}"/>`).join('')}</svg>`;
+      } catch { /* sin mapa */ }
+    },
+    repaso: x => `${x.e} <b>${esc(x.p)}</b>: ${esc(x.ok.map(k => PAISES_AM[k]).join(' y '))}. <span class="ap-dato">Raíces: ${esc(x.raices)}. ${esc(x.x)}</span>`,
+    estudiar: { boton: 'Estudiar los platillos de América', intro: 'Los platillos del juego, con su país y sus raíces.', filtros: [['todos', 'Todos', () => true], ['cen', 'México y Centroamérica', x => x.ok.some(k => ['MEX', 'GTM', 'SLV', 'CRI', 'NIC'].includes(k))], ['car', 'Caribe', x => x.ok.some(k => ['CUB', 'DOM', 'PRI', 'JAM'].includes(k))], ['sur', 'Sudamérica', x => x.ok.some(k => ['PER', 'BOL', 'ECU', 'BRA', 'ARG', 'URY', 'PRY', 'CHL'].includes(k))], ['nor', 'Norteamérica', x => x.ok.some(k => ['USA', 'CAN'].includes(k))]], uno: 'platillo', varios: 'platillos', texto: x => x.p + ' ' + x.ok.map(k => PAISES_AM[k]).join(' ') + ' ' + x.raices,
+      fila: x => `<div class="ap-fila"><span class="ap-fe">${x.e}</span><div><b>${esc(x.p)}</b> <small class="ap-tag">${esc(x.ok.map(k => PAISES_AM[k]).join(' / '))}</small><p class="ap-orig">${esc(x.d)}</p><p class="ap-orig">🌱 ${esc(x.raices)}</p><p class="ap-dato">${esc(x.x)}</p></div></div>` },
+  });
 }
 
 // ======================================================= 4. LAS SIETE INFLUENCIAS (en equipo o individual, en vivo, con votación)

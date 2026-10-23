@@ -125,6 +125,9 @@ export const TEMAS_TAREAS = [
   { tema: '3.2', titulo: 'Campeche y el resto de América', fecha: '2026-10-30', fechaTexto: 'Vie 30 de octubre', acts: [
     { id: 'atlas-america', tipo: 'atlas', cont: 'america', icono: '🗺️', nombre: 'Mi atlas: América', modo: 'En equipo o individual', desc: 'Tus regiones culinarias de América, de Alaska a la Patagonia.' },
     { id: 'influencias', tipo: 'influencias', icono: '⚖️', nombre: 'Las siete influencias de la cocina campechana', modo: 'En equipo · en vivo · con votación', desc: 'Elijan un platillo campechano, encuentren en él las siete influencias y defiéndanlo en la votación del grupo.' },
+    { id: 'campeche', tipo: 'practica', icono: '🏰', nombre: 'Defiende Campeche', modo: 'Juego de práctica', desc: 'Piratas, murallas y recetario campechano: cada acierto levanta un baluarte; si llegan cuatro barcos piratas, saquean la villa.' },
+    { id: 'que-influencia', tipo: 'practica', icono: '⚖️', nombre: '¿Qué influencia es?', modo: 'Juego de práctica', desc: 'Maya, española, árabe, francesa, holandesa, africana o caribeña: el calentamiento para la tarea de las siete influencias.' },
+    { id: 'platillos-america', tipo: 'practica', icono: '🌎', nombre: 'Platillos de América', modo: 'Juego de práctica', desc: '¿De qué país es? Ceviche, pupusa, feijoada, mofongo, gumbo… se ilumina en el mapa y descubres sus raíces.' },
   ] },
   { tema: '3.3', titulo: 'Cocinas asiáticas', fecha: '2026-11-05', fechaTexto: 'Jue 5 de noviembre', acts: [
     { id: 'atlas-asia', tipo: 'atlas', cont: 'asia', icono: '🗺️', nombre: 'Mi atlas: Asia', modo: 'En equipo o individual', desc: 'Tus regiones culinarias de Asia.' },
