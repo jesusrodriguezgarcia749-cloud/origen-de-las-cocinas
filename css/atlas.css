@@ -295,3 +295,13 @@ html[data-theme="dark"] .ma-svg .ma-de-sel, html[data-theme="dark"] .ma-svg .ma-
 #ma-eq-form{flex-basis:100%;}
 .ma-msg{flex-basis:100%; margin:2px 0; font-size:.9rem; font-weight:600;}
 .ma-msg.ok{color:#3F7A4F;} .ma-msg.mal{color:#A63D2F;}
+.ma-svg .ma-etq text{font-family:var(--font-body); font-weight:700; fill:#1C1B19; stroke:rgba(250,247,240,.92); paint-order:stroke; stroke-linejoin:round; text-anchor:middle; dominant-baseline:central; pointer-events:none;}
+.ma-svg .ma-etq text.izq{text-anchor:start;}
+html[data-theme="dark"] .ma-svg .ma-etq text{fill:#FAF7F0; stroke:rgba(21,19,15,.85);}
+.ma-svg.sin-nombres .ma-etq{display:none;}
+.ma-nombres{font-size:.8rem; padding:5px 12px;}
+.ma-editar{width:auto; padding:0 10px; font:600 .8rem var(--font-body); color:var(--ink); white-space:nowrap;}
+@media (max-width:420px){ .ma-editar span{display:none;} }
+.ma-ficha-color{display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:10px 0 0; font:700 .8rem var(--font-body); color:var(--ink-soft);}
+.ma-ficha-color button{width:24px; height:24px; border-radius:50%; border:2px solid transparent; background:var(--c); cursor:pointer;}
+.ma-ficha-color button[aria-pressed="true"]{border-color:var(--ink); box-shadow:0 0 0 2px var(--cream) inset;}

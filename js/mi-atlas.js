@@ -5,6 +5,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, deleteField, FieldPath, collection, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
+import { DocITES, mapaContinentePNG, ABREV } from "./docx-ites.js";
 
 const db = getFirestore(initializeApp(firebaseConfig));
 const SESSION_KEY = 'oc_sesion_alumno';
@@ -37,6 +38,7 @@ let ultimaNota = '';
 const nota = d => { ultimaNota = d; };
 const nomCampo = f => ({ nombre: 'el nombre', ...Object.fromEntries(CAMPOS_REGION.map(([k, t]) => [k, t])) })[f] || f;
 let codigoPendiente = null, abiertos = true, eqDocUnsub = null, msgModo = '';
+let vuelo = new Map();
 let modo = 'personal', EQ = null, TE = {}, unsub = null, pend = new Map(), pendT = null, existe = {};
 let A = null, sesion = null, T = null, cont = 'africa', regSel = null, paisSel = null, timer = null, iniciado = false;
 let PAIS = {}, CONT_DE = {};
@@ -198,7 +200,7 @@ function aEspejo(d) {
   return { regiones: regs, asign: { ...(d.asign || {}) }, paises: JSON.parse(JSON.stringify(d.paises || {})), por: JSON.parse(JSON.stringify(d.por || {})) };
 }
 function aplicarPendientes(c) {
-  pend.forEach(([ruta, v]) => {
+  [...vuelo.values(), ...pend.values()].forEach(([ruta, v]) => {
     const [raiz, a, b] = ruta;
     if (raiz === 'asign') { if (v === null) delete c.asign[a]; else c.asign[a] = v; }
     else if (raiz === 'regiones') {
@@ -228,7 +230,7 @@ function encolar(ruta, valor, rapido) {
 async function flushEquipo() {
   clearTimeout(pendT); pendT = null;
   if (modo !== 'equipo' || !pend.size || !EQ) return;
-  const lote = [...pend.values()]; pend.clear();
+  const lote = [...pend.values()]; pend.forEach((v, k) => vuelo.set(k, v)); pend.clear();
   const k = cont, ref = refEq(k);
   try {
     if (!existe[k]) { const s0 = await getDoc(ref); if (!s0.exists()) await setDoc(ref, { regiones: {}, asign: {}, paises: {}, por: {}, ultimoAutor: sesion.alumnoId, ultimoPin: sesion.pin, actualizado: serverTimestamp() }); existe[k] = true; }
@@ -236,9 +238,10 @@ async function flushEquipo() {
     lote.forEach(([ruta, v]) => { args.push(new FieldPath(...ruta), v === null ? deleteField() : v); });
     args.push('ultimoAutor', sesion.alumnoId, 'ultimoPin', sesion.pin, 'ultimoNombre', sesion.nombre, 'ultimoCambio', ultimaNota, 'actualizado', serverTimestamp());
     await updateDoc(ref, ...args);
+    lote.forEach(([ruta]) => vuelo.delete(ruta.join('\u0001')));
     if (!pend.size) estado('Sincronizado con tu equipo ✓', 'ok');
   } catch (e) {
-    lote.forEach(([ruta, v]) => { const key = ruta.join('\u0001'); if (!pend.has(key)) pend.set(key, [ruta, v]); });
+    lote.forEach(([ruta, v]) => { const key = ruta.join('\u0001'); vuelo.delete(key); if (!pend.has(key)) pend.set(key, [ruta, v]); });
     estado('No se pudo guardar en el equipo. Reintentando…', 'mal'); clearTimeout(pendT); pendT = setTimeout(flushEquipo, 4000);
   }
 }
@@ -249,7 +252,7 @@ function refrescarVivo() {
   colorear();
   const act = document.activeElement;
   if (!(act && $('#ma-panel').contains(act) && /INPUT|TEXTAREA/.test(act.tagName)) && !editando) panel();
-  const firma = c => JSON.stringify([c.regiones.map(r => [r.id, r.nombre, r.color]), c.asign]);
+  const firma = firmaFichas;
   const c = C();
   if ($('#ma-fichas').dataset.firma !== firma(c)) {
     const foco = act && act.dataset && act.dataset.rf && act.closest('details') ? { id: act.closest('details').dataset.id, rf: act.dataset.rf, a: act.selectionStart, b: act.selectionEnd } : null;
@@ -260,6 +263,7 @@ function refrescarVivo() {
     pintarAutores();
   }
 }
+function firmaFichas(c) { return JSON.stringify([c.regiones.map(r => [r.id, r.nombre, r.color]), Object.keys(c.asign).sort().map(k => [k, c.asign[k]])]); }
 function pintarAutores() {
   if (modo !== 'equipo') return;
   const c = C();
@@ -326,6 +330,16 @@ function dibujar() {
     if (mio) { e.dataset.i = p.i; e.dataset.n = p.n; }
   });
   A.mundo.islas.forEach(i => { if (PAIS[i.i] && PAIS[i.i].cont === cont) { const c = el('circle', { class: 'isla ma-pais', cx: i.x, cy: i.y, r: 4.5 }, g); c.dataset.i = i.i; c.dataset.n = i.n; } });
+  // nombres de los países (los que caben)
+  const [, , cw, ch] = A.mundo.cajas[cont], fs = cw / 70, min = (cw * ch) / 1800;
+  const ge = el('g', { class: 'ma-etq' }, svg);
+  A.mundo.paises.forEach(p => {
+    if (!(p.i && PAIS[p.i] && PAIS[p.i].cont === cont && p.c && p.a >= min)) return;
+    const f = Math.min(fs * 1.15, Math.max(fs * .6, fs * Math.sqrt(p.a / (min * 5))));
+    const t = el('text', { x: p.c[0], y: p.c[1], 'font-size': f.toFixed(2), 'stroke-width': (f / 4).toFixed(2) }, ge); t.textContent = ABREV[p.i] || corto(p.n);
+  });
+  A.mundo.islas.forEach(i => { if (PAIS[i.i] && PAIS[i.i].cont === cont) { const t = el('text', { x: i.x + fs * .7, y: i.y, 'font-size': (fs * .7).toFixed(2), 'stroke-width': (fs / 6).toFixed(2), class: 'izq' }, ge); t.textContent = i.n; } });
+  svg.classList.toggle('sin-nombres', lsGet('miatlas_nombres') === '0');
   if (!svg._listo) {
     svg._listo = true;
     let tipT = null;
@@ -355,8 +369,11 @@ function colorear() {
     e.classList.toggle('ma-de-sel', !!(regSel && r && r.id === regSel));
   });
   const total = paisesDe(cont).length, hechos = Object.keys(C().asign).filter(i => PAIS[i] && PAIS[i].cont === cont).length;
+  const sinN = lsGet('miatlas_nombres') === '0';
   $('#ma-progreso').innerHTML = `<b>${A.continentes[cont].nombre}:</b> ${hechos} de ${total} países clasificados · ${pl(C().regiones.length, 'región creada', 'regiones creadas')}
-    <span class="ma-barra-p"><i style="width:${total ? Math.round(100 * hechos / total) : 0}%"></i></span>`;
+    <span class="ma-barra-p"><i style="width:${total ? Math.round(100 * hechos / total) : 0}%"></i></span>
+    <button type="button" class="chip-at ma-nombres" aria-pressed="${!sinN}">🏷️ ${sinN ? 'Mostrar' : 'Ocultar'} nombres</button>`;
+  $('#ma-progreso .ma-nombres').addEventListener('click', () => { lsSet('miatlas_nombres', sinN ? '1' : '0'); $('#ma-svg').classList.toggle('sin-nombres', !sinN); colorear(); });
 }
 function tocarPais(id) {
   const c = C();
@@ -378,7 +395,7 @@ function panel() {
       <input type="text" maxlength="60" value="${esc(r.nombre)}" aria-label="Nuevo nombre de la región">
       <div class="ma-colores" role="radiogroup" aria-label="Color de la región">${COLORES.map((col, i) => `<button type="button" role="radio" aria-checked="${col === r.color}" aria-label="Color ${i + 1}" data-c="${col}" style="--c:${col}"></button>`).join('')}</div>
       <div class="ma-edit-bot"><button type="submit" class="btn-at">Guardar cambios</button><button type="button" class="ma-link" data-cancel>Cancelar</button></div></form>`;
-    return `<div class="ma-reg-fila"><button type="button" class="ma-reg" data-id="${r.id}" aria-pressed="${r.id === regSel}" style="--c:${r.color}"><i></i><span>${esc(r.nombre)}</span><small>${pl(n, 'país', 'países')}</small></button><button type="button" class="ma-editar" data-edit="${r.id}" aria-label="Cambiar nombre o color de ${esc(r.nombre)}" title="Cambiar nombre o color">✏️</button></div>`;
+    return `<div class="ma-reg-fila"><button type="button" class="ma-reg" data-id="${r.id}" aria-pressed="${r.id === regSel}" style="--c:${r.color}"><i></i><span>${esc(r.nombre)}</span><small>${pl(n, 'país', 'países')}</small></button><button type="button" class="ma-editar" data-edit="${r.id}" aria-label="Cambiar nombre o color de ${esc(r.nombre)}" title="Cambiar nombre o color">✏️ <span>Nombre y color</span></button></div>`;
   }).join('');
   const pais = paisSel && PAIS[paisSel], regP = paisSel && regionDe(paisSel);
   p.innerHTML = `<p class="ficha-sub">${esc(A.continentes[cont].nombre)}</p><h2>${modo === 'equipo' ? 'Regiones del equipo' : 'Mis regiones'}</h2>
@@ -423,9 +440,9 @@ function siguienteColor() { const usados = C().regiones.map(r => r.color); const
 // ======================================================= fichas de región
 function fichas() {
   const c = C(), cont$ = $('#ma-fichas');
-  if (!c.regiones.length) { cont$.innerHTML = ''; cont$.dataset.firma = JSON.stringify([[], c.asign]); return; }
+  if (!c.regiones.length) { cont$.innerHTML = ''; cont$.dataset.firma = firmaFichas(c); return; }
   const abiertas = new Set($$('#ma-fichas details[open]').map(d => d.dataset.id));
-  cont$.dataset.firma = JSON.stringify([c.regiones.map(r => [r.id, r.nombre, r.color]), c.asign]);
+  cont$.dataset.firma = firmaFichas(c);
   cont$.innerHTML = `<h3 class="ma-h3">${modo === 'equipo' ? 'Fichas de las regiones del equipo' : 'Fichas de mis regiones'}</h3>` + c.regiones.map(r => {
     const ps = Object.entries(c.asign).filter(([, x]) => x === r.id).map(([i]) => corto(PAIS[i] ? PAIS[i].n : i)).sort((a, b) => a.localeCompare(b, 'es'));
     const llenos = CAMPOS_REGION.filter(([f]) => (r[f] || '').trim()).length;
@@ -433,6 +450,7 @@ function fichas() {
       <summary><i></i><b>${esc(r.nombre)}</b><small>${pl(ps.length, 'país', 'países')} · ${llenos} de ${CAMPOS_REGION.length} apartados</small></summary>
       <div class="ma-ficha-cuerpo">
         <label class="ma-campo">Nombre de la región<input data-rf="nombre" value="${esc(r.nombre)}" maxlength="60"></label>
+        <div class="ma-ficha-color"><span>Color en el mapa:</span>${COLORES.map(col => `<button type="button" data-fcol="${col}" aria-label="Usar este color" aria-pressed="${col === r.color}" style="--c:${col}"></button>`).join('')}</div>
         <p class="ma-paises"><b>Países:</b> ${ps.length ? esc(ps.join(', ')) : '<i>todavía ninguno: elige esta región y toca países en el mapa</i>'}</p>
         ${CAMPOS_REGION.map(([f, t, ph]) => `<label class="ma-campo"><span>${t} <small class="ma-autor" data-autor="${r.id}|${f}"></small></span><textarea data-rf="${f}" rows="${f === 'fuentes' ? 3 : 3}" placeholder="${esc(ph)}">${esc(r[f] || '')}</textarea></label>`).join('')}
         <div class="ma-ficha-pie"><span class="ma-cuenta">${CAMPOS_REGION.reduce((x, [f]) => x + palabras(r[f]), 0)} palabras</span><button type="button" class="ma-borrar" data-del="${r.id}">Eliminar región</button></div>
@@ -445,6 +463,12 @@ function fichas() {
     else t.closest('details').querySelector('.ma-cuenta').textContent = CAMPOS_REGION.reduce((x, [f]) => x + palabras(r[f]), 0) + ' palabras';
   }));
   pintarAutores();
+  $$('#ma-fichas [data-fcol]').forEach(b => b.addEventListener('click', () => {
+    const r = C().regiones.find(x => x.id === b.closest('details').dataset.id), col = b.dataset.fcol; if (r.color === col) return;
+    r.color = col; nota(`cambió el color de «${r.nombre}»`);
+    if (modo === 'equipo') encolar(['regiones', r.id, 'color'], col, true); else cambio();
+    colorear(); panel(); fichas();
+  }));
   $$('#ma-fichas [data-del]').forEach(b => b.addEventListener('click', () => {
     const c2 = C(), r = c2.regiones.find(x => x.id === b.dataset.del);
     if (!confirm(`¿Eliminar la región «${r.nombre}»? Sus países quedarán sin región y se borrará lo que escribiste en su ficha.`)) return;
@@ -455,51 +479,7 @@ function fichas() {
   }));
 }
 
-// ======================================================= Word (.docx) con el mapa
-const CRC = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
-const crc32 = b => { let c = 0xFFFFFFFF; for (let i = 0; i < b.length; i++) c = CRC[(c ^ b[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
-function zip(archivos) {
-  const enc = new TextEncoder(), partes = [], central = []; let off = 0;
-  const d = new Date(), hora = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1), dia = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
-  for (const [nombre, contenido] of archivos) {
-    const n = enc.encode(nombre), b = typeof contenido === 'string' ? enc.encode(contenido) : contenido, c = crc32(b);
-    const h = new DataView(new ArrayBuffer(30));
-    h.setUint32(0, 0x04034b50, true); h.setUint16(4, 20, true); h.setUint16(6, 0x0800, true); h.setUint16(10, hora, true); h.setUint16(12, dia, true);
-    h.setUint32(14, c, true); h.setUint32(18, b.length, true); h.setUint32(22, b.length, true); h.setUint16(26, n.length, true);
-    partes.push(new Uint8Array(h.buffer), n, b);
-    const k = new DataView(new ArrayBuffer(46));
-    k.setUint32(0, 0x02014b50, true); k.setUint16(4, 20, true); k.setUint16(6, 20, true); k.setUint16(8, 0x0800, true); k.setUint16(12, hora, true); k.setUint16(14, dia, true);
-    k.setUint32(16, c, true); k.setUint32(20, b.length, true); k.setUint32(24, b.length, true); k.setUint16(28, n.length, true); k.setUint32(42, off, true);
-    central.push(new Uint8Array(k.buffer), n);
-    off += 30 + n.length + b.length;
-  }
-  const tam = central.reduce((s, x) => s + x.length, 0), f = new DataView(new ArrayBuffer(22));
-  f.setUint32(0, 0x06054b50, true); f.setUint16(8, archivos.length, true); f.setUint16(10, archivos.length, true); f.setUint32(12, tam, true); f.setUint32(16, off, true);
-  return new Blob([...partes, ...central, new Uint8Array(f.buffer)], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
-}
-const xe = s => String(s ?? '').replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-function wP(texto, o = {}) {
-  const pPr = `<w:pPr>${o.estilo ? `<w:pStyle w:val="${o.estilo}"/>` : ''}${o.antes ? `<w:spacing w:before="${o.antes}"/>` : ''}${o.centro ? '<w:jc w:val="center"/>' : ''}</w:pPr>`;
-  const run = (t, b, i, col) => t ? `<w:r><w:rPr>${b ? '<w:b/>' : ''}${i ? '<w:i/>' : ''}${col ? `<w:color w:val="${col}"/>` : ''}</w:rPr><w:t xml:space="preserve">${xe(t)}</w:t></w:r>` : '';
-  const runs = Array.isArray(texto) ? texto.map(([t, b, i, col]) => run(t, b, i, col)).join('') : run(texto, o.negrita, o.cursiva, o.color);
-  return `<w:p>${pPr}${runs}</w:p>`;
-}
-const parrafos = (t, vacio) => { const ps = String(t || '').split(/\n+/).map(x => x.trim()).filter(Boolean); return ps.length ? ps.map(x => wP(x)).join('') : wP(vacio || '(sin escribir)', { cursiva: true, color: '888888' }); };
-async function mapaPNG(k, CONTS) {
-  const c = CONTS[k] || vacioCont();
-  const [x, y, w, h] = (() => { const [a, b, cw, ch] = A.mundo.cajas[k], m = .05; return [a - cw * m, b - ch * m, cw * (1 + 2 * m), ch * (1 + 2 * m)]; })();
-  const W = 1600, H = Math.round(W * h / w);
-  const color = id => { const r = c.asign[id] && c.regiones.find(z => z.id === c.asign[id]); return r ? r.color : '#E8E1D3'; };
-  let s = `<svg xmlns="${NS}" viewBox="${x} ${y} ${w} ${h}" width="${W}" height="${H}"><rect x="${x - 10}" y="${y - 10}" width="${w + 20}" height="${h + 20}" fill="#EAF1F3"/>`;
-  A.mundo.paises.forEach(p => { const mio = p.i && PAIS[p.i] && PAIS[p.i].cont === k; s += `<path d="${p.d}" fill="${mio ? color(p.i) : '#F4F1EA'}" stroke="#FFFFFF" stroke-width="${w / 900}"/>`; });
-  A.mundo.islas.forEach(i => { if (PAIS[i.i] && PAIS[i.i].cont === k) s += `<circle cx="${i.x}" cy="${i.y}" r="${w / 160}" fill="${color(i.i)}" stroke="#555" stroke-width="${w / 1600}"/>`; });
-  s += '</svg>';
-  const img = new Image(); img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(s);
-  await img.decode();
-  const cv = document.createElement('canvas'); cv.width = W; cv.height = H; cv.getContext('2d').drawImage(img, 0, 0, W, H);
-  const blob = await new Promise(r => cv.toBlob(r, 'image/png'));
-  return { bytes: new Uint8Array(await blob.arrayBuffer()), W, H };
-}
+// ======================================================= Word (.docx) con el diseño del Aula
 async function descargarWord() {
   let CONTS = T.conts;
   if (modo === 'equipo') {
@@ -511,58 +491,45 @@ async function descargarWord() {
   if (!conts.length) { alert('Todavía no tienes regiones creadas. Crea al menos una y clasifica algunos países.'); return; }
   const b = $('#ma-word'); b.disabled = true; b.textContent = 'Preparando…';
   try {
-    const imgs = [], cuerpo = [];
-    cuerpo.push(wP('Mi atlas de las cocinas del mundo', { estilo: 'Titulo', centro: true }));
+    const D = new DocITES(); await D.cargarLogo();
     const equipo = modo === 'equipo' ? (EQ.nombres || []) : (T.equipo || '').split(/[,;\n]+/).map(x => x.trim()).filter(Boolean);
-    if (equipo.length) { cuerpo.push(wP(modo === 'equipo' ? `Equipo «${EQ.nombre}»:` : 'Equipo:', { centro: true, negrita: true })); equipo.forEach(n => cuerpo.push(wP(n, { centro: true }))); }
-    else cuerpo.push(wP(sesion.anon ? 'Alumno: ____________________' : `Alumno: ${sesion.nombre}`, { centro: true }));
-    cuerpo.push(wP('Origen de las Cocinas · ITES René Descartes', { centro: true }));
-    cuerpo.push(wP(new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' }), { centro: true }));
+    const nos = modo === 'equipo' || equipo.length > 1;
+    D.portada({
+      kicker: 'Tema 3 · Cocinas en el mundo', titulo: 'Atlas de las cocinas del mundo',
+      subtitulo: `Regiones culinarias propuestas por ${nos ? 'nuestro equipo' : 'mí'}: ${conts.map(k => A.continentes[k].nombre).join(', ')}`,
+      etiqueta: modo === 'equipo' ? `Equipo «${EQ.nombre}»` : equipo.length ? 'Equipo' : 'Alumno',
+      personas: equipo.length ? equipo : [sesion.anon ? '______________________________' : sesion.nombre],
+    });
     for (const k of conts) {
       const c = CONTS[k], con = A.continentes[k];
-      cuerpo.push(`<w:p><w:r><w:br w:type="page"/></w:r></w:p>`);
-      cuerpo.push(wP(`${con.nombre} (subtema ${con.sub})`, { estilo: 'Titulo1' }));
       const total = paisesDe(k).length, hechos = Object.keys(c.asign).filter(i => PAIS[i] && PAIS[i].cont === k).length;
-      cuerpo.push(wP(`${modo === 'equipo' ? 'Clasificamos' : 'Clasifiqué'} ${hechos} de ${total} países en ${pl(c.regiones.length, 'región culinaria', 'regiones culinarias')}.`));
-      const png = await mapaPNG(k, CONTS), n = imgs.length + 1; imgs.push(png.bytes);
-      const cx = 5943600, cy = Math.round(cx * png.H / png.W);
-      cuerpo.push(`<w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="${cx}" cy="${cy}"/><wp:docPr id="${n}" name="Mapa ${n}"/><a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="${n}" name="mapa${n}.png"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="rImg${n}"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${cx}" cy="${cy}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r></w:p>`);
-      // leyenda
-      c.regiones.forEach(r => cuerpo.push(wP([['■ ', true, false, r.color.slice(1)], [r.nombre, true]])));
-      const sinReg = paisesDe(k).filter(p => !c.asign[p.id]).map(p => corto(p.n)).sort((a, b) => a.localeCompare(b, 'es'));
-      for (const r of c.regiones) {
+      D.h1(`${con.nombre}`, `Subtema ${con.sub} · ${nos ? 'Clasificamos' : 'Clasifiqué'} ${hechos} de ${total} países en ${pl(c.regiones.length, 'región culinaria', 'regiones culinarias')}.`);
+      const colorDe = id => { const r = c.asign[id] && c.regiones.find(z => z.id === c.asign[id]); return r ? r.color : null; };
+      const png = await mapaContinentePNG(A, PAIS, k, colorDe, { nombres: true });
+      D.imagen(png.bytes, png.W, png.H, Math.min(16.5, 18 * png.W / png.H));
+      // leyenda: región, color, países
+      const filas = [['', 'Región', 'Países']];
+      c.regiones.forEach(r => {
         const ps = Object.entries(c.asign).filter(([, x]) => x === r.id).map(([i]) => corto(PAIS[i] ? PAIS[i].n : i)).sort((a, b) => a.localeCompare(b, 'es'));
-        cuerpo.push(wP([['■ ', true, false, r.color.slice(1)], [r.nombre]], { estilo: 'Titulo2' }));
-        cuerpo.push(wP([['Países: ', true], [ps.length ? ps.join(', ') + '.' : 'ninguno todavía.']]));
-        CAMPOS_REGION.forEach(([f, t]) => { const au = modo === 'equipo' && ((c.por || {})[r.id] || {})[f]; cuerpo.push(wP(au ? [[t, true], [`  (escribió: ${au})`, false, true, '888888']] : t, { negrita: true, antes: 160 })); cuerpo.push(parrafos(r[f])); });
+        filas.push([{ t: '', fondo: r.color }, { t: r.nombre, b: true }, ps.join(', ') || '—']);
+      });
+      if (filas.length > 1) D.tabla(filas, { anchos: [500, 2600, 6260] });
+      for (const r of c.regiones) {
+        const ps = Object.entries(c.asign).filter(([, x]) => x === r.id).length;
+        D.h2(r.nombre, r.color, `· ${pl(ps, 'país', 'países')}`);
+        const por = (c.por || {})[r.id] || {};
+        D.ficha(CAMPOS_REGION.map(([f, t]) => [t, r[f], modo === 'equipo' ? por[f] : null]));
       }
       const notas = Object.entries(c.paises).filter(([i, v]) => PAIS[i] && PAIS[i].cont === k && ((v.platillos || '').trim() || (v.notas || '').trim()));
       if (notas.length) {
-        cuerpo.push(wP('Notas por país', { estilo: 'Titulo2' }));
-        notas.sort((a, b) => PAIS[a[0]].n.localeCompare(PAIS[b[0]].n, 'es')).forEach(([i, v]) => {
-          cuerpo.push(wP(corto(PAIS[i].n), { negrita: true, antes: 160 }));
-          if ((v.platillos || '').trim()) cuerpo.push(wP([['Platillos: ', true], [v.platillos.trim()]]));
-          if ((v.notas || '').trim()) cuerpo.push(parrafos(v.notas));
-        });
+        D.h2('Notas por país', '8A8072');
+        D.tabla([['País', 'Platillos', 'Notas e investigación'], ...notas.sort((a, b) => PAIS[a[0]].n.localeCompare(PAIS[b[0]].n, 'es')).map(([i, v]) => [{ t: corto(PAIS[i].n), b: true }, (v.platillos || '').trim() || '—', (v.notas || '').trim() || '—'])], { anchos: [2200, 3000, 4160] });
       }
-      if (sinReg.length) cuerpo.push(wP([[modo === 'equipo' ? 'Países que aún no clasificamos: ' : 'Países que aún no clasifiqué: ', true, false, '888888'], [sinReg.join(', ') + '.', false, true, '888888']], { antes: 200 }));
+      const sinReg = paisesDe(k).filter(p => !c.asign[p.id]).map(p => corto(p.n)).sort((a, b) => a.localeCompare(b, 'es'));
+      if (sinReg.length) D.nota(`${nos ? 'Países que aún no clasificamos' : 'Países que aún no clasifiqué'}: ${sinReg.join(', ')}.`);
+      if (k !== conts[conts.length - 1]) D.saltoPagina();
     }
-    const W = 'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"';
-    const documento = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document ${W}><w:body>${cuerpo.join('')}<w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="720" w:footer="720" w:gutter="0"/></w:sectPr></w:body></w:document>`;
-    const estilo = (id, nombre, tam, extra = '') => `<w:style w:type="paragraph" w:styleId="${id}"><w:name w:val="${nombre}"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/><w:pPr><w:keepNext/><w:spacing w:before="320" w:after="120"/>${extra}</w:pPr><w:rPr><w:b/><w:sz w:val="${tam}"/><w:szCs w:val="${tam}"/></w:rPr></w:style>`;
-    const estilos = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:eastAsia="Calibri" w:cs="Calibri"/><w:sz w:val="24"/><w:szCs w:val="24"/><w:lang w:val="es-MX"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="80" w:line="276" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style>${estilo('Titulo', 'Title', 40)}${estilo('Titulo1', 'heading 1', 32, '<w:outlineLvl w:val="0"/>')}${estilo('Titulo2', 'heading 2', 26, '<w:outlineLvl w:val="1"/>')}</w:styles>`;
-    const rels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>${imgs.map((_, i) => `<Relationship Id="rImg${i + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/mapa${i + 1}.png"/>`).join('')}</Relationships>`;
-    const blob = zip([
-      ['[Content_Types].xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="png" ContentType="image/png"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>'],
-      ['_rels/.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'],
-      ['word/_rels/document.xml.rels', rels],
-      ['word/document.xml', documento],
-      ['word/styles.xml', estilos],
-      ...imgs.map((bytes, i) => [`word/media/mapa${i + 1}.png`, bytes]),
-    ]);
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-    a.download = `Mi_atlas_${slug(modo === 'equipo' ? 'equipo ' + EQ.nombre : (T.equipo || '').trim() ? 'equipo ' + (sesion.anon ? '' : sesion.nombre) : (sesion.anon ? 'borrador' : sesion.nombre))}.docx`; document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    D.descargar(`Atlas_${slug(modo === 'equipo' ? 'equipo ' + EQ.nombre : (T.equipo || '').trim() ? 'equipo ' + (sesion.anon ? '' : sesion.nombre) : (sesion.anon ? 'borrador' : sesion.nombre))}`);
   } catch (e) { alert('No se pudo generar el Word: ' + (e.message || e)); }
   finally { b.disabled = false; b.textContent = '⬇ Descargar en Word'; }
 }
