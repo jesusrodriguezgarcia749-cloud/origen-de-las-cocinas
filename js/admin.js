@@ -13,6 +13,7 @@ import { firebaseConfig } from "./firebase-config.js";
 import { calcularParcial, calcularCuatrimestre, calcularCuatrimestreRedondeado, zonaDeDecision, textoCalificacion, NOMBRES_PARCIAL, NOMBRES_REDONDEO, TOPES } from "./calculo.js";
 import { reporteGrupo, reporteAlumno, reporteExamenAlumno, reporteExamenGrupo } from "./reporte.js";
 import { vistaRapida } from "./matriz.js";
+import { TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, nombreCatalogo, sugerirAtlas, sugerirCuadro, sugerirDesarma, CUADRO_MM } from "./clase-datos.js";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -116,7 +117,7 @@ function cargarTabActiva() {
   if (tab !== 'enlinea') detenerIntentosEnVivo();
   // Tabla de alumnos contra actividades, arriba de la captura de siempre.
   vistaRapida(tab, { db, grupoActivo, alumnos: alumnosCache, datosDeAlumno });
-  if (tab === 'tareas') cargarCatalogo('tareas');
+  if (tab === 'tareas') { cargarCatalogo('tareas'); cargarTareasDig(); }
   if (tab === 'participacion') cargarCatalogo('participaciones');
   if (tab === 'proyecto') cargarProyecto();
   if (tab === 'miatlas') cargarMiAtlas();
@@ -1032,6 +1033,95 @@ function pintarDetalle(nuevo) {
       return `<details data-id="${r.id}" ${abiertas.has(r.id) || nuevo && v.regiones.length <= 2 ? 'open' : ''} style="--c:${escaparHTML(r.color)}"><summary><i></i><b>${escaparHTML(r.nombre)}</b><small>${ps.length} países · ${llenos}/7</small></summary>
         <p><b>Países:</b> ${escaparHTML(ps.join(', ') || '—')}</p>${MON_CAMPOS.map(([f, tt]) => `<p><b>${tt}</b>${por[f] ? ` <small class="mon-autor">✍️ ${escaparHTML(por[f])}</small>` : ''}<br>${(r[f] || '').trim() ? e(r[f]) : '<span class="mon-vacio">—</span>'}</p>`).join('')}</details>`;
     }).join('') : '<p class="empty-inline">Todavía no crean regiones en este continente.</p>'}</div></div>`;
+}
+
+// ---- Tareas digitales: catálogo, abrir/cerrar y calificar con sugerencia
+let TD_ATLAS = null;
+async function cargarTareasDig() {
+  const cont = document.getElementById('td-lista'); if (!cont) return;
+  if (!grupoActivo) { cont.innerHTML = '<p class="empty-inline">Elige un grupo primero.</p>'; return; }
+  cont.innerHTML = '<p class="empty-inline">Cargando…</p>';
+  let est = {}, enCat = new Set();
+  try { const g = await getDoc(doc(db, 'grupos', grupoActivo)); est = (g.exists() && g.data().tareasDig) || {}; } catch { /* */ }
+  try { const sn = await getDocs(collection(db, 'grupos', grupoActivo, 'tareas_catalogo')); sn.forEach(d => { if (d.id.startsWith('dig-')) enCat.add(d.id); }); } catch { /* */ }
+  cont.innerHTML = TEMAS_TAREAS.map(t => `<div class="td-tema"><p class="td-tit"><b>${escaparHTML(t.tema)} · ${escaparHTML(t.titulo)}</b> <small>${escaparHTML(t.fechaTexto)}</small></p>${t.acts.filter(califica).map(a => {
+    const cat = enCat.has(catalogoId(a.id)), ab = !(est[a.id] && est[a.id].abierta === false);
+    return `<div class="td-fila"><span class="td-nom">${a.icono} ${escaparHTML(a.nombre)}</span>
+      <button type="button" class="btn btn-small td-cat ${cat ? 'si' : ''}" data-cat="${a.id}" ${cat ? 'disabled' : ''}>${cat ? '✓ En el catálogo' : '+ Agregar al catálogo'}</button>
+      <button type="button" class="btn btn-small td-ab ${ab ? 'si' : 'no'}" data-ab="${a.id}">${ab ? '🔓 Abierta' : '🔒 Cerrada'}</button>
+      <button type="button" class="btn btn-small btn-primary" data-cal="${a.id}">Calificar</button></div>`;
+  }).join('')}</div>`).join('');
+  cont.querySelectorAll('[data-cat]').forEach(b => b.addEventListener('click', async () => {
+    const a = TAREAS_DIG[b.dataset.cat];
+    if (!confirm(`¿Agregar «${nombreCatalogo(a)}» a las tareas del Parcial 2?\n\nDesde este momento cuenta para la calificación: a quien no la entregue le contará como cero en el promedio de tareas.`)) return;
+    await setDoc(doc(db, 'grupos', grupoActivo, 'tareas_catalogo', catalogoId(a.id)), { nombre: nombreCatalogo(a), fecha: a.fecha, parcial: 'p2', digital: a.id, creado: serverTimestamp() });
+    cargarTareasDig(); cargarCatalogo('tareas');
+  }));
+  cont.querySelectorAll('[data-ab]').forEach(b => b.addEventListener('click', async () => {
+    const id = b.dataset.ab, ab = !(est[id] && est[id].abierta === false);
+    if (ab && !confirm('¿Cerrar la tarea? Los alumnos ya no podrán hacer cambios (lo que llevan se conserva).')) return;
+    await setDoc(doc(db, 'grupos', grupoActivo), { tareasDig: { [id]: { abierta: !ab } } }, { merge: true });
+    cargarTareasDig();
+  }));
+  cont.querySelectorAll('[data-cal]').forEach(b => b.addEventListener('click', () => calificarTareaDig(TAREAS_DIG[b.dataset.cal], enCat.has(catalogoId(b.dataset.cal)))));
+}
+async function calificarTareaDig(a, enCatalogo) {
+  const wrap = document.getElementById('td-calificar'); wrap.hidden = false;
+  wrap.innerHTML = '<p class="empty-inline">Reuniendo el trabajo de cada alumno…</p>';
+  wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const g = grupoActivo;
+  let equipos = [];
+  try { const sn = await getDocs(collection(db, 'grupos', g, 'equipos')); equipos = sn.docs.map(d => ({ id: d.id, ...d.data() })); } catch { /* */ }
+  if (a.tipo === 'atlas' && !TD_ATLAS) { try { TD_ATLAS = await fetch('data/atlas.json').then(r => r.json()); } catch { TD_ATLAS = null; } }
+  const total = a.tipo === 'atlas' && TD_ATLAS ? Object.values(TD_ATLAS.regiones).filter(r => r.cont === a.cont).reduce((x, r) => x + r.paises.length, 0) : 0;
+  const cacheEq = {};
+  const docEquipo = async (eq, id) => { const k = eq.id + '/' + id; if (!(k in cacheEq)) { try { const s = await getDoc(doc(db, 'grupos', g, 'equipos', eq.id, 'atlas', id)); cacheEq[k] = s.exists() ? s.data() : null; } catch { cacheEq[k] = null; } } return cacheEq[k]; };
+  const filas = await Promise.all(alumnosCache.map(async al => {
+    const eq = equipos.find(e => (e.integrantes || []).includes(al.id)) || null;
+    let sug = { nota: 0, detalle: 'Sin trabajo' }, entregado = null, resumen = '', cal = '';
+    try { const c = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'tareas', catalogoId(a.id))); if (c.exists()) cal = c.data().calificacion ?? ''; } catch { /* */ }
+    try {
+      if (a.tipo === 'atlas') {
+        let c = null;
+        if (eq) { const d = await docEquipo(eq, a.cont); if (d) { c = { regiones: Object.entries(d.regiones || {}).map(([id, r]) => ({ ...r, id })), asign: d.asign || {} }; entregado = d.entregado || null; } }
+        if (!c) { const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'mi-atlas')); if (s.exists()) { const dd = s.data().datos || {}; c = (dd.conts || {})[a.cont] || null; const en = (dd.entregas || {})[a.cont]; if (en) entregado = { t: en }; } }
+        sug = sugerirAtlas(c, total); resumen = c ? (c.regiones || []).map(r => `${r.nombre} (${Object.values(c.asign).filter(x => x === r.id).length})`).join(' · ') : '';
+      } else if (a.tipo === 'cuadro') {
+        const d = eq ? await docEquipo(eq, CUADRO_MM.id) : null;
+        let datos = d;
+        if (!datos) { const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'tarea-cuadro-mm')); datos = s.exists() ? s.data() : null; }
+        if (datos) { sug = sugerirCuadro(datos.celdas); entregado = datos.entregado || null; resumen = CUADRO_MM.filas.map(([f, t]) => `${t}: ${CUADRO_MM.columnas.map(([c]) => (datos.celdas || {})[`${f}_${c}`] ? '●' : '○').join('')}`).join(' · '); }
+      } else if (a.tipo === 'desarma') {
+        const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'tarea-desarma'));
+        if (s.exists()) { const m = s.data().datos || {}; sug = sugerirDesarma(m); entregado = s.data().entregado || null; resumen = (m.reflexion || '').slice(0, 260); }
+      }
+    } catch { /* */ }
+    return { al, eq, sug, entregado, resumen, cal };
+  }));
+  const f = t => t && t.toDate ? t.toDate().toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : typeof t === 'number' ? new Date(t).toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
+  wrap.innerHTML = `<h4 class="td-h4">Calificar: ${escaparHTML(nombreCatalogo(a))}</h4>
+    ${enCatalogo ? '' : '<p class="aviso-td">⚠️ Esta tarea todavía no está en el catálogo: las calificaciones se guardan, pero no cuentan en el promedio hasta que la agregues.</p>'}
+    <p class="field-hint">La calificación sugerida sale de qué tan completo está el trabajo${a.tipo === 'atlas' ? ' (la mitad por países clasificados y la mitad por fichas con al menos 4 de 7 apartados)' : a.tipo === 'cuadro' ? ' (celdas llenas de 21)' : ' (ingredientes, que estén clasificados y una conclusión de al menos 40 palabras)'}. En equipo, todos reciben la misma sugerencia; puedes ajustar a quien no aportó (en el Monitor ves quién escribió qué).</p>
+    <div class="quiz-actions" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;"><button type="button" class="btn btn-ghost-dark btn-small" id="td-usar">Usar sugeridas en las vacías</button><button type="button" class="btn btn-ghost-dark btn-small" id="td-cerrar">Cerrar</button></div>
+    <div class="taller-tabla-wrap"><table class="taller-tabla td-tabla"><thead><tr><th>Alumno</th><th>Trabajo</th><th>Entrega</th><th>Sugerida</th><th>Calificación</th></tr></thead><tbody>
+    ${filas.map(x => `<tr data-id="${x.al.id}"><td><b>${escaparHTML(x.al.nombre)}</b>${x.eq ? `<br><small>👥 ${escaparHTML(x.eq.nombre)}</small>` : ''}</td>
+      <td><small>${escaparHTML(x.sug.detalle)}</small>${x.resumen ? `<details><summary>Ver</summary><small>${escaparHTML(x.resumen)}</small></details>` : ''}</td>
+      <td>${x.entregado ? `<span class="td-ok">✓ ${escaparHTML(f(x.entregado.t))}</span>` : '<span class="td-no">No entregada</span>'}</td>
+      <td><b class="td-sug">${x.sug.nota}</b></td>
+      <td><input type="number" min="0" max="10" step="0.1" class="calif-input td-in" value="${x.cal}" placeholder="0-10" data-sug="${x.sug.nota}"></td></tr>`).join('')}</tbody></table></div>
+    <button type="button" class="btn btn-primary btn-block" id="td-guardar">Guardar calificaciones</button><p class="save-msg" id="td-msg" hidden></p>`;
+  document.getElementById('td-cerrar').addEventListener('click', () => { wrap.hidden = true; });
+  document.getElementById('td-usar').addEventListener('click', () => wrap.querySelectorAll('.td-in').forEach(i => { if (i.value === '') i.value = i.dataset.sug; }));
+  document.getElementById('td-guardar').addEventListener('click', async () => {
+    const msg = document.getElementById('td-msg'), escr = [];
+    wrap.querySelectorAll('tr[data-id]').forEach(tr => {
+      const i = tr.querySelector('.td-in'), ref = doc(db, 'grupos', g, 'alumnos', tr.dataset.id, 'tareas', catalogoId(a.id));
+      if (i.value === '') escr.push(deleteDoc(ref).catch(() => {}));
+      else escr.push(setDoc(ref, { parcial: 'p2', nombre: nombreCatalogo(a), fecha: a.fecha, calificacion: Math.max(0, Math.min(10, parseFloat(i.value))), actualizado: serverTimestamp() }));
+    });
+    try { await Promise.all(escr); msg.textContent = '✓ Calificaciones guardadas. Ya se ven en Mi progreso.'; msg.hidden = false; }
+    catch (e) { msg.textContent = 'No se pudo guardar: ' + (e.message || e); msg.hidden = false; }
+  });
 }
 
 async function cargarProyecto() {

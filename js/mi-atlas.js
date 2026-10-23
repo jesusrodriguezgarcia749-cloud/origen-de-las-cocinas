@@ -6,6 +6,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, deleteField, FieldPath, collection, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
 import { DocITES, mapaContinentePNG, ABREV } from "./docx-ites.js";
+import { TAREAS_DIG } from "./clase-datos.js";
 
 const db = getFirestore(initializeApp(firebaseConfig));
 const SESSION_KEY = 'oc_sesion_alumno';
@@ -34,7 +35,10 @@ const CAMPOS_PAIS = [['platillos', 'Platillos de este país'], ['notas', 'Notas 
 
 let editando = null;
 // ---- modo equipo: el atlas vive en grupos/{g}/equipos/{e}/atlas/{continente} y se edita en vivo
-let ultimaNota = '';
+let ultimaNota = '', TAREA_EST = {}, entregaEq = {};
+const tareaDe = k => TAREAS_DIG['atlas-' + k];
+const cerrada = () => { const t = tareaDe(cont); return !!(t && TAREA_EST[t.id] && TAREA_EST[t.id].abierta === false); };
+function avisoCerrada() { estado('🔒 Tu maestro cerró esta tarea: ya no se guardan cambios.', 'mal'); }
 const nota = d => { ultimaNota = d; };
 const nomCampo = f => ({ nombre: 'el nombre', ...Object.fromEntries(CAMPOS_REGION.map(([k, t]) => [k, t])) })[f] || f;
 let codigoPendiente = null, abiertos = true, eqDocUnsub = null, msgModo = '';
@@ -97,6 +101,7 @@ async function entrar() {
   T = (t(local) > t(remoto) ? local : remoto) || local || remoto || { conts: {} };
   T.conts = T.conts || {};
   cont = T.ultimo && A.continentes[T.ultimo] ? T.ultimo : 'africa';
+  { const mh = location.hash.match(/miatlas=(africa|america|asia|europa|oceania)\b/); if (mh) cont = mh[1]; }
   estado(sesion.anon ? 'Se guarda solo en este dispositivo' : 'Tu trabajo se guarda en tu cuenta');
   const eq = $('#ma-equipo'); eq.value = T.equipo || '';
   if (!eq._listo) { eq._listo = true; eq.addEventListener('input', () => { T.equipo = eq.value; cambio(); }); }
@@ -107,6 +112,7 @@ async function entrar() {
     } catch { /* sin equipos */ }
   }
   if (!sesion.anon) { try { const g = await getDoc(doc(db, 'grupos', sesion.grupoId)); abiertos = !g.exists() || g.data().equiposAbiertos !== false; } catch { /* */ } }
+  if (!sesion.anon) onSnapshot(doc(db, 'grupos', sesion.grupoId), sn => { TAREA_EST = (sn.exists() && sn.data().tareasDig) || {}; pintarTarea(); }, () => {});
   if (EQ) modo = lsGet('miatlas_modo') === 'personal' ? 'personal' : 'equipo';
   pintarConts(); await cambiarModo(modo);
   if (codigoPendiente && !sesion.anon) { const c = codigoPendiente; codigoPendiente = null; history.replaceState(null, '', '#miatlas'); await unirse(c); }
@@ -217,7 +223,7 @@ function escuchar() {
   unsub = onSnapshot(refEq(k), sn => {
     existe[k] = sn.exists();
     if (k !== cont || modo !== 'equipo') return;
-    const nuevo = aEspejo(sn.exists() ? sn.data() : {}); aplicarPendientes(nuevo);
+    const nuevo = aEspejo(sn.exists() ? sn.data() : {}); aplicarPendientes(nuevo); entregaEq[k] = sn.exists() ? sn.data().entregado || null : null; pintarTarea();
     TE[k] = nuevo;
     if (!pend.size) estado(sn.metadata && sn.metadata.hasPendingWrites ? 'Guardando…' : 'Sincronizado con tu equipo ✓', 'ok');
     refrescarVivo();
@@ -353,7 +359,26 @@ function dibujar() {
       clearTimeout(tipT); tipT = setTimeout(() => { tip.hidden = true; }, 2200);
     });
   }
-  colorear(); panel(); fichas();
+  colorear(); panel(); fichas(); pintarTarea();
+}
+function entregadoActual() { return modo === 'equipo' ? entregaEq[cont] : ((T.entregas || {})[cont] ? { t: T.entregas[cont], por: sesion.nombre } : null); }
+function pintarTarea() {
+  const z = $('#ma-tarea'); if (!z) return;
+  const t = tareaDe(cont);
+  if (!t || !sesion || sesion.anon) { z.innerHTML = ''; return; }
+  const en = entregadoActual(), f = x => { const d = x && x.toDate ? x.toDate() : typeof x === 'number' ? new Date(x) : null; return d ? d.toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : ''; };
+  z.innerHTML = `<div class="ma-tarea-f ${cerrada() ? 'cerr' : en ? 'ent' : ''}"><span>📌 <b>Tarea ${t.tema} · ${t.nombre}</b> · cuenta para el Parcial 2. ${cerrada() ? '🔒 Tu maestro la cerró: ya no se guardan cambios.' : en ? `✅ Entregada el ${f(en.t)}${en.por ? ` por ${en.por}.` : /\.$/.test(f(en.t)) ? '' : '.'} Puedes corregir mientras siga abierta.` : 'Cuando terminen, entréguenla.'}</span>${!cerrada() && !en ? '<button type="button" class="btn-at" id="ma-entregar">📤 Entregar tarea</button>' : ''}</div>`;
+  const b = $('#ma-entregar');
+  if (b) b.addEventListener('click', async () => {
+    if (!C().regiones.length) { alert('Primero creen al menos una región y clasifiquen países.'); return; }
+    if (!confirm(`¿Entregar «${t.nombre}»? Podrán seguir corrigiendo mientras su maestro no la cierre.`)) return;
+    b.disabled = true;
+    try {
+      if (modo === 'equipo') { await flushEquipo(); const ref = refEq(cont); if (!existe[cont]) { const s0 = await getDoc(ref); if (!s0.exists()) await setDoc(ref, { regiones: {}, asign: {}, paises: {}, por: {}, ultimoAutor: sesion.alumnoId, ultimoPin: sesion.pin, actualizado: serverTimestamp() }); existe[cont] = true; } await updateDoc(ref, { entregado: { t: serverTimestamp(), por: sesion.nombre }, ultimoAutor: sesion.alumnoId, ultimoPin: sesion.pin, ultimoNombre: sesion.nombre, ultimoCambio: 'entregó la tarea', actualizado: serverTimestamp() }); entregaEq[cont] = { t: Date.now(), por: sesion.nombre }; }
+      else { T.entregas = { ...(T.entregas || {}), [cont]: Date.now() }; cambio(); await guardarYa(); }
+      pintarTarea();
+    } catch (e) { alert('No se pudo entregar: ' + (e.message || e)); b.disabled = false; }
+  });
 }
 function ajustarVista() {
   const svg = $('#ma-svg'), rc = svg.getBoundingClientRect(), ar = rc.width && rc.height ? rc.width / rc.height : 1.6;
@@ -377,6 +402,7 @@ function colorear() {
 }
 function tocarPais(id) {
   const c = C();
+  if (regSel && cerrada()) { avisoCerrada(); return; }
   if (regSel) {
     const nuevo = c.asign[id] === regSel ? null : regSel;
     nota(`${nuevo ? 'pintó' : 'quitó'} ${corto(PAIS[id].n)} ${nuevo ? 'en' : 'de'} ${(c.regiones.find(r => r.id === regSel) || {}).nombre || 'una región'}`);
@@ -415,6 +441,7 @@ function panel() {
     $$('.ma-colores button', fe).forEach(b => b.addEventListener('click', () => { col = b.dataset.c; $$('.ma-colores button', fe).forEach(x => x.setAttribute('aria-checked', String(x === b))); fe.style.setProperty('--c', col); }));
     fe.querySelector('[data-cancel]').addEventListener('click', () => { editando = null; panel(); });
     fe.addEventListener('submit', e => {
+      if (cerrada()) { e.preventDefault(); avisoCerrada(); return; }
       e.preventDefault(); const n = fe.querySelector('input').value.trim(); if (!n) { fe.querySelector('input').focus(); return; }
       nota(`renombró la región «${n}»`); r.nombre = n; r.color = col; editando = null;
       if (modo === 'equipo') { encolar(['regiones', r.id, 'nombre'], n, true); encolar(['regiones', r.id, 'color'], col, true); } else cambio();
@@ -425,6 +452,7 @@ function panel() {
   let color = COLORES[siguienteColor()];
   $$('.ma-colores button', p).forEach(b => b.addEventListener('click', () => { color = b.dataset.c; $$('.ma-colores button', p).forEach(x => x.setAttribute('aria-checked', String(x === b))); }));
   $('#ma-nueva').addEventListener('submit', e => {
+    if (cerrada()) { e.preventDefault(); avisoCerrada(); return; }
     e.preventDefault(); const n = $('#ma-nueva-n').value.trim(); if (!n) { $('#ma-nueva-n').focus(); return; }
     const id = 'r' + Date.now().toString(36);
     const nueva = { nombre: n, color, orden: Date.now() }; nota(`creó la región «${n}»`);
@@ -433,7 +461,7 @@ function panel() {
     panel(); fichas(); colorear();
     const f = document.getElementById('ficha-' + id); if (f) f.open = true;
   });
-  $$('[data-pf]', p).forEach(t => t.addEventListener('input', () => { const c2 = C(); c2.paises[paisSel] = c2.paises[paisSel] || {}; c2.paises[paisSel][t.dataset.pf] = t.value; nota(`escribe sobre ${corto(PAIS[paisSel].n)}`); if (modo === 'equipo') encolar(['paises', paisSel, t.dataset.pf], t.value); else cambio(); }));
+  $$('[data-pf]', p).forEach(t => t.addEventListener('input', () => { if (cerrada()) return; const c2 = C(); c2.paises[paisSel] = c2.paises[paisSel] || {}; c2.paises[paisSel][t.dataset.pf] = t.value; nota(`escribe sobre ${corto(PAIS[paisSel].n)}`); if (modo === 'equipo') encolar(['paises', paisSel, t.dataset.pf], t.value); else cambio(); }));
 }
 function siguienteColor() { const usados = C().regiones.map(r => r.color); const i = COLORES.findIndex(c => !usados.includes(c)); return i < 0 ? C().regiones.length % COLORES.length : i; }
 
@@ -456,7 +484,9 @@ function fichas() {
         <div class="ma-ficha-pie"><span class="ma-cuenta">${CAMPOS_REGION.reduce((x, [f]) => x + palabras(r[f]), 0)} palabras</span><button type="button" class="ma-borrar" data-del="${r.id}">Eliminar región</button></div>
       </div></details>`;
   }).join('');
+  $$('#ma-fichas [data-rf]').forEach(t => { t.readOnly = cerrada(); }); $$('#ma-panel [data-pf]').forEach(t => { t.readOnly = cerrada(); });
   $$('#ma-fichas [data-rf]').forEach(t => t.addEventListener('input', () => {
+    if (cerrada()) return;
     const r = C().regiones.find(x => x.id === t.closest('details').dataset.id); r[t.dataset.rf] = t.value; nota(`escribe ${nomCampo(t.dataset.rf).toLowerCase()} de «${r.nombre}»`);
     if (modo === 'equipo') { encolar(['regiones', r.id, t.dataset.rf], t.value); if (t.dataset.rf !== 'nombre') { const c3 = C(); c3.por[r.id] = c3.por[r.id] || {}; c3.por[r.id][t.dataset.rf] = sesion.nombre; encolar(['por', r.id, t.dataset.rf], sesion.nombre); pintarAutores(); } } else cambio();
     if (t.dataset.rf === 'nombre') { panel(); t.closest('details').querySelector('summary b').textContent = t.value; }
@@ -464,12 +494,14 @@ function fichas() {
   }));
   pintarAutores();
   $$('#ma-fichas [data-fcol]').forEach(b => b.addEventListener('click', () => {
+    if (cerrada()) { avisoCerrada(); return; }
     const r = C().regiones.find(x => x.id === b.closest('details').dataset.id), col = b.dataset.fcol; if (r.color === col) return;
     r.color = col; nota(`cambió el color de «${r.nombre}»`);
     if (modo === 'equipo') encolar(['regiones', r.id, 'color'], col, true); else cambio();
     colorear(); panel(); fichas();
   }));
   $$('#ma-fichas [data-del]').forEach(b => b.addEventListener('click', () => {
+    if (cerrada()) { avisoCerrada(); return; }
     const c2 = C(), r = c2.regiones.find(x => x.id === b.dataset.del);
     if (!confirm(`¿Eliminar la región «${r.nombre}»? Sus países quedarán sin región y se borrará lo que escribiste en su ficha.`)) return;
     nota(`eliminó la región «${r.nombre}»`); c2.regiones = c2.regiones.filter(x => x.id !== r.id);

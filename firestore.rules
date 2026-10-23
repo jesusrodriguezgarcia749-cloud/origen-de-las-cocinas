@@ -5,7 +5,8 @@ rules_version = '2';
 // día se le dé de alta un usuario aquí, ese correo nunca puede escribir.
 // Alumno (sin sesión, entra con nombre y PIN): solo lee, y solo escribe
 // su intento de examen, la calificación de su examen en línea, los
-// temas de repaso que termina y su trabajo en Mi atlas (individual y de equipo).
+// temas de repaso que termina y su trabajo en Mi atlas y en las tareas
+// digitales (individual y de equipo).
 service cloud.firestore {
   match /databases/{database}/documents {
     function esDocente() {
@@ -74,10 +75,11 @@ service cloud.firestore {
         match /examenes/{parcial} {
           allow write: if parcial in ['p1', 'p2', 'final'];
         }
-        // Mi atlas: el alumno guarda y actualiza su propio mapa
-        // (solo el documento «mi-atlas») y debe enviar su PIN correcto.
+        // Mi atlas y tareas digitales individuales: el alumno guarda y
+        // actualiza solo su propio trabajo («mi-atlas» o «tarea-…») y debe
+        // enviar su PIN correcto.
         match /atlas/{docId} {
-          allow create, update: if docId == 'mi-atlas'
+          allow create, update: if (docId == 'mi-atlas' || docId.matches('tarea-[a-z0-9-]+'))
             && request.resource.data.pinVerificado == get(/databases/$(database)/documents/grupos/$(grupoId)/alumnos/$(alumnoId)).data.pin;
         }
         // Actividades de repaso: el alumno solo puede marcar un tema como

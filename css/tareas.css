@@ -62,3 +62,33 @@
 .de-campos input, .de-lbl textarea { font: inherit; font-weight: 400; font-size: .95rem; width: 100%; box-sizing: border-box; padding: 9px 11px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--parchment); color: var(--ink); }
 .de-pie { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
 @media (max-width: 560px) { .de-campos { grid-template-columns: 1fr; } }
+
+/* ---- Tareas: temas que se despliegan y estado de cada tarea */
+.tq-quien { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; background: var(--cream); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; margin-bottom: 16px; font-size: .93rem; }
+.tq-tema { background: var(--parchment); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 12px; }
+.tq-tema > summary { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; list-style: none; }
+.tq-tema > summary::-webkit-details-marker { display: none; }
+.tq-tema > summary::after { content: '▾'; margin-left: auto; color: var(--ink-soft); transition: transform .2s; }
+.tq-tema[open] > summary::after { transform: rotate(180deg); }
+.tq-tema > summary b { display: block; font-size: 1.05rem; }
+.tq-tema > summary small { color: var(--ink-soft); }
+.tq-num { flex: none; min-width: 46px; height: 46px; padding: 0 6px; border-radius: 12px; display: grid; place-items: center; background: var(--ink); color: var(--parchment); font: 800 1rem var(--font-body); }
+.tq-tema .cl-cards { padding: 0 16px 16px; }
+.cl-pronto { opacity: .6; cursor: default; }
+.cl-estado { margin-top: 2px; }
+.cl-avance { font-size: .8rem !important; color: var(--ink-soft); flex: 0 !important; }
+.tq { display: inline-block; font: 700 .76rem var(--font-body); padding: 3px 10px; border-radius: 999px; background: var(--parchment); border: 1px solid var(--line); color: var(--ink-soft); }
+.tq-pend { color: #A06A10; border-color: #E0A72E; }
+.tq-prog { color: #2E6FA8; border-color: #2E6FA8; }
+.tq-ent { color: #3F7A4F; border-color: #3F9A55; background: rgba(63,154,85,.1); }
+.tq-cal { color: #fff; background: #3F7A4F; border-color: #3F7A4F; }
+.tq-cerr { color: #A63D2F; border-color: #A63D2F; }
+.tq-practica, .tq-pronto { font-weight: 600; }
+.cl-vale { display: inline-block; font: 700 .85rem var(--font-body); color: #3F7A4F; background: rgba(63,154,85,.1); border-radius: 999px; padding: 4px 12px; margin: 0 0 12px; }
+.cl-vale-p { color: #2E6FA8; background: rgba(46,111,168,.1); }
+.cl-entregar, .cl-entregada, .cl-cerrada { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 14px; border-radius: 12px; padding: 10px 14px; margin: 0 0 12px; font-size: .92rem; }
+.cl-entregar { background: rgba(201,138,44,.12); border: 1px solid rgba(201,138,44,.45); }
+.cl-entregada { background: rgba(63,154,85,.12); border: 1px solid rgba(63,154,85,.45); color: #2F5E3B; font-weight: 600; }
+.cl-cerrada { background: rgba(166,61,47,.1); border: 1px solid rgba(166,61,47,.4); color: #8A3326; font-weight: 600; }
+html[data-theme="dark"] .cl-entregada { color: #9BD3A8; } html[data-theme="dark"] .cl-cerrada { color: #F0A597; }
+.cl-tag { font: 600 .72rem var(--font-body); color: #2E6FA8; background: rgba(46,111,168,.1); padding: 2px 8px; border-radius: 999px; vertical-align: middle; }

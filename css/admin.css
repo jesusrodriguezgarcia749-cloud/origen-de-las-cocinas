@@ -616,3 +616,21 @@ body.mon-completo .mon-grid { grid-template-columns: repeat(auto-fill, minmax(21
 .cu-det { width: 100%; border-collapse: collapse; font-size: .9rem; }
 .cu-det th, .cu-det td { border: 1px solid var(--line); padding: .5rem .6rem; vertical-align: top; text-align: left; }
 .cu-det tbody th { background: var(--cream); width: 140px; }
+
+/* Tareas digitales */
+.td-card { border-left: 4px solid var(--saffron); }
+.td-tema { margin: .6rem 0 .9rem; }
+.td-tit { margin: 0 0 .35rem; } .td-tit small { color: var(--ink-soft); }
+.td-fila { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; padding: .45rem 0; border-top: 1px dashed var(--line); }
+.td-nom { flex: 1 1 220px; font-weight: 600; }
+.td-cat.si { color: #3F7A4F; border-color: #3F7A4F; opacity: 1; }
+.td-ab.si { color: #3F7A4F; border-color: #3F7A4F; } .td-ab.no { color: #A63D2F; border-color: #A63D2F; }
+.td-h4 { margin: 1rem 0 .4rem; }
+.aviso-td { background: rgba(224,167,46,.15); border: 1px solid #E0A72E; border-radius: 8px; padding: .5rem .7rem; font-size: .9rem; }
+.td-tabla td { vertical-align: middle; }
+.td-ok { color: #3F7A4F; font-weight: 700; font-size: .85rem; } .td-no { color: #A63D2F; font-size: .85rem; }
+.td-sug { font-size: 1.05rem; color: var(--saffron-dark); }
+.td-in { width: 5.5rem; }
+.td-fila { display: grid; grid-template-columns: 1fr auto auto auto; gap: .4rem; align-items: center; }
+.td-fila .btn { padding: 6px 12px !important; font-size: .8rem !important; white-space: nowrap; }
+@media (max-width: 560px) { .td-fila { grid-template-columns: 1fr 1fr 1fr; } .td-nom { grid-column: 1 / -1; } }
