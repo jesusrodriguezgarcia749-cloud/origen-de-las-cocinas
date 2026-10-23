@@ -142,3 +142,25 @@ html[data-theme="dark"] .cl-entregada { color: #9BD3A8; } html[data-theme="dark"
 .cu-fuente input:focus { outline: none; border-style: solid; border-color: var(--saffron, #C98A2C); }
 .cu-regla { display: block; flex-basis: 100%; font-size: .8rem; color: var(--ink-soft); margin-top: 4px; }
 .cu-celda textarea.cu-corta { border-color: #D9A441; background-image: linear-gradient(0deg, rgba(217,164,65,.08), rgba(217,164,65,.08)); }
+/* Desarma: fichas del platillo */
+.de-paso { font-family: var(--font-display, serif); font-size: 1.15rem; margin: 18px 0 8px; }
+.de-paso small { font: 600 .78rem var(--font-body); color: var(--ink-soft); margin-left: 6px; }
+.de-mio .de-paso { margin-top: 0; }
+.de-cal { border-top: 5px solid #3F9A55; }
+.de-proy { border-top: 5px solid var(--saffron, #C98A2C); }
+.de-barra { margin-top: 16px; }
+.de-acc { display: flex; justify-content: flex-end; margin: 4px 0 8px; }
+.de-sub { font: 700 .98rem var(--font-body); margin: 18px 0 4px; padding-top: 12px; border-top: 1px dashed var(--line); }
+.de-hint { font-size: .84rem; color: var(--ink-soft); margin: 2px 0 8px; }
+.de-campos input, .de-lbl input, .de-lbl textarea { font: inherit; font-weight: 400; font-size: 1rem; width: 100%; box-sizing: border-box; padding: 11px 13px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--parchment); color: var(--ink); min-height: 46px; }
+.de-campos input:focus, .de-lbl textarea:focus { outline: none; border-color: var(--saffron, #C98A2C); box-shadow: 0 0 0 3px rgba(201,138,44,.2); }
+.de-pal { font-weight: 500; color: var(--ink-soft); font-size: .78rem; }
+.de-de { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding-top: 4px; }
+.de-de small { font-weight: 600; color: var(--ink-soft); margin-right: 4px; }
+.de-ings button[aria-pressed="true"][data-de] { background: #2E6FA8; border-color: #2E6FA8; color: #fff; }
+.de-graf p { margin: 6px 0; font-size: .9rem; }
+.de-barra-o { display: flex; height: 18px; border-radius: 9px; overflow: hidden; background: var(--line); }
+.de-barra-o i { display: block; height: 100%; }
+.de-ley { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .82rem; }
+.de-ley i { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+html[data-theme="dark"] .de-campos input, html[data-theme="dark"] .de-lbl textarea { background-color: #1B1814 !important; }

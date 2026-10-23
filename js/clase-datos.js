@@ -150,7 +150,7 @@ export const TEMAS_TAREAS = [
   ] },
   { tema: '3.2', titulo: 'México prehispánico y mestizo', fecha: '2026-10-23', fechaTexto: 'Vie 23 de octubre', acts: [
     { id: 'cuadro-mm', tipo: 'cuadro', icono: '🤝', nombre: 'Cuadro comparativo mexica vs. maya', modo: 'En equipo · en vivo', desc: 'Llenen juntos, cada quien desde su celular, el cuadro que compara la cocina mexica con la maya.' },
-    { id: 'desarma', tipo: 'desarma', icono: '🔍', nombre: 'Desarma el platillo (pregunta 14)', modo: 'Individual', desc: 'Separa los ingredientes en «de América» y «llegó después de 1521»; luego hazlo con el platillo de tu proyecto.' },
+    { id: 'desarma', tipo: 'desarma', icono: '🔍', nombre: 'Desarma el platillo (pregunta 14)', modo: 'Individual', desc: 'Practica separando ingredientes de América y de fuera; luego investiga un platillo nuevo (la tarea) y arma la ficha del platillo de tu proyecto.' },
     { id: 'aporto', tipo: 'practica', icono: '🎯', nombre: '¿Aportó o llegó?', modo: 'Juego de práctica', desc: '¿Lo aportó México al mundo o llegó a México desde 1521? Diez rondas rápidas para repasar.' },
   ] },
   { tema: '3.2', titulo: 'Campeche y el resto de América', fecha: '2026-10-30', fechaTexto: 'Vie 30 de octubre', acts: [
@@ -197,12 +197,20 @@ export function sugerirCuadro(celdas) {
   const nota = r1(8 * llenas / total + 2 * fu / (inv.length || 1));
   return { nota, detalle: `${llenas}/${total} celdas llenas${cortas ? ` (+${cortas} con menos de ${MIN_PALABRAS_CELDA} palabras, no cuentan)` : ''} · ${fu}/${inv.length} fuentes de investigación` };
 }
-// Desarma: 3 por clasificar ingredientes (al menos 3), 3 por clasificarlos todos, 4 por la conclusión (40 palabras o más).
+// Desarma: se califica solo la ficha del platillo investigado (no la del proyecto).
+// Ficha 1.5 (nombre, región, historia de 20 palabras) · ingredientes 4 (al menos 5, clasificados y,
+// los que llegaron, de dónde) · técnicas 1 (al menos 2 clasificadas) · conclusión 3 (25 palabras por
+// pregunta) · fuentes 0.5.
 export function sugerirDesarma(m) {
-  if (!m || !(m.nombre || '').trim()) return { nota: 0, detalle: 'Sin trabajo' };
-  const ings = m.ingredientes || [], clas = ings.filter(x => x.o === 'n' || x.o === 'l').length, pal = palabras(m.reflexion);
-  const nota = 3 * Math.min(1, ings.length / 3) + 3 * (ings.length ? clas / ings.length : 0) + 4 * Math.min(1, pal / 40);
-  return { nota: r1(nota), detalle: `${m.nombre}: ${ings.length} ingredientes, ${clas} clasificados · conclusión de ${pal} palabras` };
+  const F = m && m.ficha;
+  if (!F || !(F.nombre || '').trim()) return { nota: 0, detalle: m && (m.nombre || (m.proyecto || {}).nombre) ? 'Solo llenó la ficha de su proyecto (no se califica)' : 'Sin trabajo' };
+  const ings = F.ingredientes || [], tecs = F.tecnicas || [];
+  const clas = ings.filter(x => x.o === 'n' || x.o === 'l').length, lleg = ings.filter(x => x.o === 'l'), conDe = lleg.filter(x => x.de && x.de !== 'otro').length;
+  const tc = tecs.filter(x => x.o === 'n' || x.o === 'l').length, ps = ['q1', 'q2', 'q3'].map(k => palabras(F[k]));
+  const nota = 0.5 * !!(F.nombre || '').trim() + 0.5 * !!(F.region || '').trim() + 0.5 * Math.min(1, palabras(F.historia) / 20)
+    + Math.min(1, ings.length / 5) + 2 * (ings.length ? clas / ings.length : 0) + (lleg.length ? conDe / lleg.length : ings.length ? 1 : 0)
+    + Math.min(1, tc / 2) + ps.reduce((s, n) => s + Math.min(1, n / 25), 0) + 0.5 * !!(F.fuentes || '').trim();
+  return { nota: r1(nota), detalle: `${F.nombre}: ${ings.length} ingredientes (${clas} clasificados${lleg.length ? `, ${conDe}/${lleg.length} con su origen` : ''}) · ${tc} técnicas · conclusión de ${ps.join('/')} palabras · ${(F.fuentes || '').trim() ? 'con' : 'sin'} fuentes` };
 }
 
 // ---------- Las siete influencias de la cocina campechana (compendio 3.2, según el maestro Rafael E. Meneses López)

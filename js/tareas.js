@@ -21,6 +21,7 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '
 const slug = n => n.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
 const lsGet = k => { try { return localStorage.getItem(k); } catch { return null; } };
 const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch { /* */ } };
+const palabras = t => (String(t || '').trim().match(/\S+/g) || []).length;
 const barajar = a => { const c = [...a]; for (let i = c.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [c[i], c[j]] = [c[j], c[i]]; } return c; };
 const punto = t => /\.$/.test(t) ? t : t + '.';
 const fechaHora = ts => { const d = ts && ts.toDate ? ts.toDate() : typeof ts === 'number' ? new Date(ts) : null; return d ? d.toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : ''; };
@@ -119,7 +120,7 @@ async function estadoDe(a) {
       if (s.exists()) { out.avance = sugerirInfluencias(s.data()).detalle; out.entregado = s.data().entregado || null; }
     } else if (a.tipo === 'desarma') {
       const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al, 'atlas', 'tarea-desarma'));
-      if (s.exists()) { const m = s.data().datos || {}; out.avance = m.nombre ? `${m.nombre}: ${(m.ingredientes || []).length} ingredientes` : ''; out.entregado = s.data().entregado || null; }
+      if (s.exists()) { const m = (s.data().datos || {}).ficha || {}; out.avance = m.nombre ? `${m.nombre}: ${(m.ingredientes || []).length} ingredientes` : ''; out.entregado = s.data().entregado || null; }
     }
   } catch { /* */ }
   return out;
@@ -370,26 +371,23 @@ function actDesarma(cont) {
   escucharGrupo();
   const a = TAREAS_DIG.desarma, ref = doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'atlas', 'tarea-desarma');
   const local = `clase_miplatillo_${sesion.grupoId}_${sesion.alumnoId}`;
-  let M = { nombre: '', alumno: sesion.nombre, ingredientes: [], reflexion: '', _t: 0 }, entregado = null, timer = null, rep = () => {};
-  try { M = { ...M, ...(JSON.parse(lsGet(local) || 'null') || {}) }; } catch { /* */ }
-  cont.innerHTML = `<p class="atlas-ayuda">La cocina mexicana no es «prehispánica» ni «española»: es <b>mestiza</b>. Primero practica con un platillo de ejemplo; después hazlo con el platillo de tu proyecto.</p>
+  let M = normDesarma({}), entregado = null, timer = null, rep = () => {};
+  try { M = normDesarma(JSON.parse(lsGet(local) || 'null') || {}); } catch { /* */ }
+  cont.innerHTML = `<p class="atlas-ayuda">La cocina mexicana no es «prehispánica» ni «española»: es <b>mestiza</b>. <b>1.</b> Practica con los platillos de ejemplo. <b>2.</b> Investiga un platillo nuevo: esa es la tarea que se califica. <b>3.</b> Aparte, arma la ficha del platillo de tu proyecto con la misma estructura.</p>
+    <h3 class="de-paso">1 · Practica <small>no lleva calificación</small></h3>
     <div class="atlas-zoom" id="de-platos">${PLATILLOS.map((p, i) => `<button type="button" class="chip-at" data-p="${p.id}" aria-pressed="${i === 0}">${p.emoji} ${esc(p.nombre)}</button>`).join('')}</div>
     <div id="de-juego"></div>
-    <section class="de-mio"><h3>✍️ La tarea: el platillo de tu proyecto</h3>
-      <p class="atlas-ayuda">Es la pregunta 14 de «Mi Plato, Mi Historia»: <i>¿qué parte de mi platillo es herencia prehispánica y qué parte fue adoptada tras la conquista?</i> Si un ingrediente no lo sabes, márcalo como «No sé» e investígalo.</p>
-      <div class="ma-barra"><span>👤 <b>${esc(sesion.nombre)}</b></span><span class="ma-estado" id="de-estado"></span><button type="button" class="btn-ruta" id="de-word">⬇ Descargar en Word</button></div>
-      <div data-entrega></div>
-      <label class="de-lbl">Tu platillo<input id="de-nombre" value="${esc(M.nombre)}" placeholder="Ejemplo: relleno negro"></label>
-      <label class="de-lbl">Sus ingredientes principales, uno por renglón<textarea id="de-ings" rows="5" placeholder="Pavo\nChile seco quemado\nAchiote\nHuevo…">${esc((M.ingredientes || []).map(x => x.n).join('\n'))}</textarea></label>
-      <div id="de-clasif"></div>
-      <label class="de-lbl">Mi conclusión: ¿qué parte es herencia prehispánica y qué parte fue adoptada? ¿Por qué?<textarea id="de-refl" rows="5" placeholder="Mi platillo es mestizo porque…">${esc(M.reflexion)}</textarea></label></section>`;
+    <div class="ma-barra de-barra"><span>👤 <b>${esc(sesion.nombre)}</b></span><span class="ma-estado" id="de-estado"></span></div>
+    ${fichaDesarmaHTML('fh', '2 · La tarea: investiga un platillo nuevo', 'Elige un platillo mexicano <b>distinto</b> al de tu proyecto y a los de la práctica (pregúntale a tu maestro si tienes duda). Investígalo en internet y anota tus fuentes. <b>Esta es la que se califica.</b>', 'Ejemplo: pozole, tamales colados, chiles rellenos…', true)}
+    ${fichaDesarmaHTML('pr', '3 · Para tu proyecto: el platillo de «Mi Plato, Mi Historia»', 'Es la pregunta 14 de tu proyecto: <i>¿qué parte de mi platillo es herencia prehispánica y qué parte fue adoptada tras la conquista?</i> Hazla con la misma estructura y descárgala en Word para agregarla a tu proyecto. <b>No cuenta para la tarea de hoy.</b>', 'El platillo de tu proyecto', false)}`;
   const estado = (t, c = 'ok') => { const e = $('#de-estado'); if (e) { e.textContent = t; e.className = 'ma-estado ' + c; } };
   const subir = async () => { clearTimeout(timer); timer = null; try { await setDoc(ref, { datos: M, pinVerificado: sesion.pin, nombre: sesion.nombre, actualizado: serverTimestamp() }, { merge: true }); estado('Guardado en tu cuenta ✓'); } catch { estado('Guardado solo en este dispositivo (no se pudo subir).', 'mal'); } };
-  const guardar = () => { if (!abierta(a.id)) return; M._t = Date.now(); lsSet(local, JSON.stringify(M)); estado('Guardando…', ''); clearTimeout(timer); timer = setTimeout(subir, 1000); };
-  // trae lo de la cuenta si es más nuevo
+  // la ficha calificada se congela cuando el maestro cierra la tarea; la del proyecto siempre se puede editar
+  const guardar = k => { if (k === 'ficha' && !abierta(a.id)) return false; M._t = Date.now(); lsSet(local, JSON.stringify(M)); estado('Guardando…', ''); clearTimeout(timer); timer = setTimeout(subir, 1000); return true; };
+  const fichas = { ficha: conectarFichaDesarma($('#de-fh'), () => M.ficha, () => guardar('ficha'), 'ficha'), proyecto: conectarFichaDesarma($('#de-pr'), () => M.proyecto, () => guardar('proyecto'), 'proyecto') };
   getDoc(ref).then(s => {
     if (!s.exists()) return; const d = s.data(); entregado = d.entregado || null; rep();
-    if (d.datos && (d.datos._t || 0) > (M._t || 0)) { M = { ...M, ...d.datos }; $('#de-nombre').value = M.nombre || ''; $('#de-ings').value = (M.ingredientes || []).map(x => x.n).join('\n'); $('#de-refl').value = M.reflexion || ''; pintarClasif(); }
+    if (d.datos && (d.datos._t || 0) > (M._t || 0)) { M = normDesarma(d.datos); fichas.ficha.cargar(); fichas.proyecto.cargar(); }
     estado('Guardado en tu cuenta ✓');
   }).catch(() => {});
   // ---- práctica con platillos de ejemplo
@@ -412,40 +410,123 @@ function actDesarma(cont) {
   };
   $$('#de-platos .chip-at').forEach(b => b.addEventListener('click', () => juego(b.dataset.p)));
   juego(PLATILLOS[0].id);
-  // ---- el platillo del proyecto
-  const OPC = [['n', '🌎 De América'], ['l', '⛵ Llegó después'], ['x', '❓ No sé']];
-  const pintarClasif = () => {
-    $('#de-clasif').innerHTML = (M.ingredientes || []).length ? `<ul class="de-ings de-mios">${M.ingredientes.map((x, i) => `<li><span>${esc(x.n)}</span><div>${OPC.map(([v, t]) => `<button type="button" data-i="${i}" data-v="${v}" aria-pressed="${x.o === v}">${t}</button>`).join('')}</div></li>`).join('')}</ul>` : '';
-    $$('#de-clasif button').forEach(b => b.addEventListener('click', () => { if (!abierta(a.id)) return; M.ingredientes[+b.dataset.i].o = b.dataset.v; guardar(); pintarClasif(); }));
-  };
-  $('#de-ings').addEventListener('input', e => {
-    const viejos = Object.fromEntries((M.ingredientes || []).map(x => [x.n.toLowerCase(), x.o]));
-    M.ingredientes = e.target.value.split('\n').map(x => x.trim()).filter(Boolean).map(n => ({ n, o: viejos[n.toLowerCase()] || '' })); guardar(); pintarClasif();
-  });
-  $('#de-nombre').addEventListener('input', e => { M.nombre = e.target.value; guardar(); });
-  $('#de-refl').addEventListener('input', e => { M.reflexion = e.target.value; guardar(); });
-  pintarClasif();
-  rep = barraEntrega($('.de-mio', cont), a, {
+  rep = barraEntrega($('#de-fh'), a, {
     entregado: () => entregado,
     alEntregar: async () => {
-      if (!(M.nombre || '').trim() || !(M.ingredientes || []).length) throw new Error('Escribe el nombre de tu platillo y al menos un ingrediente.');
+      if (!(M.ficha.nombre || '').trim() || !(M.ficha.ingredientes || []).length) throw new Error('Escribe el nombre del platillo que investigaste y al menos un ingrediente.');
       await subir(); await setDoc(ref, { entregado: { t: serverTimestamp(), por: sesion.nombre }, pinVerificado: sesion.pin, nombre: sesion.nombre }, { merge: true }); entregado = { t: Date.now() };
     },
   });
-  $('#de-word').addEventListener('click', async () => {
-    if (!(M.nombre || '').trim() || !(M.ingredientes || []).length) { alert('Escribe el nombre de tu platillo y al menos un ingrediente.'); return; }
-    const D = new DocITES(); await D.cargarLogo();
-    D.portada({ kicker: 'Proyecto «Mi Plato, Mi Historia» · Pregunta 14', titulo: M.nombre.trim(), subtitulo: '¿Qué parte es herencia prehispánica y qué parte fue adoptada tras la conquista?', etiqueta: 'Alumno', personas: [sesion.nombre] });
-    const nom = { n: 'De América (prehispánico)', l: 'Llegó después de 1521', x: 'Por investigar', '': 'Sin clasificar' };
-    const fondo = { n: 'E3F1E6', l: 'F7E6D8', x: 'F1F1F1', '': 'FFFFFF' };
-    D.h1('Mis ingredientes', `${M.ingredientes.filter(x => x.o === 'n').length} de América · ${M.ingredientes.filter(x => x.o === 'l').length} llegaron después de 1521 · ${M.ingredientes.filter(x => !x.o || x.o === 'x').length} por investigar`);
-    D.tabla([['Ingrediente', 'Origen'], ...M.ingredientes.map(x => [{ t: x.n, b: true }, { t: nom[x.o || ''], fondo: fondo[x.o || ''] }])], { anchos: [4680, 4680], cebra: false });
-    D.h1('Mi conclusión'); D.texto(M.reflexion);
-    D.descargar(`Mi_platillo_pregunta14_${slug(sesion.nombre)}`);
-  });
+  $$('[data-de-word]', cont).forEach(b => b.addEventListener('click', () => wordDesarma(b.dataset.deWord === 'fh' ? M.ficha : M.proyecto, b.dataset.deWord === 'fh')));
   const salir = () => { if (timer) subir(); };
   window.addEventListener('beforeunload', salir);
   detener = () => { window.removeEventListener('beforeunload', salir); window.removeEventListener('estado-tareas', rep); salir(); };
+}
+// ---- Ficha de un platillo (la de la tarea y la del proyecto usan la misma)
+const DE_ING = [['n', '🌎 De América'], ['l', '⛵ Llegó después'], ['x', '❓ No sé']];
+const DE_TEC = [['n', '🌎 Prehispánica'], ['l', '⛵ Llegó con los europeos'], ['x', '❓ No sé']];
+const DE_DE = [['europa', 'Europa'], ['asia', 'Asia'], ['africa', 'África'], ['otro', 'Otro / no sé']];
+const DE_COLOR = { america: '#3F9A55', europa: '#2E6FA8', asia: '#B5486E', africa: '#E07B39', otro: '#8E5BA8', sin: '#C9C0B2' };
+const DE_NOM = { america: 'América', europa: 'Europa', asia: 'Asia', africa: 'África', otro: 'Otro o sin saber de dónde', sin: 'Sin clasificar' };
+const DE_PREG = [
+  ['q1', '¿Qué parte de este platillo es herencia prehispánica?', 'Los ingredientes y las técnicas que ya existían antes de 1521…'],
+  ['q2', '¿Qué se adoptó después de la conquista y de dónde llegó?', 'Por ejemplo: el cerdo y la manteca llegaron de Europa; la canela, de Asia…'],
+  ['q3', '¿Por qué decimos que es un platillo mestizo?', 'Explica con tus palabras cómo se mezclaron las dos tradiciones…'],
+];
+const fichaVacia = () => ({ nombre: '', region: '', historia: '', ingredientes: [], tecnicas: [], q1: '', q2: '', q3: '', fuentes: '' });
+// antes solo había el platillo del proyecto ({nombre, ingredientes, reflexion}): pasa a la ficha del proyecto
+function normDesarma(d) {
+  d = d || {};
+  if (!d.ficha && !d.proyecto && (d.nombre || (d.ingredientes || []).length || d.reflexion)) return { ficha: fichaVacia(), proyecto: { ...fichaVacia(), nombre: d.nombre || '', ingredientes: d.ingredientes || [], q1: d.reflexion || '' }, _t: d._t || 0 };
+  return { ficha: { ...fichaVacia(), ...(d.ficha || {}) }, proyecto: { ...fichaVacia(), ...(d.proyecto || {}) }, _t: d._t || 0 };
+}
+const origenDe = x => x.o === 'n' ? 'america' : x.o === 'l' ? (x.de || 'otro') : 'sin';
+function fichaDesarmaHTML(p, titulo, ayuda, ejemplo, calificada) {
+  return `<section class="de-mio ${calificada ? 'de-cal' : 'de-proy'}" id="de-${p}"><h3 class="de-paso">${titulo}</h3><p class="atlas-ayuda">${ayuda}</p>
+    <div class="de-acc"><button type="button" class="btn-ruta" data-de-word="${p}">⬇ Descargar en Word</button></div>
+    ${calificada ? '<div data-entrega></div>' : ''}
+    <h4 class="de-sub">📋 Ficha del platillo</h4>
+    <div class="de-campos"><label>Nombre del platillo<input data-f="nombre" placeholder="${esc(ejemplo)}"></label><label>Estado o región de donde es<input data-f="region" placeholder="Ejemplo: Campeche, Puebla, Oaxaca…"></label></div>
+    <label class="de-lbl">Su historia: ¿dónde y cómo surgió?<textarea data-f="historia" rows="3" placeholder="Cuenta en pocas líneas su origen…"></textarea></label>
+    <h4 class="de-sub">🧺 Ingredientes</h4>
+    <label class="de-lbl">Sus ingredientes principales, uno por renglón<textarea data-lista="ingredientes" rows="5" placeholder="Maíz\nCerdo\nChile\nCebolla…"></textarea></label>
+    <p class="de-hint">Clasifica cada uno. Si llegó después de 1521, elige también de dónde llegó.</p>
+    <ul class="de-ings de-mios" data-clas="ingredientes"></ul>
+    <div class="de-graf" data-graf></div>
+    <h4 class="de-sub">🔥 Técnicas</h4>
+    <label class="de-lbl">¿Cómo se prepara? Las técnicas, una por renglón<textarea data-lista="tecnicas" rows="3" placeholder="Nixtamalizar\nCocer en el pib\nFreír en manteca…"></textarea></label>
+    <p class="de-hint">Prehispánicas: nixtamalizar, cocer en comal, al vapor o en el pib, moler en metate. Llegaron con los europeos: freír en manteca o aceite, hornear, guisar con vino.</p>
+    <ul class="de-ings de-mios" data-clas="tecnicas"></ul>
+    <h4 class="de-sub">💭 Conclusión</h4>
+    ${DE_PREG.map(([k, t, ph]) => `<label class="de-lbl">${t}<textarea data-f="${k}" rows="3" placeholder="${esc(ph)}"></textarea><small class="de-pal" data-pal="${k}"></small></label>`).join('')}
+    <h4 class="de-sub">📚 Fuentes</h4>
+    <label class="de-lbl">¿De dónde sacaste la información? (autor o sitio, título y enlace)<textarea data-f="fuentes" rows="3" placeholder="Autor, A. (año). Título. Sitio. URL"></textarea></label></section>`;
+}
+function conectarFichaDesarma(sec, F, guardar, tipo) {
+  const pintarPal = () => DE_PREG.forEach(([k]) => { const n = palabras(F()[k]); const s = $(`[data-pal="${k}"]`, sec); if (s) s.textContent = `${n} palabra${n === 1 ? '' : 's'}${tipo === 'ficha' ? (n >= 25 ? ' ✓' : ' · escribe al menos 25') : ''}`; });
+  const grafica = () => {
+    const ings = F().ingredientes || [], g = $('[data-graf]', sec);
+    if (!ings.length) { g.innerHTML = ''; return; }
+    const cuenta = {}; ings.forEach(x => { const k = origenDe(x); cuenta[k] = (cuenta[k] || 0) + 1; });
+    const ks = Object.keys(DE_COLOR).filter(k => cuenta[k]), am = Math.round(100 * (cuenta.america || 0) / ings.length);
+    g.innerHTML = `<p><b>¿De dónde vienen sus ingredientes?</b> ${am} % de América y ${Math.round(100 * ings.filter(x => x.o === 'l').length / ings.length)} % llegaron después.</p>
+      <div class="de-barra-o">${ks.map(k => `<i style="flex:${cuenta[k]};background:${DE_COLOR[k]}" title="${DE_NOM[k]}: ${cuenta[k]}"></i>`).join('')}</div>
+      <p class="de-ley">${ks.map(k => `<span><i style="background:${DE_COLOR[k]}"></i>${DE_NOM[k]} (${cuenta[k]})</span>`).join('')}</p>`;
+  };
+  const clasif = lista => {
+    const ul = $(`[data-clas="${lista}"]`, sec), xs = F()[lista] || [], OPC = lista === 'ingredientes' ? DE_ING : DE_TEC;
+    ul.innerHTML = xs.map((x, i) => `<li><span>${esc(x.n)}</span><div>${OPC.map(([v, t]) => `<button type="button" data-i="${i}" data-v="${v}" aria-pressed="${x.o === v}">${t}</button>`).join('')}</div>
+      ${lista === 'ingredientes' && x.o === 'l' ? `<div class="de-de"><small>¿De dónde llegó?</small>${DE_DE.map(([v, t]) => `<button type="button" data-i="${i}" data-de="${v}" aria-pressed="${x.de === v}">${t}</button>`).join('')}</div>` : ''}</li>`).join('');
+    $$('button[data-v]', ul).forEach(b => b.addEventListener('click', () => { const x = F()[lista][+b.dataset.i]; const antes = x.o; x.o = b.dataset.v; if (x.o !== 'l') delete x.de; if (!guardar()) { x.o = antes; return; } clasif(lista); grafica(); }));
+    $$('button[data-de]', ul).forEach(b => b.addEventListener('click', () => { const x = F()[lista][+b.dataset.i]; const antes = x.de; x.de = b.dataset.de; if (!guardar()) { x.de = antes; return; } clasif(lista); grafica(); }));
+  };
+  $$('[data-f]', sec).forEach(i => i.addEventListener('input', () => { F()[i.dataset.f] = i.value; guardar(); if (i.dataset.f.startsWith('q')) pintarPal(); }));
+  $$('[data-lista]', sec).forEach(t => t.addEventListener('input', () => {
+    const k = t.dataset.lista, viejos = Object.fromEntries((F()[k] || []).map(x => [x.n.toLowerCase(), x]));
+    F()[k] = t.value.split('\n').map(x => x.trim()).filter(Boolean).map(n => { const v = viejos[n.toLowerCase()]; return v ? { ...v, n } : { n, o: '' }; });
+    guardar(); clasif(k); if (k === 'ingredientes') grafica();
+  }));
+  const cargar = () => {
+    $$('[data-f]', sec).forEach(i => { i.value = F()[i.dataset.f] || ''; });
+    $$('[data-lista]', sec).forEach(t => { t.value = (F()[t.dataset.lista] || []).map(x => x.n).join('\n'); });
+    clasif('ingredientes'); clasif('tecnicas'); grafica(); pintarPal();
+  };
+  cargar();
+  return { cargar };
+}
+// gráfica de barras de los orígenes, como imagen para el Word
+async function graficaDesarmaPNG(ings) {
+  const cuenta = {}; ings.forEach(x => { const k = origenDe(x); cuenta[k] = (cuenta[k] || 0) + 1; });
+  const ks = Object.keys(DE_COLOR).filter(k => cuenta[k]), W = 1600, fila = 90, H = 60 + ks.length * fila;
+  const cv = document.createElement('canvas'); cv.width = W; cv.height = H; const c = cv.getContext('2d');
+  c.fillStyle = '#FFFFFF'; c.fillRect(0, 0, W, H);
+  const max = Math.max(...ks.map(k => cuenta[k])), x0 = 420, ancho = W - x0 - 160;
+  ks.forEach((k, i) => {
+    const y = 30 + i * fila;
+    c.fillStyle = '#1C1B19'; c.font = 'bold 40px Arial'; c.textBaseline = 'middle'; c.textAlign = 'right'; c.fillText(DE_NOM[k].replace(' o sin saber de dónde', ''), x0 - 24, y + fila / 2 - 8);
+    c.fillStyle = DE_COLOR[k]; c.fillRect(x0, y + 8, Math.max(8, ancho * cuenta[k] / max), fila - 32);
+    c.fillStyle = '#1C1B19'; c.textAlign = 'left'; c.fillText(`${cuenta[k]} (${Math.round(100 * cuenta[k] / ings.length)} %)`, x0 + ancho * cuenta[k] / max + 18, y + fila / 2 - 8);
+  });
+  const blob = await new Promise(r => cv.toBlob(r, 'image/png'));
+  return { bytes: new Uint8Array(await blob.arrayBuffer()), W, H };
+}
+async function wordDesarma(F, calificada) {
+  if (!(F.nombre || '').trim() || !(F.ingredientes || []).length) { alert('Escribe el nombre del platillo y al menos un ingrediente.'); return; }
+  const D = new DocITES(); await D.cargarLogo();
+  D.portada({ kicker: calificada ? 'Tema 3.2 · Tarea: Desarma el platillo' : 'Proyecto «Mi Plato, Mi Historia» · Pregunta 14', titulo: F.nombre.trim(), subtitulo: '¿Qué parte es herencia prehispánica y qué parte fue adoptada tras la conquista?', etiqueta: 'Alumno', personas: [sesion.nombre] });
+  D.h1('Ficha del platillo');
+  D.ficha([['Platillo', F.nombre], ['Estado o región', F.region], ['Historia', F.historia]]);
+  const ings = F.ingredientes, nom = { n: 'De América (prehispánico)', l: 'Llegó después de 1521', x: 'Por investigar', '': 'Sin clasificar' }, fondo = { n: 'E3F1E6', l: 'DCE7F3', x: 'F1F1F1', '': 'FFFFFF' };
+  D.h1('Ingredientes', `${ings.filter(x => x.o === 'n').length} de América · ${ings.filter(x => x.o === 'l').length} llegaron después de 1521 · ${ings.filter(x => !x.o || x.o === 'x').length} por investigar`);
+  D.tabla([['Ingrediente', 'Origen', '¿De dónde llegó?'], ...ings.map(x => [{ t: x.n, b: true }, { t: nom[x.o || ''], fondo: fondo[x.o || ''] }, x.o === 'l' ? DE_NOM[x.de || 'otro'] : x.o === 'n' ? 'América' : '—'])], { anchos: [3120, 3120, 3120], cebra: false });
+  try { const g = await graficaDesarmaPNG(ings); D.h2('¿De dónde vienen sus ingredientes?'); D.imagen(g.bytes, g.W, g.H, 14); } catch { /* sin gráfica */ }
+  const tecs = F.tecnicas || [], nomT = { n: 'Prehispánica', l: 'Llegó con los europeos', x: 'Por investigar', '': 'Sin clasificar' };
+  D.h1('Técnicas');
+  if (tecs.length) D.tabla([['Técnica', 'Origen'], ...tecs.map(x => [{ t: x.n, b: true }, { t: nomT[x.o || ''], fondo: fondo[x.o || ''] }])], { anchos: [4680, 4680], cebra: false }); else D.texto('');
+  D.h1('Conclusión');
+  DE_PREG.forEach(([k, t]) => { D.h2(t); D.texto(F[k]); });
+  D.h1('Fuentes consultadas'); D.texto(F.fuentes);
+  D.descargar(`${calificada ? 'Desarma_el_platillo' : 'Mi_platillo_pregunta14'}_${slug(F.nombre)}_${slug(sesion.nombre)}`);
 }
 
 // ======================================================= 4. LAS SIETE INFLUENCIAS (en equipo o individual, en vivo, con votación)
