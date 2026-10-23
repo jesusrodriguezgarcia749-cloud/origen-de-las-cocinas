@@ -270,3 +270,28 @@ html,body{overflow-x:clip;}
 .retro-item{background:var(--parchment); border-radius:10px; padding:10px 14px; margin-top:10px;}
 .retro-titulo{margin:0 0 4px; font-weight:700; font-size:.9rem; color:var(--ink);}
 .retro-texto{margin:0; font-size:.92rem; line-height:1.5; color:var(--ink);}
+
+/* ===== Ventanas de entrada (nombre y PIN): un solo diseño en todo el Aula Virtual =====
+   Tareas, Mi atlas, Actividades de repaso, Examen en línea y Mi progreso. */
+:is(#cl-form, #ma-form, #act-form-login, #form-login, #form-login-prog) { display: grid; gap: 6px; }
+:is(#cl-form, #ma-form, #act-form-login, #form-login, #form-login-prog) label { display: block; font: 700 .85rem var(--font-body, inherit); margin: 8px 0 0; color: var(--ink); }
+:is(#cl-form, #ma-form, #act-form-login, #form-login, #form-login-prog) :is(input, select) {
+  width: 100%; box-sizing: border-box; margin: 0; font: inherit; font-size: 1rem; color: var(--ink);
+  background-color: var(--parchment); border: 1.5px solid var(--line); border-radius: 12px;
+  padding: 11px 13px; min-height: 46px; transition: border-color .15s, box-shadow .15s;
+}
+:is(#cl-form, #ma-form, #act-form-login, #form-login, #form-login-prog) select {
+  appearance: none; -webkit-appearance: none; padding-right: 36px;
+  background-image: linear-gradient(45deg, transparent 50%, var(--ink-soft) 50%), linear-gradient(135deg, var(--ink-soft) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%; background-size: 5px 5px; background-repeat: no-repeat;
+}
+:is(#cl-form, #ma-form, #act-form-login, #form-login, #form-login-prog) input::placeholder { color: var(--ink-soft); opacity: .7; }
+:is(#cl-form, #ma-form, #act-form-login, #form-login, #form-login-prog) :is(input, select):focus { outline: none; border-color: var(--saffron, #C98A2C); box-shadow: 0 0 0 3px rgba(201, 138, 44, .22); }
+:is(#cl-form, #ma-form, #act-form-login, #form-login, #form-login-prog) button[type=submit] { margin-top: 14px; width: 100%; min-height: 48px; font-size: 1rem; border-radius: 999px; }
+html[data-theme="dark"] :is(#cl-form, #ma-form, #act-form-login, #form-login, #form-login-prog) :is(input, select) { background-color: #1B1814 !important; }
+html[data-theme="dark"] :is(#cl-form, #ma-form, #act-form-login, #form-login, #form-login-prog) select {
+  background-image: linear-gradient(45deg, transparent 50%, #B9B0A4 50%), linear-gradient(135deg, #B9B0A4 50%, transparent 50%) !important;
+  background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50% !important; background-size: 5px 5px !important; background-repeat: no-repeat !important;
+}
+:is(#cl-form, #ma-form) button[type=submit] { background: var(--saffron); color: var(--charcoal); border: 0; font-weight: 700; }
+:is(#cl-form, #ma-form) button[type=submit]:hover { background: #E0A24A; }
