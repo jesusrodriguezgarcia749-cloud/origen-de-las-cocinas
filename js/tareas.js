@@ -9,7 +9,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, FieldPath, collection, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
-import { CUADRO_MM, APORTO, PLATILLOS, TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, sugerirCuadro } from "./clase-datos.js";
+import { CUADRO_MM, APORTO, PLATILLOS, TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, sugerirCuadro, INFLUENCIAS, sugerirInfluencias } from "./clase-datos.js";
 import { DocITES } from "./docx-ites.js";
 
 const db = getFirestore(initializeApp(firebaseConfig));
@@ -101,6 +101,9 @@ async function estadoDe(a) {
     } else if (a.tipo === 'cuadro') {
       const s = await getDoc(eq ? doc(db, 'grupos', g, 'equipos', eq.id, 'atlas', CUADRO_MM.id) : doc(db, 'grupos', g, 'alumnos', al, 'atlas', 'tarea-cuadro-mm'));
       if (s.exists()) { out.avance = sugerirCuadro(s.data().celdas).detalle; out.entregado = s.data().entregado || null; }
+    } else if (a.tipo === 'influencias') {
+      const s = await getDoc(eq ? doc(db, 'grupos', g, 'equipos', eq.id, 'atlas', INFLUENCIAS.id) : doc(db, 'grupos', g, 'alumnos', al, 'atlas', 'tarea-influencias'));
+      if (s.exists()) { out.avance = sugerirInfluencias(s.data()).detalle; out.entregado = s.data().entregado || null; }
     } else if (a.tipo === 'desarma') {
       const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al, 'atlas', 'tarea-desarma'));
       if (s.exists()) { const m = s.data().datos || {}; out.avance = m.nombre ? `${m.nombre}: ${(m.ingredientes || []).length} ingredientes` : ''; out.entregado = s.data().entregado || null; }
@@ -162,7 +165,7 @@ function ruta() {
   const c = $('#cl-actividad');
   c.innerHTML = `<a class="cl-volver" href="#">← Todas las tareas</a><p class="cl-fecha">Tema ${esc(a.tema)} · ${esc(a.titulo)} · ${esc(a.fechaTexto)}</p><h2 class="cl-h2">${a.icono} ${esc(a.nombre)}</h2>
     ${califica(a) ? '<p class="cl-vale">📌 Cuenta como una tarea del Parcial 2.</p>' : '<p class="cl-vale cl-vale-p">🎯 Práctica para repasar: no lleva calificación.</p>'}<div id="cl-cuerpo"></div>`;
-  ({ cuadro: actCuadro, practica: actAporto, desarma: actDesarma })[a.tipo]($('#cl-cuerpo'));
+  ({ cuadro: actCuadro, practica: actAporto, desarma: actDesarma, influencias: actInfluencias })[a.tipo]($('#cl-cuerpo'));
   window.scrollTo({ top: 0 });
 }
 window.addEventListener('hashchange', ruta);
@@ -398,4 +401,148 @@ function actDesarma(cont) {
   const salir = () => { if (timer) subir(); };
   window.addEventListener('beforeunload', salir);
   detener = () => { window.removeEventListener('beforeunload', salir); window.removeEventListener('estado-tareas', rep); salir(); };
+}
+
+// ======================================================= 4. LAS SIETE INFLUENCIAS (en equipo o individual, en vivo, con votación)
+// Documento vivo genérico: guarda campo por campo, mezcla los cambios de los demás y no le quita el cursor a nadie.
+// copia sin referencias; las fechas de Firestore se vuelven milisegundos
+const plano = v => v && typeof v.toMillis === 'function' ? v.toMillis() : Array.isArray(v) ? v.map(plano) : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, plano(x)])) : v;
+function docVivo(ref, eq, alCambiar) {
+  let S = {}, pend = new Map(), vuelo = new Map(), t = null, existe = false, ultima = '';
+  const base = () => eq ? { ultimoAutor: sesion.alumnoId, ultimoPin: sesion.pin, ultimoNombre: sesion.nombre } : { pinVerificado: sesion.pin, nombre: sesion.nombre };
+  const fijar = (obj, ruta, v) => { let o = obj; ruta.slice(0, -1).forEach(k => { o[k] = o[k] && typeof o[k] === 'object' ? o[k] : {}; o = o[k]; }); o[ruta[ruta.length - 1]] = v; };
+  const flush = async () => {
+    clearTimeout(t); t = null; if (!pend.size) return;
+    const lote = [...pend.values()]; pend.forEach((v, k) => vuelo.set(k, v)); pend.clear();
+    try {
+      if (!existe) { const s0 = await getDoc(ref); if (!s0.exists()) await setDoc(ref, { ...base(), actualizado: serverTimestamp() }); existe = true; }
+      const args = []; lote.forEach(([r, v]) => args.push(new FieldPath(...r), v));
+      args.push(...Object.entries(base()).flat(), 'ultimoCambio', ultima, 'actualizado', serverTimestamp());
+      await updateDoc(ref, ...args);
+      lote.forEach(([r]) => vuelo.delete(r.join('|')));
+      alCambiar(S, pend.size ? 'guardando' : 'ok');
+    } catch {
+      lote.forEach(([r, v]) => { const k = r.join('|'); vuelo.delete(k); if (!pend.has(k)) pend.set(k, [r, v]); });
+      alCambiar(S, 'error'); t = setTimeout(flush, 4000);
+    }
+  };
+  const unsub = onSnapshot(ref, sn => {
+    existe = sn.exists(); S = sn.exists() ? plano(sn.data()) : {};
+    [...vuelo.values(), ...pend.values()].forEach(([r, v]) => fijar(S, r, v));
+    alCambiar(S, pend.size || vuelo.size ? 'guardando' : 'ok');
+  }, () => alCambiar(S, 'error'));
+  return {
+    get S() { return S; },
+    poner(ruta, v, nota, rapido) { fijar(S, ruta, v); pend.set(ruta.join('|'), [ruta, v]); if (nota) ultima = nota; clearTimeout(t); t = setTimeout(flush, rapido ? 250 : 700); alCambiar(S, 'guardando'); },
+    flush, cerrar() { unsub(); return flush(); },
+    async entregar() { await flush(); if (!existe) { await setDoc(ref, { ...base(), actualizado: serverTimestamp() }, { merge: true }); existe = true; } await updateDoc(ref, { entregado: { t: serverTimestamp(), por: sesion.nombre }, ...base(), ultimoCambio: 'entregó la tarea', actualizado: serverTimestamp() }); S.entregado = { t: Date.now(), por: sesion.nombre }; },
+  };
+}
+function actInfluencias(cont) {
+  const entrar = async () => {
+    escucharGrupo();
+    cont.innerHTML = '<p class="atlas-ayuda">Buscando a tu equipo…</p>';
+    const eq = await equipo();
+    if (eq) return influencias(cont, eq);
+    cont.innerHTML = `<div class="cl-sin-eq"><p><b>Todavía no estás en un equipo.</b> Escribe el código de 4 letras de tu equipo (o escanea el QR que proyecta tu maestro).</p>
+      <form id="cl-unir" class="ma-unir"><div><input id="cl-cod" maxlength="4" autocomplete="off" placeholder="ABCD" aria-label="Código del equipo"><button class="btn-at" type="submit">Unirme</button></div></form>
+      <p class="ma-msg mal" id="cl-unir-msg" hidden></p><p class="cl-o">o</p><button type="button" class="btn-ruta" id="cl-solo">Hacerla solo (se guarda en tu cuenta)</button></div>`;
+    $('#cl-unir').addEventListener('submit', async e => { e.preventDefault(); try { influencias(cont, await unirseCodigo($('#cl-cod').value)); } catch (er) { const m = $('#cl-unir-msg'); m.textContent = er.message || er; m.hidden = false; } });
+    $('#cl-solo').addEventListener('click', () => influencias(cont, null));
+  };
+  if (sesion) entrar(); else formAcceso(cont, entrar, 'Entra con tu nombre y PIN para trabajar en esta tarea');
+}
+function influencias(cont, eq) {
+  const a = TAREAS_DIG.influencias, I = INFLUENCIAS;
+  const ref = eq ? doc(db, 'grupos', sesion.grupoId, 'equipos', eq.id, 'atlas', I.id) : doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'atlas', 'tarea-influencias');
+  cont.innerHTML = `<div class="ma-barra"><span>${eq ? `👥 Equipo <b>${esc(eq.nombre)}</b>: ${esc((eq.nombres || []).join(', '))}` : `👤 <b>${esc(sesion.nombre)}</b> (individual)`}</span><span class="ma-estado" id="in-estado"></span>
+      <button type="button" class="btn-ruta" id="in-word">⬇ Descargar en Word</button></div>
+    <div data-entrega></div>
+    <div id="in-voto"></div>
+    <p class="atlas-ayuda">El maestro <b>Rafael Enrique Meneses López</b>, de la Escuela de Gastronomía del Instituto Campechano, identifica siete influencias en la cocina campechana. Elijan un platillo y demuestren cuáles se ven en él: un ingrediente, una técnica, su nombre o su historia (compendio, subtema 3.2).</p>
+    <section class="in-paso"><h3><span class="tq-num">1</span> Nuestro platillo</h3>
+      <div class="in-platos">${I.platillos.map(p => `<button type="button" class="chip-at" data-plato="${esc(p)}">${esc(p)}</button>`).join('')}<button type="button" class="chip-at" data-plato="__otro">Otro…</button></div>
+      <label class="in-otro" hidden>¿Cuál?<input id="in-otro" maxlength="60" placeholder="Nombre del platillo campechano"></label>
+      <p class="in-elegido" id="in-elegido"></p></section>
+    <section class="in-paso"><h3><span class="tq-num">2</span> Las siete influencias <small id="in-cuenta"></small></h3>
+      <div class="in-grid">${I.lista.map(([k, n, col, pista]) => `<article class="in-inf" data-inf="${k}" style="--c:${col}">
+        <header><b>${esc(n)}</b><small class="ma-autor" data-autor="${k}"></small><div class="in-si"><button type="button" data-si="${k}" data-v="1">Sí está</button><button type="button" data-si="${k}" data-v="0">No está</button></div></header>
+        <details><summary>Pista del compendio</summary><p>${esc(pista)}</p></details>
+        <textarea data-ev="${k}" rows="3" placeholder="¿En qué se nota en nuestro platillo? (ingrediente, técnica, nombre, historia)"></textarea></article>`).join('')}</div></section>
+    <section class="in-paso"><h3><span class="tq-num">3</span> Nuestro argumento</h3>
+      <label class="de-lbl">¿Por qué nuestro platillo representa la cocina campechana y sus influencias? <small class="ma-autor" data-autor="argumento"></small><textarea id="in-arg" rows="5" placeholder="Nuestro platillo representa la cocina campechana porque…"></textarea></label>
+      <label class="de-lbl">Fuentes consultadas (APA 7) <small class="ma-autor" data-autor="fuentes"></small><textarea id="in-fuentes" rows="3" placeholder="Autor, A. (año). Título. Editorial o sitio. URL"></textarea></label></section>`;
+  const estado = (t, c = '') => { const e = $('#in-estado'); if (e) { e.textContent = t; e.className = 'ma-estado ' + c; } };
+  const pintar = S => {
+    const act = document.activeElement, inf = S.inf || {}, por = S.por || {};
+    const p = S.platillo || '';
+    $$('[data-plato]', cont).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.plato === p || (b.dataset.plato === '__otro' && p && !I.platillos.includes(p)))));
+    const esOtro = p && !I.platillos.includes(p); $('.in-otro', cont).hidden = !(esOtro || S._otro); if ($('#in-otro') !== act && esOtro) $('#in-otro').value = p;
+    $('#in-elegido').innerHTML = p ? `🍽️ <b>${esc(p)}</b>${por.platillo ? ` <small class="ma-autor">✍️ ${esc(por.platillo)}</small>` : ''}` : '<i>Todavía no eligen platillo.</i>';
+    I.lista.forEach(([k]) => {
+      const v = inf[k] || {};
+      $$(`[data-si="${k}"]`, cont).forEach(b => b.setAttribute('aria-pressed', String(v.si === (b.dataset.v === '1') && v.si !== undefined)));
+      const ta = $(`[data-ev="${k}"]`, cont); if (ta !== act && ta.value !== (v.ev || '')) ta.value = v.ev || '';
+      $(`[data-inf="${k}"]`, cont).classList.toggle('si', v.si === true); $(`[data-inf="${k}"]`, cont).classList.toggle('no', v.si === false);
+      const au = eq && por[k]; $(`[data-autor="${k}"]`, cont).textContent = au ? `✍️ ${au}` : '';
+    });
+    [['in-arg', 'argumento'], ['in-fuentes', 'fuentes']].forEach(([id, f]) => { const ta = $('#' + id); if (ta !== act && ta.value !== (S[f] || '')) ta.value = S[f] || ''; const au = eq && por[f]; $(`[data-autor="${f}"]`, cont).textContent = au ? `✍️ ${au}` : ''; });
+    const si = I.lista.filter(([k]) => inf[k] && inf[k].si).length;
+    $('#in-cuenta').textContent = `· ${si} de 7 presentes`;
+    repEntrega();
+  };
+  let repEntrega = () => {};
+  const V = docVivo(ref, eq, (S, st) => { pintar(S); estado(st === 'ok' ? (eq ? 'Sincronizado con tu equipo ✓' : 'Guardado en tu cuenta ✓') : st === 'error' ? 'No se pudo guardar. Reintentando…' : 'Guardando…', st === 'ok' ? 'ok' : st === 'error' ? 'mal' : ''); });
+  const puede = () => abierta(a.id);
+  const autor = campo => V.poner(['por', campo], sesion.nombre);
+  $$('[data-plato]', cont).forEach(b => b.addEventListener('click', () => {
+    if (!puede()) return;
+    if (b.dataset.plato === '__otro') { V.S._otro = true; $('.in-otro', cont).hidden = false; $('#in-otro').focus(); return; }
+    V.poner(['platillo'], b.dataset.plato, `eligió ${b.dataset.plato}`, true); autor('platillo');
+  }));
+  $('#in-otro').addEventListener('input', e => { if (!puede()) return; V.poner(['platillo'], e.target.value.trim(), 'escribe el nombre del platillo'); autor('platillo'); });
+  $$('[data-si]', cont).forEach(b => b.addEventListener('click', () => { if (!puede()) return; const k = b.dataset.si; V.poner(['inf', k, 'si'], b.dataset.v === '1', `marcó la influencia ${I.lista.find(x => x[0] === k)[1].toLowerCase()}`, true); autor(k); }));
+  $$('[data-ev]', cont).forEach(ta => ta.addEventListener('input', () => { if (!puede()) return; const k = ta.dataset.ev; V.poner(['inf', k, 'ev'], ta.value, `escribe la evidencia ${I.lista.find(x => x[0] === k)[1].toLowerCase()}`); autor(k); }));
+  $('#in-arg').addEventListener('input', e => { if (!puede()) return; V.poner(['argumento'], e.target.value, 'escribe el argumento'); autor('argumento'); });
+  $('#in-fuentes').addEventListener('input', e => { if (!puede()) return; V.poner(['fuentes'], e.target.value, 'escribe las fuentes'); autor('fuentes'); });
+  repEntrega = barraEntrega(cont, a, { entregado: () => V.S.entregado, alEntregar: async () => { if (!(V.S.platillo || '').trim()) throw new Error('Primero elijan su platillo.'); await V.entregar(); } });
+  // ---- votación en vivo (la abre el docente desde el Monitor)
+  const refVoto = doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'atlas', 'tarea-voto-influencias');
+  let miVoto = null;
+  getDoc(refVoto).then(s => { miVoto = s.exists() ? s.data().voto || null : null; }).catch(() => {});
+  const pintarVoto = async det => {
+    const z = $('#in-voto'); if (!z) return;
+    const ab = ((det || {}).votaciones || {})[I.votacion] === 'abierta';
+    if (!ab) { z.innerHTML = ''; return; }
+    let cands = [];
+    try {
+      const sn = await getDocs(collection(db, 'grupos', sesion.grupoId, 'equipos'));
+      cands = (await Promise.all(sn.docs.map(async d => { const s = await getDoc(doc(db, 'grupos', sesion.grupoId, 'equipos', d.id, 'atlas', I.id)).catch(() => null); const pl = s && s.exists() ? (s.data().platillo || '') : ''; return pl ? { id: d.id, eq: d.data().nombre, pl } : null; }))).filter(Boolean);
+    } catch { /* */ }
+    z.innerHTML = `<div class="in-votacion"><h3>🗳️ Votación abierta</h3><p>¿Qué platillo representa <b>mejor</b> las siete influencias de la cocina campechana? Vota por los argumentos, no por amistad${eq ? ' (no puedes votar por tu propio equipo)' : ''}.</p>
+      <div class="in-cands">${cands.map(c => `<button type="button" data-voto="${c.id}" aria-pressed="${miVoto === c.id}" ${eq && c.id === eq.id ? 'disabled' : ''}><b>${esc(c.pl)}</b><small>${esc(c.eq)}</small></button>`).join('') || '<p class="atlas-ayuda">Todavía ningún equipo eligió platillo.</p>'}</div>
+      <p class="ma-msg ok" id="in-voto-msg">${miVoto ? '✓ Tu voto quedó registrado. Puedes cambiarlo mientras la votación siga abierta.' : ''}</p></div>`;
+    $$('[data-voto]', z).forEach(b => b.addEventListener('click', async () => {
+      try { await setDoc(refVoto, { voto: b.dataset.voto, pinVerificado: sesion.pin, nombre: sesion.nombre, actualizado: serverTimestamp() }); miVoto = b.dataset.voto; $$('[data-voto]', z).forEach(x => x.setAttribute('aria-pressed', String(x === b))); $('#in-voto-msg').textContent = '✓ Tu voto quedó registrado. Puedes cambiarlo mientras la votación siga abierta.'; }
+      catch (e) { $('#in-voto-msg').textContent = 'No se pudo registrar tu voto: ' + (e.message || e); }
+    }));
+  };
+  const onEst = e => pintarVoto(e.detail);
+  window.addEventListener('estado-tareas', onEst);
+  getDoc(doc(db, 'grupos', sesion.grupoId)).then(s => pintarVoto(s.exists() ? s.data() : {})).catch(() => {});
+  // ---- Word
+  $('#in-word').addEventListener('click', async () => {
+    await V.flush(); const S = V.S, inf = S.inf || {}, por = S.por || {};
+    const D = new DocITES(); await D.cargarLogo();
+    D.portada({ kicker: 'Tema 3.2 · Campeche y el resto de América', titulo: S.platillo || 'Nuestro platillo campechano', subtitulo: 'Las siete influencias de la cocina campechana', etiqueta: eq ? `Equipo «${eq.nombre}»` : 'Alumno', personas: eq ? eq.nombres || [] : [sesion.nombre] });
+    const si = I.lista.filter(([k]) => inf[k] && inf[k].si).length;
+    D.h1('Las siete influencias', `En ${S.platillo || 'nuestro platillo'} encontramos ${si} de las 7 influencias que identifica el maestro Rafael Enrique Meneses López.`);
+    D.tabla([['Influencia', '¿Está presente?', '¿En qué se nota?'], ...I.lista.map(([k, n, col]) => { const v = inf[k] || {}; return [{ runs: [['■ ', { color: col.slice(1), b: true }], [n, { b: true }], ...(eq && por[k] ? [[`\n✍ ${por[k]}`, { color: '3F7A4F', tam: 8 }]] : [])] }, { t: v.si === true ? 'Sí' : v.si === false ? 'No' : '—', b: v.si === true, fondo: v.si === true ? 'E3F1E6' : null }, (v.ev || '').trim() || '—']; })], { anchos: [2300, 1500, 5560] });
+    D.h1('Nuestro argumento'); D.texto(S.argumento);
+    D.h2('Fuentes consultadas'); D.texto(S.fuentes);
+    D.descargar(`Siete_influencias_${slug(eq ? 'equipo ' + eq.nombre : sesion.nombre)}`);
+  });
+  const salir = () => V.flush();
+  window.addEventListener('beforeunload', salir);
+  detener = () => { V.cerrar(); window.removeEventListener('estado-tareas', onEst); window.removeEventListener('estado-tareas', repEntrega); window.removeEventListener('beforeunload', salir); };
 }

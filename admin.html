@@ -242,7 +242,10 @@
       <span>Actividad:</span>
       <button type="button" class="chip-mon" data-a="atlas" aria-pressed="true">🗺️ Mi atlas</button>
       <button type="button" class="chip-mon" data-a="cuadro" aria-pressed="false">🤝 Cuadro mexica–maya</button>
+      <button type="button" class="chip-mon" data-a="influencias" aria-pressed="false">⚖️ Siete influencias</button>
       <button type="button" class="chip-mon mon-clave" id="mon-clave" hidden aria-pressed="false">🔑 Liberar clave</button>
+      <button type="button" class="chip-mon mon-clave" id="mon-votar" hidden aria-pressed="false">🗳️ Abrir votación</button>
+      <button type="button" class="chip-mon" id="mon-resultados" hidden>📽️ Resultados</button>
     </div>
     <div class="mon-filtros">
       <div class="mon-chips" id="mon-conts"></div>
@@ -382,6 +385,10 @@
     <div class="mon-det-cab"><div><h2 id="mon-det-titulo"></h2><p id="mon-det-sub"></p></div><button type="button" class="btn" id="mon-det-cerrar">Cerrar ✕</button></div>
     <div class="mon-det-cuerpo" id="mon-det-cuerpo"></div>
   </div>
+</div>
+<div id="voto-proy" class="qr-proyeccion" hidden>
+  <div class="qr-cab"><div><b>¿Qué platillo representa mejor las siete influencias?</b><span id="voto-total"></span></div><button type="button" class="btn" id="voto-cerrar">Cerrar ✕</button></div>
+  <div class="voto-barras" id="voto-barras"></div>
 </div>
 <div id="qr-proyeccion" class="qr-proyeccion" hidden>
   <div class="qr-cab"><div><b>Únete a tu equipo</b><span>Escanea el código con tu celular (o entra a Tareas, abre «Mi atlas» o el cuadro, y escribe el código de 4 letras).</span></div><button type="button" class="btn" id="qr-cerrar">Cerrar ✕</button></div>

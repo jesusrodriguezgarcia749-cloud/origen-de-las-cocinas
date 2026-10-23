@@ -634,3 +634,15 @@ body.mon-completo .mon-grid { grid-template-columns: repeat(auto-fill, minmax(21
 .td-fila { display: grid; grid-template-columns: 1fr auto auto auto; gap: .4rem; align-items: center; }
 .td-fila .btn { padding: 6px 12px !important; font-size: .8rem !important; white-space: nowrap; }
 @media (max-width: 560px) { .td-fila { grid-template-columns: 1fr 1fr 1fr; } .td-nom { grid-column: 1 / -1; } }
+.in-mini { padding: 10px; aspect-ratio: 1 / 1; display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+.in-mini p { margin: 0; text-align: center; font-size: .95rem; }
+.in-mini div { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+.in-mini span { font: 700 .72rem var(--font-body); text-align: center; padding: 6px 2px; border-radius: 6px; background: #E6DFD2; color: #6E665B; transition: background .4s; }
+.voto-barras { display: grid; gap: 14px; max-width: 1100px; }
+.voto-fila { display: grid; grid-template-columns: minmax(180px, 280px) 1fr 70px; align-items: center; gap: 14px; }
+.voto-nom b { display: block; font-size: 1.3rem; } .voto-nom small { color: #4A463F; font-size: 1rem; }
+.voto-barra { height: 38px; background: #E6DFD2; border-radius: 10px; overflow: hidden; }
+.voto-barra i { display: block; height: 100%; background: linear-gradient(90deg, #C98A2C, #E0A72E); transition: width .5s; }
+.voto-fila.lider .voto-barra i { background: linear-gradient(90deg, #3F9A55, #6BBF7E); }
+.voto-n { font: 800 2rem var(--font-body); text-align: right; }
+@media (max-width: 640px) { .voto-fila { grid-template-columns: 1fr 50px; } .voto-barra { grid-column: 1 / -1; grid-row: 2; } }

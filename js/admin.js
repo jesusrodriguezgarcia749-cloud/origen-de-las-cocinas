@@ -13,7 +13,7 @@ import { firebaseConfig } from "./firebase-config.js";
 import { calcularParcial, calcularCuatrimestre, calcularCuatrimestreRedondeado, zonaDeDecision, textoCalificacion, NOMBRES_PARCIAL, NOMBRES_REDONDEO, TOPES } from "./calculo.js";
 import { reporteGrupo, reporteAlumno, reporteExamenAlumno, reporteExamenGrupo } from "./reporte.js";
 import { vistaRapida } from "./matriz.js";
-import { TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, nombreCatalogo, sugerirAtlas, sugerirCuadro, sugerirDesarma, CUADRO_MM } from "./clase-datos.js";
+import { TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, nombreCatalogo, sugerirAtlas, sugerirCuadro, sugerirDesarma, CUADRO_MM, INFLUENCIAS, sugerirInfluencias } from "./clase-datos.js";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -881,9 +881,12 @@ async function iniciarMonitor() {
     document.querySelectorAll('#mon-ver [data-v]').forEach(b => b.addEventListener('click', () => { MON.ver = b.dataset.v; document.querySelectorAll('#mon-ver [data-v]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); pintarMonitor(true); }));
     document.querySelectorAll('#mon-act [data-a]').forEach(b => b.addEventListener('click', () => {
       MON.act = b.dataset.a; document.querySelectorAll('#mon-act [data-a]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-      document.getElementById('mon-clave').hidden = MON.act !== 'cuadro'; document.getElementById('mon-conts').hidden = MON.act !== 'atlas'; document.getElementById('mon-ver').querySelectorAll('[data-v]').forEach(x => { x.hidden = MON.act !== 'atlas'; });
+      document.getElementById('mon-clave').hidden = MON.act !== 'cuadro'; document.getElementById('mon-votar').hidden = MON.act !== 'influencias'; document.getElementById('mon-resultados').hidden = MON.act !== 'influencias'; document.getElementById('mon-conts').hidden = MON.act !== 'atlas'; document.getElementById('mon-ver').querySelectorAll('[data-v]').forEach(x => { x.hidden = MON.act !== 'atlas'; });
       Object.keys(MON.datos).filter(k => k.startsWith('e:')).forEach(k => delete MON.datos[k]); suscribirEquiposCont(); pintarMonitor(true);
     }));
+    document.getElementById('mon-votar').addEventListener('click', async () => { const ab = MON.votacion === 'abierta'; if (ab && !confirm('¿Cerrar la votación? Los alumnos ya no podrán votar ni cambiar su voto.')) return; await setDoc(doc(db, 'grupos', grupoActivo), { votaciones: { [INFLUENCIAS.votacion]: ab ? 'cerrada' : 'abierta' } }, { merge: true }); });
+    document.getElementById('mon-resultados').addEventListener('click', abrirResultados);
+    document.getElementById('voto-cerrar').addEventListener('click', cerrarResultados);
     document.getElementById('mon-clave').addEventListener('click', async () => { await setDoc(doc(db, 'grupos', grupoActivo), { claves: { cuadroMM: !MON.clave } }, { merge: true }); });
     document.getElementById('mon-full').addEventListener('click', e => { const on = document.body.classList.toggle('mon-completo'); e.currentTarget.setAttribute('aria-pressed', String(on)); e.currentTarget.textContent = on ? '✕ Salir de pantalla completa' : '⛶ Pantalla completa'; });
     document.getElementById('mon-det-cerrar').addEventListener('click', cerrarDetalle);
@@ -902,13 +905,13 @@ async function iniciarMonitor() {
     MON.equipos = sn.docs.map(d => ({ id: d.id, ...d.data() })).sort((x, y) => (x.numero || 999) - (y.numero || 999) || (x.nombre || '').localeCompare(y.nombre || '', 'es'));
     suscribirEquiposCont(); pintarMonitor(true);
   }, () => {});
-  MON.subs.push(onSnapshot(doc(db, 'grupos', g), sn => { MON.clave = !!(sn.exists() && (sn.data().claves || {}).cuadroMM); const b = document.getElementById('mon-clave'); b.setAttribute('aria-pressed', String(MON.clave)); b.textContent = MON.clave ? '🔒 Ocultar clave a los alumnos' : '🔑 Liberar clave'; }, () => {}));
+  MON.subs.push(onSnapshot(doc(db, 'grupos', g), sn => { MON.votacion = sn.exists() ? ((sn.data().votaciones || {})[INFLUENCIAS.votacion] || 'cerrada') : 'cerrada'; const bv = document.getElementById('mon-votar'); bv.setAttribute('aria-pressed', String(MON.votacion === 'abierta')); bv.textContent = MON.votacion === 'abierta' ? '🔒 Cerrar votación' : '🗳️ Abrir votación'; MON.clave = !!(sn.exists() && (sn.data().claves || {}).cuadroMM); const b = document.getElementById('mon-clave'); b.setAttribute('aria-pressed', String(MON.clave)); b.textContent = MON.clave ? '🔒 Ocultar clave a los alumnos' : '🔑 Liberar clave'; }, () => {}));
   MON.reloj = setInterval(() => pintarTiempos(), 10000);
   pintarMonitor(true);
 }
 function suscribirEquiposCont() {
   (MON.eqSubs || []).forEach(u => u()); MON.eqSubs = [];
-  const docAct = MON.act === 'cuadro' ? 'act-cuadro-mm' : MON.cont;
+  const docAct = MON.act === 'cuadro' ? 'act-cuadro-mm' : MON.act === 'influencias' ? INFLUENCIAS.id : MON.cont;
   MON.equipos.forEach(eq => MON.eqSubs.push(onSnapshot(doc(db, 'grupos', MON.grupo, 'equipos', eq.id, 'atlas', docAct), sn => {
     MON.datos['e:' + eq.id] = sn.exists() ? sn.data() : null; programarPintado('e:' + eq.id);
   }, () => {})));
@@ -953,7 +956,7 @@ function hace(ts) {
 }
 function monTarjetas() {
   const out = [];
-  if (MON.act === 'cuadro') { MON.equipos.forEach(eq => out.push({ clave: 'e:' + eq.id, titulo: eq.nombre, sub: (eq.nombres || []).join(', ') || 'sin integrantes', tipo: 'equipo' })); return out; }
+  if (MON.act === 'cuadro' || MON.act === 'influencias') { MON.equipos.forEach(eq => out.push({ clave: 'e:' + eq.id, titulo: eq.nombre, sub: (eq.nombres || []).join(', ') || 'sin integrantes', tipo: 'equipo' })); return out; }
   if (MON.ver !== 'individual') MON.equipos.forEach(eq => out.push({ clave: 'e:' + eq.id, titulo: eq.nombre, sub: (eq.nombres || []).join(', ') || 'sin integrantes', tipo: 'equipo' }));
   if (MON.ver !== 'equipos') alumnosCache.forEach(a => { const d = MON.datos['a:' + a.id]; if (d) out.push({ clave: 'a:' + a.id, titulo: a.nombre, sub: d.equipo ? `👥 ${d.equipo}` : 'trabajo individual', tipo: 'alumno' }); });
   return out;
@@ -975,6 +978,7 @@ function actualizarTarjeta(clave, nuevo) {
   const card = document.querySelector(`.mon-card[data-clave="${clave}"]`);
   if (!card) { if (clave.startsWith('a:') && MON.ver !== 'equipos' && MON.datos[clave]) pintarMonitor(true); return; }
   if (MON.act === 'cuadro') return actualizarCuadro(card, clave, nuevo);
+  if (MON.act === 'influencias') return actualizarInfluencias(card, clave, nuevo);
   const v = monVista(clave), st = monStats(v);
   const mapa = card.querySelector('[data-mapa]');
   if (nuevo || !mapa.firstChild) mapa.innerHTML = monMapa(v, 'mon-svg');
@@ -1000,18 +1004,54 @@ function actualizarCuadro(card, clave, nuevo) {
   pintarTiempo(card, d.actualizado || null);
   if (!nuevo) { card.classList.remove('mon-latido'); void card.offsetWidth; card.classList.add('mon-latido'); }
 }
+function actualizarInfluencias(card, clave, nuevo) {
+  const d = MON.datos[clave] || {}, inf = d.inf || {};
+  const si = INFLUENCIAS.lista.filter(([k]) => inf[k] && inf[k].si).length;
+  card.querySelector('[data-mapa]').innerHTML = `<div class="in-mini"><p>${d.platillo ? `🍽️ <b>${escaparHTML(d.platillo)}</b>` : '<i>sin platillo</i>'}</p><div>${INFLUENCIAS.lista.map(([k, n, col]) => `<span title="${n}" style="${inf[k] && inf[k].si ? `background:${col};color:#fff` : ''}">${n.slice(0, 3)}</span>`).join('')}</div></div>`;
+  card.querySelector('[data-barra]').style.width = Math.round(100 * si / 7) + '%';
+  card.querySelector('[data-num]').innerHTML = `<b>${si}/7</b> influencias · ${sugerirInfluencias(d).detalle.split('·').pop().trim()}`;
+  card.querySelector('[data-ult]').innerHTML = d.ultimoCambio ? `✍️ <b>${escaparHTML(d.ultimoNombre || '')}</b> ${escaparHTML(d.ultimoCambio)}` : '<i>todavía no empiezan</i>';
+  pintarTiempo(card, d.actualizado || null);
+  if (!nuevo) { card.classList.remove('mon-latido'); void card.offsetWidth; card.classList.add('mon-latido'); }
+}
+// ---- resultados de la votación, en vivo para proyectar
+let VOTOS = { subs: [], votos: {} };
+function abrirResultados() {
+  cerrarResultados(true);
+  document.getElementById('voto-proy').hidden = false; document.body.classList.add('con-qr');
+  alumnosCache.forEach(a => VOTOS.subs.push(onSnapshot(doc(db, 'grupos', grupoActivo, 'alumnos', a.id, 'atlas', 'tarea-voto-influencias'), sn => { VOTOS.votos[a.id] = sn.exists() ? sn.data().voto : null; pintarResultados(); }, () => {})));
+  pintarResultados();
+}
+function cerrarResultados(soloSubs) { VOTOS.subs.forEach(u => u()); VOTOS.subs = []; VOTOS.votos = {}; if (soloSubs !== true) { document.getElementById('voto-proy').hidden = true; document.body.classList.remove('con-qr'); } }
+function pintarResultados() {
+  const cuenta = {}; Object.values(VOTOS.votos).forEach(v => { if (v) cuenta[v] = (cuenta[v] || 0) + 1; });
+  const total = Object.values(cuenta).reduce((a, b) => a + b, 0);
+  const filas = MON.equipos.map(eq => ({ eq, pl: (MON.datos['e:' + eq.id] || {}).platillo || '', n: cuenta[eq.id] || 0 })).filter(x => x.pl || x.n).sort((a, b) => b.n - a.n);
+  const max = Math.max(1, ...filas.map(x => x.n));
+  document.getElementById('voto-total').textContent = `${total} voto${total === 1 ? '' : 's'} de ${alumnosCache.length} alumnos · ${MON.votacion === 'abierta' ? 'votación abierta' : 'votación cerrada'}`;
+  document.getElementById('voto-barras').innerHTML = filas.length ? filas.map((x, i) => `<div class="voto-fila ${i === 0 && x.n ? 'lider' : ''}"><div class="voto-nom"><b>${escaparHTML(x.pl || '(sin platillo)')}</b><small>${escaparHTML(x.eq.nombre)}</small></div><div class="voto-barra"><i style="width:${Math.round(100 * x.n / max)}%"></i></div><span class="voto-n">${x.n}</span></div>`).join('') : '<p>Todavía ningún equipo eligió platillo.</p>';
+}
 function pintarTiempo(card, ts) { const h = hace(ts), p = card.querySelector('[data-punto]'); p.className = 'mon-punto ' + h.cls; p.textContent = h.txt; }
-function actividadDe(clave) { if (MON.act === 'cuadro') return (MON.datos[clave] || {}).actualizado || null; const v = monVista(clave); return v ? v.act : null; }
+function actividadDe(clave) { if (MON.act === 'cuadro' || MON.act === 'influencias') return (MON.datos[clave] || {}).actualizado || null; const v = monVista(clave); return v ? v.act : null; }
 function pintarTiempos() { document.querySelectorAll('.mon-card').forEach(c => pintarTiempo(c, actividadDe(c.dataset.clave))); pintarResumen(); }
 function pintarResumen() {
   const el = document.getElementById('mon-resumen'); if (!el) return;
   const ts = monTarjetas(); const activos = ts.filter(t => hace(actividadDe(t.clave)).cls === 'verde').length;
-  el.innerHTML = `<span class="mon-punto verde"></span> <b>${activos}</b> trabajando ahora (últimos 2 min) · ${ts.length} en total · ${MON.act === 'cuadro' ? 'Cuadro mexica–maya' : escaparHTML(MON_ATLAS ? MON_ATLAS.continentes[MON.cont].nombre : '')}`;
+  el.innerHTML = `<span class="mon-punto verde"></span> <b>${activos}</b> trabajando ahora (últimos 2 min) · ${ts.length} en total · ${MON.act === 'influencias' ? 'Siete influencias' : MON.act === 'cuadro' ? 'Cuadro mexica–maya' : escaparHTML(MON_ATLAS ? MON_ATLAS.continentes[MON.cont].nombre : '')}`;
 }
 function abrirDetalle(clave) { MON.abierto = clave; document.getElementById('mon-detalle').hidden = false; document.body.classList.add('con-qr'); pintarDetalle(true); }
 function cerrarDetalle() { MON.abierto = null; document.getElementById('mon-detalle').hidden = true; document.body.classList.remove('con-qr'); }
 function pintarDetalle(nuevo) {
   const clave = MON.abierto; if (!clave) return;
+  if (MON.act === 'influencias') {
+    const t = monTarjetas().find(x => x.clave === clave) || { titulo: '', sub: '' }, d = MON.datos[clave] || {}, inf = d.inf || {}, por = d.por || {};
+    const e = x => escaparHTML(x || '').replace(/\n/g, '<br>');
+    document.getElementById('mon-det-titulo').textContent = `${t.titulo}${d.platillo ? ' · ' + d.platillo : ''}`;
+    document.getElementById('mon-det-sub').textContent = `${t.sub} · Siete influencias · ${hace(d.actualizado).txt}`;
+    document.getElementById('mon-det-cuerpo').innerHTML = `<div class="taller-tabla-wrap"><table class="cu-det"><thead><tr><th>Influencia</th><th>¿Está?</th><th>Evidencia</th></tr></thead><tbody>${INFLUENCIAS.lista.map(([k, n, col]) => { const v = inf[k] || {}; return `<tr><th style="border-left:5px solid ${col}">${n}${por[k] ? `<br><small class="mon-autor">✍️ ${escaparHTML(por[k])}</small>` : ''}</th><td>${v.si === true ? '<b style="color:#3F7A4F">Sí</b>' : v.si === false ? 'No' : '—'}</td><td>${(v.ev || '').trim() ? e(v.ev) : '<span class="mon-vacio">—</span>'}</td></tr>`; }).join('')}</tbody></table></div>
+      <h4>Argumento ${por.argumento ? `<small class="mon-autor">✍️ ${escaparHTML(por.argumento)}</small>` : ''}</h4><p>${(d.argumento || '').trim() ? e(d.argumento) : '<span class="mon-vacio">—</span>'}</p>`;
+    return;
+  }
   if (MON.act === 'cuadro') {
     const t = monTarjetas().find(x => x.clave === clave) || { titulo: '', sub: '' }, d = MON.datos[clave] || {}, cel = d.celdas || {}, por = d.por || {};
     document.getElementById('mon-det-titulo').textContent = t.titulo;
@@ -1091,6 +1131,10 @@ async function calificarTareaDig(a, enCatalogo) {
         let datos = d;
         if (!datos) { const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'tarea-cuadro-mm')); datos = s.exists() ? s.data() : null; }
         if (datos) { sug = sugerirCuadro(datos.celdas); entregado = datos.entregado || null; resumen = CUADRO_MM.filas.map(([f, t]) => `${t}: ${CUADRO_MM.columnas.map(([c]) => (datos.celdas || {})[`${f}_${c}`] ? '●' : '○').join('')}`).join(' · '); }
+      } else if (a.tipo === 'influencias') {
+        let datos = eq ? await docEquipo(eq, INFLUENCIAS.id) : null;
+        if (!datos) { const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'tarea-influencias')); datos = s.exists() ? s.data() : null; }
+        if (datos) { sug = sugerirInfluencias(datos); entregado = datos.entregado || null; resumen = INFLUENCIAS.lista.map(([k, n]) => `${n}: ${((datos.inf || {})[k] || {}).si ? 'sí' : '—'}`).join(' · ') + (datos.argumento ? ' · ' + datos.argumento.slice(0, 200) : ''); }
       } else if (a.tipo === 'desarma') {
         const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'tarea-desarma'));
         if (s.exists()) { const m = s.data().datos || {}; sug = sugerirDesarma(m); entregado = s.data().entregado || null; resumen = (m.reflexion || '').slice(0, 260); }
@@ -1101,7 +1145,7 @@ async function calificarTareaDig(a, enCatalogo) {
   const f = t => t && t.toDate ? t.toDate().toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : typeof t === 'number' ? new Date(t).toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
   wrap.innerHTML = `<h4 class="td-h4">Calificar: ${escaparHTML(nombreCatalogo(a))}</h4>
     ${enCatalogo ? '' : '<p class="aviso-td">⚠️ Esta tarea todavía no está en el catálogo: las calificaciones se guardan, pero no cuentan en el promedio hasta que la agregues.</p>'}
-    <p class="field-hint">La calificación sugerida sale de qué tan completo está el trabajo${a.tipo === 'atlas' ? ' (la mitad por países clasificados y la mitad por fichas con al menos 4 de 7 apartados)' : a.tipo === 'cuadro' ? ' (celdas llenas de 21)' : ' (ingredientes, que estén clasificados y una conclusión de al menos 40 palabras)'}. En equipo, todos reciben la misma sugerencia; puedes ajustar a quien no aportó (en el Monitor ves quién escribió qué).</p>
+    <p class="field-hint">La calificación sugerida sale de qué tan completo está el trabajo${a.tipo === 'atlas' ? ' (la mitad por países clasificados y la mitad por fichas con al menos 4 de 7 apartados)' : a.tipo === 'cuadro' ? ' (celdas llenas de 21)' : a.tipo === 'influencias' ? ' (1 punto por elegir platillo, 1.5 por cada influencia con evidencia —hasta 4— y 3 por un argumento de al menos 60 palabras)' : ' (ingredientes, que estén clasificados y una conclusión de al menos 40 palabras)'}. En equipo, todos reciben la misma sugerencia; puedes ajustar a quien no aportó (en el Monitor ves quién escribió qué).</p>
     <div class="quiz-actions" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;"><button type="button" class="btn btn-ghost-dark btn-small" id="td-usar">Usar sugeridas en las vacías</button><button type="button" class="btn btn-ghost-dark btn-small" id="td-cerrar">Cerrar</button></div>
     <div class="taller-tabla-wrap"><table class="taller-tabla td-tabla"><thead><tr><th>Alumno</th><th>Trabajo</th><th>Entrega</th><th>Sugerida</th><th>Calificación</th></tr></thead><tbody>
     ${filas.map(x => `<tr data-id="${x.al.id}"><td><b>${escaparHTML(x.al.nombre)}</b>${x.eq ? `<br><small>👥 ${escaparHTML(x.eq.nombre)}</small>` : ''}</td>

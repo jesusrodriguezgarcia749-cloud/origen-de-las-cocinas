@@ -129,7 +129,7 @@ export const TEMAS_TAREAS = [
   ] },
   { tema: '3.2', titulo: 'Campeche y el resto de América', fecha: '2026-10-30', fechaTexto: 'Vie 30 de octubre', acts: [
     { id: 'atlas-america', tipo: 'atlas', cont: 'america', icono: '🗺️', nombre: 'Mi atlas: América', modo: 'En equipo o individual', desc: 'Tus regiones culinarias de América, de Alaska a la Patagonia.' },
-    { id: 'influencias', tipo: 'pronto', icono: '⚖️', nombre: 'Las siete influencias de la cocina campechana', modo: 'En equipo', desc: 'Se abre en la sesión del 30 de octubre.' },
+    { id: 'influencias', tipo: 'influencias', icono: '⚖️', nombre: 'Las siete influencias de la cocina campechana', modo: 'En equipo · en vivo · con votación', desc: 'Elijan un platillo campechano, encuentren en él las siete influencias y defiéndanlo en la votación del grupo.' },
   ] },
   { tema: '3.3', titulo: 'Cocinas asiáticas', fecha: '2026-11-05', fechaTexto: 'Jue 5 de noviembre', acts: [
     { id: 'atlas-asia', tipo: 'atlas', cont: 'asia', icono: '🗺️', nombre: 'Mi atlas: Asia', modo: 'En equipo o individual', desc: 'Tus regiones culinarias de Asia.' },
@@ -142,7 +142,7 @@ export const TEMAS_TAREAS = [
   ] },
 ];
 export const TAREAS_DIG = Object.fromEntries(TEMAS_TAREAS.flatMap(t => t.acts.map(a => [a.id, { ...a, tema: t.tema, titulo: t.titulo, fecha: t.fecha, fechaTexto: t.fechaTexto }])));
-export const califica = a => a && ['atlas', 'cuadro', 'desarma'].includes(a.tipo);
+export const califica = a => a && ['atlas', 'cuadro', 'desarma', 'influencias'].includes(a.tipo);
 export const catalogoId = id => 'dig-' + id;
 export const nombreCatalogo = a => `${a.tema} · ${a.nombre}`;
 
@@ -169,4 +169,28 @@ export function sugerirDesarma(m) {
   const ings = m.ingredientes || [], clas = ings.filter(x => x.o === 'n' || x.o === 'l').length, pal = palabras(m.reflexion);
   const nota = 3 * Math.min(1, ings.length / 3) + 3 * (ings.length ? clas / ings.length : 0) + 4 * Math.min(1, pal / 40);
   return { nota: r1(nota), detalle: `${m.nombre}: ${ings.length} ingredientes, ${clas} clasificados · conclusión de ${pal} palabras` };
+}
+
+// ---------- Las siete influencias de la cocina campechana (compendio 3.2, según el maestro Rafael E. Meneses López)
+export const INFLUENCIAS = {
+  id: 'act-influencias', votacion: 'influencias',
+  lista: [
+    ['maya', 'Maya', '#3F7A4F', 'La base de todo: maíz, frijol, chile, calabaza y pepita, el achiote del recado rojo, el pib (horno de tierra) y la miel de melipona.'],
+    ['espanola', 'Española', '#A63D2F', 'Desde 1521: cerdo y manteca, res, trigo, cebolla, ajo, cítricos, aceite de oliva, la fritura y la repostería de los conventos.'],
+    ['arabe', 'Árabe', '#C98A2C', 'Por dos vías: la herencia andalusí de la cocina española (el escabeche, las especias, los dulces de almíbar) y la migración libanesa desde finales del siglo XIX (kibis, tabule, pan árabe).'],
+    ['francesa', 'Francesa', '#2E6FA8', 'El compendio la menciona pero no la detalla: investiguen qué técnica, platillo o costumbre francesa llegó a la mesa campechana y cítenlo.'],
+    ['holandesa', 'Holandesa', '#E07B39', 'Los barcos del comercio del palo de tinte traían quesos holandeses de bola, tipo Edam: de ahí, según la tradición, el queso relleno.'],
+    ['africana', 'Africana', '#6B5B4B', 'Llegó con las personas esclavizadas del comercio colonial (tema 3.1). Investiguen qué ingredientes o técnicas de su cocina se reconocen hoy.'],
+    ['caribena', 'Caribeña', '#2BA3A0', 'Campeche es un puerto del Golfo y del Caribe: investiguen qué ingredientes o preparaciones comparte con las cocinas caribeñas (piensen en el coco, el plátano, los mariscos).'],
+  ],
+  platillos: ['Pan de cazón', 'Queso relleno', 'Pámpano en escabeche', 'Camarones al coco', 'Manitas de cangrejo', 'Coctel campechano', 'Chocolomo', 'Poc chuc', 'Puchero', 'Torta de jamón claveteado', 'Dulce de papaya', 'Mazapán de pepita', 'Kibis'],
+};
+// Sugerida: 1 punto por elegir platillo, hasta 6 por evidencias (1.5 por cada influencia con evidencia de 8 palabras o más, máximo 4),
+// y hasta 3 por el argumento final (60 palabras o más).
+export function sugerirInfluencias(d) {
+  if (!d || !((d.platillo || '').trim())) return { nota: 0, detalle: 'Sin platillo elegido' };
+  const inf = d.inf || {}, conEv = INFLUENCIAS.lista.filter(([k]) => inf[k] && inf[k].si && palabras(inf[k].ev) >= 8).length;
+  const marcadas = INFLUENCIAS.lista.filter(([k]) => inf[k] && inf[k].si).length, pal = palabras(d.argumento);
+  const nota = 1 + 1.5 * Math.min(4, conEv) + 3 * Math.min(1, pal / 60);
+  return { nota: r1(nota), detalle: `${d.platillo}: ${marcadas} de 7 influencias (${conEv} con evidencia) · argumento de ${pal} palabras` };
 }
