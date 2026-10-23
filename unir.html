@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unirme a mi equipo · Origen de las Cocinas</title>
+<meta name="robots" content="noindex">
+<!-- El QR de cada equipo trae una dirección corta (unir.html#CODIGO) para que el
+     código salga menos denso y cualquier celular lo lea; aquí se pasa a Tareas. -->
+<script>
+  (function () {
+    var c = (location.hash || '').replace('#', '').replace(/[^A-Za-z0-9]/g, '').slice(0, 4).toUpperCase();
+    location.replace('tareas.html' + (c.length === 4 ? '#unir-' + c : ''));
+  })();
+</script>
+<style>body{font-family:system-ui,sans-serif;background:#FAF7F0;color:#1C1B19;display:grid;place-items:center;min-height:100vh;margin:0}a{color:#A63D2F}</style>
+</head>
+<body><p>Abriendo tu equipo… <a href="tareas.html">Ir a Tareas</a></p></body>
+</html>

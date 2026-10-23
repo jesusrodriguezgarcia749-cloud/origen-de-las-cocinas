@@ -7,6 +7,7 @@ import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, deleteField, 
 import { firebaseConfig } from "./firebase-config.js";
 import { DocITES, mapaContinentePNG, ABREV } from "./docx-ites.js";
 import { TAREAS_DIG } from "./clase-datos.js";
+import { formacionDe, formaciones, formacionDeTarea, abiertas as inscAbiertas, equipoDe, tareasDeFormacion } from "./equipos.js";
 
 const db = getFirestore(initializeApp(firebaseConfig));
 const SESSION_KEY = 'oc_sesion_alumno';
@@ -41,7 +42,7 @@ const cerrada = () => { const t = tareaDe(cont); return !!(t && TAREA_EST[t.id] 
 function avisoCerrada() { estado('🔒 Tu maestro cerró esta tarea: ya no se guardan cambios.', 'mal'); }
 const nota = d => { ultimaNota = d; };
 const nomCampo = f => ({ nombre: 'el nombre', ...Object.fromEntries(CAMPOS_REGION.map(([k, t]) => [k, t])) })[f] || f;
-let codigoPendiente = null, abiertos = true, eqDocUnsub = null, msgModo = '';
+let codigoPendiente = null, abiertos = true, msgModo = '', EQS = [], G = {}, FID = 'actual';
 let vuelo = new Map();
 let modo = 'personal', EQ = null, TE = {}, unsub = null, pend = new Map(), pendT = null, existe = {};
 let A = null, sesion = null, T = null, cont = 'africa', regSel = null, paisSel = null, timer = null, iniciado = false;
@@ -105,17 +106,38 @@ async function entrar() {
   estado(sesion.anon ? 'Se guarda solo en este dispositivo' : 'Tu trabajo se guarda en tu cuenta');
   const eq = $('#ma-equipo'); eq.value = T.equipo || '';
   if (!eq._listo) { eq._listo = true; eq.addEventListener('input', () => { T.equipo = eq.value; cambio(); }); }
-  if (!sesion.anon) {
-    try {
-      const sn = await getDocs(collection(db, 'grupos', sesion.grupoId, 'equipos'));
-      sn.forEach(d => { const x = d.data(); if ((x.integrantes || []).includes(sesion.alumnoId)) EQ = { id: d.id, ...x }; });
-    } catch { /* sin equipos */ }
-  }
-  if (!sesion.anon) { try { const g = await getDoc(doc(db, 'grupos', sesion.grupoId)); abiertos = !g.exists() || g.data().equiposAbiertos !== false; } catch { /* */ } }
-  if (!sesion.anon) onSnapshot(doc(db, 'grupos', sesion.grupoId), sn => { TAREA_EST = (sn.exists() && sn.data().tareasDig) || {}; pintarTarea(); }, () => {});
-  if (EQ) modo = lsGet('miatlas_modo') === 'personal' ? 'personal' : 'equipo';
+  // los equipos van por «formaciones»: el de cada continente es el de la formación que usa su tarea
+  if (!sesion.anon) await new Promise(res => {
+    let gOk = false, eOk = false; const listo = () => { if (gOk && eOk) { res(); res.hecho = true; } };
+    onSnapshot(doc(db, 'grupos', sesion.grupoId), sn => { G = sn.exists() ? sn.data() : {}; TAREA_EST = G.tareasDig || {}; if (res.hecho) alCambiarEquipos(); else { gOk = true; listo(); } pintarTarea(); }, () => { gOk = true; listo(); });
+    onSnapshot(collection(db, 'grupos', sesion.grupoId, 'equipos'), sn => { EQS = sn.docs.map(d => ({ id: d.id, ...d.data() })); if (res.hecho) alCambiarEquipos(); else { eOk = true; listo(); } }, () => { eOk = true; listo(); });
+  });
+  if (!sesion.anon) aplicarEQ(calcularEQ());
+  if (EQ) modo = preferido();
   pintarConts(); await cambiarModo(modo);
   if (codigoPendiente && !sesion.anon) { const c = codigoPendiente; codigoPendiente = null; history.replaceState(null, '', '#miatlas'); await unirse(c); }
+}
+// ---- equipo del continente que se está viendo
+const calcularEQ = () => { const fid = formacionDeTarea(G, 'atlas-' + cont); return { fid, eq: equipoDe(EQS, fid, sesion.alumnoId), ab: inscAbiertas(G, fid) }; };
+function aplicarEQ(r) { if ((EQ && EQ.id) !== (r.eq && r.eq.id)) TE = {}; FID = r.fid; EQ = r.eq; abiertos = r.ab; }
+const preferido = () => EQ && lsGet('miatlas_modo') !== 'personal' ? 'equipo' : 'personal';
+let cambiando = false;
+async function alCambiarEquipos() {
+  if (!T || sesion.anon || cambiando) return;
+  const r = calcularEQ(), antes = EQ, firmaA = antes ? antes.nombre + JSON.stringify(antes.nombres) : '', abA = abiertos;
+  if ((antes && antes.id) !== (r.eq && r.eq.id)) {
+    cambiando = true;
+    try {
+      await flushEquipo();   // lo pendiente se guarda en el equipo anterior antes de cambiar
+      aplicarEQ(r);
+      if (antes && !EQ) msgModo = '<p class="ma-msg mal">Ya no formas parte de ese equipo.</p>';
+      await cambiarModo(EQ ? 'equipo' : 'personal');
+    } finally { cambiando = false; }
+    return;
+  }
+  aplicarEQ(r);
+  const act = document.activeElement;
+  if ((EQ && EQ.nombre + JSON.stringify(EQ.nombres) !== firmaA || abA !== abiertos) && !(act && $('#ma-modo').contains(act))) pintarModo();
 }
 // ---- unirse a un equipo con su código (o el QR, que trae el código en la dirección)
 const refEquipo = id => doc(db, 'grupos', sesion.grupoId, 'equipos', id);
@@ -124,39 +146,34 @@ async function unirse(codigo) {
   codigo = String(codigo || '').trim().toUpperCase();
   if (!/^[A-Z0-9]{4}$/.test(codigo)) { avisoModo('El código de equipo tiene 4 letras o números.', 'mal'); return; }
   try {
-    const sn = await getDocs(collection(db, 'grupos', sesion.grupoId, 'equipos'));
-    let t = null; sn.forEach(d => { if ((d.data().codigo || '').toUpperCase() === codigo) t = { id: d.id, ...d.data() }; });
+    const sn = await getDocs(collection(db, 'grupos', sesion.grupoId, 'equipos')); EQS = sn.docs.map(d => ({ id: d.id, ...d.data() }));
+    const t = EQS.find(e => (e.codigo || '').toUpperCase() === codigo);
     if (!t) { avisoModo(`No encontramos un equipo con el código ${codigo} en tu grupo. Revísalo con tu maestro.`, 'mal'); return; }
-    const integ = t.integrantes || [], noms = t.nombres || [];
-    if (integ.includes(sesion.alumnoId)) { EQ = t; avisoModo(`Ya eres parte de «${t.nombre}».`, 'ok'); await cambiarModo('equipo'); return; }
-    const g = await getDoc(doc(db, 'grupos', sesion.grupoId)); abiertos = !g.exists() || g.data().equiposAbiertos !== false;
-    if (!abiertos) { avisoModo('Las inscripciones a equipos ya están cerradas. Pídele a tu maestro que te cambie.', 'mal'); return; }
-    if (t.max && integ.length >= t.max) { avisoModo(`«${t.nombre}» ya está completo (${t.max} integrantes). Elige otro equipo.`, 'mal'); return; }
-    if (EQ && EQ.id !== t.id) {   // salir del equipo anterior
-      const v = await getDoc(refEquipo(EQ.id));
-      if (v.exists()) { const vi = v.data().integrantes || [], vn = v.data().nombres || [], k = vi.indexOf(sesion.alumnoId);
-        if (k >= 0) await updateDoc(refEquipo(EQ.id), { integrantes: vi.filter((_, i) => i !== k), nombres: vn.filter((_, i) => i !== k), ...firmaAlumno() }); }
+    const fid = formacionDe(t);
+    if (fid !== FID) {
+      const otras = tareasDeFormacion(G, fid, TAREAS_DIG).map(a => a.nombre);
+      avisoModo(`El código ${codigo} es de otros equipos («${(formaciones(G)[fid] || {}).nombre}»${otras.length ? ', para ' + otras.join(', ') : ''}), no de los de ${A.continentes[cont].nombre}.`, 'mal'); return;
     }
-    await updateDoc(refEquipo(t.id), { integrantes: [...integ, sesion.alumnoId], nombres: [...noms, sesion.nombre], ...firmaAlumno() });
-    EQ = { ...t, integrantes: [...integ, sesion.alumnoId], nombres: [...noms, sesion.nombre] };
-    avisoModo(`¡Listo! Ya eres parte de «${t.nombre}». ${t.nombre.startsWith('Equipo ') ? 'Pónganle nombre a su equipo con ✏️.' : ''}`, 'ok');
-    await cambiarModo('equipo');
+    const integ = t.integrantes || [], noms = t.nombres || [];
+    if (integ.includes(sesion.alumnoId)) { aplicarEQ(calcularEQ()); avisoModo(`Ya eres parte de «${t.nombre}».`, 'ok'); await cambiarModo('equipo'); return; }
+    if (!inscAbiertas(G, fid)) { avisoModo('Las inscripciones a equipos ya están cerradas. Pídele a tu maestro que te cambie.', 'mal'); return; }
+    if (t.max && integ.length >= t.max) { avisoModo(`«${t.nombre}» ya está completo (${t.max} integrantes). Elige otro equipo.`, 'mal'); return; }
+    cambiando = true;
+    try {
+      await flushEquipo();
+      const previo = equipoDe(EQS, fid, sesion.alumnoId);   // salir del equipo anterior de esta misma formación
+      if (previo) { const vi = previo.integrantes || [], vn = previo.nombres || [], k = vi.indexOf(sesion.alumnoId);
+        await updateDoc(refEquipo(previo.id), { integrantes: vi.filter((_, i) => i !== k), nombres: vn.filter((_, i) => i !== k), ...firmaAlumno() });
+        previo.integrantes = vi.filter((_, i) => i !== k); previo.nombres = vn.filter((_, i) => i !== k); }
+      await updateDoc(refEquipo(t.id), { integrantes: [...integ, sesion.alumnoId], nombres: [...noms, sesion.nombre], ...firmaAlumno() });
+      t.integrantes = [...integ, sesion.alumnoId]; t.nombres = [...noms, sesion.nombre];
+      aplicarEQ(calcularEQ());
+      avisoModo(`¡Listo! Ya eres parte de «${t.nombre}». ${t.nombre.startsWith('Equipo ') ? 'Pónganle nombre a su equipo con ✏️.' : ''}`, 'ok');
+      await cambiarModo('equipo');
+    } finally { cambiando = false; }
   } catch (e) { avisoModo('No se pudo unir al equipo: ' + (e.message || e), 'mal'); }
 }
 function avisoModo(t, c) { msgModo = t ? `<p class="ma-msg ${c || ''}">${esc(t)}</p>` : ''; pintarModo(); }
-function escucharEquipo() {
-  if (eqDocUnsub) { eqDocUnsub(); eqDocUnsub = null; }
-  if (!EQ || sesion.anon) return;
-  eqDocUnsub = onSnapshot(refEquipo(EQ.id), sn => {
-    if (!sn.exists()) { EQ = null; if (modo === 'equipo') cambiarModo('personal'); else pintarModo(); return; }
-    const d = sn.data();
-    if (!(d.integrantes || []).includes(sesion.alumnoId)) { EQ = null; avisoModo('Ya no formas parte de ese equipo.', 'mal'); if (modo === 'equipo') cambiarModo('personal'); return; }
-    const cambio = d.nombre !== EQ.nombre || JSON.stringify(d.nombres) !== JSON.stringify(EQ.nombres);
-    EQ = { id: sn.id, ...d };
-    const act = document.activeElement;
-    if (cambio && !(act && $('#ma-modo').contains(act))) pintarModo();
-  });
-}
 function pintarModo() {
   const m = $('#ma-modo');
   if (!sesion || sesion.anon) { m.hidden = true; return; }
@@ -192,7 +209,6 @@ async function cambiarModo(mo) {
   await flushEquipo(); if (timer) await guardarYa();
   if (mo === 'equipo' && !EQ) mo = 'personal';
   modo = mo; lsSet('miatlas_modo', mo); regSel = null; paisSel = null; editando = null;
-  escucharEquipo();
   $('.ma-equipo').hidden = modo === 'equipo';
   pintarModo();
   if (modo === 'equipo') { estado('Conectando con tu equipo…'); escuchar(); }
@@ -316,7 +332,11 @@ function pintarConts() {
   Object.entries(A.continentes).forEach(([k, c]) => {
     const b = document.createElement('button'); b.className = 'chip-at'; b.type = 'button'; b.setAttribute('aria-pressed', String(k === cont));
     b.textContent = `${c.nombre} · ${c.sub}`;
-    b.addEventListener('click', async () => { await flushEquipo(); cont = k; regSel = null; paisSel = null; editando = null; T.ultimo = k; $$('#ma-conts .chip-at').forEach(x => x.setAttribute('aria-pressed', String(x === b))); if (modo === 'equipo') escuchar(); else dibujar(); });
+    b.addEventListener('click', async () => {
+      await flushEquipo(); cont = k; regSel = null; paisSel = null; editando = null; T.ultimo = k; $$('#ma-conts .chip-at').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+      if (!sesion.anon) { const antes = EQ && EQ.id; aplicarEQ(calcularEQ()); if ((EQ && EQ.id) !== antes) { msgModo = ''; await cambiarModo(preferido()); return; } pintarModo(); }
+      if (modo === 'equipo') escuchar(); else dibujar();
+    });
     z.appendChild(b);
   });
 }

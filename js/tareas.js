@@ -11,6 +11,7 @@ import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, FieldPath, co
 import { firebaseConfig } from "./firebase-config.js";
 import { CUADRO_MM, APORTO, PLATILLOS, TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, sugerirCuadro, INFLUENCIAS, sugerirInfluencias } from "./clase-datos.js";
 import { DocITES } from "./docx-ites.js";
+import { formacionDe, formaciones, formacionDeTarea, abiertas as inscAbiertas, equipoDe, equiposDe, tareasDeFormacion, enEquipo } from "./equipos.js";
 
 const db = getFirestore(initializeApp(firebaseConfig));
 const SESSION_KEY = 'oc_sesion_alumno';
@@ -24,7 +25,7 @@ const barajar = a => { const c = [...a]; for (let i = c.length - 1; i > 0; i--) 
 const punto = t => /\.$/.test(t) ? t : t + '.';
 const fechaHora = ts => { const d = ts && ts.toDate ? ts.toDate() : typeof ts === 'number' ? new Date(ts) : null; return d ? d.toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : ''; };
 let sesion = null; try { sesion = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null'); } catch { sesion = null; }
-let EQ = undefined, ESTADO = {}, unsubGrupo = null, detener = null;
+let EQS = null, GDATA = {}, ESTADO = {}, unsubGrupo = null, detener = null;
 const abierta = id => !(ESTADO[id] && ESTADO[id].abierta === false);
 
 // ======================================================= acceso y equipo
@@ -48,27 +49,39 @@ function formAcceso(cont, alEntrar, titulo = 'Entra con tu nombre y PIN') {
       if (!s.exists() || String(s.data().pin) !== pin) { err.textContent = 'No encontramos ese nombre y PIN en el grupo elegido. Verifica con tu docente.'; err.hidden = false; return; }
       sesion = { grupoId: g, alumnoId: id, nombre: s.data().nombre, pin };
       try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(sesion)); } catch { /* */ }
-      EQ = undefined; escucharGrupo(); alEntrar();
+      EQS = null; escucharGrupo(); alEntrar();
     } catch (e2) { err.textContent = 'No se pudo entrar: ' + (e2.message || e2); err.hidden = false; }
   });
 }
-async function equipo() {
-  if (EQ !== undefined) return EQ;
-  EQ = null;
-  try { const sn = await getDocs(collection(db, 'grupos', sesion.grupoId, 'equipos')); sn.forEach(d => { if ((d.data().integrantes || []).includes(sesion.alumnoId)) EQ = { id: d.id, ...d.data() }; }); } catch { /* */ }
-  return EQ;
+// Los equipos van por «formaciones»: cada tarea en equipo usa una (ver equipos.js).
+async function cargarEquipos(forzar) {
+  if (EQS && !forzar) return;
+  const [g, sn] = await Promise.all([getDoc(doc(db, 'grupos', sesion.grupoId)), getDocs(collection(db, 'grupos', sesion.grupoId, 'equipos'))]);
+  GDATA = g.exists() ? g.data() : {}; EQS = sn.docs.map(d => ({ id: d.id, ...d.data() }));
 }
-async function unirseCodigo(codigo) {
+async function equipo(tareaId) {
+  try { await cargarEquipos(); } catch { return null; }
+  return equipoDe(EQS, formacionDeTarea(GDATA, tareaId), sesion.alumnoId);
+}
+// une al alumno al equipo del código; si se pasa la tarea, el código debe ser de sus equipos
+async function unirseCodigo(codigo, tareaId) {
   codigo = String(codigo || '').trim().toUpperCase();
-  const sn = await getDocs(collection(db, 'grupos', sesion.grupoId, 'equipos'));
-  let t = null; sn.forEach(d => { if ((d.data().codigo || '').toUpperCase() === codigo) t = { id: d.id, ...d.data() }; });
+  if (!/^[A-Z0-9]{4}$/.test(codigo)) throw new Error('El código de equipo tiene 4 letras o números.');
+  await cargarEquipos(true);
+  const t = EQS.find(e => (e.codigo || '').toUpperCase() === codigo);
   if (!t) throw new Error(`No hay un equipo con el código ${codigo} en tu grupo.`);
-  const g = await getDoc(doc(db, 'grupos', sesion.grupoId)); if (g.exists() && g.data().equiposAbiertos === false) throw new Error('Las inscripciones a equipos están cerradas. Pídele a tu maestro que te agregue.');
+  const fid = formacionDe(t), F = formaciones(GDATA)[fid] || {};
+  if (tareaId && formacionDeTarea(GDATA, tareaId) !== fid) throw new Error(`El código ${codigo} es de otros equipos («${F.nombre}»), no de los de esta tarea. Revisa el código con tu maestro.`);
   const integ = t.integrantes || [];
-  if (t.max && integ.length >= t.max) throw new Error(`«${t.nombre}» ya está completo.`);
+  if (integ.includes(sesion.alumnoId)) return t;
+  if (!inscAbiertas(GDATA, fid)) throw new Error('Las inscripciones a estos equipos están cerradas. Pídele a tu maestro que te agregue.');
+  if (t.max && integ.length >= t.max) throw new Error(`«${t.nombre}» ya está completo (${t.max} integrantes). Elige otro equipo.`);
+  const previo = equipoDe(EQS, fid, sesion.alumnoId);   // en la misma formación solo se está en un equipo
+  if (previo) { const vi = previo.integrantes || [], vn = previo.nombres || [], k = vi.indexOf(sesion.alumnoId);
+    await updateDoc(doc(db, 'grupos', sesion.grupoId, 'equipos', previo.id), { integrantes: vi.filter((_, i) => i !== k), nombres: vn.filter((_, i) => i !== k), ultimoAutor: sesion.alumnoId, ultimoPin: sesion.pin }); }
   await updateDoc(doc(db, 'grupos', sesion.grupoId, 'equipos', t.id), { integrantes: [...integ, sesion.alumnoId], nombres: [...(t.nombres || []), sesion.nombre], ultimoAutor: sesion.alumnoId, ultimoPin: sesion.pin });
-  EQ = { ...t, integrantes: [...integ, sesion.alumnoId], nombres: [...(t.nombres || []), sesion.nombre] };
-  return EQ;
+  await cargarEquipos(true);
+  return EQS.find(e => e.id === t.id) || t;
 }
 // estado de cada tarea (abierta/cerrada) que pone el docente en grupos/{g}.tareasDig
 function escucharGrupo() {
@@ -89,7 +102,7 @@ async function totalPaises(cont) {
 // Avance, entrega y calificación de una tarea para el alumno (o su equipo)
 async function estadoDe(a) {
   if (!sesion || !califica(a)) return null;
-  const g = sesion.grupoId, al = sesion.alumnoId, eq = await equipo();
+  const g = sesion.grupoId, al = sesion.alumnoId, eq = enEquipo(a) ? await equipo(a.id) : null;
   const out = { avance: '', entregado: null, cal: null };
   try { const c = await getDoc(doc(db, 'grupos', g, 'alumnos', al, 'tareas', catalogoId(a.id))); if (c.exists() && c.data().calificacion !== undefined && c.data().calificacion !== null) out.cal = c.data().calificacion; } catch { /* */ }
   try {
@@ -126,7 +139,7 @@ async function portada() {
   const actual = [...TEMAS_TAREAS].reverse().find(t => t.fecha <= hoy) || TEMAS_TAREAS[0];
   $('#cl-acceso').innerHTML = sesion ? `<div class="tq-quien">👤 <b>${esc(sesion.nombre)}</b> · aquí ves tu avance y tus calificaciones <button type="button" class="ma-link" id="tq-salir">Salir</button></div>`
     : `<div class="tq-quien">Entra con tu nombre y PIN para ver tu avance, entregar y conocer tus calificaciones. <button type="button" class="btn-at" id="tq-entrar">Entrar</button></div>`;
-  if (sesion) $('#tq-salir').addEventListener('click', () => { try { sessionStorage.removeItem(SESSION_KEY); } catch { /* */ } sesion = null; EQ = undefined; if (unsubGrupo) unsubGrupo(); portada(); });
+  if (sesion) $('#tq-salir').addEventListener('click', () => { try { sessionStorage.removeItem(SESSION_KEY); } catch { /* */ } sesion = null; EQS = null; if (unsubGrupo) unsubGrupo(); portada(); });
   else $('#tq-entrar').addEventListener('click', () => formAcceso($('#cl-acceso'), portada));
   $('#cl-sesiones').innerHTML = TEMAS_TAREAS.map((t, i) => `<details class="tq-tema" data-tema="${i}" ${t === actual ? 'open' : ''}><summary><span class="tq-num">${esc(t.tema)}</span><span><b>${esc(t.titulo)}</b><small>${esc(t.fechaTexto)} · ${t.acts.filter(califica).length} tarea${t.acts.filter(califica).length === 1 ? '' : 's'}</small></span></summary>
     <div class="cl-cards">${t.acts.map(a => `<a class="cl-card ${a.tipo === 'pronto' ? 'cl-pronto' : ''}" href="${a.tipo === 'atlas' ? `atlas.html#miatlas=${a.cont}` : a.tipo === 'pronto' ? '#' : '#' + a.id}" data-act="${a.id}"><span class="cl-ico">${a.icono}</span><b>${esc(a.nombre)}</b><small>${esc(a.modo)}</small><p>${esc(a.desc)}</p><span class="cl-estado" data-st="${a.id}">${insignia(a, null)}</span><p class="cl-avance" data-av="${a.id}"></p></a>`).join('')}</div></details>`).join('');
@@ -159,6 +172,8 @@ async function tareasNormales() {
 function ruta() {
   const id = location.hash.slice(1).split('=')[0];
   if (detener) { detener(); detener = null; }
+  const mu = location.hash.match(/^#unir-([A-Z0-9]{4})$/i);
+  if (mu) return unirPorQR(mu[1].toUpperCase());
   const a = TAREAS_DIG[id];
   if (!a || a.tipo === 'atlas' || a.tipo === 'pronto') { $('#cl-sesiones').hidden = false; $('#cl-acceso').hidden = false; $('#cl-actividad').innerHTML = ''; portada(); return; }
   $('#cl-sesiones').hidden = true; $('#cl-acceso').hidden = true;
@@ -167,6 +182,32 @@ function ruta() {
     ${califica(a) ? '<p class="cl-vale">📌 Cuenta como una tarea del Parcial 2.</p>' : '<p class="cl-vale cl-vale-p">🎯 Práctica para repasar: no lleva calificación.</p>'}<div id="cl-cuerpo"></div>`;
   ({ cuadro: actCuadro, practica: actAporto, desarma: actDesarma, influencias: actInfluencias })[a.tipo]($('#cl-cuerpo'));
   window.scrollTo({ top: 0 });
+}
+// El QR de un equipo abre tareas.html#unir-CODIGO (vía unir.html): entra, se une y va a su tarea.
+const hrefTarea = a => a.tipo === 'atlas' ? `atlas.html#miatlas=${a.cont}` : '#' + a.id;
+function unirPorQR(codigo) {
+  $('#cl-sesiones').hidden = true; $('#cl-acceso').hidden = true;
+  const c = $('#cl-actividad');
+  c.innerHTML = `<a class="cl-volver" href="#">← Todas las tareas</a><h2 class="cl-h2">👥 Unirme a mi equipo</h2><div id="cl-cuerpo"></div>`;
+  const cuerpo = $('#cl-cuerpo');
+  const hacer = async () => {
+    cuerpo.innerHTML = `<p class="atlas-ayuda">Uniéndote al equipo con el código <b>${esc(codigo)}</b>…</p>`;
+    try {
+      const t = await unirseCodigo(codigo);
+      const d0 = new Date(), hoy = `${d0.getFullYear()}-${String(d0.getMonth() + 1).padStart(2, '0')}-${String(d0.getDate()).padStart(2, '0')}`;
+      const ts = tareasDeFormacion(GDATA, formacionDe(t), TAREAS_DIG).sort((x, y) => x.fecha.localeCompare(y.fecha));
+      const abiertasT = ts.filter(a => !(((GDATA.tareasDig || {})[a.id] || {}).abierta === false));
+      const destino = [...abiertasT].reverse().find(a => a.fecha <= hoy) || abiertasT[0] || ts[ts.length - 1];
+      cuerpo.innerHTML = `<div class="cl-unido"><p class="cl-unido-ok">✅ ¡Listo, ${esc(sesion.nombre.split(' ')[0])}! Ya eres parte de <b>«${esc(t.nombre)}»</b>.</p>
+        <p>Integrantes: ${esc((t.nombres || []).join(', '))}</p>
+        ${destino ? `<a class="btn-at cl-ir" href="${hrefTarea(destino)}">Ir a ${esc(destino.nombre)} →</a>` : '<p class="atlas-ayuda">Tu maestro todavía no asigna una tarea a estos equipos. Te avisará en clase.</p>'}
+        ${ts.length > 1 ? `<p class="cl-otras">Este equipo también es para: ${ts.filter(a => a !== destino).map(a => `<a href="${hrefTarea(a)}">${esc(a.nombre)}</a>`).join(' · ')}</p>` : ''}</div>`;
+      history.replaceState(null, '', location.pathname + '#');
+    } catch (e) {
+      cuerpo.innerHTML = `<div class="cl-sin-eq"><p class="ma-msg mal">${esc(e.message || e)}</p><a class="btn-ruta" href="#">Ver mis tareas</a></div>`;
+    }
+  };
+  if (sesion) hacer(); else formAcceso(cuerpo, () => { escucharGrupo(); hacer(); }, `Vas a unirte al equipo <b>${esc(codigo)}</b>. Entra con tu nombre y PIN`);
 }
 window.addEventListener('hashchange', ruta);
 ruta();
@@ -192,12 +233,12 @@ function actCuadro(cont) {
   const entrar = async () => {
     escucharGrupo();
     cont.innerHTML = '<p class="atlas-ayuda">Buscando a tu equipo…</p>';
-    const eq = await equipo();
+    const eq = await equipo('cuadro-mm');
     if (eq) return cuadro(cont, eq);
     cont.innerHTML = `<div class="cl-sin-eq"><p><b>Todavía no estás en un equipo.</b> Escribe el código de 4 letras de tu equipo (o escanea el QR que proyecta tu maestro).</p>
       <form id="cl-unir" class="ma-unir"><div><input id="cl-cod" maxlength="4" autocomplete="off" placeholder="ABCD" aria-label="Código del equipo"><button class="btn-at" type="submit">Unirme</button></div></form>
       <p class="ma-msg mal" id="cl-unir-msg" hidden></p><p class="cl-o">o</p><button type="button" class="btn-ruta" id="cl-solo">Hacerla solo (se guarda en tu cuenta)</button></div>`;
-    $('#cl-unir').addEventListener('submit', async e => { e.preventDefault(); try { cuadro(cont, await unirseCodigo($('#cl-cod').value)); } catch (er) { const m = $('#cl-unir-msg'); m.textContent = er.message || er; m.hidden = false; } });
+    $('#cl-unir').addEventListener('submit', async e => { e.preventDefault(); try { cuadro(cont, await unirseCodigo($('#cl-cod').value, 'cuadro-mm')); } catch (er) { const m = $('#cl-unir-msg'); m.textContent = er.message || er; m.hidden = false; } });
     $('#cl-solo').addEventListener('click', () => cuadro(cont, null));
   };
   if (sesion) entrar(); else formAcceso(cont, entrar, 'Entra con tu nombre y PIN para trabajar en esta tarea');
@@ -206,7 +247,7 @@ function cuadro(cont, eq) {
   const A = CUADRO_MM, a = TAREAS_DIG['cuadro-mm'], claves = A.filas.flatMap(([f]) => A.columnas.map(([c]) => `${f}_${c}`));
   let S = { celdas: {}, por: {}, entregado: null }, clave = false, pend = new Map(), vuelo = new Map(), pendT = null, existe = false, ultima = '';
   const ref = eq ? doc(db, 'grupos', sesion.grupoId, 'equipos', eq.id, 'atlas', A.id) : doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'atlas', 'tarea-cuadro-mm');
-  cont.innerHTML = `<div class="ma-barra"><span>${eq ? `👥 Equipo <b>${esc(eq.nombre)}</b>: ${esc((eq.nombres || []).join(', '))}` : `👤 <b>${esc(sesion.nombre)}</b> (individual)`}</span><span class="ma-estado" id="cu-estado"></span>
+  cont.innerHTML = `<div class="ma-barra"><span>${eq ? `👥 <b>${esc(eq.nombre)}</b>: ${esc((eq.nombres || []).join(', '))}` : `👤 <b>${esc(sesion.nombre)}</b> (individual)`}</span><span class="ma-estado" id="cu-estado"></span>
       <button type="button" class="btn-ruta" id="cu-word">⬇ Descargar en Word</button></div>
     <div data-entrega></div>
     <p class="atlas-ayuda">Escriban con sus palabras lo que aprendieron en clase y en el compendio (subtema 3.2). Se guarda solo${eq ? ' y todos ven al instante lo que escriben los demás' : ''}.</p>
@@ -442,12 +483,12 @@ function actInfluencias(cont) {
   const entrar = async () => {
     escucharGrupo();
     cont.innerHTML = '<p class="atlas-ayuda">Buscando a tu equipo…</p>';
-    const eq = await equipo();
+    const eq = await equipo('influencias');
     if (eq) return influencias(cont, eq);
     cont.innerHTML = `<div class="cl-sin-eq"><p><b>Todavía no estás en un equipo.</b> Escribe el código de 4 letras de tu equipo (o escanea el QR que proyecta tu maestro).</p>
       <form id="cl-unir" class="ma-unir"><div><input id="cl-cod" maxlength="4" autocomplete="off" placeholder="ABCD" aria-label="Código del equipo"><button class="btn-at" type="submit">Unirme</button></div></form>
       <p class="ma-msg mal" id="cl-unir-msg" hidden></p><p class="cl-o">o</p><button type="button" class="btn-ruta" id="cl-solo">Hacerla solo (se guarda en tu cuenta)</button></div>`;
-    $('#cl-unir').addEventListener('submit', async e => { e.preventDefault(); try { influencias(cont, await unirseCodigo($('#cl-cod').value)); } catch (er) { const m = $('#cl-unir-msg'); m.textContent = er.message || er; m.hidden = false; } });
+    $('#cl-unir').addEventListener('submit', async e => { e.preventDefault(); try { influencias(cont, await unirseCodigo($('#cl-cod').value, 'influencias')); } catch (er) { const m = $('#cl-unir-msg'); m.textContent = er.message || er; m.hidden = false; } });
     $('#cl-solo').addEventListener('click', () => influencias(cont, null));
   };
   if (sesion) entrar(); else formAcceso(cont, entrar, 'Entra con tu nombre y PIN para trabajar en esta tarea');
@@ -455,7 +496,7 @@ function actInfluencias(cont) {
 function influencias(cont, eq) {
   const a = TAREAS_DIG.influencias, I = INFLUENCIAS;
   const ref = eq ? doc(db, 'grupos', sesion.grupoId, 'equipos', eq.id, 'atlas', I.id) : doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'atlas', 'tarea-influencias');
-  cont.innerHTML = `<div class="ma-barra"><span>${eq ? `👥 Equipo <b>${esc(eq.nombre)}</b>: ${esc((eq.nombres || []).join(', '))}` : `👤 <b>${esc(sesion.nombre)}</b> (individual)`}</span><span class="ma-estado" id="in-estado"></span>
+  cont.innerHTML = `<div class="ma-barra"><span>${eq ? `👥 <b>${esc(eq.nombre)}</b>: ${esc((eq.nombres || []).join(', '))}` : `👤 <b>${esc(sesion.nombre)}</b> (individual)`}</span><span class="ma-estado" id="in-estado"></span>
       <button type="button" class="btn-ruta" id="in-word">⬇ Descargar en Word</button></div>
     <div data-entrega></div>
     <div id="in-voto"></div>
@@ -516,8 +557,8 @@ function influencias(cont, eq) {
     if (!ab) { z.innerHTML = ''; return; }
     let cands = [];
     try {
-      const sn = await getDocs(collection(db, 'grupos', sesion.grupoId, 'equipos'));
-      cands = (await Promise.all(sn.docs.map(async d => { const s = await getDoc(doc(db, 'grupos', sesion.grupoId, 'equipos', d.id, 'atlas', I.id)).catch(() => null); const pl = s && s.exists() ? (s.data().platillo || '') : ''; return pl ? { id: d.id, eq: d.data().nombre, pl } : null; }))).filter(Boolean);
+      await cargarEquipos(true);
+      cands = (await Promise.all(equiposDe(EQS, formacionDeTarea(GDATA, 'influencias')).map(async d => { const s = await getDoc(doc(db, 'grupos', sesion.grupoId, 'equipos', d.id, 'atlas', I.id)).catch(() => null); const pl = s && s.exists() ? (s.data().platillo || '') : ''; return pl ? { id: d.id, eq: d.nombre, pl } : null; }))).filter(Boolean);
     } catch { /* */ }
     z.innerHTML = `<div class="in-votacion"><h3>🗳️ Votación abierta</h3><p>¿Qué platillo representa <b>mejor</b> las siete influencias de la cocina campechana? Vota por los argumentos, no por amistad${eq ? ' (no puedes votar por tu propio equipo)' : ''}.</p>
       <div class="in-cands">${cands.map(c => `<button type="button" data-voto="${c.id}" aria-pressed="${miVoto === c.id}" ${eq && c.id === eq.id ? 'disabled' : ''}><b>${esc(c.pl)}</b><small>${esc(c.eq)}</small></button>`).join('') || '<p class="atlas-ayuda">Todavía ningún equipo eligió platillo.</p>'}</div>

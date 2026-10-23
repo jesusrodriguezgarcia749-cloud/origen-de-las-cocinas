@@ -126,3 +126,8 @@ html[data-theme="dark"] .cl-entregada { color: #9BD3A8; } html[data-theme="dark"
 .in-cands button[aria-pressed="true"] { border-color: #3F9A55; background: rgba(63,154,85,.15); }
 .in-cands button[aria-pressed="true"] b::before { content: '✓ '; color: #3F7A4F; }
 .in-cands button:disabled { opacity: .45; cursor: not-allowed; }
+/* unirse por QR */
+.cl-unido { max-width: 560px; background: var(--cream); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow-card); }
+.cl-unido-ok { font-size: 1.15rem; margin-top: 0; }
+.cl-ir { display: inline-block; margin-top: 8px; text-decoration: none; font-size: 1.05rem; }
+.cl-otras { font-size: .9rem; color: var(--ink-soft); margin-bottom: 0; }

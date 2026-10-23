@@ -13,6 +13,7 @@ import { firebaseConfig } from "./firebase-config.js";
 import { calcularParcial, calcularCuatrimestre, calcularCuatrimestreRedondeado, zonaDeDecision, textoCalificacion, NOMBRES_PARCIAL, NOMBRES_REDONDEO, TOPES } from "./calculo.js";
 import { reporteGrupo, reporteAlumno, reporteExamenAlumno, reporteExamenGrupo } from "./reporte.js";
 import { vistaRapida } from "./matriz.js";
+import { BASE, enEquipo, formacionDe, formaciones, ordenFormaciones, formacionDeTarea, equiposDe, tareasDeFormacion, urlUnir, qrSvg } from "./equipos.js";
 import { TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, nombreCatalogo, sugerirAtlas, sugerirCuadro, sugerirDesarma, CUADRO_MM, INFLUENCIAS, sugerirInfluencias } from "./clase-datos.js";
 
 const app = initializeApp(firebaseConfig);
@@ -120,7 +121,7 @@ function cargarTabActiva() {
   if (tab === 'tareas') { cargarCatalogo('tareas'); cargarTareasDig(); }
   if (tab === 'participacion') cargarCatalogo('participaciones');
   if (tab === 'proyecto') cargarProyecto();
-  if (tab === 'miatlas') cargarMiAtlas();
+  if (tab === 'equipos') cargarEquiposTab();
   if (tab === 'monitor') iniciarMonitor(); else detenerMonitor();
   if (tab === 'asistencia') cargarAsistencia();
   if (tab === 'uniformes') cargarUniformes();
@@ -677,140 +678,125 @@ async function guardarPractico() {
 const ENTREGAS_PROYECTO = ['entrega1', 'entrega2', 'entregaFinal'];
 ENTREGAS_PROYECTO.forEach(entrega => { on(`btn-guardar-${entrega}`, 'click', () => guardarEntregaProyecto(entrega)); });
 
-// ---- Mi atlas (grupos/{g}/alumnos/{a}/atlas/mi-atlas)
-let ATLAS_DATA = null;
-async function cargarMiAtlas() {
-  const cont = document.getElementById('miatlas-avance');
-  if (!cont) return;
-  if (!grupoActivo) { cont.innerHTML = '<p class="empty-inline">Elige un grupo primero.</p>'; return; }
-  if (!alumnosCache.length) { cont.innerHTML = '<p class="empty-inline">Este grupo aún no tiene alumnos.</p>'; return; }
-  cont.innerHTML = '<p class="empty-inline">Cargando…</p>';
-  try { ATLAS_DATA = ATLAS_DATA || await fetch('data/atlas.json').then(r => r.json()); } catch { cont.innerHTML = '<p class="empty-inline">No se pudo cargar el Atlas.</p>'; return; }
-  const NOM = {}; Object.values(ATLAS_DATA.regiones).forEach(r => r.paises.forEach(p => { NOM[p.id] = p.n.replace(/ \(.*\)$/, ''); }));
-  const CONTS = ATLAS_DATA.continentes, ks = Object.keys(CONTS);
-  const filas = await Promise.all(alumnosCache.map(async a => {
-    try { const s = await getDoc(doc(db, 'grupos', grupoActivo, 'alumnos', a.id, 'atlas', 'mi-atlas')); return [a, s.exists() ? s.data() : null]; }
-    catch { return [a, null]; }
-  }));
-  const fecha = t => t && t.toDate ? t.toDate().toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—';
-  const celda = av => av ? `<td class="${av.clasificados === av.total && av.total ? 'ok' : ''}">${av.clasificados}/${av.total}<br><small>${av.regiones} reg. · ${av.fichas} ficha${av.fichas === 1 ? '' : 's'}</small></td>` : '<td>—</td>';
-  const empezaron = filas.filter(([, d]) => d).length;
-  cont.innerHTML = `<p class="field-hint"><b>${empezaron} de ${filas.length}</b> alumnos ya entraron a Mi atlas.</p>
-    <div class="taller-tabla-wrap"><table class="taller-tabla"><thead><tr><th>Alumno</th>${ks.map(k => `<th>${escaparHTML(CONTS[k].nombre)}</th>`).join('')}<th>Última vez</th><th></th></tr></thead><tbody>
-    ${filas.map(([a, d]) => !d ? `<tr class="sin"><td>${escaparHTML(a.nombre)}</td><td colspan="${ks.length + 2}"><i>Aún no entra a Mi atlas</i></td></tr>`
-      : `<tr><td>${escaparHTML(a.nombre)}${d.equipo ? `<br><small>👥 ${escaparHTML(d.equipo)}</small>` : ''}</td>${ks.map(k => celda((d.avance || {})[k])).join('')}<td>${fecha(d.actualizado)}</td><td><button type="button" class="btn btn-small taller-ver" data-id="${a.id}">Ver</button></td></tr>
-         <tr class="taller-det" id="madet-${a.id}" hidden><td colspan="${ks.length + 3}"></td></tr>`).join('')}</tbody></table></div>`;
-  const datos = Object.fromEntries(filas.map(([a, d]) => [a.id, d]));
-  cargarEquipos(NOM, CONTS, ks);
-  const e = x => escaparHTML(x || '').replace(/\n/g, '<br>') || '<i>—</i>';
-  const CAMPOS = [['clima', 'Clima y paisaje'], ['ingredientes', 'Ingredientes base'], ['platillos', 'Platillos'], ['tecnicas', 'Técnicas y utensilios'], ['historia', 'Historia e influencias'], ['dato', 'Dato curioso'], ['fuentes', 'Fuentes']];
-  cont.querySelectorAll('.taller-ver').forEach(b => b.addEventListener('click', () => {
-    const tr = document.getElementById('madet-' + b.dataset.id), T = (datos[b.dataset.id].datos || {}).conts || {};
-    if (!tr.hidden) { tr.hidden = true; b.textContent = 'Ver'; return; }
-    tr.firstElementChild.innerHTML = `<div class="taller-detalle">${ks.filter(k => T[k] && T[k].regiones && T[k].regiones.length).map(k => {
-      const c = T[k];
-      return `<h4 style="margin:.4rem 0">${escaparHTML(CONTS[k].nombre)}</h4>${c.regiones.map(r => {
-        const ps = Object.entries(c.asign || {}).filter(([, x]) => x === r.id).map(([i]) => NOM[i] || i).sort((x, y) => x.localeCompare(y, 'es'));
-        return `<details><summary><span style="display:inline-block;width:11px;height:11px;border-radius:3px;background:${escaparHTML(r.color)}"></span> <b>${escaparHTML(r.nombre)}</b> · ${ps.length} países</summary>
-          <p><b>Países:</b> ${escaparHTML(ps.join(', ') || '—')}</p>${CAMPOS.map(([f, t]) => `<p><b>${t}:</b> ${e(r[f])}</p>`).join('')}</details>`;
-      }).join('')}`;
-    }).join('') || '<p><i>Todavía no crea regiones.</i></p>'}</div>`;
-    tr.hidden = false; b.textContent = 'Ocultar';
-  }));
-}
-
-// ---- Equipos de Mi atlas (grupos/{g}/equipos/{id}; su atlas en .../equipos/{id}/atlas/{continente})
-// Se forman generándolos con código QR (los alumnos se unen solos) o a mano desde aquí.
-const CAMPOS_EQ = [['clima', 'Clima y paisaje'], ['ingredientes', 'Ingredientes base'], ['platillos', 'Platillos'], ['tecnicas', 'Técnicas y utensilios'], ['historia', 'Historia e influencias'], ['dato', 'Dato curioso'], ['fuentes', 'Fuentes']];
+// ---- Equipos (grupos/{g}/equipos/{id}; su trabajo en .../equipos/{id}/atlas/{tarea})
+// Se arman por «formaciones»: cada vez que formas equipos (con QR o a mano) queda una
+// formación, y cada tarea en equipo usa una (grupos/{g}.equiposTarea[tarea] = formación).
+// Así reutilizas los mismos equipos en varias tareas o formas nuevos solo para una.
 const LETRAS_COD = 'ACDEFHJKMNPRTUVWXY3479';
-let EQUIPOS = [], eqUnsub = null, eqGrupo = null, eqAbiertos = true, eqCtx = null;
-const urlUnir = cod => new URL('atlas.html#miatlas=unir-' + cod, location.href).href;
-function qrSvg(texto, celda) {
-  if (typeof qrcode !== 'function') return '<p class="empty-inline">QR no disponible</p>';
-  const q = qrcode(0, 'M'); q.addData(texto); q.make(); return q.createSvgTag(celda, 2);
+let ATLAS_DATA = null;
+let EQUIPOS = [], eqUnsub = null, gEqUnsub = null, eqGrupo = null, G_DATA = {}, FSEL = BASE, QR_FID = BASE, NUEVA_PARA = '';
+const ordenEq = (a, b) => (a.numero || 999) - (b.numero || 999) || (a.nombre || '').localeCompare(b.nombre || '', 'es');
+const eqDeF = fid => equiposDe(EQUIPOS, fid).sort(ordenEq);
+const nombreF = fid => (formaciones(G_DATA)[fid] || {}).nombre || 'Equipos';
+const tareasF = fid => tareasDeFormacion(G_DATA, fid, TAREAS_DIG);
+const nombreTareaCorto = a => `${a.tema} · ${a.nombre}`;
+function codigoNuevo(usados) { let c; do { c = Array.from({ length: 4 }, () => LETRAS_COD[Math.floor(Math.random() * LETRAS_COD.length)]).join(''); } while (usados.has(c)); usados.add(c); return c; }
+function escucharEquiposAdmin() {
+  if (!grupoActivo) return;
+  if (eqGrupo === grupoActivo && eqUnsub) return;
+  if (eqUnsub) eqUnsub(); if (gEqUnsub) gEqUnsub();
+  eqGrupo = grupoActivo; EQUIPOS = []; G_DATA = {}; FSEL = BASE;
+  gEqUnsub = onSnapshot(doc(db, 'grupos', grupoActivo), sn => { G_DATA = sn.exists() ? sn.data() : {}; if (!formaciones(G_DATA)[FSEL]) FSEL = BASE; refrescarEquiposUI(); }, () => {});
+  eqUnsub = onSnapshot(collection(db, 'grupos', grupoActivo, 'equipos'), sn => { EQUIPOS = sn.docs.map(d => ({ id: d.id, ...d.data() })).sort(ordenEq); refrescarEquiposUI(); }, () => {});
 }
-function nuevoCodigo() { const usados = new Set(EQUIPOS.map(e => e.codigo)); let c; do { c = Array.from({ length: 4 }, () => LETRAS_COD[Math.floor(Math.random() * LETRAS_COD.length)]).join(''); } while (usados.has(c)); usados.add(c); return c; }
-async function cargarEquipos(NOM, CONTS, ks) {
-  eqCtx = { NOM, CONTS, ks };
-  if (eqGrupo !== grupoActivo || !eqUnsub) {
-    if (eqUnsub) eqUnsub();
-    eqGrupo = grupoActivo;
-    try { const g = await getDoc(doc(db, 'grupos', grupoActivo)); eqAbiertos = g.exists() ? g.data().equiposAbiertos !== false : true; } catch { eqAbiertos = true; }
-    eqUnsub = onSnapshot(collection(db, 'grupos', grupoActivo, 'equipos'), sn => {
-      EQUIPOS = sn.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (a.numero || 999) - (b.numero || 999) || (a.nombre || '').localeCompare(b.nombre || '', 'es'));
-      pintarEquipos();
-      clearTimeout(window._eqAv); window._eqAv = setTimeout(avanceEquipos, 1200);
-    });
-  } else pintarEquipos();
-  avanceEquipos();
+function refrescarEquiposUI() {
+  pintarEquipos();
+  pintarTdEquipos();
+  if (!document.getElementById('qr-proyeccion').hidden) pintarProyeccion();
+}
+function cargarEquiposTab() {
+  const cont = document.getElementById('equipos-lista'); if (!cont) return;
+  if (!grupoActivo) { cont.innerHTML = '<p class="empty-inline">Elige un grupo primero.</p>'; return; }
+  escucharEquiposAdmin(); pintarEquipos();
+}
+function irAEquipos(fid, nuevaPara) {
+  FSEL = fid || FSEL; NUEVA_PARA = nuevaPara || '';
+  const b = document.querySelector('.tab-btn[data-tab="equipos"]'); if (b) b.click();
+  pintarEquipos();
+  if (nuevaPara) { const f = document.getElementById('eqn-nombre'); if (f) setTimeout(() => f.focus(), 50); }
+  document.getElementById('tab-equipos').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 function pintarEquipos() {
-  const lista = document.getElementById('equipos-lista'); if (!lista) return;
-  const nombreDe = id => (alumnosCache.find(a => a.id === id) || {}).nombre || id;
+  const lista = document.getElementById('equipos-lista'); if (!lista || !grupoActivo) return;
+  const F = formaciones(G_DATA), f = F[FSEL] || F[BASE];
+  // formaciones
+  document.getElementById('eq-formaciones').innerHTML = ordenFormaciones(G_DATA).map(([fid, x]) => `<button type="button" class="chip-mon" data-f="${fid}" aria-pressed="${fid === FSEL}">${x.abiertas ? '🔓' : '🔒'} ${escaparHTML(x.nombre)} <small>· ${eqDeF(fid).length} equipo${eqDeF(fid).length === 1 ? '' : 's'}</small></button>`).join('')
+    + `<button type="button" class="chip-mon eq-nueva-btn" id="eq-nueva-abrir" aria-pressed="${!!NUEVA_PARA || document.getElementById('eq-nueva').hidden === false}">➕ Formar equipos nuevos</button>`;
+  document.querySelectorAll('#eq-formaciones [data-f]').forEach(b => b.addEventListener('click', () => { FSEL = b.dataset.f; NUEVA_PARA = ''; document.getElementById('eq-nueva').hidden = true; pintarFormEquipo(null); pintarEquipos(); }));
+  document.getElementById('eq-nueva-abrir').addEventListener('click', () => { const n = document.getElementById('eq-nueva'); n.hidden = !n.hidden; if (!n.hidden) pintarNueva(); pintarEquipos(); });
+  if (NUEVA_PARA) { document.getElementById('eq-nueva').hidden = false; pintarNueva(); }
+  // cabecera de la formación elegida
+  const usan = tareasF(FSEL);
+  document.getElementById('eq-f-cab').innerHTML = `<div class="eq-f-tit"><h3 class="section-title" style="margin:0">👥 ${escaparHTML(f.nombre)}</h3><button type="button" class="btn btn-small" id="eq-f-ren">✏️ Renombrar</button>${FSEL !== BASE && !usan.length ? '<button type="button" class="btn btn-small" id="eq-f-del">Eliminar</button>' : ''}</div>
+    <p class="eq-f-usan"><b>La usan:</b> ${usan.length ? usan.map(a => `<span class="eq-tag">${a.icono} ${escaparHTML(nombreTareaCorto(a))}</span>`).join(' ') : '<i>ninguna tarea todavía</i> (asígnala en Tareas → Tareas digitales, botón 👥)'}</p>`;
+  document.getElementById('eq-f-ren').addEventListener('click', async () => {
+    const n = prompt('Nombre de esta formación de equipos:', f.nombre); if (!n || !n.trim()) return;
+    await setDoc(doc(db, 'grupos', grupoActivo), { formaciones: { [FSEL]: { nombre: n.trim() } } }, { merge: true });
+  });
+  const bd = document.getElementById('eq-f-del');
+  if (bd) bd.addEventListener('click', async () => {
+    if (!confirm(`¿Eliminar «${f.nombre}» y sus ${eqDeF(FSEL).length} equipos? Ninguna tarea la usa.`)) return;
+    const fid = FSEL; FSEL = BASE;
+    await Promise.all(eqDeF(fid).map(e => deleteDoc(doc(db, 'grupos', grupoActivo, 'equipos', e.id))));
+    await updateDoc(doc(db, 'grupos', grupoActivo), { [`formaciones.${fid}`]: deleteField() });
+  });
   const ab = document.getElementById('eq-abierto');
-  ab.setAttribute('aria-pressed', String(eqAbiertos)); ab.textContent = eqAbiertos ? '🔓 Inscripciones abiertas' : '🔒 Inscripciones cerradas';
-  const enEquipo = new Set(EQUIPOS.flatMap(e => e.integrantes || []));
-  const sin = alumnosCache.filter(a => !enEquipo.has(a.id));
+  ab.setAttribute('aria-pressed', String(!!f.abiertas)); ab.textContent = f.abiertas ? '🔓 Inscripciones abiertas' : '🔒 Inscripciones cerradas';
+  const mios = eqDeF(FSEL);
+  const nombreDe = id => (alumnosCache.find(a => a.id === id) || {}).nombre || id;
+  const enEq = new Set(mios.flatMap(e => e.integrantes || []));
+  const sin = alumnosCache.filter(a => !enEq.has(a.id));
   document.getElementById('eq-sin-lista').textContent = sin.length ? sin.map(a => a.nombre).join(', ') : 'nadie, ¡todos tienen equipo!';
-  lista.innerHTML = EQUIPOS.length ? `<div class="equipos-grid">${EQUIPOS.map(eq => {
+  lista.innerHTML = mios.length ? `<div class="equipos-grid">${mios.map(eq => {
     const n = (eq.integrantes || []).length, lleno = eq.max && n >= eq.max;
-    return `<div class="equipo-card"><div class="eq-card-cab"><div><b>${escaparHTML(eq.nombre)}</b>${eq.codigo ? `<span class="eq-codigo">${escaparHTML(eq.codigo)}</span>` : ''}</div>${eq.codigo ? `<div class="eq-qr-mini" title="Código QR del equipo">${qrSvg(urlUnir(eq.codigo), 2)}</div>` : ''}</div>
+    return `<div class="equipo-card"><div class="eq-card-cab"><div><b>${escaparHTML(eq.nombre)}</b>${eq.codigo ? `<span class="eq-codigo">${escaparHTML(eq.codigo)}</span>` : ''}</div>${eq.codigo ? `<button type="button" class="eq-qr-mini" data-eq-qr="${eq.id}" title="Ver el QR en grande">${qrSvg(urlUnir(eq.codigo), { titulo: eq.nombre })}</button>` : ''}</div>
       <p class="eq-cupo ${lleno ? 'lleno' : ''}">${n}${eq.max ? ` de ${eq.max}` : ''} integrante${n === 1 && !eq.max ? '' : 's'}${lleno ? ' · completo' : ''}</p>
       <p>${(eq.integrantes || []).map(i => escaparHTML(nombreDe(i))).join(', ') || '<i>sin integrantes</i>'}</p>
       <div><button type="button" class="btn btn-small" data-eq-edit="${eq.id}">Editar</button> <button type="button" class="btn btn-small" data-eq-del="${eq.id}">Eliminar</button></div></div>`;
-  }).join('')}</div>` : '<p class="empty-inline">Aún no hay equipos en este grupo.</p>';
-  const ed = document.getElementById('equipo-id').value;
-  if (!ed) pintarFormEquipo(null);
+  }).join('')}</div>` : '<p class="empty-inline">Esta formación todavía no tiene equipos: genéralos con QR o ármalos a mano.</p>';
+  if (!document.getElementById('equipo-id').value) pintarFormEquipo(null);
+  lista.querySelectorAll('[data-eq-qr]').forEach(b => b.addEventListener('click', () => abrirProyeccion(FSEL, false, b.dataset.eqQr)));
   lista.querySelectorAll('[data-eq-edit]').forEach(b => b.addEventListener('click', () => { pintarFormEquipo(EQUIPOS.find(x => x.id === b.dataset.eqEdit)); document.getElementById('equipo-nombre').focus(); }));
   lista.querySelectorAll('[data-eq-del]').forEach(b => b.addEventListener('click', async () => {
     const eq = EQUIPOS.find(x => x.id === b.dataset.eqDel);
-    if (!confirm(`¿Eliminar el equipo «${eq.nombre}»? Sus integrantes ya no verán el atlas del equipo (lo que escribieron no se borra).`)) return;
+    if (!confirm(`¿Eliminar el equipo «${eq.nombre}»? Sus integrantes ya no verán el trabajo del equipo (lo que escribieron no se borra).`)) return;
     await deleteDoc(doc(db, 'grupos', grupoActivo, 'equipos', eq.id));
   }));
-  if (!document.getElementById('qr-proyeccion').hidden) pintarProyeccion();
 }
-async function avanceEquipos() {
-  const prog = document.getElementById('miatlas-equipos'); if (!prog || !eqCtx) return;
-  const { NOM, CONTS, ks } = eqCtx;
-  let lista = EQUIPOS;
-  if (!lista.length) { try { const sn = await getDocs(collection(db, 'grupos', grupoActivo, 'equipos')); lista = sn.docs.map(d => ({ id: d.id, ...d.data() })); } catch { lista = []; } }
-  if (!lista.length) { prog.innerHTML = '<p class="empty-inline">Cuando haya equipos, aquí verás su avance.</p>'; return; }
-  const filas = await Promise.all(lista.map(async eq => {
-    const d = {};
-    await Promise.all(ks.map(async k => { try { const s = await getDoc(doc(db, 'grupos', grupoActivo, 'equipos', eq.id, 'atlas', k)); if (s.exists()) d[k] = s.data(); } catch { /* */ } }));
-    return [eq, d];
-  }));
-  const total = k => Object.values(ATLAS_DATA.regiones).filter(r => r.cont === k).reduce((s, r) => s + r.paises.length, 0);
-  const fecha = t => t && t.toDate ? t.toDate().toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—';
-  const celda = (x, k) => { if (!x) return '<td>—</td>'; const regs = Object.values(x.regiones || {}), cl = Object.keys(x.asign || {}).length, fi = regs.filter(r => CAMPOS_EQ.filter(([f]) => (r[f] || '').trim()).length >= 4).length, t = total(k); return `<td class="${cl === t ? 'ok' : ''}">${cl}/${t}<br><small>${regs.length} reg. · ${fi} ficha${fi === 1 ? '' : 's'}</small></td>`; };
-  prog.innerHTML = `<p class="field-hint"><button type="button" class="btn btn-small" id="eq-refrescar">↻ Actualizar avance</button></p><div class="taller-tabla-wrap"><table class="taller-tabla"><thead><tr><th>Equipo</th>${ks.map(k => `<th>${escaparHTML(CONTS[k].nombre)}</th>`).join('')}<th>Última vez</th><th></th></tr></thead><tbody>
-    ${filas.map(([eq, d]) => { const ult = Object.values(d).map(x => x.actualizado).filter(Boolean).sort((a, b) => b.toMillis() - a.toMillis())[0];
-      return `<tr><td><b>${escaparHTML(eq.nombre)}</b><br><small>${escaparHTML((eq.nombres || []).join(', '))}</small></td>${ks.map(k => celda(d[k], k)).join('')}<td>${fecha(ult)}</td><td><button type="button" class="btn btn-small taller-ver" data-eqv="${eq.id}">Ver</button></td></tr>
-      <tr class="taller-det" id="eqdet-${eq.id}" hidden><td colspan="${ks.length + 3}"></td></tr>`; }).join('')}</tbody></table></div>`;
-  document.getElementById('eq-refrescar').addEventListener('click', avanceEquipos);
-  const porId = Object.fromEntries(filas.map(([eq, d]) => [eq.id, d]));
-  const e = x => escaparHTML(x || '').replace(/\n/g, '<br>') || '<i>—</i>';
-  prog.querySelectorAll('[data-eqv]').forEach(b => b.addEventListener('click', () => {
-    const tr = document.getElementById('eqdet-' + b.dataset.eqv), D = porId[b.dataset.eqv];
-    if (!tr.hidden) { tr.hidden = true; b.textContent = 'Ver'; return; }
-    tr.firstElementChild.innerHTML = `<div class="taller-detalle">${ks.filter(k => D[k] && Object.keys(D[k].regiones || {}).length).map(k => {
-      const c = D[k], regs = Object.entries(c.regiones).map(([id, r]) => ({ ...r, id })).sort((a, b) => (a.orden || 0) - (b.orden || 0));
-      return `<h4 style="margin:.4rem 0">${escaparHTML(CONTS[k].nombre)}</h4>${regs.map(r => {
-        const ps = Object.entries(c.asign || {}).filter(([, x]) => x === r.id).map(([i]) => NOM[i] || i).sort((x, y) => x.localeCompare(y, 'es'));
-        const por = (c.por || {})[r.id] || {};
-        return `<details><summary><span style="display:inline-block;width:11px;height:11px;border-radius:3px;background:${escaparHTML(r.color)}"></span> <b>${escaparHTML(r.nombre)}</b> · ${ps.length} países</summary>
-          <p><b>Países:</b> ${escaparHTML(ps.join(', ') || '—')}</p>${CAMPOS_EQ.map(([f, t]) => `<p><b>${t}:</b>${por[f] ? ` <small style="color:#3F7A4F">(✍️ ${escaparHTML(por[f])})</small>` : ''} ${e(r[f])}</p>`).join('')}</details>`;
-      }).join('')}`;
-    }).join('') || '<p><i>Todavía no crean regiones.</i></p>'}</div>`;
-    tr.hidden = false; b.textContent = 'Ocultar';
-  }));
+// formulario «Formar equipos nuevos»: nombre, para qué tarea, cuántos y de cuántos
+function pintarNueva() {
+  const caja = document.getElementById('eq-nueva'); if (caja._para === NUEVA_PARA && caja.innerHTML) return; caja._para = NUEVA_PARA;
+  const equipo = Object.values(TAREAS_DIG).filter(enEquipo);
+  const hoy = new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'long' });
+  const sug = NUEVA_PARA ? `Equipos para ${TAREAS_DIG[NUEVA_PARA].nombre}` : `Equipos del ${hoy}`;
+  caja.innerHTML = `<h4 class="eq-sub" style="margin-top:0">➕ Formar equipos nuevos</h4>
+    <p class="field-hint">Los equipos que ya tienes no se tocan: las tareas que los usan los siguen usando. Los nuevos tendrán sus propios códigos QR.</p>
+    <label class="field-label" for="eqn-nombre">Nombre de esta formación</label><input id="eqn-nombre" type="text" maxlength="60" value="${escaparHTML(sug)}">
+    <label class="field-label" for="eqn-tarea">¿Para qué tarea?</label><select id="eqn-tarea"><option value="">Ninguna por ahora (la asigno después)</option>${equipo.map(a => `<option value="${a.id}" ${a.id === NUEVA_PARA ? 'selected' : ''}>${escaparHTML(nombreTareaCorto(a))} — hoy usa «${escaparHTML(nombreF(formacionDeTarea(G_DATA, a.id)))}»</option>`).join('')}</select>
+    <div class="eq-generar"><span>Generar</span><input id="eqn-n" type="number" min="1" max="20" value="6" aria-label="Número de equipos"><span>equipos de máximo</span><input id="eqn-max" type="number" min="1" max="15" value="4" aria-label="Máximo de integrantes"><span>integrantes, con código QR</span></div>
+    <div class="equipo-botones"><button type="button" class="btn btn-primary" id="eqn-crear">Crear y generar los QR</button><button type="button" class="btn" id="eqn-cancelar">Cancelar</button></div>`;
+  document.getElementById('eqn-cancelar').addEventListener('click', () => { NUEVA_PARA = ''; caja.hidden = true; caja._para = null; pintarEquipos(); });
+  document.getElementById('eqn-crear').addEventListener('click', async () => {
+    const nombre = document.getElementById('eqn-nombre').value.trim() || sug, tarea = document.getElementById('eqn-tarea').value;
+    const n = Math.min(20, Math.max(1, parseInt(document.getElementById('eqn-n').value, 10) || 0)), max = Math.min(15, Math.max(1, parseInt(document.getElementById('eqn-max').value, 10) || 0));
+    if (tarea && !confirm(`«${TAREAS_DIG[tarea].nombre}» va a usar estos equipos nuevos. Lo que ya hayan trabajado en ella con los equipos anteriores no se borra (vuelve a aparecer si regresas a esos equipos). ¿Continuar?`)) return;
+    const fid = 'f' + Date.now().toString(36);
+    await setDoc(doc(db, 'grupos', grupoActivo), { formaciones: { [fid]: { nombre, creada: Date.now(), abiertas: true } }, ...(tarea ? { equiposTarea: { [tarea]: fid } } : {}) }, { merge: true });
+    await generarEquipos(fid, n, max);
+    FSEL = fid; NUEVA_PARA = ''; caja.hidden = true; caja._para = null; pintarEquipos();
+  });
+}
+async function generarEquipos(fid, n, max) {
+  const base = Math.max(0, ...eqDeF(fid).map(x => x.numero || 0)), usados = new Set(EQUIPOS.map(e => e.codigo));
+  await Promise.all(Array.from({ length: n }, (_, i) => setDoc(doc(db, 'grupos', grupoActivo, 'equipos', 'e' + Date.now().toString(36) + i),
+    { nombre: `Equipo ${base + i + 1}`, numero: base + i + 1, codigo: codigoNuevo(usados), max, formacion: fid, integrantes: [], nombres: [], actualizado: serverTimestamp() })));
 }
 function pintarFormEquipo(eq) {
   document.getElementById('equipo-id').value = eq ? eq.id : '';
   document.getElementById('equipo-nombre').value = eq ? eq.nombre : '';
   document.getElementById('equipo-guardar').textContent = eq ? 'Guardar cambios' : 'Crear equipo';
   document.getElementById('equipo-cancelar').hidden = !eq;
-  const enOtro = {}; EQUIPOS.forEach(x => { if (!eq || x.id !== eq.id) (x.integrantes || []).forEach(i => { enOtro[i] = x.nombre; }); });
+  const enOtro = {}; eqDeF(FSEL).forEach(x => { if (!eq || x.id !== eq.id) (x.integrantes || []).forEach(i => { enOtro[i] = x.nombre; }); });
   const mios = new Set(eq ? eq.integrantes || [] : []);
   document.getElementById('equipo-alumnos').innerHTML = alumnosCache.map(a => `<label class="${enOtro[a.id] ? 'en-otro' : ''}"><input type="checkbox" value="${a.id}" ${mios.has(a.id) ? 'checked' : ''}> ${escaparHTML(a.nombre)}${enOtro[a.id] ? ` <small>(en «${escaparHTML(enOtro[a.id])}»)</small>` : ''}</label>`).join('');
 }
@@ -823,17 +809,17 @@ on('equipo-form', 'submit', async ev => {
   const ids = [...document.querySelectorAll('#equipo-alumnos input:checked')].map(i => i.value);
   if (!nombre || !ids.length) { msg.textContent = 'Escribe el nombre del equipo y elige al menos un integrante.'; msg.hidden = false; return; }
   const idEd = document.getElementById('equipo-id').value, id = idEd || ('e' + Date.now().toString(36));
-  const previo = EQUIPOS.find(x => x.id === idEd) || {};
+  const previo = EQUIPOS.find(x => x.id === idEd) || {}, fid = idEd ? formacionDe(previo) : FSEL;
   try {
-    // un alumno solo puede estar en un equipo: se quita de los demás
-    await Promise.all(EQUIPOS.filter(x => x.id !== id && (x.integrantes || []).some(i => ids.includes(i))).map(x => {
+    // en una misma formación, un alumno solo puede estar en un equipo: se quita de los demás
+    await Promise.all(eqDeF(fid).filter(x => x.id !== id && (x.integrantes || []).some(i => ids.includes(i))).map(x => {
       const integ = x.integrantes.filter(i => !ids.includes(i));
       return updateDoc(doc(db, 'grupos', grupoActivo, 'equipos', x.id), { integrantes: integ, nombres: nombresDe(integ) });
     }));
     await setDoc(doc(db, 'grupos', grupoActivo, 'equipos', id), {
-      nombre, integrantes: ids, nombres: nombresDe(ids), codigo: previo.codigo || nuevoCodigo(), max: Math.max(previo.max || 0, ids.length) || ids.length,
-      numero: previo.numero || (Math.max(0, ...EQUIPOS.map(x => x.numero || 0)) + 1), actualizado: serverTimestamp()
-    });
+      nombre, integrantes: ids, nombres: nombresDe(ids), codigo: previo.codigo || codigoNuevo(new Set(EQUIPOS.map(e => e.codigo))), max: Math.max(previo.max || 0, ids.length) || ids.length,
+      numero: previo.numero || (Math.max(0, ...eqDeF(fid).map(x => x.numero || 0)) + 1), formacion: fid, actualizado: serverTimestamp()
+    }, { merge: true });
     pintarFormEquipo(null);
     msg.textContent = 'Equipo guardado ✓'; msg.hidden = false; setTimeout(() => { msg.hidden = true; }, 2500);
   } catch (e) { msg.textContent = 'No se pudo guardar: ' + (e.message || e); msg.hidden = false; }
@@ -841,31 +827,60 @@ on('equipo-form', 'submit', async ev => {
 on('eq-generar', 'click', async () => {
   if (!grupoActivo) return;
   const n = Math.min(20, Math.max(1, parseInt(document.getElementById('eq-n').value, 10) || 0)), max = Math.min(15, Math.max(1, parseInt(document.getElementById('eq-max').value, 10) || 0));
-  if (!confirm(`¿Generar ${n} equipo${n === 1 ? '' : 's'} nuevo${n === 1 ? '' : 's'} de máximo ${max} integrantes, cada uno con su código QR?${EQUIPOS.length ? ' Los equipos que ya existen se conservan.' : ''}`)) return;
-  const base = Math.max(0, ...EQUIPOS.map(x => x.numero || 0));
-  const usados = new Set(EQUIPOS.map(e => e.codigo));
-  await Promise.all(Array.from({ length: n }, (_, i) => {
-    let c; do { c = Array.from({ length: 4 }, () => LETRAS_COD[Math.floor(Math.random() * LETRAS_COD.length)]).join(''); } while (usados.has(c)); usados.add(c);
-    return setDoc(doc(db, 'grupos', grupoActivo, 'equipos', 'e' + Date.now().toString(36) + i), { nombre: `Equipo ${base + i + 1}`, numero: base + i + 1, codigo: c, max, integrantes: [], nombres: [], actualizado: serverTimestamp() });
-  }));
-  if (!eqAbiertos) await alternarInscripciones(true);
+  if (!confirm(`¿Agregar ${n} equipo${n === 1 ? '' : 's'} de máximo ${max} integrantes a «${nombreF(FSEL)}», cada uno con su código QR?${eqDeF(FSEL).length ? ' Los equipos que ya tiene se conservan.' : ''}`)) return;
+  await generarEquipos(FSEL, n, max);
+  if (!formaciones(G_DATA)[FSEL].abiertas) await alternarInscripciones(FSEL, true);
 });
-async function alternarInscripciones(valor) {
-  eqAbiertos = typeof valor === 'boolean' ? valor : !eqAbiertos;
-  await setDoc(doc(db, 'grupos', grupoActivo), { equiposAbiertos: eqAbiertos }, { merge: true });
-  pintarEquipos();
+async function alternarInscripciones(fid, valor) {
+  const v = typeof valor === 'boolean' ? valor : !formaciones(G_DATA)[fid].abiertas;
+  await setDoc(doc(db, 'grupos', grupoActivo), { formaciones: { [fid]: { abiertas: v } }, ...(fid === BASE ? { equiposAbiertos: v } : {}) }, { merge: true });
 }
-on('eq-abierto', 'click', () => alternarInscripciones());
+on('eq-abierto', 'click', () => alternarInscripciones(FSEL));
 function pintarProyeccion() {
-  const grid = document.getElementById('qr-grid');
-  const conCod = EQUIPOS.filter(e => e.codigo);
-  grid.innerHTML = conCod.length ? conCod.map(eq => { const n = (eq.integrantes || []).length; return `<div class="qr-card"><h3>${escaparHTML(eq.nombre)}</h3>${qrSvg(urlUnir(eq.codigo), 6)}<p class="qr-cod">${escaparHTML(eq.codigo)}</p><p class="qr-cupo">${n}${eq.max ? ` / ${eq.max}` : ''} integrantes${eq.max && n >= eq.max ? ' · completo' : ''}</p></div>`; }).join('')
-    : '<p>Primero genera los equipos.</p>';
+  const grid = document.getElementById('qr-grid'), solo = grid.dataset.solo || '';
+  const conCod = eqDeF(QR_FID).filter(e => e.codigo && (!solo || e.id === solo));
+  const usan = tareasF(QR_FID);
+  document.getElementById('qr-tit').textContent = `Únete a tu equipo · ${nombreF(QR_FID)}`;
+  document.getElementById('qr-sub').textContent = `${usan.length ? 'Para: ' + usan.map(a => a.nombre).join(', ') + '. ' : ''}Escanea el código de tu equipo con la cámara del celular, o entra a Tareas y escribe sus 4 letras.${formaciones(G_DATA)[QR_FID].abiertas ? '' : ' (Las inscripciones están cerradas.)'}`;
+  grid.classList.toggle('qr-uno', !!solo);
+  grid.innerHTML = conCod.length ? conCod.map(eq => { const n = (eq.integrantes || []).length; return `<div class="qr-card"><h3>${escaparHTML(eq.nombre)}</h3>${qrSvg(urlUnir(eq.codigo), { titulo: eq.nombre })}<p class="qr-cod">${escaparHTML(eq.codigo)}</p><p class="qr-cupo">${n}${eq.max ? ` / ${eq.max}` : ''} integrantes${eq.max && n >= eq.max ? ' · completo' : ''}</p></div>`; }).join('')
+    : '<p>Primero genera los equipos de esta formación.</p>';
 }
-function abrirProyeccion(imprimir) { pintarProyeccion(); const o = document.getElementById('qr-proyeccion'); o.hidden = false; document.body.classList.add('con-qr'); if (imprimir) setTimeout(() => window.print(), 300); }
-on('eq-proyectar', 'click', () => abrirProyeccion(false));
-on('eq-imprimir', 'click', () => abrirProyeccion(true));
+function abrirProyeccion(fid, imprimir, solo) {
+  escucharEquiposAdmin();
+  QR_FID = fid || FSEL; document.getElementById('qr-grid').dataset.solo = solo || '';
+  pintarProyeccion(); document.getElementById('qr-proyeccion').hidden = false; document.body.classList.add('con-qr');
+  if (imprimir) setTimeout(() => window.print(), 400);
+}
+on('eq-proyectar', 'click', () => abrirProyeccion(FSEL, false));
+on('eq-imprimir', 'click', () => abrirProyeccion(FSEL, true));
 on('qr-cerrar', 'click', () => { document.getElementById('qr-proyeccion').hidden = true; document.body.classList.remove('con-qr'); });
+// en Tareas digitales: qué equipos usa cada tarea en equipo
+function pintarTdEquipos() {
+  document.querySelectorAll('[data-eqt]').forEach(b => { const fid = formacionDeTarea(G_DATA, b.dataset.eqt); b.innerHTML = `👥 ${escaparHTML(nombreF(fid))} <small>(${eqDeF(fid).length})</small>`; });
+  const caja = document.querySelector('.td-eqbox'); if (caja) pintarTdCaja(caja);
+}
+function pintarTdCaja(caja) {
+  const id = caja.dataset.t, a = TAREAS_DIG[id], fid = formacionDeTarea(G_DATA, id), f = formaciones(G_DATA)[fid];
+  const act = document.activeElement; if (act && caja.contains(act) && act.tagName === 'SELECT') return;
+  caja.innerHTML = `<p><b>${a.icono} ${escaparHTML(a.nombre)}</b> usa los equipos de:</p>
+    <select class="td-eqsel" aria-label="Formación de equipos de esta tarea">${ordenFormaciones(G_DATA).map(([k, x]) => `<option value="${k}" ${k === fid ? 'selected' : ''}>${escaparHTML(x.nombre)} (${eqDeF(k).length} equipo${eqDeF(k).length === 1 ? '' : 's'})</option>`).join('')}</select>
+    <p class="field-hint" style="margin:6px 0">${eqDeF(fid).length} equipo${eqDeF(fid).length === 1 ? '' : 's'} · inscripciones ${f.abiertas ? 'abiertas 🔓' : 'cerradas 🔒'}. Lo que un equipo trabaja en esta tarea se queda con ese equipo.</p>
+    <div class="td-eqacc"><button type="button" class="btn btn-small btn-primary" data-x="nueva">➕ Formar equipos nuevos solo para esta tarea</button><button type="button" class="btn btn-small" data-x="proy">📽️ Proyectar sus QR</button><button type="button" class="btn btn-small" data-x="imp">🖨️ Imprimir</button><button type="button" class="btn btn-small" data-x="ab">${f.abiertas ? '🔒 Cerrar inscripciones' : '🔓 Abrir inscripciones'}</button><button type="button" class="btn btn-small" data-x="ver">Editar equipos →</button></div>`;
+  caja.querySelector('.td-eqsel').addEventListener('change', async e => {
+    const nf = e.target.value;
+    if (!confirm(`¿«${a.nombre}» usará los equipos de «${nombreF(nf)}»? Lo que ya hayan trabajado con los equipos anteriores no se borra.`)) { e.target.value = fid; return; }
+    await setDoc(doc(db, 'grupos', grupoActivo), { equiposTarea: { [id]: nf } }, { merge: true });
+  });
+  caja.querySelectorAll('[data-x]').forEach(b => b.addEventListener('click', () => {
+    const x = b.dataset.x;
+    if (x === 'nueva') irAEquipos(fid, id);
+    else if (x === 'proy') abrirProyeccion(fid, false);
+    else if (x === 'imp') abrirProyeccion(fid, true);
+    else if (x === 'ab') alternarInscripciones(fid);
+    else irAEquipos(fid);
+  }));
+}
 
 // ---- Monitor en vivo de Mi atlas: equipos e individual, con mapas que se colorean al instante
 const MON = { act: 'atlas', clave: false, cont: 'africa', ver: 'todos', subs: [], datos: {}, equipos: [], grupo: null, reloj: null, abierto: null };
@@ -886,6 +901,7 @@ async function iniciarMonitor() {
     }));
     document.getElementById('mon-votar').addEventListener('click', async () => { const ab = MON.votacion === 'abierta'; if (ab && !confirm('¿Cerrar la votación? Los alumnos ya no podrán votar ni cambiar su voto.')) return; await setDoc(doc(db, 'grupos', grupoActivo), { votaciones: { [INFLUENCIAS.votacion]: ab ? 'cerrada' : 'abierta' } }, { merge: true }); });
     document.getElementById('mon-resultados').addEventListener('click', abrirResultados);
+    document.getElementById('mon-qr').addEventListener('click', () => abrirProyeccion(formacionDeTarea(MON.g, monTarea()), false));
     document.getElementById('voto-cerrar').addEventListener('click', cerrarResultados);
     document.getElementById('mon-clave').addEventListener('click', async () => { await setDoc(doc(db, 'grupos', grupoActivo), { claves: { cuadroMM: !MON.clave } }, { merge: true }); });
     document.getElementById('mon-full').addEventListener('click', e => { const on = document.body.classList.toggle('mon-completo'); e.currentTarget.setAttribute('aria-pressed', String(on)); e.currentTarget.textContent = on ? '✕ Salir de pantalla completa' : '⛶ Pantalla completa'; });
@@ -894,7 +910,7 @@ async function iniciarMonitor() {
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && MON.abierto) cerrarDetalle(); });
   }
   detenerMonitor();
-  MON.grupo = grupoActivo; MON.datos = {}; MON.equipos = [];
+  MON.grupo = grupoActivo; MON.datos = {}; MON.equipos = []; MON.todos = []; MON.g = {};
   const g = grupoActivo;
   // individual: un oyente por alumno
   alumnosCache.forEach(a => MON.subs.push(onSnapshot(doc(db, 'grupos', g, 'alumnos', a.id, 'atlas', 'mi-atlas'), sn => {
@@ -902,15 +918,23 @@ async function iniciarMonitor() {
   }, () => {})));
   // equipos
   MON.eqSub = onSnapshot(collection(db, 'grupos', g, 'equipos'), sn => {
-    MON.equipos = sn.docs.map(d => ({ id: d.id, ...d.data() })).sort((x, y) => (x.numero || 999) - (y.numero || 999) || (x.nombre || '').localeCompare(y.nombre || '', 'es'));
+    MON.todos = sn.docs.map(d => ({ id: d.id, ...d.data() }));
     suscribirEquiposCont(); pintarMonitor(true);
   }, () => {});
-  MON.subs.push(onSnapshot(doc(db, 'grupos', g), sn => { MON.votacion = sn.exists() ? ((sn.data().votaciones || {})[INFLUENCIAS.votacion] || 'cerrada') : 'cerrada'; const bv = document.getElementById('mon-votar'); bv.setAttribute('aria-pressed', String(MON.votacion === 'abierta')); bv.textContent = MON.votacion === 'abierta' ? '🔒 Cerrar votación' : '🗳️ Abrir votación'; MON.clave = !!(sn.exists() && (sn.data().claves || {}).cuadroMM); const b = document.getElementById('mon-clave'); b.setAttribute('aria-pressed', String(MON.clave)); b.textContent = MON.clave ? '🔒 Ocultar clave a los alumnos' : '🔑 Liberar clave'; }, () => {}));
+  MON.subs.push(onSnapshot(doc(db, 'grupos', g), sn => { MON.g = sn.exists() ? sn.data() : {}; if (monFiltrar()) { Object.keys(MON.datos).filter(k => k.startsWith('e:')).forEach(k => delete MON.datos[k]); suscribirEquiposCont(); pintarMonitor(true); } MON.votacion = sn.exists() ? ((sn.data().votaciones || {})[INFLUENCIAS.votacion] || 'cerrada') : 'cerrada'; const bv = document.getElementById('mon-votar'); bv.setAttribute('aria-pressed', String(MON.votacion === 'abierta')); bv.textContent = MON.votacion === 'abierta' ? '🔒 Cerrar votación' : '🗳️ Abrir votación'; MON.clave = !!(sn.exists() && (sn.data().claves || {}).cuadroMM); const b = document.getElementById('mon-clave'); b.setAttribute('aria-pressed', String(MON.clave)); b.textContent = MON.clave ? '🔒 Ocultar clave a los alumnos' : '🔑 Liberar clave'; }, () => {}));
   MON.reloj = setInterval(() => pintarTiempos(), 10000);
   pintarMonitor(true);
 }
+// en el monitor solo aparecen los equipos que usa la tarea que estás viendo
+const monTarea = () => MON.act === 'cuadro' ? 'cuadro-mm' : MON.act === 'influencias' ? 'influencias' : 'atlas-' + MON.cont;
+function monFiltrar() {
+  const antes = MON.equipos.map(e => e.id).join();
+  MON.equipos = equiposDe(MON.todos || [], formacionDeTarea(MON.g, monTarea())).sort(ordenEq);
+  return antes !== MON.equipos.map(e => e.id).join();
+}
 function suscribirEquiposCont() {
   (MON.eqSubs || []).forEach(u => u()); MON.eqSubs = [];
+  monFiltrar();
   const docAct = MON.act === 'cuadro' ? 'act-cuadro-mm' : MON.act === 'influencias' ? INFLUENCIAS.id : MON.cont;
   MON.equipos.forEach(eq => MON.eqSubs.push(onSnapshot(doc(db, 'grupos', MON.grupo, 'equipos', eq.id, 'atlas', docAct), sn => {
     MON.datos['e:' + eq.id] = sn.exists() ? sn.data() : null; programarPintado('e:' + eq.id);
@@ -1037,7 +1061,7 @@ function pintarTiempos() { document.querySelectorAll('.mon-card').forEach(c => p
 function pintarResumen() {
   const el = document.getElementById('mon-resumen'); if (!el) return;
   const ts = monTarjetas(); const activos = ts.filter(t => hace(actividadDe(t.clave)).cls === 'verde').length;
-  el.innerHTML = `<span class="mon-punto verde"></span> <b>${activos}</b> trabajando ahora (últimos 2 min) · ${ts.length} en total · ${MON.act === 'influencias' ? 'Siete influencias' : MON.act === 'cuadro' ? 'Cuadro mexica–maya' : escaparHTML(MON_ATLAS ? MON_ATLAS.continentes[MON.cont].nombre : '')}`;
+  el.innerHTML = `<span class="mon-punto verde"></span> <b>${activos}</b> trabajando ahora (últimos 2 min) · ${ts.length} en total · ${MON.act === 'influencias' ? 'Siete influencias' : MON.act === 'cuadro' ? 'Cuadro mexica–maya' : escaparHTML(MON_ATLAS ? MON_ATLAS.continentes[MON.cont].nombre : '')} · 👥 ${escaparHTML((formaciones(MON.g)[formacionDeTarea(MON.g, monTarea())] || {}).nombre || '')}`;
 }
 function abrirDetalle(clave) { MON.abierto = clave; document.getElementById('mon-detalle').hidden = false; document.body.classList.add('con-qr'); pintarDetalle(true); }
 function cerrarDetalle() { MON.abierto = null; document.getElementById('mon-detalle').hidden = true; document.body.classList.remove('con-qr'); }
@@ -1089,6 +1113,7 @@ async function cargarTareasDig() {
     return `<div class="td-fila"><span class="td-nom">${a.icono} ${escaparHTML(a.nombre)}</span>
       <button type="button" class="btn btn-small td-cat ${cat ? 'si' : ''}" data-cat="${a.id}" ${cat ? 'disabled' : ''}>${cat ? '✓ En el catálogo' : '+ Agregar al catálogo'}</button>
       <button type="button" class="btn btn-small td-ab ${ab ? 'si' : 'no'}" data-ab="${a.id}">${ab ? '🔓 Abierta' : '🔒 Cerrada'}</button>
+      ${enEquipo(a) ? `<button type="button" class="btn btn-small td-eq" data-eqt="${a.id}" aria-expanded="false">👥 Equipos</button>` : ''}
       <button type="button" class="btn btn-small btn-primary" data-cal="${a.id}">Calificar</button></div>`;
   }).join('')}</div>`).join('');
   cont.querySelectorAll('[data-cat]').forEach(b => b.addEventListener('click', async () => {
@@ -1103,6 +1128,14 @@ async function cargarTareasDig() {
     await setDoc(doc(db, 'grupos', grupoActivo), { tareasDig: { [id]: { abierta: !ab } } }, { merge: true });
     cargarTareasDig();
   }));
+  escucharEquiposAdmin(); pintarTdEquipos();
+  cont.querySelectorAll('[data-eqt]').forEach(b => b.addEventListener('click', () => {
+    const previa = cont.querySelector('.td-eqbox'), mismo = previa && previa.dataset.t === b.dataset.eqt;
+    if (previa) previa.remove(); cont.querySelectorAll('[data-eqt]').forEach(x => x.setAttribute('aria-expanded', 'false'));
+    if (mismo) return;
+    const caja = document.createElement('div'); caja.className = 'td-eqbox'; caja.dataset.t = b.dataset.eqt;
+    b.closest('.td-fila').after(caja); b.setAttribute('aria-expanded', 'true'); pintarTdCaja(caja);
+  }));
   cont.querySelectorAll('[data-cal]').forEach(b => b.addEventListener('click', () => calificarTareaDig(TAREAS_DIG[b.dataset.cal], enCat.has(catalogoId(b.dataset.cal)))));
 }
 async function calificarTareaDig(a, enCatalogo) {
@@ -1111,13 +1144,13 @@ async function calificarTareaDig(a, enCatalogo) {
   wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
   const g = grupoActivo;
   let equipos = [];
-  try { const sn = await getDocs(collection(db, 'grupos', g, 'equipos')); equipos = sn.docs.map(d => ({ id: d.id, ...d.data() })); } catch { /* */ }
+  try { const [gs, sn] = await Promise.all([getDoc(doc(db, 'grupos', g)), getDocs(collection(db, 'grupos', g, 'equipos'))]); equipos = equiposDe(sn.docs.map(d => ({ id: d.id, ...d.data() })), formacionDeTarea(gs.exists() ? gs.data() : {}, a.id)); } catch { /* */ }
   if (a.tipo === 'atlas' && !TD_ATLAS) { try { TD_ATLAS = await fetch('data/atlas.json').then(r => r.json()); } catch { TD_ATLAS = null; } }
   const total = a.tipo === 'atlas' && TD_ATLAS ? Object.values(TD_ATLAS.regiones).filter(r => r.cont === a.cont).reduce((x, r) => x + r.paises.length, 0) : 0;
   const cacheEq = {};
   const docEquipo = async (eq, id) => { const k = eq.id + '/' + id; if (!(k in cacheEq)) { try { const s = await getDoc(doc(db, 'grupos', g, 'equipos', eq.id, 'atlas', id)); cacheEq[k] = s.exists() ? s.data() : null; } catch { cacheEq[k] = null; } } return cacheEq[k]; };
   const filas = await Promise.all(alumnosCache.map(async al => {
-    const eq = equipos.find(e => (e.integrantes || []).includes(al.id)) || null;
+    const eq = enEquipo(a) ? equipos.find(e => (e.integrantes || []).includes(al.id)) || null : null;
     let sug = { nota: 0, detalle: 'Sin trabajo' }, entregado = null, resumen = '', cal = '';
     try { const c = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'tareas', catalogoId(a.id))); if (c.exists()) cal = c.data().calificacion ?? ''; } catch { /* */ }
     try {

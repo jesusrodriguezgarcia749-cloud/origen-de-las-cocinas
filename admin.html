@@ -90,7 +90,7 @@
     <button class="tab-btn" data-tab="tareas">Tareas</button>
     <button class="tab-btn" data-tab="participacion">Participación</button>
     <button class="tab-btn" data-tab="proyecto">Proyecto</button>
-    <button class="tab-btn" data-tab="miatlas">Mi atlas</button>
+    <button class="tab-btn" data-tab="equipos">👥 Equipos</button>
     <button class="tab-btn" data-tab="monitor">🟢 Monitor en vivo</button>
     <button class="tab-btn" data-tab="asistencia">Asistencia</button>
     <button class="tab-btn" data-tab="uniformes">Uniformes</button>
@@ -199,21 +199,22 @@
   </div>
 
   <!-- ===== ASISTENCIA ===== -->
-  <div id="tab-miatlas" class="tab-panel">
-    <p class="field-hint">Lo que cada alumno lleva en <a href="atlas.html#miatlas" target="_blank" rel="noopener">Mi atlas</a>: sus regiones culinarias propias, cuántos países clasificó y lo que escribió. Una ficha cuenta como completa cuando tiene al menos 4 de sus 7 apartados. Toca «Ver» para leer todo su trabajo. Si trabajan en equipo, el trabajo aparece en el alumno que lo capturó y abajo de su nombre ves a los integrantes.</p>
+  <div id="tab-equipos" class="tab-panel">
+    <p class="field-hint">Aquí formas los equipos para las tareas en equipo. Cada vez que armas equipos queda una <b>formación</b> con sus códigos QR. Cada tarea usa una formación: puedes repetir los mismos equipos en varias tareas o formar nuevos solo para una (en Tareas → Tareas digitales, botón 👥 de cada tarea). Lo que trabaja un equipo se queda guardado con ese equipo. El avance de cada equipo y de cada alumno lo ves en el <b>🟢 Monitor en vivo</b> y al <b>Calificar</b>.</p>
+    <div class="mon-chips eq-formaciones" id="eq-formaciones"></div>
+    <div class="bloques-activos-card eq-nueva" id="eq-nueva" hidden></div>
     <div class="bloques-activos-card">
-      <h3 class="section-title" style="margin-top:0;">Equipos</h3>
-      <p class="field-hint">Los integrantes de un equipo comparten un mismo atlas y lo editan al mismo tiempo desde sus celulares; cada apartado registra quién lo escribió. Hay dos formas de formar equipos: <b>generarlos con código QR</b> para que los alumnos se unan solos, o <b>armarlos tú</b> eligiendo a los integrantes.</p>
-      <div class="eq-generar">
-        <span>Generar</span><input id="eq-n" type="number" min="1" max="20" value="6" aria-label="Número de equipos"><span>equipos de máximo</span><input id="eq-max" type="number" min="1" max="15" value="4" aria-label="Máximo de integrantes"><span>integrantes</span>
-        <button type="button" class="btn btn-primary" id="eq-generar">Generar con QR</button>
-      </div>
+      <div id="eq-f-cab"></div>
       <div class="eq-acciones">
         <button type="button" class="btn" id="eq-abierto" aria-pressed="true">🔓 Inscripciones abiertas</button>
         <button type="button" class="btn" id="eq-proyectar">📽️ Proyectar códigos</button>
         <button type="button" class="btn" id="eq-imprimir">🖨️ Imprimir tarjetas</button>
       </div>
-      <p class="field-hint" id="eq-sin">Sin equipo todavía: <span id="eq-sin-lista"></span></p>
+      <div class="eq-generar">
+        <span>Agregar</span><input id="eq-n" type="number" min="1" max="20" value="1" aria-label="Número de equipos"><span>equipo(s) de máximo</span><input id="eq-max" type="number" min="1" max="15" value="4" aria-label="Máximo de integrantes"><span>integrantes</span>
+        <button type="button" class="btn" id="eq-generar">Generar con QR</button>
+      </div>
+      <p class="field-hint" id="eq-sin">Sin equipo en esta formación: <span id="eq-sin-lista"></span></p>
       <div id="equipos-lista"></div>
       <h4 class="eq-sub">Armar o editar un equipo a mano</h4>
       <form id="equipo-form" class="equipo-form">
@@ -225,14 +226,6 @@
         <div class="equipo-botones"><button type="submit" class="btn btn-primary" id="equipo-guardar">Crear equipo</button><button type="button" class="btn" id="equipo-cancelar" hidden>Cancelar</button></div>
         <p id="equipo-msg" class="save-msg" hidden></p>
       </form>
-    </div>
-    <div class="bloques-activos-card">
-      <h3 class="section-title" style="margin-top:0;">Avance por equipo</h3>
-      <div id="miatlas-equipos" class="taller-avance"></div>
-    </div>
-    <div class="bloques-activos-card">
-      <h3 class="section-title" style="margin-top:0;">Avance individual</h3>
-      <div id="miatlas-avance" class="taller-avance"></div>
     </div>
   </div>
 
@@ -246,6 +239,7 @@
       <button type="button" class="chip-mon mon-clave" id="mon-clave" hidden aria-pressed="false">🔑 Liberar clave</button>
       <button type="button" class="chip-mon mon-clave" id="mon-votar" hidden aria-pressed="false">🗳️ Abrir votación</button>
       <button type="button" class="chip-mon" id="mon-resultados" hidden>📽️ Resultados</button>
+      <button type="button" class="chip-mon" id="mon-qr">🔳 Códigos QR</button>
     </div>
     <div class="mon-filtros">
       <div class="mon-chips" id="mon-conts"></div>
@@ -391,7 +385,7 @@
   <div class="voto-barras" id="voto-barras"></div>
 </div>
 <div id="qr-proyeccion" class="qr-proyeccion" hidden>
-  <div class="qr-cab"><div><b>Únete a tu equipo</b><span>Escanea el código con tu celular (o entra a Tareas, abre «Mi atlas» o el cuadro, y escribe el código de 4 letras).</span></div><button type="button" class="btn" id="qr-cerrar">Cerrar ✕</button></div>
+  <div class="qr-cab"><div><b id="qr-tit">Únete a tu equipo</b><span id="qr-sub"></span></div><button type="button" class="btn" id="qr-cerrar">Cerrar ✕</button></div>
   <div class="qr-grid" id="qr-grid"></div>
 </div>
 <script src="js/vendor/qrcode.js"></script>

@@ -23,9 +23,16 @@ service cloud.firestore {
         allow write: if esDocente();
       }
 
-      // Equipos: el docente los crea. Mientras las inscripciones estén
-      // abiertas, un alumno (con su PIN) solo puede unirse él mismo sin pasar
-      // el máximo, o salirse él mismo. Un integrante puede cambiar el nombre.
+      // Equipos: el docente los crea, agrupados en «formaciones» (campo
+      // formacion; sin él es la formación «actual», la de antes). Mientras las
+      // inscripciones de SU formación estén abiertas, un alumno (con su PIN)
+      // solo puede unirse él mismo sin pasar el máximo, o salirse él mismo.
+      // Un integrante puede cambiar el nombre. Nadie más que el docente
+      // cambia la formación de un equipo.
+      function inscripcionAbierta(f) {
+        let g = get(/databases/$(database)/documents/grupos/$(grupoId)).data;
+        return g.get('formaciones', {}).get(f, {}).get('abiertas', f == 'actual' && g.get('equiposAbiertos', true) == true) == true;
+      }
       match /equipos/{equipoId} {
         allow read: if true;
         allow write: if esDocente();
@@ -35,7 +42,7 @@ service cloud.firestore {
             // cambiar el nombre: lo hace un integrante, sin tocar la lista
             (request.resource.data.integrantes == resource.data.integrantes
               && request.resource.data.ultimoAutor in resource.data.integrantes)
-            || (get(/databases/$(database)/documents/grupos/$(grupoId)).data.get('equiposAbiertos', true) == true
+            || (inscripcionAbierta(resource.data.get('formacion', 'actual'))
               && (
                 // unirse: agrega solo a sí mismo
                 (request.resource.data.integrantes.size() == resource.data.integrantes.size() + 1
