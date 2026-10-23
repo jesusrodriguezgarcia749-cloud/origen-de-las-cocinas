@@ -92,3 +92,5 @@
 .cl-cerrada { background: rgba(166,61,47,.1); border: 1px solid rgba(166,61,47,.4); color: #8A3326; font-weight: 600; }
 html[data-theme="dark"] .cl-entregada { color: #9BD3A8; } html[data-theme="dark"] .cl-cerrada { color: #F0A597; }
 .cl-tag { font: 600 .72rem var(--font-body); color: #2E6FA8; background: rgba(46,111,168,.1); padding: 2px 8px; border-radius: 999px; vertical-align: middle; }
+.cl-normal { box-shadow: none; border-style: dashed; cursor: default; }
+.cl-normal:hover { transform: none; border-color: var(--line); }

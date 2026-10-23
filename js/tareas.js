@@ -125,13 +125,31 @@ async function portada() {
     : `<div class="tq-quien">Entra con tu nombre y PIN para ver tu avance, entregar y conocer tus calificaciones. <button type="button" class="btn-at" id="tq-entrar">Entrar</button></div>`;
   if (sesion) $('#tq-salir').addEventListener('click', () => { try { sessionStorage.removeItem(SESSION_KEY); } catch { /* */ } sesion = null; EQ = undefined; if (unsubGrupo) unsubGrupo(); portada(); });
   else $('#tq-entrar').addEventListener('click', () => formAcceso($('#cl-acceso'), portada));
-  $('#cl-sesiones').innerHTML = TEMAS_TAREAS.map((t, i) => `<details class="tq-tema" ${t === actual ? 'open' : ''}><summary><span class="tq-num">${esc(t.tema)}</span><span><b>${esc(t.titulo)}</b><small>${esc(t.fechaTexto)} · ${t.acts.filter(califica).length} tarea${t.acts.filter(califica).length === 1 ? '' : 's'}</small></span></summary>
+  $('#cl-sesiones').innerHTML = TEMAS_TAREAS.map((t, i) => `<details class="tq-tema" data-tema="${i}" ${t === actual ? 'open' : ''}><summary><span class="tq-num">${esc(t.tema)}</span><span><b>${esc(t.titulo)}</b><small>${esc(t.fechaTexto)} · ${t.acts.filter(califica).length} tarea${t.acts.filter(califica).length === 1 ? '' : 's'}</small></span></summary>
     <div class="cl-cards">${t.acts.map(a => `<a class="cl-card ${a.tipo === 'pronto' ? 'cl-pronto' : ''}" href="${a.tipo === 'atlas' ? `atlas.html#miatlas=${a.cont}` : a.tipo === 'pronto' ? '#' : '#' + a.id}" data-act="${a.id}"><span class="cl-ico">${a.icono}</span><b>${esc(a.nombre)}</b><small>${esc(a.modo)}</small><p>${esc(a.desc)}</p><span class="cl-estado" data-st="${a.id}">${insignia(a, null)}</span><p class="cl-avance" data-av="${a.id}"></p></a>`).join('')}</div></details>`).join('');
   $$('.cl-pronto').forEach(x => x.addEventListener('click', e => e.preventDefault()));
   if (sesion) {
     escucharGrupo();
     for (const a of Object.values(TAREAS_DIG).filter(califica)) estadoDe(a).then(st => { const s = $(`[data-st="${a.id}"]`), v = $(`[data-av="${a.id}"]`); if (s) s.innerHTML = insignia(a, st); if (v) v.textContent = st && st.avance ? st.avance : ''; });
+    tareasNormales();
   }
+}
+// Tareas que el docente dejó a mano (no digitales): se acomodan en el tema de su fecha.
+async function tareasNormales() {
+  let cat = [];
+  try { const sn = await getDocs(collection(db, 'grupos', sesion.grupoId, 'tareas_catalogo')); cat = sn.docs.map(d => ({ id: d.id, ...d.data() })).filter(t => t.parcial === 'p2' && !t.id.startsWith('dig-')).sort((a, b) => (a.fecha || '').localeCompare(b.fecha || '')); } catch { return; }
+  if (!cat.length) return;
+  const fechaTxt = f => { if (!f) return ''; const [y, m, d] = f.split('-').map(Number); return new Date(y, m - 1, d).toLocaleDateString('es-MX', { weekday: 'short', day: 'numeric', month: 'long' }); };
+  const sueltas = [];
+  for (const t of cat) {
+    let cal = null;
+    try { const c = await getDoc(doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'tareas', t.id)); if (c.exists() && c.data().calificacion !== undefined && c.data().calificacion !== null) cal = c.data().calificacion; } catch { /* */ }
+    const html = `<div class="cl-card cl-normal"><span class="cl-ico">📝</span><b>${esc(t.nombre)}</b><small>Tarea en clase o en papel</small><p>${t.fecha ? `Fecha: ${esc(fechaTxt(t.fecha))}. ` : ''}Se entrega como indique tu maestro.</p><span class="cl-estado">${cal !== null ? `<span class="tq tq-cal">Calificada: <b>${cal}</b></span>` : '<span class="tq tq-pend">Sin calificar todavía</span>'}</span></div>`;
+    const i = t.fecha ? TEMAS_TAREAS.map((x, k) => [x, k]).filter(([x]) => x.fecha <= t.fecha).map(([, k]) => k).pop() : undefined;
+    const caja = i !== undefined ? $(`.tq-tema[data-tema="${i}"] .cl-cards`) : null;
+    if (caja) caja.insertAdjacentHTML('beforeend', html); else sueltas.push(html);
+  }
+  if (sueltas.length) $('#cl-sesiones').insertAdjacentHTML('beforeend', `<details class="tq-tema" open><summary><span class="tq-num">📝</span><span><b>Otras tareas del parcial</b><small>Las que tu maestro dejó en clase o en papel</small></span></summary><div class="cl-cards">${sueltas.join('')}</div></details>`);
 }
 
 // ======================================================= navegación
