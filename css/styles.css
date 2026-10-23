@@ -242,3 +242,6 @@ a:focus-visible, button:focus-visible, input:focus-visible{
   padding:28px 0; text-align:center; font-size:.85rem; color:var(--ink-soft);
   border-top:1px solid var(--line);
 }
+
+/* Lo que lleva el atributo hidden nunca se muestra, aunque su clase le dé display:flex o grid */
+[hidden] { display: none !important; }
