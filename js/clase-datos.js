@@ -184,11 +184,18 @@ export function sugerirAtlas(c, totalPaises) {
   const nota = regs.length ? 10 * (0.5 * Math.min(1, cl / totalPaises) + 0.5 * fichas / regs.length) : 0;
   return { nota: r1(nota), detalle: `${cl}/${totalPaises} países · ${regs.length} regiones · ${fichas} fichas completas` };
 }
+// Cuadro: 8 puntos por las celdas llenas (cuenta como llena con 5 palabras o más) y 2 por las
+// fuentes de las filas de investigación (medio punto por cada una).
+export const MIN_PALABRAS_CELDA = 5;
+const palabrasDe = t => (String(t || '').trim().match(/\S+/g) || []).length;
 export function sugerirCuadro(celdas) {
+  celdas = celdas || {};
   const total = CUADRO_MM.filas.length * CUADRO_MM.columnas.length;
-  const llenas = CUADRO_MM.filas.flatMap(([f]) => CUADRO_MM.columnas.map(([c]) => (celdas || {})[`${f}_${c}`])).filter(v => (v || '').trim()).length;
-  const inv = CUADRO_MM.filas.filter(x => x[3]), fu = inv.filter(([f]) => ((celdas || {})[`${f}_fuente`] || '').trim()).length;
-  return { nota: r1(10 * llenas / total), detalle: `${llenas}/${total} celdas llenas · ${fu}/${inv.length} fuentes de investigación` };
+  const textos = CUADRO_MM.filas.flatMap(([f]) => CUADRO_MM.columnas.map(([c]) => celdas[`${f}_${c}`]));
+  const llenas = textos.filter(v => palabrasDe(v) >= MIN_PALABRAS_CELDA).length, cortas = textos.filter(v => palabrasDe(v) > 0 && palabrasDe(v) < MIN_PALABRAS_CELDA).length;
+  const inv = CUADRO_MM.filas.filter(x => x[3]), fu = inv.filter(([f]) => (celdas[`${f}_fuente`] || '').trim()).length;
+  const nota = r1(8 * llenas / total + 2 * fu / (inv.length || 1));
+  return { nota, detalle: `${llenas}/${total} celdas llenas${cortas ? ` (+${cortas} con menos de ${MIN_PALABRAS_CELDA} palabras, no cuentan)` : ''} · ${fu}/${inv.length} fuentes de investigación` };
 }
 // Desarma: 3 por clasificar ingredientes (al menos 3), 3 por clasificarlos todos, 4 por la conclusión (40 palabras o más).
 export function sugerirDesarma(m) {

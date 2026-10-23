@@ -140,3 +140,5 @@ html[data-theme="dark"] .cl-entregada { color: #9BD3A8; } html[data-theme="dark"
 .cu-fuente { display: grid; gap: 4px; margin-top: 10px; font: 600 .84rem var(--font-body); }
 .cu-fuente input { width: 100%; box-sizing: border-box; font: inherit; font-weight: 400; font-size: .92rem; color: var(--ink); background: var(--parchment); border: 1.5px dashed var(--line); border-radius: 10px; padding: 9px 11px; }
 .cu-fuente input:focus { outline: none; border-style: solid; border-color: var(--saffron, #C98A2C); }
+.cu-regla { display: block; flex-basis: 100%; font-size: .8rem; color: var(--ink-soft); margin-top: 4px; }
+.cu-celda textarea.cu-corta { border-color: #D9A441; background-image: linear-gradient(0deg, rgba(217,164,65,.08), rgba(217,164,65,.08)); }

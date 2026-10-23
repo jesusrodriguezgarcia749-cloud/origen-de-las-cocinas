@@ -14,7 +14,7 @@ import { calcularParcial, calcularCuatrimestre, calcularCuatrimestreRedondeado, 
 import { reporteGrupo, reporteAlumno, reporteExamenAlumno, reporteExamenGrupo } from "./reporte.js";
 import { vistaRapida } from "./matriz.js";
 import { BASE, enEquipo, formacionDe, formaciones, ordenFormaciones, formacionDeTarea, equiposDe, tareasDeFormacion, urlUnir, qrSvg } from "./equipos.js";
-import { TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, nombreCatalogo, sugerirAtlas, sugerirCuadro, sugerirDesarma, CUADRO_MM, INFLUENCIAS, sugerirInfluencias } from "./clase-datos.js";
+import { TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, nombreCatalogo, sugerirAtlas, sugerirCuadro, MIN_PALABRAS_CELDA, sugerirDesarma, CUADRO_MM, INFLUENCIAS, sugerirInfluencias } from "./clase-datos.js";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -1034,10 +1034,11 @@ const CU_FILAS = CUADRO_MM.filas.map(([f, t, , inv]) => [f, t, inv]);
 const CU_COLS = [['mexica', 'Mexica', '#A63D2F'], ['maya', 'Maya', '#2E6FA8'], ['parecido', 'Se parecen', '#3F7A4F']];
 function actualizarCuadro(card, clave, nuevo) {
   const d = MON.datos[clave] || {}, cel = d.celdas || {};
-  const llenas = CU_FILAS.flatMap(([f]) => CU_COLS.map(([c]) => (cel[`${f}_${c}`] || '').trim())).filter(Boolean).length, total = CU_FILAS.length * CU_COLS.length;
-  card.querySelector('[data-mapa]').innerHTML = `<div class="cu-mini">${CU_FILAS.map(([f]) => CU_COLS.map(([c, , col]) => `<i style="${(cel[`${f}_${c}`] || '').trim() ? `background:${col}` : ''}"></i>`).join('')).join('')}</div>`;
+  const ok = k => ((cel[k] || '').trim().match(/\S+/g) || []).length >= MIN_PALABRAS_CELDA;
+  const llenas = CU_FILAS.flatMap(([f]) => CU_COLS.map(([c]) => ok(`${f}_${c}`))).filter(Boolean).length, total = CU_FILAS.length * CU_COLS.length;
+  card.querySelector('[data-mapa]').innerHTML = `<div class="cu-mini">${CU_FILAS.map(([f]) => CU_COLS.map(([c, , col]) => `<i style="${ok(`${f}_${c}`) ? `background:${col}` : (cel[`${f}_${c}`] || '').trim() ? `background:${col};opacity:.35` : ''}"></i>`).join('')).join('')}</div>`;
   card.querySelector('[data-barra]').style.width = Math.round(100 * llenas / total) + '%';
-  card.querySelector('[data-num]').innerHTML = `<b>${llenas}/${total}</b> celdas llenas`;
+  card.querySelector('[data-num]').innerHTML = `<b>${llenas}/${total}</b> celdas · sugerida <b>${sugerirCuadro(cel).nota}</b>`;
   card.querySelector('[data-ult]').innerHTML = d.ultimoCambio ? `✍️ <b>${escaparHTML(d.ultimoNombre || '')}</b> ${escaparHTML(d.ultimoCambio)}` : '<i>todavía no empiezan</i>';
   pintarTiempo(card, d.actualizado || null);
   if (!nuevo) { card.classList.remove('mon-latido'); void card.offsetWidth; card.classList.add('mon-latido'); }
@@ -1177,7 +1178,7 @@ async function calificarTareaDig(a, enCatalogo) {
         const d = eq ? await docEquipo(eq, CUADRO_MM.id) : null;
         let datos = d;
         if (!datos) { const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'tarea-cuadro-mm')); datos = s.exists() ? s.data() : null; }
-        if (datos) { sug = sugerirCuadro(datos.celdas); entregado = datos.entregado || null; resumen = CUADRO_MM.filas.map(([f, t]) => `${t}: ${CUADRO_MM.columnas.map(([c]) => (datos.celdas || {})[`${f}_${c}`] ? '●' : '○').join('')}`).join(' · '); }
+        if (datos) { sug = sugerirCuadro(datos.celdas); entregado = datos.entregado || null; resumen = CUADRO_MM.filas.map(([f, t]) => `${t}: ${CUADRO_MM.columnas.map(([c]) => ((datos.celdas || {})[`${f}_${c}`] || '').trim().split(/\s+/).filter(Boolean).length >= MIN_PALABRAS_CELDA ? '●' : '○').join('')}`).join(' · '); }
       } else if (a.tipo === 'influencias') {
         let datos = eq ? await docEquipo(eq, INFLUENCIAS.id) : null;
         if (!datos) { const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'tarea-influencias')); datos = s.exists() ? s.data() : null; }
@@ -1192,7 +1193,7 @@ async function calificarTareaDig(a, enCatalogo) {
   const f = t => t && t.toDate ? t.toDate().toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : typeof t === 'number' ? new Date(t).toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
   wrap.innerHTML = `<h4 class="td-h4">Calificar: ${escaparHTML(nombreCatalogo(a))}</h4>
     ${enCatalogo ? '' : '<p class="aviso-td">⚠️ Esta tarea todavía no está en el catálogo: las calificaciones se guardan, pero no cuentan en el promedio hasta que la agregues.</p>'}
-    <p class="field-hint">La calificación sugerida sale de qué tan completo está el trabajo${a.tipo === 'atlas' ? ' (la mitad por países clasificados y la mitad por fichas con al menos 4 de 7 apartados)' : a.tipo === 'cuadro' ? ' (celdas llenas de 21)' : a.tipo === 'influencias' ? ' (1 punto por elegir platillo, 1.5 por cada influencia con evidencia —hasta 4— y 3 por un argumento de al menos 60 palabras)' : ' (ingredientes, que estén clasificados y una conclusión de al menos 40 palabras)'}. En equipo, todos reciben la misma sugerencia; puedes ajustar a quien no aportó (en el Monitor ves quién escribió qué).</p>
+    <p class="field-hint">La calificación sugerida sale de qué tan completo está el trabajo${a.tipo === 'atlas' ? ' (la mitad por países clasificados y la mitad por fichas con al menos 4 de 7 apartados)' : a.tipo === 'cuadro' ? ` (8 puntos por las ${CUADRO_MM.filas.length * CUADRO_MM.columnas.length} celdas llenas —cuenta la que tiene ${MIN_PALABRAS_CELDA} palabras o más— y 2 puntos por las fuentes de las 4 filas de investigación, medio punto cada una)` : a.tipo === 'influencias' ? ' (1 punto por elegir platillo, 1.5 por cada influencia con evidencia —hasta 4— y 3 por un argumento de al menos 60 palabras)' : ' (ingredientes, que estén clasificados y una conclusión de al menos 40 palabras)'}. En equipo, todos reciben la misma sugerencia; puedes ajustar a quien no aportó (en el Monitor ves quién escribió qué).</p>
     <div class="quiz-actions" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;"><button type="button" class="btn btn-ghost-dark btn-small" id="td-usar">Usar sugeridas en las vacías</button><button type="button" class="btn btn-ghost-dark btn-small" id="td-cerrar">Cerrar</button></div>
     <div class="taller-tabla-wrap"><table class="taller-tabla td-tabla"><thead><tr><th>Alumno</th><th>Trabajo</th><th>Entrega</th><th>Sugerida</th><th>Calificación</th></tr></thead><tbody>
     ${filas.map(x => `<tr data-id="${x.al.id}"><td><b>${escaparHTML(x.al.nombre)}</b>${x.eq ? `<br><small>👥 ${escaparHTML(x.eq.nombre)}</small>` : ''}</td>

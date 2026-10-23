@@ -9,7 +9,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, FieldPath, collection, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
-import { CUADRO_MM, APORTO, PLATILLOS, TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, sugerirCuadro, INFLUENCIAS, sugerirInfluencias } from "./clase-datos.js";
+import { CUADRO_MM, APORTO, PLATILLOS, TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, sugerirCuadro, MIN_PALABRAS_CELDA, INFLUENCIAS, sugerirInfluencias } from "./clase-datos.js";
 import { DocITES } from "./docx-ites.js";
 import { formacionDe, formaciones, formacionDeTarea, abiertas as inscAbiertas, equipoDe, equiposDe, tareasDeFormacion, enEquipo } from "./equipos.js";
 
@@ -262,8 +262,10 @@ function cuadro(cont, eq) {
     const act = document.activeElement;
     $$('[data-k]', cont).forEach(t => { const v = S.celdas[t.dataset.k] || ''; if (t !== act && t.value !== v) t.value = v; });
     $$('[data-autor]', cont).forEach(s => { const au = eq && S.por[s.dataset.autor]; s.textContent = au ? `✍️ ${au}` : ''; });
-    const n = claves.filter(k => (S.celdas[k] || '').trim()).length;
-    $('#cu-progreso').innerHTML = `<b>${n} de ${claves.length}</b> celdas llenas <span class="ma-barra-p"><i style="width:${Math.round(100 * n / claves.length)}%"></i></span>`;
+    const pal = k => ((S.celdas[k] || '').trim().match(/\S+/g) || []).length;
+    const n = claves.filter(k => pal(k) >= MIN_PALABRAS_CELDA).length, inv = A.filas.filter(x => x[3]), fu = inv.filter(([f]) => (S.celdas[`${f}_fuente`] || '').trim()).length;
+    $$('[data-k]', cont).forEach(t => { const k = t.dataset.k; if (!k.endsWith('_fuente')) t.classList.toggle('cu-corta', pal(k) > 0 && pal(k) < MIN_PALABRAS_CELDA); });
+    $('#cu-progreso').innerHTML = `<b>${n} de ${claves.length}</b> celdas llenas · <b>${fu} de ${inv.length}</b> fuentes <span class="ma-barra-p"><i style="width:${Math.round(100 * n / claves.length)}%"></i></span><small class="cu-regla">Una celda cuenta cuando tiene al menos ${MIN_PALABRAS_CELDA} palabras. Las celdas valen 8 puntos y las 4 fuentes de investigación, 2.</small>`;
   };
   const aplicar = d => { const c = { celdas: { ...(d.celdas || {}) }, por: { ...(d.por || {}) }, entregado: d.entregado || null }; [...vuelo.values(), ...pend.values()].forEach(([r, v]) => { c[r[0]][r[1]] = v; }); return c; };
   const firma = () => eq ? { ultimoAutor: sesion.alumnoId, ultimoPin: sesion.pin, ultimoNombre: sesion.nombre } : { pinVerificado: sesion.pin, nombre: sesion.nombre };
