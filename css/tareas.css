@@ -213,3 +213,49 @@ html[data-theme="dark"] .jp-mapa { background: #1E2A2E; }
 @keyframes cp-ola { from { transform: translateX(-12px); opacity: .2; } to { transform: none; opacity: 1; } }
 .cp-final { font: 700 1.1rem var(--font-body); padding: 10px 12px; border-radius: 12px; }
 .cp-final.ok { background: rgba(63,154,85,.14); } .cp-final.mal { background: rgba(192,80,63,.14); }
+/* Defiende Campeche: escenas a pantalla completa */
+body.cp-sin-scroll { overflow: hidden; }
+.cp-son { display: block; margin: 0 0 6px auto; font: 600 .82rem var(--font-body); padding: 5px 12px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--cream); color: var(--ink); cursor: pointer; }
+.cp-escena { position: fixed; inset: 0; z-index: 2000; display: grid; place-items: center; align-content: center; gap: 10px; padding: 16px; background: radial-gradient(ellipse at 50% 30%, #3B6E95 0%, #1C3550 70%); color: #fff; cursor: pointer; animation: cp-entra .35s ease both; overflow: hidden; }
+.cp-pirata { background: radial-gradient(ellipse at 50% 30%, #5B5E73 0%, #23232E 75%); }
+.cp-derrota { background: #3A1E1E; } .cp-victoria { background: #1F3A57; }
+.cp-escena.cp-fuera { animation: cp-sale .28s ease forwards; }
+@keyframes cp-entra { from { opacity: 0; } to { opacity: 1; } }
+@keyframes cp-sale { to { opacity: 0; transform: scale(1.04); } }
+.cp-svg { width: min(92vw, 62vh); height: auto; filter: drop-shadow(0 12px 24px rgba(0,0,0,.35)); }
+.cp-letrero { text-align: center; animation: cp-letrero .6s cubic-bezier(.2,1.4,.4,1) both; animation-delay: 3.2s; }
+.cp-pirata .cp-letrero { animation-delay: 2.4s; } .cp-victoria .cp-letrero, .cp-derrota .cp-letrero { animation-delay: .6s; }
+.cp-letrero b { display: block; font-family: var(--font-display, serif); font-size: clamp(1.6rem, 6vw, 2.8rem); line-height: 1.15; text-shadow: 0 3px 12px rgba(0,0,0,.5); }
+.cp-letrero span { display: inline-block; margin-top: 8px; font: 700 1.05rem var(--font-body); background: rgba(255,255,255,.16); padding: 5px 14px; border-radius: 999px; }
+@keyframes cp-letrero { from { opacity: 0; transform: scale(.6) translateY(20px); } to { opacity: 1; transform: none; } }
+.cp-saltar { position: absolute; bottom: 14px; left: 0; right: 0; text-align: center; opacity: .7; font-size: .8rem; }
+.cp-hil { animation: cp-cae .45s cubic-bezier(.3,1.3,.5,1) both; animation-delay: var(--d); }
+@keyframes cp-cae { from { opacity: 0; transform: translateY(-160px); } to { opacity: 1; transform: none; } }
+.cp-polvo circle { fill: rgba(240,228,205,.85); opacity: 0; animation: cp-polvo .6s ease-out both; animation-delay: calc(var(--d) + .38s); transform-box: fill-box; transform-origin: center; }
+@keyframes cp-polvo { 0% { opacity: .9; transform: scale(.3); } 100% { opacity: 0; transform: scale(2.2); } }
+.cp-alm { animation: cp-sube .5s cubic-bezier(.3,1.4,.5,1) both; animation-delay: 2.5s; transform-box: fill-box; transform-origin: bottom; }
+@keyframes cp-sube { from { opacity: 0; transform: scaleY(0); } to { opacity: 1; transform: none; } }
+.cp-mastil { animation: cp-entra .2s both; animation-delay: 2.9s; }
+.cp-bandera { animation: cp-iza .7s ease-out both, cp-ondea .6s ease-in-out 3.6s infinite alternate; animation-delay: 2.9s, 3.6s; transform-box: fill-box; transform-origin: left center; }
+@keyframes cp-iza { from { transform: translateY(80px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes cp-ondea { to { transform: skewY(-6deg) scaleX(.9); } }
+.cp-trabs { animation: cp-sale .4s ease forwards; animation-delay: 2.6s; }
+.cp-trab { animation: cp-camina 1.3s linear infinite; animation-delay: var(--t); }
+@keyframes cp-camina { 0% { transform: translate(-30px, 318px); } 50% { transform: translate(200px, 312px); } 100% { transform: translate(430px, 318px); } }
+.cp-ola { animation: cp-olas 2s linear infinite; }
+@keyframes cp-olas { to { transform: translateX(-50px); } }
+.cp-barco { animation: cp-navega 2.1s cubic-bezier(.2,.8,.3,1) both, cp-mece 1.2s ease-in-out 2.1s infinite alternate; transform-box: fill-box; transform-origin: center bottom; }
+@keyframes cp-navega { from { transform: translateX(420px); } to { transform: none; } }
+@keyframes cp-mece { to { transform: rotate(-3deg); } }
+.cp-fogon { opacity: 0; animation: cp-fogon 1.6s ease-out both; animation-delay: 2.1s; transform-box: fill-box; transform-origin: left center; }
+@keyframes cp-fogon { 0% { opacity: 1; transform: scale(.2); } 30% { opacity: 1; transform: scale(1.1); } 100% { opacity: 0; transform: scale(1.8) translateX(-20px); } }
+.cp-tiembla { animation: cp-tiembla .5s linear; }
+@keyframes cp-tiembla { 10%, 50%, 90% { transform: translate(-10px, 4px); } 30%, 70% { transform: translate(10px, -4px); } }
+.cp-hex { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: cp-traza 1.4s ease-out .2s forwards; }
+@keyframes cp-traza { to { stroke-dashoffset: 0; } }
+.cp-punto { opacity: 0; animation: cp-sube .4s cubic-bezier(.3,1.6,.5,1) both; animation-delay: var(--d); transform-box: fill-box; transform-origin: center; }
+.cp-fuego { transform: translate(var(--x), var(--y)); }
+.cp-fuego circle { opacity: 0; animation: cp-chispa 1.1s ease-out both; animation-delay: var(--d); }
+@keyframes cp-chispa { 0% { opacity: 1; transform: rotate(var(--a)) translateX(0); } 100% { opacity: 0; transform: rotate(var(--a)) translateX(46px); } }
+.cp-barco-f { animation: cp-navega 1.8s ease-out both; animation-delay: var(--d); }
+.cp-quieto *, .cp-quieto { animation-duration: .01s !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; }

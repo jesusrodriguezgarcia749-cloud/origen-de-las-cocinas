@@ -644,10 +644,12 @@ function juegoPreguntas(cont, C) {
     $('#ap-fb').innerHTML = `<div class="aviso ${ok ? 'ok' : 'mal'}"><strong>${tit}</strong>${C.explicar(x, ok)}</div><div id="jp-extra"></div><button class="btn-at" id="ap-sig" type="button">${terminado() || i + 1 >= items.length ? 'Ver resultado' : 'Siguiente →'}</button>`;
     if (C.despues) C.despues(x, v, $('#jp-extra'));
     $('#ap-mk').innerHTML = marcador();
+    if (C.escena) C.escena(ok, bien, malos);
     $('#ap-sig').addEventListener('click', () => { i++; pregunta(); }); $('#ap-sig').focus({ preventScroll: true });
   };
-  const fin = () => {
+  const fin = async () => {
     parar();
+    if (C.escenaFinal) { const e = C.escenaFinal(bien, malos); if (e) { cont.innerHTML = ''; await e; } }
     const marca = reto ? pts : bien, clave = `clase_${C.clave}_mejor_${N.id}`, previa = Number((lsGet(clave) || '0').split(/[ /]/)[0]) || 0, record = marca > previa;
     if (record) lsSet(clave, reto ? `${pts} pts` : `${bien}/${Math.min(i, items.length)}`);
     cont.innerHTML = `<div class="resumen">${C.final ? C.final(bien, malos) : ''}<h3>${N.ico} ${N.n}: ${bien} acierto${bien === 1 ? '' : 's'} de ${Math.min(i, items.length)}</h3>
@@ -680,16 +682,93 @@ function juegoPreguntas(cont, C) {
   inicio();
 }
 
+// ---- Escenas a pantalla completa de «Defiende Campeche» (4-5 s, se saltan tocando) y sonidos sintetizados
+const CP_SON = { ctx: null };
+const cpSonidoOn = () => lsGet('clase_campeche_sonido') !== '0';
+function cpAudio() { if (!CP_SON.ctx) { try { CP_SON.ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch { return null; } } if (CP_SON.ctx.state === 'suspended') CP_SON.ctx.resume(); return CP_SON.ctx; }
+function cpRuido(a, dur, frec, tipo, vol, t0) {
+  const n = a.createBufferSource(), b = a.createBuffer(1, Math.ceil(a.sampleRate * dur), a.sampleRate), d = b.getChannelData(0);
+  for (let k = 0; k < d.length; k++) d[k] = (Math.random() * 2 - 1) * Math.pow(1 - k / d.length, 2);
+  const f = a.createBiquadFilter(); f.type = tipo; f.frequency.value = frec; const g = a.createGain(); g.gain.value = vol;
+  n.buffer = b; n.connect(f).connect(g).connect(a.destination); n.start(t0);
+}
+function cpTono(a, frec, dur, tipo, vol, t0, hasta) {
+  const o = a.createOscillator(), g = a.createGain(); o.type = tipo; o.frequency.setValueAtTime(frec, t0); if (hasta) o.frequency.exponentialRampToValueAtTime(hasta, t0 + dur);
+  g.gain.setValueAtTime(vol, t0); g.gain.exponentialRampToValueAtTime(0.001, t0 + dur); o.connect(g).connect(a.destination); o.start(t0); o.stop(t0 + dur + .05);
+}
+function cpSonido(tipo) {
+  if (!cpSonidoOn()) return; const a = cpAudio(); if (!a) return; const t = a.currentTime;
+  if (tipo === 'obra') { for (let k = 0; k < 7; k++) { cpRuido(a, .07, 2600, 'bandpass', .5, t + .15 + k * .38); cpTono(a, 180, .12, 'square', .08, t + .15 + k * .38, 90); } }
+  if (tipo === 'bandera') { [523, 659, 784, 1047].forEach((f, k) => cpTono(a, f, .35, 'triangle', .22, t + k * .13)); }
+  if (tipo === 'olas') { cpRuido(a, 2.2, 500, 'lowpass', .25, t); }
+  if (tipo === 'canon') { cpRuido(a, 1.2, 380, 'lowpass', 1, t); cpTono(a, 110, .9, 'sine', .7, t, 35); }
+  if (tipo === 'victoria') { [523, 659, 784, 1047, 784, 1047, 1319].forEach((f, k) => cpTono(a, f, .45, 'triangle', .22, t + k * .16)); cpRuido(a, .4, 3000, 'highpass', .15, t + 1.3); cpRuido(a, .4, 3000, 'highpass', .15, t + 1.8); }
+  if (tipo === 'derrota') { [392, 349, 311, 262].forEach((f, k) => cpTono(a, f, .6, 'sawtooth', .12, t + k * .32)); cpRuido(a, 1.2, 300, 'lowpass', .8, t + .2); }
+}
+function cpEscena(tipo, o = {}) {
+  return new Promise(res => {
+    const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches, dur = quieto ? 1800 : (tipo === 'victoria' || tipo === 'derrota' ? 5200 : 4600);
+    const el = document.createElement('div'); el.className = `cp-escena cp-${tipo}${quieto ? ' cp-quieto' : ''}`; el.setAttribute('role', 'dialog'); el.setAttribute('aria-live', 'assertive');
+    const v = o.n || 0, pied = ['#D8C3A0', '#CDB592', '#E0CBA6', '#C9AE86', '#D4BE98', '#BFA27A', '#DCC7A2', '#C4AA82'][v % 8], band = ['#C0503F', '#2E6FA8', '#D9A441', '#3F9A55', '#8E5BA8', '#C0503F', '#2BA3A0', '#E07B39'][v % 8];
+    const hileras = 6, garitas = v % 3 === 2 ? 2 : 1, canones = 1 + (v % 3);
+    const baluarte = () => {
+      let r = '';
+      for (let h = 0; h < hileras; h++) { const y = 300 - h * 30, x0 = 40 + h * 9, ancho = 320 - h * 18, n = 7 - (h % 2); let row = ''; for (let k = 0; k < n; k++) { const w = ancho / n; row += `<rect x="${(x0 + k * w).toFixed(1)}" y="${y}" width="${(w - 3).toFixed(1)}" height="27" rx="2" fill="${pied}" stroke="#8A7458" stroke-width="1.5"/>`; } r += `<g class="cp-hil" style="--d:${(.15 + h * .38).toFixed(2)}s">${row}<g class="cp-polvo"><circle cx="${x0 + 10}" cy="${y + 28}" r="10"/><circle cx="${x0 + ancho - 10}" cy="${y + 28}" r="12"/></g></g>`; }
+      const top = 300 - (hileras - 1) * 30, xt = 40 + (hileras - 1) * 9, at = 320 - (hileras - 1) * 18;
+      let alm = ''; for (let k = 0; k < 6; k++) alm += `<rect x="${xt + k * (at / 6) + 2}" y="${top - 18}" width="${at / 12}" height="18" fill="${pied}" stroke="#8A7458" stroke-width="1.5"/>`;
+      let gar = ''; for (let k = 0; k < garitas; k++) { const gx = garitas === 1 ? xt + at - 34 : (k ? xt + at - 34 : xt + 6); gar += `<g><rect x="${gx}" y="${top - 58}" width="28" height="40" rx="3" fill="${pied}" stroke="#8A7458" stroke-width="1.5"/><path d="M${gx - 4} ${top - 58} L${gx + 14} ${top - 78} L${gx + 32} ${top - 58} Z" fill="#9C4A35"/><rect x="${gx + 10}" y="${top - 46}" width="8" height="14" fill="#3A2E22"/></g>`; }
+      let can = ''; for (let k = 0; k < canones; k++) can += `<rect x="${xt + 40 + k * 46}" y="${top - 30}" width="30" height="9" rx="4" fill="#2F2F33" transform="rotate(-12 ${xt + 40 + k * 46} ${top - 26})"/>`;
+      const trab = [0, 1, 2].map(k => `<g class="cp-trab" style="--t:${k * .9}s"><circle cx="0" cy="-34" r="6" fill="#4A3426"/><line x1="0" y1="-28" x2="0" y2="-8" stroke="#4A3426" stroke-width="4"/><line x1="0" y1="-8" x2="-6" y2="8" stroke="#4A3426" stroke-width="4"/><line x1="0" y1="-8" x2="6" y2="8" stroke="#4A3426" stroke-width="4"/><line x1="0" y1="-22" x2="9" y2="-34" stroke="#4A3426" stroke-width="3.5"/><rect x="4" y="-46" width="16" height="11" rx="2" fill="${pied}" stroke="#8A7458"/></g>`).join('');
+      return `<svg viewBox="0 0 400 380" class="cp-svg" aria-hidden="true"><rect x="0" y="328" width="400" height="60" fill="#3E7C9B"/><path class="cp-ola" d="M0 334 q25 -8 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0" stroke="#9FD0E3" stroke-width="3" fill="none"/>
+        <rect x="20" y="320" width="360" height="12" fill="#B39A73"/>${r}<g class="cp-alm">${alm}${gar}${can}</g>
+        <g class="cp-mastil"><line x1="${xt + at / 2}" y1="${top - 18}" x2="${xt + at / 2}" y2="${top - 110}" stroke="#3A2E22" stroke-width="4"/><path class="cp-bandera" d="M${xt + at / 2} ${top - 110} l46 10 l-46 12 z" fill="${band}"/></g>
+        <g class="cp-trabs">${trab}</g></svg>`;
+    };
+    const barco = (x = 0, s = 1) => `<g transform="translate(${x} 0) scale(${s})"><path d="M60 270 L340 270 L300 320 L100 320 Z" fill="#5A3A22" stroke="#2E1E12" stroke-width="3"/><rect x="195" y="120" width="8" height="150" fill="#2E1E12"/><path d="M203 128 L290 175 L203 225 Z" fill="#EDE3CF" stroke="#8A7458"/><path d="M195 135 L120 180 L195 228 Z" fill="#EDE3CF" stroke="#8A7458"/><rect x="203" y="96" width="40" height="26" fill="#1C1B19"/><text x="223" y="115" font-size="18" text-anchor="middle" fill="#fff">☠</text><circle cx="130" cy="290" r="6" fill="#1C1B19"/><circle cx="170" cy="290" r="6" fill="#1C1B19"/><circle cx="210" cy="290" r="6" fill="#1C1B19"/><circle cx="250" cy="290" r="6" fill="#1C1B19"/></g>`;
+    const pirata = () => `<svg viewBox="0 0 400 380" class="cp-svg" aria-hidden="true"><rect x="0" y="300" width="400" height="80" fill="#2F6A86"/><path class="cp-ola" d="M0 306 q25 -8 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0" stroke="#9FD0E3" stroke-width="3" fill="none"/><g class="cp-barco">${barco()}</g><g class="cp-fogon"><circle cx="70" cy="285" r="22" fill="#FFD166"/><circle cx="50" cy="275" r="30" fill="#EDE3CF" opacity=".85"/><circle cx="25" cy="262" r="26" fill="#D8D2C4" opacity=".7"/></g></svg>`;
+    const final = ok => {
+      const pts = Array.from({ length: 6 }, (_, k) => { const an = Math.PI / 3 * k - Math.PI / 2, rr = k % 2 ? 125 : 140; return [200 + rr * Math.cos(an), 190 + rr * Math.sin(an) * .82]; });
+      const mid = (p, q) => [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2], marcas = [pts[0], mid(pts[0], pts[1]), pts[1], pts[2], pts[3], mid(pts[3], pts[4]), pts[4], pts[5]];   // los 8 baluartes
+      return `<svg viewBox="0 0 400 380" class="cp-svg" aria-hidden="true"><rect x="0" y="0" width="400" height="380" fill="${ok ? '#1F3A57' : '#3A1E1E'}"/>
+        <polygon class="cp-hex" points="${pts.map(p => p.join(',')).join(' ')}" fill="${ok ? 'rgba(217,164,65,.18)' : 'rgba(192,80,63,.2)'}" stroke="${ok ? '#D9A441' : '#C0503F'}" stroke-width="8" stroke-linejoin="round"/>
+        ${marcas.map((p, k) => `<g class="cp-punto" style="--d:${(1 + k * .25).toFixed(2)}s"><circle cx="${p[0]}" cy="${p[1]}" r="15" fill="${ok ? '#F2D27A' : '#7A2A22'}" stroke="#fff" stroke-width="3"/></g>`).join('')}
+        <text x="200" y="205" text-anchor="middle" font-size="56">${ok ? '🏰' : '🔥'}</text>
+        ${ok ? Array.from({ length: 5 }, (_, k) => `<g class="cp-fuego" style="--d:${(2 + k * .35).toFixed(2)}s;--x:${60 + k * 70}px;--y:${50 + (k % 2) * 40}px">${Array.from({ length: 10 }, (_, j) => `<circle r="4" fill="${['#F2D27A', '#E07B39', '#9FD0E3', '#F7A9C4', '#B7E4A1'][j % 5]}" style="--a:${j * 36}deg"/>`).join('')}</g>`).join('') : [0, 1, 2].map(k => `<g class="cp-barco-f" style="--d:${(.6 + k * .4).toFixed(2)}s">${barco(-40 + k * 120, .38)}</g>`).join('')}</svg>`;
+    };
+    const textos = {
+      baluarte: [`¡Baluarte de ${o.nombre} levantado!`, `${v + 1} de 8 baluartes`],
+      pirata: ['¡Se acerca un barco pirata!', `${o.n} de 4 barcos`],
+      victoria: ['¡Campeche quedó amurallado!', 'Los 8 baluartes resistieron a los piratas'],
+      derrota: ['¡Lorencillo saqueó la villa!', 'Estudia y vuelve a defenderla'],
+    }[tipo];
+    el.innerHTML = `<div class="cp-cielo"></div>${tipo === 'baluarte' ? baluarte() : tipo === 'pirata' ? pirata() : final(tipo === 'victoria')}
+      <div class="cp-letrero"><b>${esc(textos[0])}</b><span>${esc(textos[1])}</span></div><small class="cp-saltar">Toca para continuar</small>`;
+    document.body.appendChild(el); document.body.classList.add('cp-sin-scroll');
+    if (tipo === 'baluarte') { cpSonido('obra'); setTimeout(() => cpSonido('bandera'), quieto ? 0 : 2900); }
+    if (tipo === 'pirata') { cpSonido('olas'); setTimeout(() => { cpSonido('canon'); el.classList.add('cp-tiembla'); }, quieto ? 0 : 2100); }
+    if (tipo === 'victoria' || tipo === 'derrota') cpSonido(tipo);
+    let hecho = false;
+    const cerrar = () => { if (hecho) return; hecho = true; el.classList.add('cp-fuera'); setTimeout(() => { el.remove(); document.body.classList.remove('cp-sin-scroll'); res(); }, 280); };
+    const t = setTimeout(cerrar, dur);
+    el.addEventListener('click', () => { clearTimeout(t); cerrar(); });
+    const tecla = e => { if (['Enter', ' ', 'Escape'].includes(e.key)) { e.preventDefault(); clearTimeout(t); cerrar(); document.removeEventListener('keydown', tecla); } };
+    document.addEventListener('keydown', tecla);
+  });
+}
+
 // ---- 🏰 Defiende Campeche: cada acierto levanta un baluarte; cada error acerca un barco pirata
 function actCampeche(cont) {
   const META = BALUARTES.length, BARCOS = 4;
+  if (!cont._cpSon) { cont._cpSon = true; cont.addEventListener('click', e => { const b = e.target.closest('#cp-son'); if (!b) return; const on = !cpSonidoOn(); lsSet('clase_campeche_sonido', on ? '1' : '0'); b.setAttribute('aria-pressed', String(on)); b.textContent = on ? '🔊 Sonido' : '🔇 Sin sonido'; if (on) { cpAudio(); cpSonido('bandera'); } }); }
   juegoPreguntas(cont, {
     clave: 'campeche', seg: 20,
     intro: 'Es 1686: después del saqueo de Lorencillo, la Corona decide amurallar Campeche. <b>Cada respuesta correcta levanta uno de los 8 baluartes</b>; cada error acerca un barco pirata. Si llegan <b>4 barcos</b> antes de terminar la muralla, ¡saquean la villa!',
     niveles: [{ id: 'muralla', n: 'Defender la muralla', ico: '🏰', preg: 40, desc: 'Levanta los 8 baluartes antes de que lleguen 4 barcos piratas.', filtro: () => true }],
     items: CAMPECHE,
     termina: (b, m) => b >= META || m >= BARCOS,
-    cabecera: (b, m) => `<div class="cp-muralla" aria-label="${Math.min(b, META)} de ${META} baluartes y ${Math.min(m, BARCOS)} de ${BARCOS} barcos">
+    escena: (ok, b, m) => ok ? (b <= META ? cpEscena('baluarte', { n: b - 1, nombre: BALUARTES[b - 1] }) : null) : (m <= BARCOS ? cpEscena('pirata', { n: m }) : null),
+    escenaFinal: (b, m) => b >= META ? cpEscena('victoria') : m >= BARCOS ? cpEscena('derrota') : null,
+    cabecera: (b, m) => `<button type="button" class="cp-son" id="cp-son" aria-pressed="${cpSonidoOn()}">${cpSonidoOn() ? '🔊 Sonido' : '🔇 Sin sonido'}</button><div class="cp-muralla" aria-label="${Math.min(b, META)} de ${META} baluartes y ${Math.min(m, BARCOS)} de ${BARCOS} barcos">
       <div class="cp-bal">${BALUARTES.map((n, k) => `<span class="${k < b ? 'si' : ''}" title="Baluarte de ${n}">${k < b ? '🏰' : '🧱'}</span>`).join('')}</div>
       <div class="cp-mar">${Array.from({ length: BARCOS }, (_, k) => `<span class="${k < m ? 'si' : ''}">${k < m ? '🏴‍☠️' : '🌊'}</span>`).join('')}</div></div>`,
     preparar: x => { const ops = barajar(x.o); return { carta: `<span class="jp-q">${esc(x.q)}</span>`, opciones: ops.map(o => ({ v: o, t: esc(o) })), correctas: [x.o[0]], clase: 'jp-lista' }; },

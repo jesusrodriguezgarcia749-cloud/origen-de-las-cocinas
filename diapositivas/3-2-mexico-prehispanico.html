@@ -30,7 +30,8 @@ const PRESENTACION = {
         "Vas a conocer lo que Sahagún documentó sobre la mesa de Moctezuma.",
         "Vas a comparar la cocina mexica con la cocina maya.",
         "Vas a distinguir qué es prehispánico y qué llegó tras la conquista.",
-        "Vas a leer un platillo mexicano como si fuera un documento histórico."
+        "Vas a desarmar un platillo mexicano como si fuera un documento histórico.",
+        "Todo lo trabajarás en la plataforma, en **Tareas**: el cuadro, el juego y tu ficha se guardan en tu cuenta."
       ] },
 
     { tipo: "tema",
@@ -211,36 +212,44 @@ const PRESENTACION = {
       ],
       pasoAPaso: true },
 
-    { tipo: "tarea",
+    { tipo: "plataforma",
+      etiqueta: "Tarea en la plataforma", tipoAct: "En equipo · en vivo",
       titulo: "Cuadro comparativo: mexica y maya",
-      minutos: "26-50", evaluacion: "Sumativo · Rúbrica de Tarea",
-      notas: "Deja que los equipos lo llenen primero. Después avanza a la diapositiva siguiente para revisar fila por fila.",
-      puntos: [
-        "En equipos, comparen la cocina **mexica** del Valle de México y la **maya** de Yucatán y Campeche.",
-        "Usen cuatro rasgos: **técnica de cocción**, **condimento identitario**, **bebida ritual de cacao** y **sistema agrícola**.",
-        "Tienen 20 minutos. Después revisamos juntos."
-      ] },
+      enlace: "../tareas.html#cuadro-mm", textoEnlace: "Tareas → Cuadro comparativo",
+      minutos: "26-60", evaluacion: "Sumativo · cuenta como tarea del Parcial 2",
+      notas: "Antes de clase: en el Panel → Tareas → Tareas digitales, botón 👥 del Cuadro, forma los equipos y proyecta sus QR (o desde el Monitor → 🔳 Códigos QR). Mientras trabajan, sigue el avance en el Monitor en vivo → Cuadro mexica–maya. La clave queda oculta hasta que la liberes. La sugerida: 8 puntos por celdas (5 palabras o más) y 2 por las 4 fuentes.",
+      pasos: [
+        "Escanea el QR o entra a **Tareas → Cuadro comparativo** con tu nombre y PIN.",
+        "Únete a tu equipo con el **QR de tu equipo** que proyecta el maestro.",
+        "Llenen las **11 filas**: **mexica**, **maya** y **en qué se parecen**, con el compendio.",
+        "Las 4 filas **🔎 Investiga** se buscan en internet y llevan su **fuente**. **Repártanselas.**",
+        "Cada celda cuenta con **5 palabras o más**. Se guarda solo. Al terminar: **📤 Entregar tarea**."
+      ],
+      pasoAPaso: true },
 
     { tipo: "tabla",
-      titulo: "Mexica y maya: dos cocinas, un mismo tronco",
+      titulo: "Revisemos: mexica y maya",
       columnas: ["Rasgo", "Cocina mexica", "Cocina maya"],
       filas: [
-        ["Técnica de cocción", "Comal de barro; vapor (tamales)", "Pib (horno de tierra); vapor envuelto en hojas"],
-        ["Condimento identitario", "Chile en moles y salsas de molcajete", "Achiote (recado rojo)"],
-        ["Bebida ritual de cacao", "Xocolatl, en copas de oro para la nobleza", "Kah, con maíz, pimienta de Tabasco y achiote"],
-        ["Sistema agrícola", "Chinampas (islas de cultivo en lagos)", "Pet kot (huertos-jardín rodeados de piedra)"]
+        ["Territorio y clima", "Altiplano; Tenochtitlan en el lago de Texcoco", "Península de Yucatán: suelo calizo, agua de cenotes"],
+        ["Cómo cultivaban", "Chinampas en el lago", "Milpa en suelo calizo y abejas meliponas en jobones"],
+        ["Cómo cocinaban", "Comal, metate, molcajete; vapor (tamales)", "El pib, horno de tierra"],
+        ["Ingredientes", "Maíz, frijol, chile, quelites, amaranto, insectos", "Achiote (recado rojo), pepita, miel de melipona, venado"],
+        ["Bebidas", "Cacao espumoso de élite, atole, pulque", "Pozol, cacao con maíz y chile, balché ritual"],
+        ["Herencia hoy", "Tortillas, tamales, moles", "Mucbipollo, pibil, tikin xic, sikil p'aak, papadzules"]
       ],
+      notas: "Revisa fila por fila. Al terminar, libera la clave: Monitor en vivo → Cuadro mexica–maya → 🔑 Liberar clave. Así cada equipo compara su cuadro en el celular, incluidas las 4 filas de investigación (respuestas de referencia).",
       pasoAPaso: true },
 
     { tipo: "pausa",
       titulo: "¡Pausa activa!",
       duracion: "5 minutos",
-      minutos: "51-55",
+      minutos: "61-65",
       texto: "**¿Mexica o maya?** De pie. Cuando escuches una técnica o ingrediente (chinampas, pib, xocolatl, kah, achiote, comal), levanta la **mano derecha si es mexica** y la **izquierda si es maya**." },
 
     { tipo: "tema",
       titulo: "Lo que llegó con la conquista",
-      minutos: "56-80", evaluacion: "Formativo",
+      minutos: "66-75", evaluacion: "Formativo",
       puntos: [
         "**Nuevos cereales:** el trigo y el arroz.",
         "**Ganado y lácteos:** cerdo, res, pollo de corral, leche, queso y crema. En Mesoamérica no se domesticaba ganado mayor.",
@@ -269,6 +278,21 @@ const PRESENTACION = {
           ] }
       ] },
 
+    { tipo: "plataforma",
+      etiqueta: "Juego en la plataforma", tipoAct: "Práctica · sin calificación",
+      titulo: "¿Ya estaba o llegó?",
+      enlace: "../tareas.html#aporto", textoEnlace: "Tareas → ¿Aportó o llegó?",
+      minutos: "76-83", evaluacion: "Formativo",
+      notas: "Reto de grupo: todos en nivel Intermedio con el Modo reto activado; al final, que digan sus puntos y gana quien tenga más. Ojo con las trampas: papa, cilantro, comino, pollo, plátano, café, jamaica, cacahuate, pimienta gorda.",
+      pasos: [
+        "Entra a **Tareas → ¿Aportó o llegó?** (escanea el QR).",
+        "Elige el nivel **🔥 Intermedio** y activa el **⏱ Modo reto**.",
+        "¿**Ya estaba en México antes de 1521** o **llegó después**? Lee siempre su **origen**.",
+        "Cuidado con las **trampas**: no todo lo que parece mexicano lo es.",
+        "Gana quien junte **más puntos**. En casa: nivel **🏆 Experto** y **📚 tabla para estudiar**."
+      ],
+      pasoAPaso: true },
+
     { tipo: "tema",
       titulo: "Conventos, Galeón y patrimonio",
       notas: "Cierra la idea: la cocina mexicana no es «prehispánica» ni «española», sino mestiza, con aportes africanos y asiáticos.",
@@ -284,16 +308,21 @@ const PRESENTACION = {
       pregunta: "¿El mole es prehispánico o colonial?",
       respuesta: "**Las dos cosas.** Los chiles, el cacao y el guajolote son prehispánicos; la canela, el clavo, las almendras y el ajonjolí llegaron después de la conquista. Es una herencia de dos mundos." },
 
-    { tipo: "tarea",
-      titulo: "Lee un platillo",
-      minutos: "81-105", evaluacion: "Participación",
-      puntos: [
-        "En equipos, elijan un platillo: **mole**, **pozole** o **cochinita pibil**.",
-        "Separen sus ingredientes y técnicas en dos columnas: **prehispánico** y **llegó con la conquista**.",
-        "Cada equipo explica en un minuto qué parte de su platillo viene de cada mundo."
-      ] },
+    { tipo: "plataforma",
+      etiqueta: "Tarea en la plataforma", tipoAct: "Individual",
+      titulo: "Desarma el platillo",
+      enlace: "../tareas.html#desarma", textoEnlace: "Tareas → Desarma el platillo",
+      minutos: "84-108", evaluacion: "Sumativo · cuenta como tarea del Parcial 2",
+      notas: "Pide que el platillo del paso 2 sea distinto al de su proyecto y a los de la práctica; si alguien no sabe cuál elegir, sugiere pozole, tamales, chiles rellenos, sopa de lima o papadzules. La sugerida: ficha 1.5, ingredientes 4, técnicas 1, conclusión 3 (25 palabras por pregunta) y fuentes 0.5. El paso 3 no cuenta hoy.",
+      pasos: [
+        "**Practica** (sin calificación) con el mole, los chiles en nogada, la cochinita, el queso relleno y el pan de cazón.",
+        "**La tarea:** investiga un platillo **nuevo**: ficha, **ingredientes** y de dónde llegaron, **técnicas**, **3 preguntas** y **fuentes**. Luego **📤 Entregar**.",
+        "**Para tu proyecto:** la misma ficha con tu platillo de **Mi Plato, Mi Historia** (pregunta 14), en Word. Termínala en casa."
+      ],
+      pasoAPaso: true },
 
     { tipo: "repaso",
+      minutos: "109-113",
       notas: "Unos 5 minutos. Lanza cada pregunta al grupo y espera respuestas antes de mostrarla.",
       preguntas: [
         { pregunta: "¿Qué fraile escribió la obra que se conserva en el Códice Florentino?", respuesta: "**Bernardino de Sahagún**, con ayuda de informantes indígenas." },
@@ -303,17 +332,17 @@ const PRESENTACION = {
       ] },
 
     { tipo: "proyecto",
-      minutos: "106-115",
-      notas: "Si el platillo de algún alumno no es mexicano, pídele que identifique qué ingredientes de su platillo son americanos.",
+      minutos: "114-116",
+      notas: "Es el paso 3 de Desarma el platillo: la misma ficha, con el platillo de su proyecto, y se descarga en Word para su proyecto. Si el platillo de algún alumno no es mexicano, pídele que identifique qué ingredientes de su platillo son americanos.",
       preguntas: [
         { numero: 14, texto: "Si mi platillo es de México: ¿qué parte es herencia prehispánica y qué parte fue adoptada tras la conquista?" }
       ] },
 
     { tipo: "cierre",
-      minutos: "116-120",
-      evidencia: "El cuadro comparativo distingue correctamente al menos 3 rasgos entre la cocina mexica y la maya.",
-      materiales: "Libro de texto, Tema 3.2 (sección prehispánica y mestiza).",
-      proxima: "Repasar la tabla “México aportó al mundo / Llegaron a México”. El jueves 29 es la **Práctica de cocina 2**: uniforme completo y cuchillo propio." }
+      minutos: "117-120",
+      evidencia: "El **cuadro comparativo** entregado en la plataforma (con las 4 filas de investigación y sus fuentes) y la ficha de **Desarma el platillo** entregada.",
+      materiales: "Libro de texto, Tema 3.2 (sección prehispánica y mestiza). Celular con internet para entrar a **Aula Virtual → Tareas**.",
+      proxima: "Terminar la **ficha de su platillo del proyecto** (paso 3 de Desarma el platillo) y descargarla en Word. Repasar con **¿Aportó o llegó?** en nivel Experto. El jueves 29 es la **Práctica de cocina 2**: uniforme completo y cuchillo propio." }
   ]
 };
 </script>

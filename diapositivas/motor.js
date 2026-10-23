@@ -127,6 +127,15 @@
   .panel-docente.oculto{display:none}
   .btn-notas{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:12px;z-index:36;font:600 14px "Public Sans",sans-serif;color:#fff;background:var(--rojo);border:0;padding:7px 12px;cursor:pointer}
   .btn-notas:focus-visible{outline:3px solid var(--marino);outline-offset:2px}
+  /* Actividad en la plataforma: pasos a la izquierda, QR para entrar a la derecha */
+  .d-plataforma .plat{display:grid;grid-template-columns:1fr auto;gap:1.2em;align-items:start}
+  .d-plataforma .plat ol{margin:.2em 0 0 1.1em;padding:0;font-size:.68em;line-height:1.36}
+  .d-plataforma .plat ol li{margin:.25em 0}
+  .d-plataforma .qr-dia{background:#fff;padding:.35em;border:3px solid var(--marino);width:7.4em;text-align:center}
+  .d-plataforma .qr-dia svg{display:block;width:100%;height:auto}
+  .d-plataforma .qr-dia span{display:block;font:600 .36em "Public Sans",sans-serif;color:var(--marino);margin-top:.3em;line-height:1.3}
+  .d-plataforma .tipo-act{display:inline-block;font:600 .5em "Public Sans",sans-serif;color:var(--marino);border:2px solid var(--marino);padding:.2em .7em;margin:0 0 .6em .4em}
+  @media (max-width:700px){.d-plataforma .plat{grid-template-columns:1fr}.d-plataforma .qr-dia{width:6em}}
   @media (prefers-reduced-motion:reduce){.reveal .slides section{transition:none!important}}`;
   const st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
 
@@ -253,6 +262,13 @@
         <div class="col"><h3>Para la próxima clase</h3>${txt(d.proxima || "—")}</div>
       </div>`,
 
+    // Actividad que se hace en la plataforma (Tareas): pasos y QR para que los alumnos entren desde el celular
+    plataforma: d => `
+      <span class="etiqueta">${esc(d.etiqueta || "En la plataforma")}</span>${d.tipoAct ? `<span class="tipo-act">${esc(d.tipoAct)}</span>` : ""}
+      <h2>${esc(d.titulo)}</h2>
+      <div class="plat"><ol>${(d.pasos || []).map(p => `<li${d.pasoAPaso ? ' class="fragment"' : ""}>${txt(p)}</li>`).join("")}</ol>
+        ${d.enlace ? `<div class="qr-dia" data-qr="${esc(d.enlace)}"><span>Escanea con tu celular<br>${esc(d.textoEnlace || "Aula Virtual → Tareas")}</span></div>` : ""}</div>`,
+
     portada: d => `
       <h1>${esc(d.titulo)}</h1>
       ${d.subtitulo ? `<p>${esc(d.subtitulo)}</p>` : ""}`
@@ -322,6 +338,20 @@
         im.replaceWith(v);
       });
     });
+
+    const qrs = cont.querySelectorAll("[data-qr]");
+    if (qrs.length) {
+      const pintarQR = () => qrs.forEach(el => {
+        try {
+          const q = qrcode(0, "H"); q.addData(new URL(el.dataset.qr, location.href).href); q.make();
+          const n = q.getModuleCount(), m = 4, t = n + 2 * m; let dd = "";
+          for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (q.isDark(r, c)) dd += `M${c + m} ${r + m}h1v1h-1z`;
+          el.insertAdjacentHTML("afterbegin", `<svg viewBox="0 0 ${t} ${t}" shape-rendering="crispEdges" role="img" aria-label="Código QR"><rect width="${t}" height="${t}" fill="#fff"/><path d="${dd}" fill="#000"/></svg>`);
+        } catch (e) { console.warn("No se pudo dibujar el QR", e); }
+      });
+      if (typeof qrcode === "function") pintarQR();
+      else { const sc = document.createElement("script"); sc.src = "../js/vendor/qrcode.js"; sc.onload = pintarQR; document.head.appendChild(sc); }
+    }
 
     const t = (P.diapositivas || [])[0];
     if (t) document.title = t.titulo + " · " + (P.materia || "Diapositivas");
