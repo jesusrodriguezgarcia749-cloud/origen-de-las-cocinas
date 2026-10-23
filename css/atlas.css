@@ -308,3 +308,7 @@ html[data-theme="dark"] .ma-svg .ma-etq text{fill:#FAF7F0; stroke:rgba(21,19,15,
 .ma-tarea-f{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 14px; border-radius:12px; padding:10px 14px; margin:0 0 12px; font-size:.9rem; background:rgba(201,138,44,.12); border:1px solid rgba(201,138,44,.45);}
 .ma-tarea-f.ent{background:rgba(63,154,85,.12); border-color:rgba(63,154,85,.45);}
 .ma-tarea-f.cerr{background:rgba(166,61,47,.1); border-color:rgba(166,61,47,.4);}
+.ma-cabeza{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 16px; margin:0 0 14px;}
+.ma-volver{font-weight:700; color:var(--saffron-dark); text-decoration:none;}
+.ma-volver:hover{text-decoration:underline;}
+.ma-cabeza span{color:var(--ink-soft); font-size:.92rem;}
