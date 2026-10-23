@@ -608,3 +608,11 @@ body.con-qr { overflow: hidden; }
 @media (max-width: 760px) { .mon-det-grid { grid-template-columns: 1fr; } }
 body.mon-completo #tab-monitor { position: fixed; inset: 0; z-index: 800; background: var(--parchment); overflow: auto; padding: 16px 20px; }
 body.mon-completo .mon-grid { grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); }
+.mon-act { align-items: center; margin-bottom: .6rem; }
+.mon-act > span { font-weight: 700; font-size: .85rem; color: var(--ink-soft); }
+.mon-clave[aria-pressed="true"] { background: #3F7A4F; border-color: #3F7A4F; color: #fff; }
+.cu-mini { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 10px; aspect-ratio: 1 / 1; }
+.cu-mini i { border-radius: 4px; background: #E6DFD2; transition: background .4s; }
+.cu-det { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.cu-det th, .cu-det td { border: 1px solid var(--line); padding: .5rem .6rem; vertical-align: top; text-align: left; }
+.cu-det tbody th { background: var(--cream); width: 140px; }

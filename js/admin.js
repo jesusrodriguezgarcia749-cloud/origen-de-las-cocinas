@@ -867,7 +867,7 @@ on('eq-imprimir', 'click', () => abrirProyeccion(true));
 on('qr-cerrar', 'click', () => { document.getElementById('qr-proyeccion').hidden = true; document.body.classList.remove('con-qr'); });
 
 // ---- Monitor en vivo de Mi atlas: equipos e individual, con mapas que se colorean al instante
-const MON = { cont: 'africa', ver: 'todos', subs: [], datos: {}, equipos: [], grupo: null, reloj: null, abierto: null };
+const MON = { act: 'atlas', clave: false, cont: 'africa', ver: 'todos', subs: [], datos: {}, equipos: [], grupo: null, reloj: null, abierto: null };
 let MON_ATLAS = null, MON_PAIS = {};
 async function iniciarMonitor() {
   if (!grupoActivo) { document.getElementById('mon-grid').innerHTML = '<p class="empty-inline">Elige un grupo primero.</p>'; return; }
@@ -878,6 +878,12 @@ async function iniciarMonitor() {
     cc.innerHTML = Object.entries(MON_ATLAS.continentes).map(([k, c]) => `<button type="button" class="chip-mon" data-c="${k}" aria-pressed="${k === MON.cont}">${escaparHTML(c.nombre)}</button>`).join('');
     cc.querySelectorAll('[data-c]').forEach(b => b.addEventListener('click', () => { MON.cont = b.dataset.c; cc.querySelectorAll('[data-c]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); suscribirEquiposCont(); pintarMonitor(true); }));
     document.querySelectorAll('#mon-ver [data-v]').forEach(b => b.addEventListener('click', () => { MON.ver = b.dataset.v; document.querySelectorAll('#mon-ver [data-v]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); pintarMonitor(true); }));
+    document.querySelectorAll('#mon-act [data-a]').forEach(b => b.addEventListener('click', () => {
+      MON.act = b.dataset.a; document.querySelectorAll('#mon-act [data-a]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+      document.getElementById('mon-clave').hidden = MON.act !== 'cuadro'; document.getElementById('mon-conts').hidden = MON.act !== 'atlas'; document.getElementById('mon-ver').querySelectorAll('[data-v]').forEach(x => { x.hidden = MON.act !== 'atlas'; });
+      Object.keys(MON.datos).filter(k => k.startsWith('e:')).forEach(k => delete MON.datos[k]); suscribirEquiposCont(); pintarMonitor(true);
+    }));
+    document.getElementById('mon-clave').addEventListener('click', async () => { await setDoc(doc(db, 'grupos', grupoActivo), { claves: { cuadroMM: !MON.clave } }, { merge: true }); });
     document.getElementById('mon-full').addEventListener('click', e => { const on = document.body.classList.toggle('mon-completo'); e.currentTarget.setAttribute('aria-pressed', String(on)); e.currentTarget.textContent = on ? '✕ Salir de pantalla completa' : '⛶ Pantalla completa'; });
     document.getElementById('mon-det-cerrar').addEventListener('click', cerrarDetalle);
     document.getElementById('mon-detalle').addEventListener('click', e => { if (e.target.id === 'mon-detalle') cerrarDetalle(); });
@@ -895,12 +901,14 @@ async function iniciarMonitor() {
     MON.equipos = sn.docs.map(d => ({ id: d.id, ...d.data() })).sort((x, y) => (x.numero || 999) - (y.numero || 999) || (x.nombre || '').localeCompare(y.nombre || '', 'es'));
     suscribirEquiposCont(); pintarMonitor(true);
   }, () => {});
+  MON.subs.push(onSnapshot(doc(db, 'grupos', g), sn => { MON.clave = !!(sn.exists() && (sn.data().claves || {}).cuadroMM); const b = document.getElementById('mon-clave'); b.setAttribute('aria-pressed', String(MON.clave)); b.textContent = MON.clave ? '🔒 Ocultar clave a los alumnos' : '🔑 Liberar clave'; }, () => {}));
   MON.reloj = setInterval(() => pintarTiempos(), 10000);
   pintarMonitor(true);
 }
 function suscribirEquiposCont() {
   (MON.eqSubs || []).forEach(u => u()); MON.eqSubs = [];
-  MON.equipos.forEach(eq => MON.eqSubs.push(onSnapshot(doc(db, 'grupos', MON.grupo, 'equipos', eq.id, 'atlas', MON.cont), sn => {
+  const docAct = MON.act === 'cuadro' ? 'act-cuadro-mm' : MON.cont;
+  MON.equipos.forEach(eq => MON.eqSubs.push(onSnapshot(doc(db, 'grupos', MON.grupo, 'equipos', eq.id, 'atlas', docAct), sn => {
     MON.datos['e:' + eq.id] = sn.exists() ? sn.data() : null; programarPintado('e:' + eq.id);
   }, () => {})));
 }
@@ -944,6 +952,7 @@ function hace(ts) {
 }
 function monTarjetas() {
   const out = [];
+  if (MON.act === 'cuadro') { MON.equipos.forEach(eq => out.push({ clave: 'e:' + eq.id, titulo: eq.nombre, sub: (eq.nombres || []).join(', ') || 'sin integrantes', tipo: 'equipo' })); return out; }
   if (MON.ver !== 'individual') MON.equipos.forEach(eq => out.push({ clave: 'e:' + eq.id, titulo: eq.nombre, sub: (eq.nombres || []).join(', ') || 'sin integrantes', tipo: 'equipo' }));
   if (MON.ver !== 'equipos') alumnosCache.forEach(a => { const d = MON.datos['a:' + a.id]; if (d) out.push({ clave: 'a:' + a.id, titulo: a.nombre, sub: d.equipo ? `👥 ${d.equipo}` : 'trabajo individual', tipo: 'alumno' }); });
   return out;
@@ -964,6 +973,7 @@ function pintarMonitor(todo) {
 function actualizarTarjeta(clave, nuevo) {
   const card = document.querySelector(`.mon-card[data-clave="${clave}"]`);
   if (!card) { if (clave.startsWith('a:') && MON.ver !== 'equipos' && MON.datos[clave]) pintarMonitor(true); return; }
+  if (MON.act === 'cuadro') return actualizarCuadro(card, clave, nuevo);
   const v = monVista(clave), st = monStats(v);
   const mapa = card.querySelector('[data-mapa]');
   if (nuevo || !mapa.firstChild) mapa.innerHTML = monMapa(v, 'mon-svg');
@@ -976,17 +986,39 @@ function actualizarTarjeta(clave, nuevo) {
   pintarTiempo(card, v ? v.act : null);
   if (!nuevo) { card.classList.remove('mon-latido'); void card.offsetWidth; card.classList.add('mon-latido'); }
 }
+// ---- cuadro comparativo mexica–maya en el monitor
+const CU_FILAS = [['territorio', 'Territorio y clima'], ['cultivo', 'Cómo cultivaban'], ['coccion', 'Cómo cocinaban'], ['ingredientes', 'Ingredientes'], ['bebidas', 'Bebidas'], ['herencia', 'Herencia hoy'], ['fuentes', 'Fuentes']];
+const CU_COLS = [['mexica', 'Mexica', '#A63D2F'], ['maya', 'Maya', '#2E6FA8'], ['parecido', 'Se parecen', '#3F7A4F']];
+function actualizarCuadro(card, clave, nuevo) {
+  const d = MON.datos[clave] || {}, cel = d.celdas || {};
+  const llenas = CU_FILAS.flatMap(([f]) => CU_COLS.map(([c]) => (cel[`${f}_${c}`] || '').trim())).filter(Boolean).length, total = CU_FILAS.length * CU_COLS.length;
+  card.querySelector('[data-mapa]').innerHTML = `<div class="cu-mini">${CU_FILAS.map(([f]) => CU_COLS.map(([c, , col]) => `<i style="${(cel[`${f}_${c}`] || '').trim() ? `background:${col}` : ''}"></i>`).join('')).join('')}</div>`;
+  card.querySelector('[data-barra]').style.width = Math.round(100 * llenas / total) + '%';
+  card.querySelector('[data-num]').innerHTML = `<b>${llenas}/${total}</b> celdas llenas`;
+  card.querySelector('[data-ult]').innerHTML = d.ultimoCambio ? `✍️ <b>${escaparHTML(d.ultimoNombre || '')}</b> ${escaparHTML(d.ultimoCambio)}` : '<i>todavía no empiezan</i>';
+  pintarTiempo(card, d.actualizado || null);
+  if (!nuevo) { card.classList.remove('mon-latido'); void card.offsetWidth; card.classList.add('mon-latido'); }
+}
 function pintarTiempo(card, ts) { const h = hace(ts), p = card.querySelector('[data-punto]'); p.className = 'mon-punto ' + h.cls; p.textContent = h.txt; }
-function pintarTiempos() { document.querySelectorAll('.mon-card').forEach(c => { const v = monVista(c.dataset.clave); pintarTiempo(c, v ? v.act : null); }); pintarResumen(); }
+function actividadDe(clave) { if (MON.act === 'cuadro') return (MON.datos[clave] || {}).actualizado || null; const v = monVista(clave); return v ? v.act : null; }
+function pintarTiempos() { document.querySelectorAll('.mon-card').forEach(c => pintarTiempo(c, actividadDe(c.dataset.clave))); pintarResumen(); }
 function pintarResumen() {
   const el = document.getElementById('mon-resumen'); if (!el) return;
-  const ts = monTarjetas(); const activos = ts.filter(t => { const v = monVista(t.clave); return v && hace(v.act).cls === 'verde'; }).length;
-  el.innerHTML = `<span class="mon-punto verde"></span> <b>${activos}</b> trabajando ahora (últimos 2 min) · ${ts.length} en total · ${escaparHTML(MON_ATLAS ? MON_ATLAS.continentes[MON.cont].nombre : '')}`;
+  const ts = monTarjetas(); const activos = ts.filter(t => hace(actividadDe(t.clave)).cls === 'verde').length;
+  el.innerHTML = `<span class="mon-punto verde"></span> <b>${activos}</b> trabajando ahora (últimos 2 min) · ${ts.length} en total · ${MON.act === 'cuadro' ? 'Cuadro mexica–maya' : escaparHTML(MON_ATLAS ? MON_ATLAS.continentes[MON.cont].nombre : '')}`;
 }
 function abrirDetalle(clave) { MON.abierto = clave; document.getElementById('mon-detalle').hidden = false; document.body.classList.add('con-qr'); pintarDetalle(true); }
 function cerrarDetalle() { MON.abierto = null; document.getElementById('mon-detalle').hidden = true; document.body.classList.remove('con-qr'); }
 function pintarDetalle(nuevo) {
   const clave = MON.abierto; if (!clave) return;
+  if (MON.act === 'cuadro') {
+    const t = monTarjetas().find(x => x.clave === clave) || { titulo: '', sub: '' }, d = MON.datos[clave] || {}, cel = d.celdas || {}, por = d.por || {};
+    document.getElementById('mon-det-titulo').textContent = t.titulo;
+    document.getElementById('mon-det-sub').textContent = `${t.sub} · Cuadro comparativo mexica–maya · ${hace(d.actualizado).txt}`;
+    const e = x => escaparHTML(x || '').replace(/\n/g, '<br>');
+    document.getElementById('mon-det-cuerpo').innerHTML = `<div class="taller-tabla-wrap"><table class="cu-det"><thead><tr><th></th>${CU_COLS.map(([, n, col]) => `<th style="color:${col}">${n}</th>`).join('')}</tr></thead><tbody>${CU_FILAS.map(([f, n]) => `<tr><th>${n}</th>${CU_COLS.map(([c]) => { const k = `${f}_${c}`; return `<td>${(cel[k] || '').trim() ? e(cel[k]) : '<span class="mon-vacio">—</span>'}${por[k] ? `<br><small class="mon-autor">✍️ ${escaparHTML(por[k])}</small>` : ''}</td>`; }).join('')}</tr>`).join('')}</tbody></table></div>`;
+    return;
+  }
   const t = monTarjetas().find(x => x.clave === clave) || { titulo: '', sub: '' }, v = monVista(clave), st = monStats(v);
   document.getElementById('mon-det-titulo').textContent = t.titulo;
   document.getElementById('mon-det-sub').textContent = `${t.sub} · ${MON_ATLAS.continentes[MON.cont].nombre} · ${st.cl}/${st.total} países · ${hace(v && v.act).txt}`;

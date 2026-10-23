@@ -42,6 +42,7 @@
       <a href="calendario.html">Calendario</a>
       <a href="proyecto.html">Proyecto</a>
       <a href="actividades.html">Actividades</a>
+      <a href="clase.html">En clase</a>
       <a href="atlas.html">Atlas</a>
       <a href="biblioteca.html">Biblioteca</a>
       <a href="examen.html">Examen</a>
@@ -231,6 +232,12 @@
 
   <div id="tab-monitor" class="tab-panel">
     <p class="field-hint">Lo que los equipos y los alumnos están haciendo en Mi atlas, en vivo: los mapas se colorean en tu pantalla al mismo tiempo que ellos pintan. Toca una tarjeta para ver su trabajo completo.</p>
+    <div class="mon-chips mon-act" id="mon-act">
+      <span>Actividad:</span>
+      <button type="button" class="chip-mon" data-a="atlas" aria-pressed="true">🗺️ Mi atlas</button>
+      <button type="button" class="chip-mon" data-a="cuadro" aria-pressed="false">🤝 Cuadro mexica–maya</button>
+      <button type="button" class="chip-mon mon-clave" id="mon-clave" hidden aria-pressed="false">🔑 Liberar clave</button>
+    </div>
     <div class="mon-filtros">
       <div class="mon-chips" id="mon-conts"></div>
       <div class="mon-chips" id="mon-ver">
