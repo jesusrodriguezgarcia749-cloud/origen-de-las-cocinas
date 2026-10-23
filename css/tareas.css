@@ -164,3 +164,29 @@ html[data-theme="dark"] .cl-entregada { color: #9BD3A8; } html[data-theme="dark"
 .de-ley { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .82rem; }
 .de-ley i { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
 html[data-theme="dark"] .de-campos input, html[data-theme="dark"] .de-lbl textarea { background-color: #1B1814 !important; }
+/* ¿Aportó o llegó?: niveles, reto, tabla de estudio */
+.ap-niveles { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin: 6px 0 14px; }
+.ap-nivel { display: grid; gap: 4px; justify-items: start; text-align: left; padding: 16px; border-radius: var(--radius); border: 2px solid var(--line); background: var(--cream); color: var(--ink); cursor: pointer; box-shadow: var(--shadow-card); font: inherit; }
+.ap-nivel:hover { border-color: var(--saffron, #C98A2C); }
+.ap-nivel span { font-size: 2rem; line-height: 1; }
+.ap-nivel b { font-family: var(--font-display, serif); font-size: 1.2rem; }
+.ap-nivel small { color: var(--ink-soft); font-size: .86rem; }
+.ap-nivel em { font-style: normal; font: 700 .78rem var(--font-body); color: var(--saffron-dark, #8A5A14); }
+.ap-reto { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: .92rem; margin: 0 0 12px; }
+.ap-reto input { width: 20px; height: 20px; accent-color: var(--saffron, #C98A2C); }
+.ap-marcador { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; }
+.ap-tiempo { height: 8px; border-radius: 8px; background: var(--line); overflow: hidden; max-width: 620px; margin: 0 auto 12px; }
+.ap-tiempo i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #C0503F, #D9A441 40%, #3F9A55); transition: width .1s linear; }
+.ap-conts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; width: 100%; }
+.ap-orig { margin: 6px 0 0; font-size: .92rem; }
+.ap-dato { margin: 6px 0 0; font-size: .9rem; color: var(--ink-soft); }
+.ap-fallos { padding-left: 18px; } .ap-fallos li { margin-bottom: 10px; }
+.ap-fin-bot { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.ap-buscar { width: 100%; max-width: 420px; box-sizing: border-box; font: inherit; padding: 11px 13px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--parchment); color: var(--ink); margin: 10px 0 4px; }
+.ap-cuenta { font-size: .84rem; color: var(--ink-soft); margin: 4px 0 8px; }
+.ap-tabla { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px; }
+.ap-fila { display: flex; gap: 10px; background: var(--cream); border-radius: 12px; padding: 10px 12px; border-left: 4px solid #3F9A55; box-shadow: var(--shadow-card); }
+.ap-fila.ap-l { border-left-color: #2E6FA8; }
+.ap-fe { font-size: 1.8rem; line-height: 1.1; }
+.ap-fila .ap-orig, .ap-fila .ap-dato { font-size: .84rem; margin-top: 3px; }
+.ap-tag { font-weight: 700; font-size: .74rem; color: var(--ink-soft); }

@@ -9,8 +9,9 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, FieldPath, collection, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
-import { CUADRO_MM, APORTO, PLATILLOS, TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, sugerirCuadro, MIN_PALABRAS_CELDA, INFLUENCIAS, sugerirInfluencias } from "./clase-datos.js";
+import { CUADRO_MM, PLATILLOS, TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, sugerirCuadro, MIN_PALABRAS_CELDA, INFLUENCIAS, sugerirInfluencias } from "./clase-datos.js";
 import { DocITES } from "./docx-ites.js";
+import { INGREDIENTES, CONTINENTES } from "./aporto-datos.js";
 import { formacionDe, formaciones, formacionDeTarea, abiertas as inscAbiertas, equipoDe, equiposDe, tareasDeFormacion, enEquipo } from "./equipos.js";
 
 const db = getFirestore(initializeApp(firebaseConfig));
@@ -336,33 +337,105 @@ function cuadro(cont, eq) {
 
 // ======================================================= 2. ¿APORTÓ O LLEGÓ? (práctica)
 function actAporto(cont) {
-  const RONDA = 10; let items = [], i = 0, bien = 0, fallos = [];
-  const nueva = () => { items = barajar(APORTO).slice(0, RONDA); i = 0; bien = 0; fallos = []; pregunta(); };
+  const NIVELES = [
+    { id: 'basico', n: 'Básico', ico: '🌱', preg: 10, desc: '10 ingredientes conocidos para calentar.', pool: x => x.niv === 1 },
+    { id: 'intermedio', n: 'Intermedio', ico: '🔥', preg: 20, desc: '20 ingredientes, con algunas trampas.', pool: x => x.niv <= 2 },
+    { id: 'experto', n: 'Experto', ico: '🏆', preg: 20, desc: '20 con muchas trampas y, si llegó, ¿de qué continente es originario?', pool: () => true },
+  ];
+  const SEG = 10, NC = Object.fromEntries(CONTINENTES);
+  let reto = lsGet('clase_aporto_reto') === '1', N = null, items = [], i = 0, bien = 0, contB = 0, contT = 0, pts = 0, racha = 0, mejorRacha = 0, fallos = [], reloj = null, t0 = 0;
+  const parar = () => { clearInterval(reloj); reloj = null; };
+  detener = parar;
+  const mejor = id => lsGet('clase_aporto_mejor_' + id) || '—';
+  const origenHTML = x => `<p class="ap-orig">📍 <b>Origen:</b> ${esc(x.origen)}</p>${x.r === 'l' ? `<p class="ap-orig">⛵ <b>Llegó a México:</b> ${esc(x.llego)}</p>` : ''}<p class="ap-dato">${esc(x.dato)}</p>`;
+  const elegir = nv => {
+    const pool = barajar(INGREDIENTES.filter(nv.pool));
+    if (nv.id === 'basico') return pool.slice(0, nv.preg);
+    const dif = nv.id === 'experto' ? 3 : 2, duros = pool.filter(x => x.niv === dif), resto = pool.filter(x => x.niv !== dif);
+    const k = Math.min(duros.length, Math.round(nv.preg * (nv.id === 'experto' ? 0.5 : 0.6)));
+    return barajar([...duros.slice(0, k), ...resto.slice(0, nv.preg - k)]);
+  };
+  const inicio = () => {
+    parar();
+    cont.innerHTML = `<p class="atlas-ayuda">¿Este ingrediente <b>ya estaba en México antes de 1521</b> o <b>llegó después</b>, con la conquista y el comercio? Al responder verás de dónde es originario: aprovecha para estudiar. Hay ${INGREDIENTES.length} ingredientes.</p>
+      <div class="ap-niveles">${NIVELES.map(nv => `<button type="button" class="ap-nivel" data-n="${nv.id}"><span>${nv.ico}</span><b>${nv.n}</b><small>${esc(nv.desc)}</small><em>Tu mejor marca: ${mejor(nv.id)}</em></button>`).join('')}</div>
+      <label class="ap-reto"><input type="checkbox" id="ap-reto" ${reto ? 'checked' : ''}> ⏱ <b>Modo reto:</b> ${SEG} segundos por pregunta; respondiendo rápido ganas más puntos y sumas racha.</label>
+      <button type="button" class="btn-ruta" id="ap-estudiar">📚 Estudiar la tabla de ingredientes</button>`;
+    $('#ap-reto').addEventListener('change', e => { reto = e.target.checked; lsSet('clase_aporto_reto', reto ? '1' : '0'); });
+    $$('.ap-nivel', cont).forEach(b => b.addEventListener('click', () => { N = NIVELES.find(x => x.id === b.dataset.n); nueva(); }));
+    $('#ap-estudiar').addEventListener('click', estudiar);
+  };
+  const nueva = () => { items = elegir(N); i = 0; bien = 0; contB = 0; contT = 0; pts = 0; racha = 0; mejorRacha = 0; fallos = []; pregunta(); };
+  const marcador = () => `<div class="ap-marcador"><span>${N.ico} ${N.n} · ${i + 1} de ${items.length}</span><span>✅ ${bien}${N.id === 'experto' ? ` · 🌍 ${contB}/${contT}` : ''}</span>${reto ? `<span>⭐ ${pts} pts · 🔥 racha ${racha}</span>` : ''}</div>`;
   const pregunta = () => {
+    parar();
     if (i >= items.length) return fin();
-    const [n, e] = items[i];
-    cont.innerHTML = `<p class="atlas-ayuda">¿Este ingrediente lo <b>aportó México al mundo</b> o <b>llegó a México</b> a partir de 1521?</p>
-      <div class="ap-marcador">Ingrediente ${i + 1} de ${items.length} · aciertos ${bien} · tu mejor ronda: ${lsGet('clase_aporto_mejor') || '—'}/${RONDA}</div>
-      <div class="ap-carta"><span class="ap-emo">${e}</span><b>${esc(n)}</b></div>
-      <div class="ap-botones"><button type="button" class="ap-bot ap-a" data-r="a">🇲🇽 México lo aportó al mundo</button><button type="button" class="ap-bot ap-l" data-r="l">⛵ Llegó a México desde 1521</button></div>
+    const x = items[i];
+    cont.innerHTML = `${marcador()}${reto ? '<div class="ap-tiempo"><i id="ap-t"></i></div>' : ''}
+      <div class="ap-carta"><span class="ap-emo">${x.e}</span><b>${esc(x.n)}</b></div>
+      <div class="ap-botones"><button type="button" class="ap-bot ap-a" data-r="a">🇲🇽 Ya estaba en México antes de 1521</button><button type="button" class="ap-bot ap-l" data-r="l">⛵ Llegó a México desde 1521</button></div>
       <div id="ap-fb" aria-live="polite"></div>`;
     $$('.ap-bot', cont).forEach(b => b.addEventListener('click', () => responder(b.dataset.r)));
+    if (reto) { t0 = Date.now(); reloj = setInterval(() => { const q = Math.max(0, SEG - (Date.now() - t0) / 1000), b = $('#ap-t'); if (b) b.style.width = (100 * q / SEG) + '%'; if (q <= 0) { parar(); responder(null); } }, 100); }
   };
+  const quedan = () => reto ? Math.max(0, SEG - (Date.now() - t0) / 1000) : 0;
   const responder = r => {
-    const [n, , ok, por] = items[i], acierto = r === ok;
-    if (acierto) bien++; else fallos.push(items[i]);
-    $$('.ap-bot', cont).forEach(b => { b.disabled = true; if (b.dataset.r === ok) b.classList.add('ok'); else if (b.dataset.r === r) b.classList.add('mal'); });
-    $('#ap-fb').innerHTML = `<div class="aviso ${acierto ? 'ok' : 'mal'}"><strong>${acierto ? '¡Correcto!' : `No: ${esc(n)} ${ok === 'a' ? 'lo aportó México al mundo' : 'llegó a México desde 1521'}.`}</strong> ${esc(por)}</div><button class="btn-at" id="ap-sig" type="button">${i + 1 < items.length ? 'Siguiente →' : 'Ver resultado'}</button>`;
+    const q = quedan(); parar();
+    const x = items[i], ok = r === x.r;
+    $$('.ap-bot', cont).forEach(b => { b.disabled = true; if (b.dataset.r === x.r) b.classList.add('ok'); else if (b.dataset.r === r) b.classList.add('mal'); });
+    if (ok) { bien++; racha++; mejorRacha = Math.max(mejorRacha, racha); if (reto) pts += 100 + Math.round(10 * q); } else { racha = 0; fallos.push(x); }
+    const tit = r === null ? `⏱ Se acabó el tiempo: ${esc(x.n)} ${x.r === 'a' ? 'ya estaba en México' : 'llegó desde 1521'}.` : ok ? '¡Correcto!' : `No: ${esc(x.n)} ${x.r === 'a' ? 'ya estaba en México antes de 1521' : 'llegó a México desde 1521'}.`;
+    // experto: si llegó y acertó, ¿de qué continente es originario?
+    if (ok && x.r === 'l' && N.id === 'experto') {
+      $('#ap-fb').innerHTML = `<div class="aviso ok"><strong>${tit}</strong> Ahora, ¿de qué continente es originario?</div>
+        <div class="ap-conts">${CONTINENTES.map(([k, n]) => `<button type="button" class="ap-bot ap-c" data-c="${k}">${n}</button>`).join('')}</div>`;
+      $$('.ap-c', cont).forEach(b => b.addEventListener('click', () => {
+        const bueno = x.cont.includes(b.dataset.c); contT++; if (bueno) { contB++; if (reto) pts += 50; } else if (!fallos.includes(x)) fallos.push(x);
+        $$('.ap-c', cont).forEach(c => { c.disabled = true; if (x.cont.includes(c.dataset.c)) c.classList.add('ok'); else if (c === b) c.classList.add('mal'); });
+        mostrar(`<div class="aviso ${bueno ? 'ok' : 'mal'}"><strong>${bueno ? '¡Exacto!' : `No: es originario de ${x.cont.map(c => NC[c]).join(' / ')}.`}</strong>${origenHTML(x)}</div>`);
+      }));
+      return;
+    }
+    mostrar(`<div class="aviso ${ok ? 'ok' : 'mal'}"><strong>${tit}</strong>${origenHTML(x)}</div>`);
+  };
+  const mostrar = html => {
+    const fb = $('#ap-fb'); fb.innerHTML = html + `<button class="btn-at" id="ap-sig" type="button">${i + 1 < items.length ? 'Siguiente →' : 'Ver resultado'}</button>`;
     $('#ap-sig').addEventListener('click', () => { i++; pregunta(); }); $('#ap-sig').focus({ preventScroll: true });
+    const mk = cont.querySelector('.ap-marcador'); if (mk) mk.outerHTML = marcador();
   };
   const fin = () => {
-    if (bien > Number(lsGet('clase_aporto_mejor') || 0)) lsSet('clase_aporto_mejor', String(bien));
-    cont.innerHTML = `<div class="resumen"><h3>${bien} de ${items.length}</h3><p>${bien === items.length ? '¡Ronda perfecta! Dominas la tabla «México aportó al mundo / Llegaron a México».' : 'Repasa los que fallaste:'}</p>
-      ${fallos.length ? `<ul>${fallos.map(([n, e, ok, por]) => `<li>${e} <b>${esc(n)}</b>: ${ok === 'a' ? 'México lo aportó al mundo' : 'llegó a México desde 1521'}. ${esc(por)}</li>`).join('')}</ul>` : ''}
-      <button class="btn-at" id="ap-otra" type="button">Otra ronda</button></div>`;
-    $('#ap-otra').addEventListener('click', nueva);
+    parar();
+    const marca = reto ? pts : bien, clave = 'clase_aporto_mejor_' + N.id, previa = Number((lsGet(clave) || '0').split(' ')[0]) || 0, record = marca > previa;
+    if (record) lsSet(clave, reto ? `${pts} pts` : `${bien}/${items.length}`);
+    cont.innerHTML = `<div class="resumen"><h3>${N.ico} ${N.n}: ${bien} de ${items.length}</h3>
+      <p>${N.id === 'experto' ? `Continentes acertados: ${contB} de ${contT}. ` : ''}${reto ? `⭐ <b>${pts} puntos</b> · mejor racha: ${mejorRacha}. ` : ''}${record ? '🏅 ¡Nueva mejor marca!' : ''}</p>
+      <p>${!fallos.length ? '¡Ronda perfecta! Ya dominas este nivel.' : 'Estudia los que fallaste:'}</p>
+      ${fallos.length ? `<ul class="ap-fallos">${fallos.map(x => `<li>${x.e} <b>${esc(x.n)}</b>: ${x.r === 'a' ? 'ya estaba en México antes de 1521' : 'llegó a México desde 1521'}.${origenHTML(x)}</li>`).join('')}</ul>` : ''}
+      <div class="ap-fin-bot"><button class="btn-at" id="ap-otra" type="button">Otra ronda</button><button class="btn-ruta" id="ap-niv" type="button">Cambiar de nivel</button><button class="btn-ruta" id="ap-est" type="button">📚 Estudiar la tabla</button></div></div>`;
+    $('#ap-otra').addEventListener('click', nueva); $('#ap-niv').addEventListener('click', inicio); $('#ap-est').addEventListener('click', estudiar);
   };
-  nueva();
+  // ---- tabla para estudiar, con filtros y buscador
+  const estudiar = () => {
+    parar();
+    const F = [['todos', 'Todos'], ['a', '🇲🇽 Ya estaban'], ...CONTINENTES.map(([k, n]) => ['c:' + k, `⛵ De ${n}`])];
+    let f = 'todos', qq = '';
+    cont.innerHTML = `<button type="button" class="ma-link" id="ap-volver">← Volver al juego</button>
+      <p class="atlas-ayuda">Los ${INGREDIENTES.length} ingredientes del juego: de dónde es originario cada uno y cómo llegó a México. Estúdialos y vuelve a jugar.</p>
+      <div class="atlas-zoom" id="ap-filtros">${F.map(([k, n]) => `<button type="button" class="chip-at" data-f="${k}" aria-pressed="${k === f}">${n}</button>`).join('')}</div>
+      <input id="ap-buscar" class="ap-buscar" type="search" placeholder="Buscar un ingrediente…" aria-label="Buscar un ingrediente">
+      <p class="ap-cuenta" id="ap-cuenta"></p><div class="ap-tabla" id="ap-tabla"></div>`;
+    const sin = t => t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    const pintar = () => {
+      const xs = INGREDIENTES.filter(x => (f === 'todos' || (f === 'a' ? x.r === 'a' : x.r === 'l' && x.cont[0] === f.slice(2))) && (!qq || sin(x.n).includes(sin(qq)))).sort((a, b) => a.r.localeCompare(b.r) || a.n.localeCompare(b.n, 'es'));
+      $('#ap-cuenta').textContent = `${xs.length} ingrediente${xs.length === 1 ? '' : 's'}`;
+      $('#ap-tabla').innerHTML = xs.map(x => `<div class="ap-fila ap-${x.r}"><span class="ap-fe">${x.e}</span><div><b>${esc(x.n)}</b> <small class="ap-tag">${x.r === 'a' ? '🇲🇽 Ya estaba' : `⛵ Llegó · ${x.cont.map(c => NC[c]).join(' / ')}`}</small>${origenHTML(x)}</div></div>`).join('') || '<p class="atlas-ayuda">No hay ingredientes con ese nombre.</p>';
+    };
+    $$('#ap-filtros .chip-at').forEach(b => b.addEventListener('click', () => { f = b.dataset.f; $$('#ap-filtros .chip-at').forEach(x => x.setAttribute('aria-pressed', String(x === b))); pintar(); }));
+    $('#ap-buscar').addEventListener('input', e => { qq = e.target.value.trim(); pintar(); });
+    $('#ap-volver').addEventListener('click', inicio);
+    pintar(); window.scrollTo({ top: 0 });
+  };
+  inicio();
 }
 
 // ======================================================= 3. DESARMA EL PLATILLO (individual, en la cuenta)

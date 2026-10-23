@@ -3,7 +3,7 @@
 // no hay internet se usa la copia guardada. Firebase y Google nunca se cachean.
 const CACHE = 'aula-v24';
 const BASICOS = ['./', 'index.html', 'compendio.html', 'tema.html', 'calendario.html', 'proyecto.html', 'rubricas.html',
-  'biblioteca.html', 'actividades.html', 'atlas.html', 'css/atlas.css', 'js/atlas.js', 'js/mi-atlas.js', 'js/docx-ites.js', 'tareas.html', 'css/tareas.css', 'js/tareas.js', 'js/clase-datos.js', 'js/equipos.js', 'unir.html', 'js/vendor/qrcode.js', 'data/atlas.json', 'css/styles.css', 'css/index.css', 'css/extra.css', 'css/compendio.css',
+  'biblioteca.html', 'actividades.html', 'atlas.html', 'css/atlas.css', 'js/atlas.js', 'js/mi-atlas.js', 'js/docx-ites.js', 'tareas.html', 'css/tareas.css', 'js/tareas.js', 'js/clase-datos.js', 'js/equipos.js', 'js/aporto-datos.js', 'unir.html', 'js/vendor/qrcode.js', 'data/atlas.json', 'css/styles.css', 'css/index.css', 'css/extra.css', 'css/compendio.css',
   'css/tema.css', 'js/app.js', 'js/curso.js', 'js/compendio.js', 'js/tema.js', 'js/lector.js', 'data/curso.json', 'assets/icon-192.png'];
 
 self.addEventListener('install', (e) => {
