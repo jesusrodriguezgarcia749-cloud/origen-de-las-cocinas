@@ -674,3 +674,4 @@ body.mon-completo .mon-grid { grid-template-columns: repeat(auto-fill, minmax(21
 .td-fila { display: flex !important; flex-wrap: wrap; }
 .td-fila .td-nom { flex: 1 1 100%; }
 @media (min-width: 760px) { .td-fila .td-nom { flex: 1 1 220px; } }
+.mon-chips[hidden], .chip-mon[hidden] { display: none !important; }

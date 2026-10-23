@@ -939,6 +939,14 @@ function suscribirEquiposCont() {
   MON.equipos.forEach(eq => MON.eqSubs.push(onSnapshot(doc(db, 'grupos', MON.grupo, 'equipos', eq.id, 'atlas', docAct), sn => {
     MON.datos['e:' + eq.id] = sn.exists() ? sn.data() : null; programarPintado('e:' + eq.id);
   }, () => {})));
+  // quienes hacen el cuadro o las influencias solos (sin equipo): su trabajo vive en su cuenta
+  Object.keys(MON.datos).filter(k => k.startsWith('i:')).forEach(k => delete MON.datos[k]);
+  if (MON.act === 'cuadro' || MON.act === 'influencias') {
+    const docInd = MON.act === 'cuadro' ? 'tarea-cuadro-mm' : 'tarea-influencias';
+    alumnosCache.forEach(a => MON.eqSubs.push(onSnapshot(doc(db, 'grupos', MON.grupo, 'alumnos', a.id, 'atlas', docInd), sn => {
+      MON.datos['i:' + a.id] = sn.exists() ? { ...sn.data(), ultimoNombre: sn.data().ultimoNombre || a.nombre } : null; programarPintado('i:' + a.id);
+    }, () => {})));
+  }
 }
 function detenerMonitor() {
   document.body.classList.remove('mon-completo'); const mf = document.getElementById('mon-full'); if (mf) { mf.setAttribute('aria-pressed', 'false'); mf.textContent = '⛶ Pantalla completa'; }
@@ -980,7 +988,11 @@ function hace(ts) {
 }
 function monTarjetas() {
   const out = [];
-  if (MON.act === 'cuadro' || MON.act === 'influencias') { MON.equipos.forEach(eq => out.push({ clave: 'e:' + eq.id, titulo: eq.nombre, sub: (eq.nombres || []).join(', ') || 'sin integrantes', tipo: 'equipo' })); return out; }
+  if (MON.act === 'cuadro' || MON.act === 'influencias') {
+    MON.equipos.forEach(eq => out.push({ clave: 'e:' + eq.id, titulo: eq.nombre, sub: (eq.nombres || []).join(', ') || 'sin integrantes', tipo: 'equipo' }));
+    alumnosCache.forEach(a => { if (MON.datos['i:' + a.id]) out.push({ clave: 'i:' + a.id, titulo: a.nombre, sub: 'trabajo individual', tipo: 'alumno' }); });
+    return out;
+  }
   if (MON.ver !== 'individual') MON.equipos.forEach(eq => out.push({ clave: 'e:' + eq.id, titulo: eq.nombre, sub: (eq.nombres || []).join(', ') || 'sin integrantes', tipo: 'equipo' }));
   if (MON.ver !== 'equipos') alumnosCache.forEach(a => { const d = MON.datos['a:' + a.id]; if (d) out.push({ clave: 'a:' + a.id, titulo: a.nombre, sub: d.equipo ? `👥 ${d.equipo}` : 'trabajo individual', tipo: 'alumno' }); });
   return out;
@@ -992,15 +1004,17 @@ function pintarMonitor(todo) {
   const ts = monTarjetas();
   grid.innerHTML = ts.length ? ts.map(t => `<button type="button" class="mon-card" data-clave="${t.clave}"><div class="mon-card-cab"><span class="mon-tipo">${t.tipo === 'equipo' ? '👥' : '👤'}</span><div><b>${escaparHTML(t.titulo)}</b><small>${escaparHTML(t.sub)}</small></div><span class="mon-punto" data-punto></span></div>
       <div class="mon-mapa" data-mapa></div><div class="mon-barra"><i data-barra></i></div><p class="mon-num" data-num></p><p class="mon-ult" data-ult></p></button>`).join('')
-    : '<p class="empty-inline">Todavía no hay equipos ni alumnos trabajando en Mi atlas.</p>';
+    : MON.act === 'atlas' ? '<p class="empty-inline">Todavía no hay equipos ni alumnos trabajando en Mi atlas.</p>'
+      : '<p class="empty-inline">Todavía no hay equipos para esta actividad ni alumnos trabajándola solos. Para formar los equipos toca <b>🔳 Códigos QR</b> (si ya existen) o ve a Tareas → Tareas digitales → 👥 de esta tarea → «Formar equipos nuevos».</p>';
   grid.querySelectorAll('.mon-card').forEach(b => { actualizarTarjeta(b.dataset.clave, true); b.addEventListener('click', () => abrirDetalle(b.dataset.clave)); });
-  const sin = alumnosCache.filter(a => !MON.datos['a:' + a.id] && !MON.equipos.some(e => (e.integrantes || []).includes(a.id)));
-  document.getElementById('mon-sin').textContent = MON.ver !== 'equipos' && sin.length ? `Sin equipo y sin entrar a Mi atlas: ${sin.map(a => a.nombre).join(', ')}.` : '';
+  const pre = MON.act === 'atlas' ? 'a:' : 'i:';
+  const sin = alumnosCache.filter(a => !MON.datos[pre + a.id] && !MON.equipos.some(e => (e.integrantes || []).includes(a.id)));
+  document.getElementById('mon-sin').textContent = (MON.ver !== 'equipos' || MON.act !== 'atlas') && sin.length ? `Sin equipo y sin empezar ${MON.act === 'atlas' ? 'Mi atlas' : 'esta actividad'}: ${sin.map(a => a.nombre).join(', ')}.` : '';
   pintarResumen();
 }
 function actualizarTarjeta(clave, nuevo) {
   const card = document.querySelector(`.mon-card[data-clave="${clave}"]`);
-  if (!card) { if (clave.startsWith('a:') && MON.ver !== 'equipos' && MON.datos[clave]) pintarMonitor(true); return; }
+  if (!card) { if ((clave.startsWith('a:') && MON.ver !== 'equipos' || clave.startsWith('i:')) && MON.datos[clave]) pintarMonitor(true); return; }
   if (MON.act === 'cuadro') return actualizarCuadro(card, clave, nuevo);
   if (MON.act === 'influencias') return actualizarInfluencias(card, clave, nuevo);
   const v = monVista(clave), st = monStats(v);
