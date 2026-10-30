@@ -14,6 +14,8 @@ import { calcularParcial, calcularCuatrimestre, calcularCuatrimestreRedondeado, 
 import { reporteGrupo, reporteAlumno, reporteExamenAlumno, reporteExamenGrupo } from "./reporte.js";
 import { vistaRapida } from "./matriz.js";
 import { BASE, enEquipo, formacionDe, formaciones, ordenFormaciones, formacionDeTarea, equiposDe, tareasDeFormacion, urlUnir, qrSvg } from "./equipos.js";
+import { wordMiPlato, numsDe as numsMiPlato, estadoEntrega as estadoMiPlato, slugArchivo, ORDEN as ORDEN_MP } from "./mi-plato-word.js?v=2026102901";
+import { zipDocx } from "./docx-ites.js?v=2026102901";
 import { TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, nombreCatalogo, sugerirAtlas, sugerirCuadro, MIN_PALABRAS_CELDA, sugerirDesarma, CUADRO_MM, INFLUENCIAS, sugerirInfluencias } from "./clase-datos.js";
 
 const app = initializeApp(firebaseConfig);
@@ -1221,7 +1223,69 @@ async function cargarProyecto() {
   if (!grupoActivo) { empty.hidden = false; empty.textContent = 'Elige un grupo primero.'; return; }
   if (alumnosCache.length === 0) { empty.hidden = false; empty.textContent = 'Este grupo aún no tiene alumnos.'; return; }
   empty.hidden = true;
+  cargarAvanceMiPlato();
   for (const entrega of ENTREGAS_PROYECTO) { await cargarEntregaProyecto(entrega); }
+}
+
+// ---- Avance en el Taller de Mi Plato (grupos/{g}/alumnos/{a}/investigacion/mi-plato)
+let MP_DATA = null, MP_ENT = 'entrega2';
+const bajarArchivo = (blob, nombre) => { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = nombre; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); };
+async function bajarZipWord(docs, nombre) {
+  const usados = new Set(), arch = [];
+  for (const { blob, archivo } of docs) { let n = archivo, i = 2; while (usados.has(n)) n = archivo.replace(/\.docx$/, `_${i++}.docx`); usados.add(n); arch.push([n, new Uint8Array(await blob.arrayBuffer())]); }
+  bajarArchivo(new Blob([zipDocx(arch)], { type: 'application/zip' }), nombre);
+}
+async function cargarAvanceMiPlato() {
+  const cont = document.getElementById('miplato-avance');
+  if (!cont) return;
+  cont.innerHTML = '<p class="empty-inline">Cargando…</p>';
+  try { MP_DATA = MP_DATA || await fetch('data/mi-plato.json?v=2026102901').then(r => r.json()); } catch { cont.innerHTML = '<p class="empty-inline">No se pudo cargar el taller.</p>'; return; }
+  const D = MP_DATA, tot = Object.fromEntries(ORDEN_MP.map(k => [k, numsMiPlato(D, k).length]));
+  const filas = await Promise.all(alumnosCache.map(async a => {
+    try { const s = await getDoc(doc(db, 'grupos', grupoActivo, 'alumnos', a.id, 'investigacion', 'mi-plato')); return [a, s.exists() ? s.data() : null]; }
+    catch { return [a, null]; }
+  }));
+  const fecha = t => t && t.toDate ? t.toDate().toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—';
+  const corta = t => new Date(t).toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+  const pal = t => (String(t || '').trim().match(/\S+/g) || []).length;
+  const empezaron = filas.filter(([, d]) => d).length;
+  const nEnt = { entrega1: 'Entrega 1 (1-12)', entrega2: 'Entrega 2 (1-20)', entregaFinal: 'Entrega final (1-23)' };
+  cont.innerHTML = `<p class="field-hint"><b>${empezaron} de ${filas.length}</b> alumnos ya entraron al taller. Una respuesta cuenta cuando tiene al menos ${D.minPalabras} palabras. 📥 = subió su Word de la Entrega 1 · 📬 = entregó (con fecha) · ✏️ = cambió su trabajo después de entregarlo. <b>Copia</b> = preguntas con más del ${D.maxCopia} % igual al compendio.</p>
+    <div class="taller-bajar"><span>Descargar en Word:</span>${Object.entries(nEnt).map(([k, n]) => `<button type="button" class="chip-mon" data-mpent="${k}" aria-pressed="${k === MP_ENT}">${n}</button>`).join('')}
+      <button type="button" class="btn btn-small" id="mp-zip">⬇ Todos en .zip</button><span class="field-hint" id="mp-zip-msg"></span></div>
+    <div class="taller-tabla-wrap"><table class="taller-tabla"><thead><tr><th>Alumno</th><th>Platillo</th><th>1-12</th><th>13-20</th><th>21-23</th><th>Copia</th><th>Última vez</th><th></th></tr></thead><tbody>
+    ${filas.map(([a, d]) => {
+      if (!d) return `<tr class="sin"><td>${escaparHTML(a.nombre)}</td><td colspan="7"><i>Aún no entra al taller</i></td></tr>`;
+      const T = d.datos || {}, av = d.avance || {}, cp = Object.entries(T.copia || {}).filter(([, v]) => v > D.maxCopia).map(([n]) => n);
+      const c = k => { const es = k === 'entrega1' ? null : estadoMiPlato(T, D, k); return `<td class="${(av[k] || 0) === tot[k] ? 'ok' : ''}">${av[k] || 0}/${tot[k]}${k === 'entrega1' && T.importado ? ' 📥' : ''}${es && es.entregada ? `<br><small title="${es.modificada ? 'Lo cambió después de entregarlo' : 'Entregado'}">${es.modificada ? '✏️' : '📬'} ${corta(es.t)}</small>` : ''}</td>`; };
+      return `<tr><td>${escaparHTML(a.nombre)}</td><td>${escaparHTML(d.platillo || '—')}</td>${c('entrega1')}${c('entrega2')}${c('entregaFinal')}<td class="${cp.length ? 'mal' : ''}">${cp.length ? cp.join(', ') : '—'}</td><td>${fecha(d.actualizado)}</td><td class="taller-acc"><button type="button" class="btn btn-small taller-ver" data-mpver="${a.id}">Ver</button><button type="button" class="btn btn-small taller-word" data-mpword="${a.id}" title="Descargar su Word de la entrega elegida arriba">⬇ Word</button></td></tr>
+        <tr class="taller-det" id="mpdet-${a.id}" hidden><td colspan="8"></td></tr>`;
+    }).join('')}</tbody></table></div>`;
+  const datos = Object.fromEntries(filas.map(([a, d]) => [a.id, d])), nombreDe = id => (alumnosCache.find(a => a.id === id) || {}).nombre || '';
+  cont.querySelectorAll('[data-mpent]').forEach(b => b.addEventListener('click', () => { MP_ENT = b.dataset.mpent; cargarAvanceMiPlato(); }));
+  cont.querySelectorAll('[data-mpword]').forEach(b => b.addEventListener('click', async () => {
+    b.disabled = true; try { await wordMiPlato(datos[b.dataset.mpword].datos || {}, D, MP_ENT, nombreDe(b.dataset.mpword)); } finally { b.disabled = false; }
+  }));
+  document.getElementById('mp-zip').addEventListener('click', async e => {
+    const b = e.currentTarget, msg = document.getElementById('mp-zip-msg'), con = filas.filter(([, d]) => d && d.datos);
+    if (!con.length) { msg.textContent = 'Nadie ha escrito todavía.'; return; }
+    b.disabled = true; msg.textContent = `Armando ${con.length} documentos…`;
+    try {
+      const docs = []; for (const [a, d] of con) docs.push(await wordMiPlato(d.datos, D, MP_ENT, a.nombre, { soloBlob: true }));
+      await bajarZipWord(docs, `Mi_Plato_Mi_Historia_${{ entrega1: 'Entrega_1', entrega2: 'Entrega_2', entregaFinal: 'Entrega_final' }[MP_ENT]}_${slugArchivo(grupoActivo)}.zip`);
+      msg.textContent = `✓ ${docs.length} documentos en el .zip`;
+    } catch (er) { msg.textContent = 'No se pudo armar el .zip: ' + (er.message || er); } finally { b.disabled = false; }
+  });
+  cont.querySelectorAll('[data-mpver]').forEach(b => b.addEventListener('click', () => {
+    const tr = document.getElementById('mpdet-' + b.dataset.mpver), T = datos[b.dataset.mpver].datos || {};
+    if (!tr.hidden) { tr.hidden = true; b.textContent = 'Ver'; return; }
+    const e = x => escaparHTML(x || '—'), cp = T.copia || {}, refs = [...(T.refs && T.refs.libro !== false ? [D.libro.apa] : []), ...((T.refs || {}).lista || []).map(r => r.apa), ...String((T.refs || {}).otras || '').split('\n').filter(x => x.trim())];
+    tr.firstElementChild.innerHTML = `<div class="taller-detalle">
+      <p><b>Platillo:</b> ${e(T.platillo)}${T.importado ? ` · 📥 Subió su Entrega 1 el ${new Date(T.importado.t).toLocaleDateString('es-MX', { day: 'numeric', month: 'short' })}` : ''}</p>
+      ${D.preguntas.map(p => { const t = (T.respuestas || {})[p.n], w = pal(t); return `<details><summary>${p.n}. ${escaparHTML(p.texto)} <small>(${w} palabras${w && cp[p.n] ? ` · ${cp[p.n]} % igual al compendio${cp[p.n] > D.maxCopia ? ' ⚠️' : ''}` : ''})</small></summary><p class="taller-resp">${e(t)}</p></details>`; }).join('')}
+      <details><summary>Referencias (${refs.length})</summary><ul>${refs.map(r => `<li>${escaparHTML(r.replace(/\*/g, ''))}</li>`).join('') || '<li>—</li>'}</ul></details></div>`;
+    tr.hidden = false; b.textContent = 'Ocultar';
+  }));
 }
 
 async function cargarEntregaProyecto(entrega) {

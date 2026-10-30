@@ -673,6 +673,10 @@
   ],
   "enlaces": [
    {
+    "texto": "✍️ Taller de Mi Plato: escribe tu ficha",
+    "href": "mi-plato.html"
+   },
+   {
     "texto": "Ver las rúbricas",
     "href": "rubricas.html"
    },

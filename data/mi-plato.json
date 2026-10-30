@@ -1,0 +1,605 @@
+{
+ "version": 1,
+ "abrirTodas": false,
+ "minPalabras": 50,
+ "maxCopia": 50,
+ "libro": {
+  "apa": "Rodríguez García, J. (2026). *Origen de las cocinas* [Material didáctico no publicado]. ITES René Descartes.",
+  "cita": "(Rodríguez García, 2026)"
+ },
+ "entregas": {
+  "entrega1": {
+   "nombre": "Entrega 1 · Preguntas 1 a 12",
+   "corto": "Entrega 1",
+   "fecha": "Ya la entregaste el jueves 15 de octubre",
+   "req": "Pásala aquí: sube tu Word o escríbela. Corrige tus respuestas con la retroalimentación de tu maestro, porque entran a la Entrega 2.",
+   "hasta": 12,
+   "minRefs": 2,
+   "entregar": false,
+   "archivo": "Entrega_1_preguntas_1_a_12"
+  },
+  "entrega2": {
+   "nombre": "Entrega 2 · Preguntas 13 a 20",
+   "corto": "Entrega 2",
+   "fecha": "Viernes 27 de noviembre",
+   "req": "La ficha completa con las preguntas 1 a 20: las 12 primeras corregidas y las 8 nuevas, con citas y referencias en APA.",
+   "hasta": 20,
+   "minRefs": 3,
+   "entregar": true,
+   "archivo": "Entrega_2_ficha_completa"
+  },
+  "entregaFinal": {
+   "nombre": "Entrega final · Preguntas 21 a 23",
+   "corto": "Entrega final",
+   "fecha": "Viernes 4 de diciembre",
+   "req": "Las preguntas 21 a 23. El Word sale con tu ficha completa (1 a 23) para que prepares tu exposición de 2 a 3 minutos.",
+   "hasta": 23,
+   "minRefs": 3,
+   "entregar": true,
+   "archivo": "Entrega_final_ficha_1_a_23"
+  }
+ },
+ "preguntas": [
+  {
+   "n": 1,
+   "entrega": "entrega1",
+   "texto": "¿Qué platillo elijo y por qué me interesa investigarlo?",
+   "titulo": "Mi platillo y por qué lo elegí",
+   "temas": [
+    "1.1"
+   ],
+   "pasos": [
+    [
+     "¿Qué platillo es?",
+     "Su nombre exacto, de qué lugar es y cómo es en pocas palabras: ingredientes principales y cómo se sirve."
+    ],
+    [
+     "¿Por qué lo elegiste?",
+     "Tu razón personal: un recuerdo, una persona, un lugar o una curiosidad."
+    ],
+    [
+     "¿Qué quieres descubrir de él?",
+     "Una duda que tengas sobre su historia o su origen."
+    ]
+   ],
+   "ver": [],
+   "pista": ""
+  },
+  {
+   "n": 2,
+   "entrega": "entrega1",
+   "texto": "¿Qué técnica de cocción usa principalmente mi platillo, y qué logra esa técnica con esos ingredientes?",
+   "titulo": "Técnica de cocción",
+   "temas": [],
+   "pasos": [
+    [
+     "¿Qué técnica usa?",
+     "Hervido, guisado, asado, horneado, frito, al vapor, en horno de tierra… Si usa varias, di cuál es la principal."
+    ],
+    [
+     "¿Qué le hace esa técnica a los ingredientes?",
+     "Textura, sabor, color y aroma: ¿se ablanda, se dora, se concentra el sabor?"
+    ],
+    [
+     "¿Por qué crees que se cocina así y no de otra forma?",
+     "Piensa en los ingredientes, el clima, la tradición o los utensilios del lugar."
+    ]
+   ],
+   "ver": [],
+   "pista": "Apóyate en lo que has visto en tus prácticas de cocina y en una fuente confiable sobre la receta."
+  },
+  {
+   "n": 3,
+   "entrega": "entrega1",
+   "texto": "¿Mi platillo tiene parentesco con la Antigua Roma? (Si tu platillo tiene etiqueta amarilla 🟡, investiga en cambio el origen de uno de sus ingredientes principales).",
+   "titulo": "Parentesco con la Antigua Roma",
+   "temas": [
+    "1.2.1"
+   ],
+   "pasos": [
+    [
+     "¿Tiene algún parentesco con la cocina romana?",
+     "Una técnica, un ingrediente, una salsa o una costumbre en común: el garum, el banquete en tres tiempos, el pan, el vino… Si no lo tiene, dilo y explica por qué."
+    ],
+    [
+     "¿Qué dato del libro lo muestra?",
+     "Escríbelo con tus palabras y cítalo: (Rodríguez García, 2026)."
+    ]
+   ],
+   "ver": [],
+   "pista": ""
+  },
+  {
+   "n": 4,
+   "entrega": "entrega1",
+   "texto": "¿A cuál de estos tres periodos (Edad Media, Renacimiento o Edad Moderna) pertenece o remite mi platillo? Justifica con un dato del libro.",
+   "titulo": "Periodo histórico",
+   "temas": [
+    "1.2.2",
+    "1.2.3",
+    "1.2.4"
+   ],
+   "pasos": [
+    [
+     "¿A qué periodo pertenece o remite?",
+     "Edad Media, Renacimiento o Edad Moderna."
+    ],
+    [
+     "¿Qué rasgo de ese periodo tiene tu platillo?",
+     "Especias, mezclas agridulces, banquetes vistosos, ingredientes del intercambio colombino…"
+    ],
+    [
+     "Un dato del libro, con su cita",
+     "Escríbelo con tus palabras y agrega (Rodríguez García, 2026)."
+    ]
+   ],
+   "ver": [
+    3
+   ],
+   "pista": ""
+  },
+  {
+   "n": 5,
+   "entrega": "entrega1",
+   "texto": "¿Algún ingrediente de mi platillo viajó en el intercambio colombino? ¿En qué dirección?",
+   "titulo": "Intercambio colombino",
+   "temas": [
+    "1.2.4"
+   ],
+   "pasos": [
+    [
+     "¿Qué ingrediente viajó?",
+     "Revisa los ingredientes de tu platillo: maíz, jitomate, chile, cacao, papa, trigo, cerdo, res, azúcar, cebolla, ajo, cítricos…"
+    ],
+    [
+     "¿En qué dirección viajó?",
+     "De América hacia Europa (y al resto del mundo) o de Europa hacia América."
+    ],
+    [
+     "¿Cómo sería tu platillo sin ese intercambio?",
+     "Imagina tu platillo sin ese ingrediente."
+    ]
+   ],
+   "ver": [],
+   "pista": ""
+  },
+  {
+   "n": 6,
+   "entrega": "entrega1",
+   "texto": "¿Mi platillo se prepara con fuego de leña, estufa u otra tecnología? ¿Cambió con la electrificación?",
+   "titulo": "Tecnología de la cocina",
+   "temas": [
+    "1.3",
+    "1.4"
+   ],
+   "pasos": [
+    [
+     "¿Con qué se preparaba tradicionalmente?",
+     "Leña, carbón, horno de tierra, comal, estufa de gas…"
+    ],
+    [
+     "¿Con qué se prepara hoy?",
+     "En casa o en restaurantes: estufa, horno eléctrico, olla exprés, licuadora…"
+    ],
+    [
+     "¿Qué cambió y qué se ganó o se perdió?",
+     "Tiempo de preparación, sabor, costumbres familiares."
+    ]
+   ],
+   "ver": [
+    2
+   ],
+   "pista": ""
+  },
+  {
+   "n": 7,
+   "entrega": "entrega1",
+   "texto": "¿Qué sabores básicos dominan en mi platillo, y cómo se logra ese balance con la técnica que identifiqué?",
+   "titulo": "Sabores básicos",
+   "temas": [],
+   "pasos": [
+    [
+     "¿Qué sabores dominan?",
+     "Dulce, salado, ácido, amargo y umami: ¿cuál se siente primero y cuál al final?"
+    ],
+    [
+     "¿Qué ingrediente aporta cada sabor?",
+     "Por ejemplo: la naranja agria aporta lo ácido; el queso, lo salado."
+    ],
+    [
+     "¿Cómo ayuda la técnica a lograr ese balance?",
+     "Retoma la técnica de tu pregunta 2."
+    ]
+   ],
+   "ver": [
+    2
+   ],
+   "pista": "Si puedes, prueba tu platillo con atención y anota lo que sientes antes de escribir."
+  },
+  {
+   "n": 8,
+   "entrega": "entrega1",
+   "texto": "¿Mi platillo es cotidiano, dominical o de festejo? Da un ejemplo concreto.",
+   "titulo": "Régimen: cotidiano, dominical o de festejo",
+   "temas": [
+    "2.1"
+   ],
+   "pasos": [
+    [
+     "¿Es cotidiano, dominical o de festejo?",
+     "Cotidiano: de todos los días. Dominical: de fin de semana o de reunión familiar. De festejo: de fiestas y celebraciones."
+    ],
+    [
+     "Un ejemplo concreto",
+     "¿Cuándo, dónde y con quién lo comes o lo has visto servir?"
+    ]
+   ],
+   "ver": [],
+   "pista": ""
+  },
+  {
+   "n": 9,
+   "entrega": "entrega1",
+   "texto": "¿Qué «firma de época» tiene mi platillo, según la tabla del Tema 2.2?",
+   "titulo": "Firma de época",
+   "temas": [
+    "2.2"
+   ],
+   "pasos": [
+    [
+     "¿Qué firma de época reconoces?",
+     "Revisa la tabla del 2.2: Antigua Roma, Edad Media, Renacimiento, cocina clásica francesa, nouvelle cuisine o vanguardia."
+    ],
+    [
+     "¿En qué se nota en tu platillo?",
+     "Un ingrediente, una técnica o la forma de servirlo."
+    ]
+   ],
+   "ver": [
+    4
+   ],
+   "pista": ""
+  },
+  {
+   "n": 10,
+   "entrega": "entrega1",
+   "texto": "¿Mi platillo tiene alguna norma religiosa asociada? Si no la tiene, explica por qué.",
+   "titulo": "Norma religiosa",
+   "temas": [
+    "2.3"
+   ],
+   "pasos": [
+    [
+     "¿Tiene alguna norma religiosa asociada?",
+     "Ayuno, vigilia, Cuaresma, alimentos permitidos o prohibidos (kosher, halal), ofrendas…"
+    ],
+    [
+     "Explícalo con un dato",
+     "Si no la tiene, explica por qué. Por ejemplo: si lleva cerdo, no es apto para judíos ni musulmanes practicantes."
+    ]
+   ],
+   "ver": [],
+   "pista": ""
+  },
+  {
+   "n": 11,
+   "entrega": "entrega1",
+   "texto": "¿Se sirve en alguna fecha, rito o celebración específica? ¿Qué simboliza ahí, más allá del sabor?",
+   "titulo": "Fechas, ritos y símbolos",
+   "temas": [
+    "2.1",
+    "2.3"
+   ],
+   "pasos": [
+    [
+     "¿En qué fecha o celebración se sirve?",
+     "Día de Muertos, Navidad, bodas, cumpleaños, fiestas del pueblo…"
+    ],
+    [
+     "¿Qué simboliza ahí?",
+     "Unión familiar, recuerdo de los difuntos, abundancia, identidad…"
+    ]
+   ],
+   "ver": [
+    8,
+    10
+   ],
+   "pista": ""
+  },
+  {
+   "n": 12,
+   "entrega": "entrega1",
+   "texto": "¿A qué corriente gastronómica pertenece hoy mi platillo?",
+   "titulo": "Corriente gastronómica actual",
+   "temas": [
+    "2.4"
+   ],
+   "pasos": [
+    [
+     "¿A qué corriente pertenece hoy?",
+     "Cocina tradicional o regional, de autor, de fusión, slow food, comida rápida… Revisa el 2.4."
+    ],
+    [
+     "¿Por qué? Da un ejemplo",
+     "Un restaurante, un chef o una forma actual de servirlo."
+    ]
+   ],
+   "ver": [
+    9
+   ],
+   "pista": ""
+  },
+  {
+   "n": 13,
+   "entrega": "entrega2",
+   "texto": "¿A cuál de las cinco regiones del Tema 3 pertenece mi platillo?",
+   "titulo": "Región del mundo",
+   "temas": [
+    "3.1",
+    "3.2",
+    "3.3",
+    "3.4",
+    "3.5"
+   ],
+   "pasos": [
+    [
+     "¿A qué región pertenece?",
+     "África, América, Asia, Europa u Oceanía y, dentro de ella, la subregión."
+    ],
+    [
+     "¿Qué rasgos de esa región tiene tu platillo?",
+     "Ingredientes, técnicas o influencias que el compendio menciona para esa región, con su cita."
+    ]
+   ],
+   "ver": [
+    1
+   ],
+   "pista": ""
+  },
+  {
+   "n": 14,
+   "entrega": "entrega2",
+   "texto": "Si mi platillo es de México, ¿qué parte es herencia prehispánica y qué parte fue adoptada? (Si no es de México: ¿qué parte es propia de su región y qué parte llegó de fuera?).",
+   "titulo": "Herencia propia y adoptada",
+   "temas": [
+    "3.2"
+   ],
+   "pasos": [
+    [
+     "¿Qué parte es herencia prehispánica (o propia de su región)?",
+     "Ingredientes y técnicas que ya existían: maíz, chile, frijol, cacao, el pib, el comal, la nixtamalización…"
+    ],
+    [
+     "¿Qué parte fue adoptada?",
+     "Lo que llegó después: cerdo, res, trigo, cítricos, especias, la fritura en manteca…"
+    ],
+    [
+     "¿Cómo se mezclaron en tu platillo?",
+     "Explica cómo se unieron las dos herencias (la cocina mestiza)."
+    ]
+   ],
+   "ver": [
+    5
+   ],
+   "pista": ""
+  },
+  {
+   "n": 15,
+   "entrega": "entrega2",
+   "texto": "¿Qué ruta de comercio, migración o conquista explica que mi platillo exista tal como lo conocemos hoy? De mis ingredientes principales, ¿cuáles son nativos de mi región y cuáles llegaron de fuera? Cita al menos uno de cada tipo.",
+   "titulo": "Rutas e ingredientes",
+   "temas": [
+    "3.2"
+   ],
+   "pasos": [
+    [
+     "¿Qué ruta lo explica?",
+     "Una conquista, una migración, la ruta de las especias, el Galeón de Manila, los puertos…"
+    ],
+    [
+     "Un ingrediente nativo de tu región",
+     "Nómbralo y di de dónde es originario."
+    ],
+    [
+     "Un ingrediente que llegó de fuera",
+     "Nómbralo y di de dónde llegó y por qué ruta."
+    ]
+   ],
+   "ver": [
+    5,
+    14
+   ],
+   "pista": ""
+  },
+  {
+   "n": 16,
+   "entrega": "entrega2",
+   "texto": "Aunque mi platillo no sea asiático, ¿qué ingrediente o técnica de Asia lo influyó?",
+   "titulo": "Influencia de Asia",
+   "temas": [
+    "3.3"
+   ],
+   "pasos": [
+    [
+     "¿Qué ingrediente o técnica de Asia tiene?",
+     "Arroz, canela, pimienta, clavo, caña de azúcar, cítricos, el salteado…"
+    ],
+    [
+     "¿Cómo llegó hasta tu platillo?",
+     "La ruta de las especias, el Galeón de Manila, los árabes en la península ibérica…"
+    ]
+   ],
+   "ver": [
+    15
+   ],
+   "pista": ""
+  },
+  {
+   "n": 17,
+   "entrega": "entrega2",
+   "texto": "¿Existe más de una versión de mi platillo en distintos lugares? ¿En qué cambian, y por qué?",
+   "titulo": "Versiones de mi platillo",
+   "temas": [],
+   "pasos": [
+    [
+     "¿Qué versiones existen?",
+     "En otra región, otro estado u otro país: ¿cómo se llaman?"
+    ],
+    [
+     "¿En qué cambian?",
+     "Ingredientes, técnica o forma de servir."
+    ],
+    [
+     "¿Por qué cambian?",
+     "El clima, los ingredientes disponibles, otras influencias, los gustos de cada lugar."
+    ]
+   ],
+   "ver": [
+    13
+   ],
+   "pista": ""
+  },
+  {
+   "n": 18,
+   "entrega": "entrega2",
+   "texto": "¿Mi platillo cumple alguna función más allá de la nutrición en la identidad de quien lo come? ¿Tiene relación, directa o indirecta, con la Antigua Roma vista en el Tema 4.2?",
+   "titulo": "Identidad y herencia romana",
+   "temas": [
+    "4.1",
+    "4.2"
+   ],
+   "pasos": [
+    [
+     "¿Qué función cumple además de alimentar?",
+     "Identidad regional o familiar, convivencia, orgullo, memoria."
+    ],
+    [
+     "¿Tiene relación con la Antigua Roma del 4.2?",
+     "Directa o indirecta: un ingrediente, la idea del banquete, la cocina refinada. Si no la tiene, explica por qué."
+    ]
+   ],
+   "ver": [
+    3,
+    11
+   ],
+   "pista": ""
+  },
+  {
+   "n": 19,
+   "entrega": "entrega2",
+   "texto": "¿Mi platillo tuvo relación con una corte real, o llegó a la mesa del pueblo desde el principio?",
+   "titulo": "Corte real o mesa del pueblo",
+   "temas": [
+    "4.3"
+   ],
+   "pasos": [
+    [
+     "¿Corte real o mesa del pueblo?",
+     "¿Nació en un palacio, un convento o una casa noble, o en la cocina popular?"
+    ],
+    [
+     "¿Qué dato lo muestra?",
+     "Un personaje, una época o un lugar, con su cita."
+    ]
+   ],
+   "ver": [],
+   "pista": ""
+  },
+  {
+   "n": 20,
+   "entrega": "entrega2",
+   "texto": "¿Existe o existió algún restaurante famoso asociado a mi platillo? ¿Hay alguna leyenda popular sobre su origen que la investigación seria desmiente?",
+   "titulo": "Restaurantes y leyendas",
+   "temas": [
+    "4.4"
+   ],
+   "pasos": [
+    [
+     "¿Hay un restaurante famoso asociado?",
+     "Nombre, lugar y por qué se asocia. Si no lo hay, ¿dónde se come mejor hoy?"
+    ],
+    [
+     "¿Qué leyenda cuenta su origen?",
+     "La historia que «todo mundo» cuenta."
+    ],
+    [
+     "¿Qué dice la investigación seria?",
+     "¿Confirma o desmiente la leyenda? Escríbelo con su cita."
+    ]
+   ],
+   "ver": [],
+   "pista": ""
+  },
+  {
+   "n": 21,
+   "entrega": "entregaFinal",
+   "texto": "¿Los ingredientes originales de mi platillo siguen siendo igual de accesibles o sustentables de producir hoy que hace más de 100 años?",
+   "titulo": "Ingredientes hoy: acceso y sustentabilidad",
+   "temas": [
+    "4.5"
+   ],
+   "pasos": [
+    [
+     "¿Siguen siendo fáciles de conseguir?",
+     "Precio, temporada, si se importan…"
+    ],
+    [
+     "¿Son sustentables?",
+     "Sobreexplotación, especies en riesgo, uso de agua, transporte…"
+    ]
+   ],
+   "ver": [
+    15
+   ],
+   "pista": ""
+  },
+  {
+   "n": 22,
+   "entrega": "entregaFinal",
+   "texto": "Si tuviera que servir este platillo hoy en un restaurante, ¿qué le cambiaría sin perder su esencia histórica?",
+   "titulo": "Mi platillo en un restaurante",
+   "temas": [
+    "4.5"
+   ],
+   "pasos": [
+    [
+     "¿Qué le cambiarías?",
+     "Presentación, porción, técnica o algún ingrediente."
+    ],
+    [
+     "¿Qué NO le cambiarías y por qué?",
+     "Lo que es su esencia histórica."
+    ]
+   ],
+   "ver": [
+    12
+   ],
+   "pista": ""
+  },
+  {
+   "n": 23,
+   "entrega": "entregaFinal",
+   "texto": "¿Qué aprendí investigando mi platillo que no sabía al principio del cuatrimestre?",
+   "titulo": "Lo que aprendí",
+   "temas": [],
+   "pasos": [
+    [
+     "¿Qué sabías al principio?",
+     "Retoma tu pregunta 1."
+    ],
+    [
+     "¿Qué descubriste?",
+     "Los dos o tres datos que más te sorprendieron."
+    ],
+    [
+     "¿Qué significa ahora tu platillo para ti?",
+     "Cierra con tu propia voz."
+    ]
+   ],
+   "ver": [
+    1
+   ],
+   "pista": ""
+  }
+ ]
+}

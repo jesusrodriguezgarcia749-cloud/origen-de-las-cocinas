@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taller de Mi Plato — Origen de las Cocinas</title>
+<meta name="theme-color" content="#1C1B19">
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:image" content="https://jesusrodriguezgarcia749-cloud.github.io/origen-de-las-cocinas/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jesusrodriguezgarcia749-cloud.github.io/origen-de-las-cocinas/assets/og-image.png">
+<script>try{var t=localStorage.getItem('aula_tema');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Taller de Mi Plato — Origen de las Cocinas">
+<meta property="og:description" content="Taller de «Mi Plato, Mi Historia»: escribe tu ficha pregunta por pregunta, sube tu Entrega 1, arma tus referencias en APA y descarga tu Word con la portada del ITES.">
+<meta property="og:locale" content="es_MX">
+<meta name="description" content="Taller de «Mi Plato, Mi Historia»: escribe tu ficha pregunta por pregunta, sube tu Entrega 1, arma tus referencias en APA y descarga tu Word con la portada del ITES.">
+<link rel="canonical" href="https://jesusrodriguezgarcia749-cloud.github.io/origen-de-las-cocinas/mi-plato.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css?v=2026102305">
+<link rel="stylesheet" href="css/mi-plato.css?v=2026102901">
+<link rel="stylesheet" href="css/index.css?v=2026102305">
+<link rel="stylesheet" href="css/extra.css?v=2026102305">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">OC</span>
+      <span class="brand-text">Origen de las Cocinas</span>
+    </a>
+    <nav class="main-nav" aria-label="Navegación principal">
+      <a href="compendio.html">Compendio</a>
+      <a href="diapositivas/">Diapositivas</a>
+      <a href="calendario.html">Calendario</a>
+      <a href="proyecto.html" aria-current="page">Proyecto</a>
+      <a href="actividades.html">Actividades</a>
+      <a href="tareas.html">Tareas</a>
+      <a href="atlas.html">Atlas</a>
+      <a href="biblioteca.html">Biblioteca</a>
+      <a href="examen.html">Examen</a>
+      <a href="mi-progreso.html">Mi progreso</a>
+      <a href="admin.html" class="nav-admin">Panel docente</a>
+    </nav>
+    <div class="header-tools">
+      <button class="theme-toggle" type="button" aria-label="Cambiar a modo oscuro" title="Modo claro / oscuro">🌙</button>
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<section class="lab-hero">
+  <div class="wrap">
+    <p class="eyebrow">Proyecto «Mi Plato, Mi Historia»</p>
+    <h1>Taller de Mi Plato</h1>
+    <p class="lab-hero-sub">Escribe tu ficha pregunta por pregunta, con pistas para cada una. Sube tu Entrega 1, arma tus referencias en APA y descarga tu Word con la portada del ITES. Lo que escribas se guarda en tu cuenta.</p>
+  </div>
+</section>
+
+<main class="wrap lab-main">
+  <section id="t-acceso" class="t-acceso">
+    <div class="t-login">
+      <h2>Entra con tu nombre y PIN</h2>
+      <p class="lab-ayuda">Son los mismos datos que usas en Actividades, Tareas y Examen. Así tu avance se guarda en tu cuenta y tu maestro puede orientarte antes de cada entrega.</p>
+      <form id="t-form">
+        <label for="t-grupo">Grupo</label>
+        <select id="t-grupo"><option value="">Cargando grupos…</option></select>
+        <label for="t-nombre">Tu nombre completo</label>
+        <input id="t-nombre" type="text" placeholder="Como te registró tu docente" autocomplete="name">
+        <label for="t-pin">PIN</label>
+        <input id="t-pin" type="text" inputmode="numeric" placeholder="4 dígitos">
+        <button type="submit" class="btn-lab">Entrar al taller</button>
+        <p id="t-error" class="t-error" hidden></p>
+      </form>
+      <p class="t-sin"><button type="button" class="link-btn" id="t-sin-cuenta">Probar sin cuenta</button> (lo que escribas se guardará solo en este dispositivo)</p>
+    </div>
+  </section>
+
+  <section id="t-app" hidden>
+    <div class="t-barra">
+      <span>Hola, <b id="t-quien"></b></span>
+      <span class="t-estado" id="t-estado" aria-live="polite"></span>
+      <button type="button" class="btn-lab-l" id="t-salir">Salir</button>
+    </div>
+    <div class="t-contenido">
+      <div id="t-etapa"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>Aula Virtual · Origen de las Cocinas · LudoMente Studio</p>
+  </div>
+</footer>
+
+<audio id="bg-music" loop preload="none">
+  <source src="https://commons.wikimedia.org/wiki/Special:FilePath/Gymnopedie_No._1..ogg" type="audio/ogg">
+</audio>
+<button id="bg-music-toggle" class="music-toggle" aria-label="Activar música de fondo" aria-pressed="false">🎵</button>
+
+<script src="js/app.js"></script>
+<script type="module" src="js/mi-plato.js?v=2026102901"></script>
+</body>
+</html>

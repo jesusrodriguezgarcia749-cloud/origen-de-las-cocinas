@@ -675,3 +675,11 @@ body.mon-completo .mon-grid { grid-template-columns: repeat(auto-fill, minmax(21
 .td-fila .td-nom { flex: 1 1 100%; }
 @media (min-width: 760px) { .td-fila .td-nom { flex: 1 1 220px; } }
 .mon-chips[hidden], .chip-mon[hidden] { display: none !important; }
+
+/* Avance en el Taller de Mi Plato */
+.taller-bajar { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin: .4rem 0 .8rem; }
+.taller-bajar > span:first-child { font-weight: 700; font-size: .88rem; }
+.taller-tabla td.mal { color: #b3261e; font-weight: 700; }
+.taller-tabla td.taller-acc { white-space: nowrap; }
+.taller-tabla .taller-word { padding: 4px 10px; font-size: .82rem; margin-left: 4px; }
+.taller-resp { white-space: pre-wrap; padding: .4rem .6rem; border-left: 3px solid var(--saffron); }

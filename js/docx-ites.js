@@ -173,3 +173,4 @@ export const ABREV = {
   USA: 'Estados Unidos', ARE: 'E. A. U.', SAU: 'Arabia Saudita', BIH: 'Bosnia', MKD: 'Macedonia N.', CZE: 'Chequia', PNG: 'Papúa N. G.', SLB: 'Islas Salomón',
   TTO: 'Trinidad y T.', CYN: 'Chipre N.', PSX: 'Palestina',
 };
+export { zip as zipDocx };
