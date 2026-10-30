@@ -28,9 +28,10 @@ const PRESENTACION = {
       intro: "Hoy vas a conocer la historia de tu propio estado: piratas, murallas y un queso que llegó de Holanda.",
       puntos: [
         "Vas a conocer los ataques piratas y cómo dejaron huella en la cocina campechana.",
-        "Vas a identificar las influencias que documenta el maestro Meneses.",
-        "Vas a debatir qué platillo campechano representa mejor esa mezcla.",
-        "Vas a completar el recorrido por el resto de las cocinas de América."
+        "Vas a identificar las siete influencias que documenta el maestro Meneses.",
+        "En equipo, vas a encontrarlas en un platillo campechano y a defenderlo en la **votación del grupo**.",
+        "Vas a completar el recorrido por el resto de las cocinas de América.",
+        "Todo lo trabajarás en la plataforma, en **Tareas**: se guarda en tu cuenta."
       ] },
 
     { tipo: "pregunta",
@@ -179,16 +180,47 @@ const PRESENTACION = {
       autor: "Rafael Enrique Meneses López, maestro de la Escuela de Gastronomía del Instituto Campechano",
       notas: "Léela en voz alta. Pide que cuenten cuántas influencias menciona: maya, española, árabe, francesa, holandesa, africana, asiática y caribeña." },
 
+    { tipo: "plataforma",
+      etiqueta: "Juego en la plataforma", tipoAct: "Práctica · sin calificación",
+      titulo: "Calentamiento: ¿Qué influencia es?",
+      enlace: "../tareas.html#que-influencia", textoEnlace: "Tareas → ¿Qué influencia es?",
+      minutos: "46-50", evaluacion: "Formativo",
+      notas: "Cinco minutos para que reconozcan las siete influencias antes de la tarea en equipo. Todos en «Ronda de 15» con el Modo reto; al final pregunta quién hizo más puntos. Mientras juegan, abre en el Panel → Monitor en vivo → Siete influencias y ten listos los QR de los equipos.",
+      pasos: [
+        "Entra a **Tareas → ¿Qué influencia es?** (escanea el QR) con tu nombre y PIN.",
+        "Elige **⚖️ Ronda de 15** y activa el **⏱ Modo reto**.",
+        "Maya, española, árabe, francesa, holandesa, africana o caribeña: **lee siempre la explicación**.",
+        "Gana quien junte **más puntos**. En casa: nivel **🏆 Todas** y la tabla para estudiar."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "plataforma",
+      etiqueta: "Tarea en la plataforma", tipoAct: "En equipo · en vivo",
+      titulo: "Las siete influencias de la cocina campechana",
+      enlace: "../tareas.html#influencias", textoEnlace: "Tareas → Las siete influencias",
+      minutos: "51-72", evaluacion: "Sumativo · cuenta como tarea del Parcial 2",
+      notas: "Antes de clase: Panel → Tareas → Tareas digitales, botón 👥 de «Las siete influencias»: forma los equipos (los mismos u otros) y proyecta sus QR (o desde el Monitor → 🔳 Códigos QR). Que cada equipo elija un platillo distinto si se puede. La francesa, la africana y la caribeña el compendio no las detalla: deben investigarlas y poner la fuente. La sugerida: 1 punto por el platillo, 1.5 por cada influencia con evidencia de 8 palabras o más (hasta 4) y hasta 3 por el argumento (60 palabras).",
+      pasos: [
+        "Entra a **Tareas → Las siete influencias** y únete con el **QR de tu equipo**.",
+        "**1. Elijan su platillo** campechano: pan de cazón, queso relleno, chocolomo, poc chuc, kibis…",
+        "**2. Las siete influencias:** marquen **Sí está** o **No está** y escriban **en qué se nota** (ingrediente, técnica, nombre o historia). **Repártanselas.**",
+        "Francesa, africana y caribeña: **investíguenlas** y anoten la **fuente**.",
+        "**3. Su argumento:** ¿por qué su platillo representa la cocina campechana? Se guarda solo. Al terminar: **📤 Entregar tarea**."
+      ],
+      pasoAPaso: true },
+
     { tipo: "tarea",
-      titulo: "Mesa de debate",
+      titulo: "🗳️ La votación del grupo",
       etiqueta: "Debate",
-      minutos: "46-65", evaluacion: "Sumativo · Rúbrica de Exposición/Debate",
-      notas: "Divide al grupo en dos posturas antes de mostrar la conclusión. Deja 30 a 60 segundos de reflexión.",
+      minutos: "73-80", evaluacion: "Sumativo · Rúbrica de Exposición/Debate",
+      notas: "En el Monitor → Siete influencias: «🗳️ Abrir votación» cuando todos hayan entregado; los alumnos votan desde la misma tarea. Después «🔒 Cerrar votación» y «📊 Resultados» para proyectarlos. Cada equipo defiende su platillo en un minuto antes de votar.",
       puntos: [
-        "**La pregunta:** ¿qué platillo campechano representa mejor la mezcla de influencias que documenta Meneses?",
-        "Cada postura elige un platillo y argumenta con **ingredientes y técnicas concretas**.",
-        "Ganan los argumentos, no la voz más fuerte: cada idea debe nombrar de dónde viene cada elemento."
-      ] },
+        "**Un minuto por equipo:** defiendan su platillo nombrando **de dónde viene cada elemento**.",
+        "El maestro **abre la votación** y cada quien vota desde su celular, en la misma tarea.",
+        "**¿Qué platillo representa mejor las siete influencias?** No puedes votar por tu propio equipo.",
+        "Ganan los argumentos, no la amistad ni la voz más fuerte."
+      ],
+      pasoAPaso: true },
 
     { tipo: "tema",
       titulo: "Puntos para guiar la conclusión",
@@ -202,13 +234,13 @@ const PRESENTACION = {
     { tipo: "pausa",
       titulo: "¡Pausa activa!",
       duracion: "5 minutos",
-      minutos: "66-70",
+      minutos: "81-85",
       texto: "**¿Ya estaba aquí o llegó en barco?** De pie. Si el ingrediente ya estaba en América, da un paso **al frente**; si llegó en barco, da un paso **atrás**. Ingredientes: achiote, queso de bola, cazón, alcaparras, chile habanero, canela, maíz, cerdo." },
 
     { tipo: "tabla",
       titulo: "El resto de las Américas",
-      minutos: "71-105", evaluacion: "Formativo",
-      notas: "Presenta la tabla completa; luego baja a la región andina, Brasil y el Cono Sur.",
+      minutos: "86-108", evaluacion: "Formativo",
+      notas: "Presenta la tabla completa; luego baja a la región andina, Brasil y el Cono Sur. Si el tiempo apremia por la votación, salta los videos (que los vean en casa) y pasa rápido Perú, la Amazonía y Norteamérica: el juego «Platillos de América» los repasa.",
       columnas: ["Región", "Lo que la distingue"],
       filas: [
         ["Región andina", "Papa y quinua; chuño y charqui, técnicas de conservación del Imperio inca"],
@@ -315,17 +347,23 @@ const PRESENTACION = {
       ],
       notas: "Tacos al pastor: el trompo vertical llegó con los libaneses, en México se adaptó con cerdo, adobo, achiote, piña y tortilla. Medio Oriente, la Colonia y Mesoamérica en una mordida." },
 
-    { tipo: "tarea",
-      titulo: "Un platillo por región",
-      minutos: "106-112", evaluacion: "Sumativo · Rúbrica de Tarea",
-      puntos: [
-        "Investiga **un platillo representativo de cada subregión americana** vista: andina, Caribe, Centroamérica, Brasil, Norteamérica y Cono Sur.",
-        "Para cada uno anota: **ingredientes principales**, **técnica** y **qué raíz** (indígena, europea o africana) se nota más.",
-        "Prepárate para presentarlo en la próxima clase."
-      ] },
+    { tipo: "plataforma",
+      etiqueta: "Tarea en la plataforma", tipoAct: "En equipo o individual · para casa",
+      titulo: "Mi atlas: América",
+      enlace: "../atlas.html#miatlas=america", textoEnlace: "Tareas → Mi atlas: América",
+      minutos: "109-112", evaluacion: "Sumativo · cuenta como tarea del Parcial 2",
+      notas: "Es la tarea de investigación de la planeación: un platillo representativo por subregión, dentro de la ficha de cada región de su atlas. Puedes dejar que la hagan solos o con su equipo de Mi atlas. Revisa el avance en el Monitor en vivo → Mi atlas → América. Para repasar, «Platillos de América» (Básico y Experto) y «Defiende Campeche».",
+      pasos: [
+        "Entra a **Tareas → Mi atlas: América** con tu nombre y PIN.",
+        "Arma tus **regiones culinarias**: andina, Caribe, Centroamérica, Brasil, Norteamérica, Cono Sur… y colorea sus países.",
+        "En la **ficha de cada región**, anota un **platillo representativo** con sus **ingredientes**, su **técnica** y **qué raíz** se nota más (indígena, europea o africana).",
+        "Para estudiar, juega **🌎 Platillos de América** y **🏰 Defiende Campeche** (práctica, sin calificación)."
+      ],
+      pasoAPaso: true },
 
     { tipo: "repaso",
-      notas: "Unos 5 minutos. Lanza cada pregunta al grupo y espera respuestas antes de mostrarla.",
+      minutos: "113-115",
+      notas: "Unos 3 minutos. Lanza cada pregunta al grupo y espera respuestas antes de mostrarla.",
       preguntas: [
         { pregunta: "¿Qué pirata holandés saqueó Campeche en 1685?", respuesta: "Laurens de Graaf, **“Lorencillo”**." },
         { pregunta: "¿Qué se le retira al queso de bola antes de rellenarlo?", respuesta: "La **cera roja**." },
@@ -334,7 +372,7 @@ const PRESENTACION = {
       ] },
 
     { tipo: "proyecto",
-      minutos: "113-117",
+      minutos: "116-118",
       preguntas: [
         { numero: 15, texto: "¿Qué ruta de comercio, migración o conquista explica que mi platillo exista tal como lo conocemos hoy?" },
         { numero: "·", texto: "De mis ingredientes principales, ¿cuáles son nativos de mi región y cuáles llegaron de fuera? Cita al menos uno de cada tipo." }
@@ -342,9 +380,9 @@ const PRESENTACION = {
 
     { tipo: "cierre",
       minutos: "118-120",
-      evidencia: "Cada postura del debate argumenta su platillo con al menos tres influencias identificadas correctamente.",
-      materiales: "Libro de texto, Tema 3.2 completo (sección de Campeche y resto de América).",
-      proxima: "Leer el subtema 3.3, **Cocinas asiáticas**, del libro de texto. Traer la investigación de un platillo por región americana." }
+      evidencia: "**Las siete influencias** entregada en la plataforma (platillo, influencias con evidencia, argumento y fuentes) y la **votación** del grupo.",
+      materiales: "Libro de texto, Tema 3.2 completo (sección de Campeche y resto de América). Celular con internet para entrar a **Aula Virtual → Tareas**.",
+      proxima: "Avanzar **Mi atlas: América** con un platillo por región. Repasar con **Platillos de América** y **Defiende Campeche**. Leer el subtema 3.3, **Cocinas asiáticas**, del libro de texto." }
   ]
 };
 </script>
