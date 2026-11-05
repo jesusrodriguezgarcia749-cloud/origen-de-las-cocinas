@@ -16,6 +16,9 @@ import { BALUARTES, CAMPECHE, QUE_INFLUENCIA, PAISES_AM, PLATILLOS_AM } from "./
 import { QUE_ASIA } from "./asia-datos.js";
 import { QUE_EUROPA, BLOQUES_EU } from "./europa-datos.js";
 import { VUELTA_MUNDO, CONTINENTES_T3 } from "./oceania-datos.js";
+import { RECADOS, ORIGENES, LLEGADAS, INGS, CLAVE_RECADO, recadoDe, reconocer, ingsDe, sugerirRecado } from "./recado-datos.js";
+import { comprimir, idFoto, MAX_FOTOS, fotosAlWord } from "./fotos.js";
+import { wordTarea } from "./tarea-word.js?v=2026110601";
 import { formacionDe, formaciones, formacionDeTarea, abiertas as inscAbiertas, equipoDe, equiposDe, tareasDeFormacion, enEquipo } from "./equipos.js";
 
 const db = getFirestore(initializeApp(firebaseConfig));
@@ -133,6 +136,9 @@ async function estadoDe(a) {
     } else if (a.tipo === 'especias') {
       const s = await getDoc(eq ? doc(db, 'grupos', g, 'equipos', eq.id, 'atlas', ESPECIAS.id) : doc(db, 'grupos', g, 'alumnos', al, 'atlas', 'tarea-especias'));
       if (s.exists()) { out.avance = sugerirEspecias(s.data()).detalle; out.entregado = s.data().entregado || null; }
+    } else if (a.tipo === 'recado') {
+      const s = await getDoc(eq ? doc(db, 'grupos', g, 'equipos', eq.id, 'atlas', RECADOS.id) : doc(db, 'grupos', g, 'alumnos', al, 'atlas', 'tarea-recado'));
+      if (s.exists()) { out.avance = sugerirRecado(s.data()).detalle; out.entregado = s.data().entregado || null; }
     } else if (a.tipo === 'desarma') {
       const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al, 'atlas', 'tarea-desarma'));
       if (s.exists()) { const m = (s.data().datos || {}).ficha || {}; out.avance = m.nombre ? `${m.nombre}: ${(m.ingredientes || []).length} ingredientes` : ''; out.entregado = s.data().entregado || null; }
@@ -196,7 +202,7 @@ function ruta() {
   const c = $('#cl-actividad');
   c.innerHTML = `<a class="cl-volver" href="#">← Todas las tareas</a><p class="cl-fecha">Tema ${esc(a.tema)} · ${esc(a.titulo)} · ${esc(a.fechaTexto)}</p><h2 class="cl-h2">${a.icono} ${esc(a.nombre)}</h2>
     ${califica(a) ? '<p class="cl-vale">📌 Cuenta como una tarea del Parcial 2.</p>' : '<p class="cl-vale cl-vale-p">🎯 Práctica para repasar: no lleva calificación.</p>'}<div id="cl-cuerpo"></div>`;
-  (a.tipo === 'practica' ? { aporto: actAporto, campeche: actCampeche, 'que-influencia': actQueInfluencia, 'platillos-america': actPlatillosAmerica, 'que-asia': actQueAsia, 'que-europa': actQueEuropa, 'vuelta-mundo': actVueltaMundo }[a.id] : { cuadro: actCuadro, desarma: actDesarma, influencias: actInfluencias, especias: actEspecias }[a.tipo])($('#cl-cuerpo'));
+  (a.tipo === 'practica' ? { aporto: actAporto, campeche: actCampeche, 'que-influencia': actQueInfluencia, 'platillos-america': actPlatillosAmerica, 'que-asia': actQueAsia, 'que-europa': actQueEuropa, 'vuelta-mundo': actVueltaMundo }[a.id] : { cuadro: actCuadro, desarma: actDesarma, influencias: actInfluencias, especias: actEspecias, recado: actRecado }[a.tipo])($('#cl-cuerpo'));
   window.scrollTo({ top: 0 });
 }
 // El QR de un equipo abre tareas.html#unir-CODIGO (vía unir.html): entra, se une y va a su tarea.
@@ -1028,6 +1034,7 @@ function especias(cont, eq) {
     <p class="atlas-ayuda">Llenen la ficha de su subregión con el compendio (subtema 3.3) y lo que investiguen. ${eq ? 'Repártanse los apartados: cada quien escribe desde su celular y todo se guarda solo.' : 'Se guarda solo en tu cuenta.'} Al final la <b>exponen al grupo</b>.</p>
     <div class="es-campos">${E.campos.map(([k, t, ayuda, min], i) => `<label class="es-campo" data-c="${k}"><span class="es-cab"><b>${t}</b><small class="ma-autor" data-autor="${k}"></small></span><small class="es-ayuda">${esc(ayuda)}</small>
       <textarea data-k="${k}" rows="${k === 'porque' ? 5 : k === 'fuente' ? 2 : 3}"></textarea><small class="es-cuenta" data-cuenta="${k}"></small></label>`).join('')}</div>
+    <div class="ft-caja" id="es-fotos"></div>
     <p class="es-sug" id="es-sug"></p>`;
   const estado = (t, c = '') => { const e = $('#es-estado'); if (e) { e.textContent = t; e.className = 'ma-estado ' + c; } };
   const pintar = S => {
@@ -1050,6 +1057,7 @@ function especias(cont, eq) {
     if (!puede()) return; const k = ta.dataset.k, t = E.campos.find(x => x[0] === k)[1].replace(/^\S+\s/, '').toLowerCase();
     V.poner(['campos', k], ta.value, `escribe ${t}`); V.poner(['por', k], sesion.nombre); V.poner(['subregion'], sk);
   }));
+  const F = fotosUI($('#es-fotos'), { eq, idEq: E.id, idInd: 'tarea-especias', puede });
   repEntrega = barraEntrega(cont, a, { entregado: () => V.S.entregado, alEntregar: async () => { if (!E.campos.some(([k]) => ((V.S.campos || {})[k] || '').trim())) throw new Error('Primero llenen su ficha.'); await V.entregar(); } });
   $('#es-word').addEventListener('click', async () => {
     await V.flush(); const S = V.S, c = S.campos || {}, por = S.por || {};
@@ -1057,11 +1065,191 @@ function especias(cont, eq) {
     D.portada({ kicker: 'Tema 3.3 · Cocinas asiáticas', titulo: `Las especias de Asia: ${sn}`, subtitulo: 'Ficha de una subregión de Asia', etiqueta: eq ? `Equipo «${eq.nombre}»` : 'Alumno', personas: eq ? eq.nombres || [] : [sesion.nombre] });
     D.h1(sn, spista);
     D.ficha(E.campos.map(([k, t]) => [t.replace(/^\S+\s/, ''), c[k], eq ? por[k] : '']));
+    await fotosAlWord(D, F.fotos());
     D.descargar(`Especias_de_Asia_${slug(eq ? 'equipo ' + eq.nombre : sesion.nombre)}`);
   });
   const salir = () => V.flush();
   window.addEventListener('beforeunload', salir);
-  detener = () => { V.cerrar(); window.removeEventListener('estado-tareas', repEntrega); window.removeEventListener('beforeunload', salir); };
+  detener = () => { V.cerrar(); F.cerrar(); window.removeEventListener('estado-tareas', repEntrega); window.removeEventListener('beforeunload', salir); };
+}
+
+// ---- Fotos para la exposición (equipo o individual). Se achican solas en el celular antes de subirse.
+function fotosUI(caja, { eq, idEq, idInd, puede }) {
+  const g = sesion.grupoId, refs = [1, 2].map(i => eq ? doc(db, 'grupos', g, 'equipos', eq.id, 'atlas', idFoto(idEq, i)) : doc(db, 'grupos', g, 'alumnos', sesion.alumnoId, 'atlas', idFoto(idInd, i)));
+  const datos = [null, null], base = () => eq ? { ultimoAutor: sesion.alumnoId, ultimoPin: sesion.pin, ultimoNombre: sesion.nombre } : { pinVerificado: sesion.pin, nombre: sesion.nombre };
+  caja.innerHTML = `<div class="ft-cab"><b>📷 Fotos para la exposición</b><small>Hasta ${MAX_FOTOS}: del recado, del guiso, del mercado o de su cocina. Tómenla o elíjanla de la galería; la plataforma la achica sola.</small></div><div class="ft-grid">${refs.map((_, i) => `<div class="ft-slot" data-slot="${i}"></div>`).join('')}</div><p class="ma-msg mal" data-ft-msg hidden></p>`;
+  const msg = t => { const m = $('[data-ft-msg]', caja); m.textContent = t || ''; m.hidden = !t; };
+  const subir = async (i, file) => {
+    if (!puede()) return msg('La tarea está cerrada: ya no se pueden subir fotos.');
+    const slot = $(`[data-slot="${i}"]`, caja); slot.classList.add('ft-subiendo'); msg('');
+    try { const f = await comprimir(file); await setDoc(refs[i], { img: f.img, w: f.w, h: f.h, pie: (datos[i] && datos[i].pie) || '', por: sesion.nombre, ...base(), actualizado: serverTimestamp() }); }
+    catch (e) { msg('No se pudo subir la foto: ' + (e.message || e)); }
+    finally { slot.classList.remove('ft-subiendo'); }
+  };
+  const pintar = i => {
+    const slot = $(`[data-slot="${i}"]`, caja), d = datos[i];
+    if (!slot) return;
+    const act = document.activeElement;
+    if (act && slot.contains(act) && act.matches('input[type=text]')) return;
+    slot.innerHTML = d && d.img
+      ? `<img src="${d.img}" alt="Foto ${i + 1} de la exposición"><input type="text" maxlength="120" placeholder="Pie de foto: ¿qué se ve?" value="${esc(d.pie || '')}" data-pie><div class="ft-acc"><small>📷 ${esc(d.por || '')}</small><label class="btn-ruta ft-cambiar">Cambiar<input type="file" accept="image/*" hidden data-file></label><button type="button" class="btn-ruta" data-quitar>Quitar</button></div><span class="ft-cargando">Subiendo…</span>`
+      : `<label class="ft-vacio"><span>📷</span><b>Agregar foto ${i + 1}</b><small>Toca para tomarla o elegirla</small><input type="file" accept="image/*" hidden data-file></label><span class="ft-cargando">Subiendo…</span>`;
+    const fi = $('[data-file]', slot); fi.addEventListener('change', () => { if (fi.files[0]) subir(i, fi.files[0]); fi.value = ''; });
+    const q = $('[data-quitar]', slot); if (q) q.addEventListener('click', async () => { if (!puede() || !confirm('¿Quitar esta foto?')) return; try { await setDoc(refs[i], { img: '', pie: '', por: sesion.nombre, ...base(), actualizado: serverTimestamp() }); } catch (e) { msg('No se pudo quitar: ' + (e.message || e)); } });
+    const p = $('[data-pie]', slot); if (p) { p.readOnly = !puede(); p.addEventListener('change', async () => { if (!puede()) return; try { await setDoc(refs[i], { ...datos[i], pie: p.value.trim(), ...base(), actualizado: serverTimestamp() }); } catch { /* */ } }); }
+  };
+  refs.forEach((_, i) => pintar(i));
+  const subs = refs.map((r, i) => onSnapshot(r, sn => { datos[i] = sn.exists() ? sn.data() : null; pintar(i); }, () => {}));
+  return { cerrar: () => subs.forEach(u => u()), fotos: () => datos.filter(d => d && d.img) };
+}
+
+// ======================================================= 6. EL RECADO CAMPECHANO (en equipo o individual, en vivo, con fotos)
+function actRecado(cont) {
+  const entrar = async () => {
+    escucharGrupo();
+    cont.innerHTML = '<p class="atlas-ayuda">Buscando a tu equipo…</p>';
+    const eq = await equipo('recado');
+    if (eq) return recado(cont, eq);
+    cont.innerHTML = `<div class="cl-sin-eq"><p><b>Todavía no estás en un equipo.</b> Escribe el código de 4 letras de tu equipo (o escanea el QR que proyecta tu maestro).</p>
+      <form id="cl-unir" class="ma-unir"><div><input id="cl-cod" maxlength="4" autocomplete="off" placeholder="ABCD" aria-label="Código del equipo"><button class="btn-at" type="submit">Unirme</button></div></form>
+      <p class="ma-msg mal" id="cl-unir-msg" hidden></p><p class="cl-o">o</p><button type="button" class="btn-ruta" id="cl-solo">Hacerla solo (se guarda en tu cuenta)</button></div>`;
+    $('#cl-unir').addEventListener('submit', async e => { e.preventDefault(); try { recado(cont, await unirseCodigo($('#cl-cod').value, 'recado')); } catch (er) { const m = $('#cl-unir-msg'); m.textContent = er.message || er; m.hidden = false; } });
+    $('#cl-solo').addEventListener('click', () => recado(cont, null));
+  };
+  if (sesion) entrar(); else formAcceso(cont, entrar, 'Entra con tu nombre y PIN para trabajar en esta tarea');
+}
+const nomOrigen = k => (ORIGENES.find(x => x[0] === k) || [, ''])[1];
+const colOrigen = k => (ORIGENES.find(x => x[0] === k) || [, , '#C9BFAE'])[2];
+const nomLlegada = k => (LLEGADAS.find(x => x[0] === k) || [, ''])[1];
+function recado(cont, eq) {
+  const a = TAREAS_DIG.recado, R = RECADOS, [rk, rn, rcol, rpista, rotros] = recadoDe(eq, sesion.alumnoId), CL = CLAVE_RECADO[rk];
+  const ref = eq ? doc(db, 'grupos', sesion.grupoId, 'equipos', eq.id, 'atlas', R.id) : doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'atlas', 'tarea-recado');
+  cont.innerHTML = `<div class="ma-barra"><span>${eq ? `👥 <b>${esc(eq.nombre)}</b>: ${esc((eq.nombres || []).join(', '))}` : `👤 <b>${esc(sesion.nombre)}</b> (individual)`}</span><span class="ma-estado" id="re-estado"></span>
+      <button type="button" class="btn-ruta" id="re-word">⬇ Descargar en Word</button></div>
+    <div data-entrega></div>
+    <div class="es-sub re-sub" style="--c:${rcol}"><small>${eq ? 'Por sorteo, a su equipo le tocó' : 'Por sorteo, te tocó'}</small><b>🫙 ${esc(rn)}</b><p>${esc(rpista)} <i>${esc(rotros)}</i></p></div>
+    <p class="atlas-ayuda">Un recado es <b>un mapa del mundo en una pasta</b>: cada ingrediente llegó de un lugar distinto. Investiguen ${eq ? 'en equipo' : ''} qué lleva su recado, en qué guisos se usa y <b>de dónde viene cada ingrediente y cómo llegó a Campeche</b>. ${eq ? 'Repártanse los ingredientes: cada quien desde su celular, todo se guarda solo.' : 'Se guarda solo en tu cuenta.'} Al final lo <b>exponen al grupo</b> con sus fotos.</p>
+    <div class="re-claves" id="re-claves" hidden></div>
+    <h3 class="re-h">1 · Los ingredientes de nuestro recado</h3>
+    <p class="re-ayuda">Agreguen uno por uno. En cada tarjeta digan <b>de dónde es originario</b>, <b>cómo llegó a Campeche</b> y cuenten su ruta: de dónde salió, por dónde pasó y quién lo trajo.</p>
+    <div class="re-ings" id="re-ings"></div>
+    <form class="re-agregar" id="re-agregar"><input id="re-nuevo" maxlength="40" autocomplete="off" placeholder="Ej.: clavo, naranja agria…" aria-label="Nuevo ingrediente"><button type="submit" class="btn-at">＋ Agregar ingrediente</button></form>
+    <h3 class="re-h">2 · Guisos, conclusión y fuentes</h3>
+    <div class="es-campos">${R.campos.map(([k, t, ayuda, min]) => `<label class="es-campo" data-c="${k}"><span class="es-cab"><b>${t}</b><small class="ma-autor" data-autor="${k}"></small></span><small class="es-ayuda">${esc(ayuda)}</small>
+      <textarea data-k="${k}" rows="${k === 'fuentes' ? 2 : 4}"></textarea><small class="es-cuenta" data-cuenta="${k}"></small></label>`).join('')}</div>
+    <h3 class="re-h">3 · Fotos</h3>
+    <div class="ft-caja" id="re-fotos"></div>
+    <p class="es-sug" id="re-sug"></p>`;
+  const estado = (t, c = '') => { const e = $('#re-estado'); if (e) { e.textContent = t; e.className = 'ma-estado ' + c; } };
+  const puede = () => abierta(a.id);
+  const opts = (L, v, vacio) => `<option value="">${vacio}</option>` + L.map(([k, n]) => `<option value="${k}"${k === v ? ' selected' : ''}>${esc(n)}</option>`).join('');
+  const tarjeta = x => `<div class="re-ing" data-id="${x.id}"><div class="re-ing-cab"><input class="re-nom" data-f="n" maxlength="40" aria-label="Ingrediente"><small class="ma-autor" data-por></small><button type="button" class="re-x" data-borrar aria-label="Quitar ingrediente" title="Quitar">✕</button></div>
+      <div class="re-sel"><label><small>¿De dónde es originario?</small><select data-f="o">${opts(ORIGENES, '', '— Elige —')}</select></label><label><small>¿Cómo llegó a Campeche?</small><select data-f="l">${opts(LLEGADAS, '', '— Elige —')}</select></label></div>
+      <label class="re-ruta"><small>Su ruta: de dónde salió, por dónde pasó y quién lo trajo</small><textarea data-f="ruta" rows="2"></textarea><small class="es-cuenta" data-cr></small></label></div>`;
+  let enviando = false, claves = { c1: false, c2: false }, abiertaC = { c1: false, c2: false };
+  const pintarIngs = S => {
+    const caja = $('#re-ings'), L = ingsDe(S), act = document.activeElement;
+    $$('.re-ing', caja).forEach(el => { if (!L.some(x => x.id === el.dataset.id)) el.remove(); });
+    L.forEach((x, i) => {
+      let el = $(`.re-ing[data-id="${x.id}"]`, caja);
+      if (!el) { caja.insertAdjacentHTML('beforeend', tarjeta(x)); el = $(`.re-ing[data-id="${x.id}"]`, caja); conectar(el, x.id); }
+      if (caja.children[i] !== el) caja.insertBefore(el, caja.children[i] || null);
+      ['n', 'o', 'l', 'ruta'].forEach(f => { const c = $(`[data-f="${f}"]`, el); if (c !== act && c.value !== (x[f] || '')) c.value = x[f] || ''; });
+      el.style.setProperty('--c', colOrigen(x.o));
+      $('[data-por]', el).textContent = eq && x.por ? `✍️ ${x.por}` : '';
+      const n = palabras(x.ruta), cr = $('[data-cr]', el); cr.textContent = `${n} palabra${n === 1 ? '' : 's'}${n >= 10 ? ' ✓' : ' · mínimo 10'}`; cr.className = 'es-cuenta ' + (n >= 10 ? 'ok' : '');
+    });
+    if (!L.length) { if (!$('.re-vacio', caja)) caja.innerHTML = '<p class="re-vacio">Todavía no agregan ingredientes. Empiecen con los que ya conozcan.</p>'; }
+    else { const v = $('.re-vacio', caja); if (v) v.remove(); }
+  };
+  const pintar = S => {
+    const act = document.activeElement, c = S.campos || {}, por = S.por || {};
+    pintarIngs(S);
+    R.campos.forEach(([k, , , min]) => {
+      const ta = $(`[data-k="${k}"]`, cont); if (ta !== act && ta.value !== (c[k] || '')) ta.value = c[k] || '';
+      const n = palabras(c[k]), el = $(`[data-cuenta="${k}"]`, cont);
+      el.textContent = k === 'fuentes' ? ((c[k] || '').trim() ? '✓ con fuentes' : 'faltan las fuentes') : `${n} palabra${n === 1 ? '' : 's'}${n >= min ? ' ✓' : ` · mínimo ${min}`}`;
+      el.className = 'es-cuenta ' + ((k === 'fuentes' ? (c[k] || '').trim() : n >= min) ? 'ok' : '');
+      $(`[data-autor="${k}"]`, cont).textContent = eq && por[k] ? `✍️ ${por[k]}` : '';
+    });
+    $('#re-sug').textContent = `Avance: ${sugerirRecado(S).detalle}.`;
+    pintarClaves(); repEntrega();
+  };
+  let repEntrega = () => {};
+  const V = docVivo(ref, eq, (S, st) => { pintar(S); estado(st === 'ok' ? (eq ? 'Sincronizado con tu equipo ✓' : 'Guardado en tu cuenta ✓') : st === 'error' ? 'No se pudo guardar. Reintentando…' : 'Guardando…', st === 'ok' ? 'ok' : st === 'error' ? 'mal' : ''); });
+  if (!V.S.recado) V.poner(['recado'], rk, `les tocó el ${rn.toLowerCase()}`, true);
+  function conectar(el, id) {
+    $$('[data-f]', el).forEach(c => c.addEventListener(c.tagName === 'SELECT' ? 'change' : 'input', () => {
+      if (!puede()) { pintar(V.S); return; }
+      const f = c.dataset.f, nom = ((V.S.ings || {})[id] || {}).n || 'un ingrediente';
+      V.poner(['ings', id, f], c.value, f === 'n' ? 'renombra un ingrediente' : f === 'ruta' ? `escribe la ruta de ${nom}` : `marca de dónde viene ${nom}`);
+      V.poner(['ings', id, 'por'], sesion.nombre);
+      if (f !== 'ruta' && f !== 'n') pintar(V.S);
+    }));
+    $('[data-borrar]', el).addEventListener('click', async () => {
+      if (!puede()) return; const nom = ((V.S.ings || {})[id] || {}).n || 'este ingrediente';
+      if (!confirm(`¿Quitar «${nom}» de su recado?`)) return;
+      await V.flush(); V.poner(['ings', id], null, `quita ${nom}`, true); await V.flush();
+    });
+  }
+  $('#re-agregar').addEventListener('submit', async e => {
+    e.preventDefault(); if (!puede() || enviando) return;
+    const inp = $('#re-nuevo'), n = inp.value.trim(); if (!n) return;
+    if (ingsDe(V.S).some(x => x.n.trim().toLowerCase() === n.toLowerCase())) { inp.value = ''; return; }
+    enviando = true; const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+    V.poner(['ings', id], { n, o: '', l: '', ruta: '', orden: Date.now(), por: sesion.nombre }, `agrega ${n}`, true);
+    inp.value = ''; inp.focus();
+    try { await V.flush(); } finally { enviando = false; }
+  });
+  $$('[data-k]', cont).forEach(ta => ta.addEventListener('input', () => {
+    if (!puede()) return; const k = ta.dataset.k, t = R.campos.find(x => x[0] === k)[1].replace(/^\S+\s/, '').toLowerCase();
+    V.poner(['campos', k], ta.value, `escribe ${t}`); V.poner(['por', k], sesion.nombre);
+  }));
+  // ---- las dos claves que libera el docente (grupos/{g}.claves.recado1 y recado2)
+  function pintarClaves() {
+    const caja = $('#re-claves'); if (!caja) return;
+    caja.hidden = !claves.c1 && !claves.c2;
+    if (caja.hidden) { caja.innerHTML = ''; return; }
+    const L = ingsDe(V.S), suyos = new Set(L.map(x => reconocer(x.n)).filter(Boolean));
+    const b = (c, t) => `<button type="button" class="btn-at re-ver" data-c="${c}" aria-pressed="${abiertaC[c]}">${abiertaC[c] ? 'Ocultar' : t}</button>`;
+    let h = '';
+    if (claves.c1) {
+      const extra = L.filter(x => { const k = reconocer(x.n); return !k || !CL.ings.includes(k); });
+      h += `<div class="re-clave"><div class="re-clave-cab"><b>🔑 Clave 1 · Ingredientes y guisos del ${esc(rn.toLowerCase())}</b>${b('c1', 'Comparar con la clave')}</div>${abiertaC.c1 ? `
+        <p class="re-ayuda">✅ = ya lo tienen · ➕ = les faltó: agréguenlo e investiguen su ruta.</p>
+        <div class="re-chips">${CL.ings.map(k => `<span class="re-chip ${suyos.has(k) ? 'ok' : 'falta'}">${suyos.has(k) ? '✅' : '➕'} ${INGS[k].e} ${esc(INGS[k].n)}</span>`).join('')}</div>
+        ${extra.length ? `<p class="re-ayuda">Ustedes además pusieron: <b>${esc(extra.map(x => x.n).join(', '))}</b>. Puede ser la receta de su familia: ¡está bien! Investiguen también su ruta.</p>` : ''}
+        <p><b>Guisos:</b> ${esc(CL.guisos.join(' · '))}</p><p class="re-nota">💡 ${esc(CL.nota)}</p>` : ''}</div>`;
+    }
+    if (claves.c2) {
+      const ks = [...new Set([...CL.ings, ...suyos])];
+      h += `<div class="re-clave"><div class="re-clave-cab"><b>🔑 Clave 2 · De dónde viene cada ingrediente y cómo llegó a Campeche</b>${b('c2', 'Ver las rutas')}</div>${abiertaC.c2 ? `<div class="re-rutas">${ks.map(k => {
+        const I = INGS[k], x = L.find(y => reconocer(y.n) === k);
+        const okO = x && x.o ? x.o === I.o : null, okL = x && x.l ? I.l.includes(x.l) : null;
+        const marca = v => v === null ? '' : v ? ' ✓' : ' ✗';
+        return `<div class="re-rt" style="--c:${colOrigen(I.o)}"><b>${I.e} ${esc(I.n)}</b> <small class="re-tag">${esc(nomOrigen(I.o))} · ${esc(I.l.map(nomLlegada).join(' o '))}</small>
+          ${x ? `<p class="re-suyo">Ustedes pusieron: ${x.o ? esc(nomOrigen(x.o)) + marca(okO) : '<i>sin origen</i>'} · ${x.l ? esc(nomLlegada(x.l)) + marca(okL) : '<i>sin llegada</i>'}</p>` : '<p class="re-suyo"><i>No lo tienen en su lista.</i></p>'}
+          <p>${esc(I.ruta)}</p>${I.trampa ? `<p class="re-trampa">⚠️ ${esc(I.trampa)}</p>` : ''}</div>`;
+      }).join('')}</div>` : ''}</div>`;
+    }
+    caja.innerHTML = h;
+    $$('.re-ver', caja).forEach(x => x.addEventListener('click', () => { abiertaC[x.dataset.c] = !abiertaC[x.dataset.c]; pintarClaves(); }));
+  }
+  const verClaves = d => { const c = d.claves || {}; claves = { c1: !!c.recado1, c2: !!c.recado2 }; pintarClaves(); };
+  const onEstado = e => verClaves(e.detail || {});
+  window.addEventListener('estado-tareas', onEstado);
+  getDoc(doc(db, 'grupos', sesion.grupoId)).then(s => verClaves(s.exists() ? s.data() : {})).catch(() => {});
+  const F = fotosUI($('#re-fotos'), { eq, idEq: R.id, idInd: 'tarea-recado', puede });
+  repEntrega = barraEntrega(cont, a, { entregado: () => V.S.entregado, alEntregar: async () => { if (!ingsDe(V.S).length) throw new Error('Primero agreguen los ingredientes de su recado.'); await V.entregar(); } });
+  $('#re-word').addEventListener('click', async () => {
+    await V.flush();
+    const { blob, archivo } = await wordTarea(a, V.S, { eq, nombre: sesion.nombre, alumnoId: sesion.alumnoId, fotos: F.fotos() });
+    const url = URL.createObjectURL(blob instanceof Blob ? blob : new Blob([blob], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }));
+    const l = document.createElement('a'); l.href = url; l.download = archivo; document.body.appendChild(l); l.click(); l.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000);
+  });
+  const salir = () => V.flush();
+  window.addEventListener('beforeunload', salir);
+  detener = () => { V.cerrar(); F.cerrar(); window.removeEventListener('estado-tareas', repEntrega); window.removeEventListener('estado-tareas', onEstado); window.removeEventListener('beforeunload', salir); };
 }
 
 // ---- Juegos de «¿de dónde es?» con opciones de color (bloques de Europa, continentes del Tema 3)

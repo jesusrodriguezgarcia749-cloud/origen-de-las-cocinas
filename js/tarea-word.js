@@ -4,6 +4,8 @@
 import { DocITES } from "./docx-ites.js?v=2026110501";
 import { mapaContinentePNG } from "./docx-ites.js?v=2026110501";
 import { CUADRO_MM, INFLUENCIAS, ESPECIAS, subregionDe } from "./clase-datos.js";
+import { RECADOS, ORIGENES, LLEGADAS, recadoDe, ingsDe } from "./recado-datos.js";
+import { fotosAlWord } from "./fotos.js";
 
 export const slugArchivo = n => String(n || '').trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
 const quien = (eq, nombre) => slugArchivo(eq ? 'equipo ' + eq.nombre : nombre);
@@ -39,6 +41,19 @@ async function especias(D, S, eq, nombre, alumnoId) {
   D.h1(sn, spista);
   D.ficha(ESPECIAS.campos.map(([k, t]) => [t.replace(/^\S+\s/, ''), c[k], eq ? por[k] : '']));
   return `Especias_de_Asia_${quien(eq, nombre)}`;
+}
+
+// ---------- El recado campechano
+async function recado(D, S, eq, nombre, alumnoId) {
+  const [, rn, , rpista] = recadoDe(eq, alumnoId), c = S.campos || {}, por = S.por || {}, L = ingsDe(S);
+  const nO = k => (ORIGENES.find(x => x[0] === k) || [, '—'])[1], nL = k => (LLEGADAS.find(x => x[0] === k) || [, '—'])[1];
+  portadaDe(D, { kicker: 'Tema 3.4 · Cocinas europeas · Tema 3.3 · Cocinas asiáticas', titulo: `El recado campechano: ${rn.toLowerCase()}`, subtitulo: 'El mundo en una pasta: de dónde viene cada ingrediente y cómo llegó a Campeche' }, eq, nombre);
+  const conts = new Set(L.map(x => x.o).filter(Boolean));
+  D.h1(rn, `${rpista} ${L.length} ingredientes de ${conts.size} ${conts.size === 1 ? 'origen' : 'orígenes'} distintos.`);
+  if (L.length) D.tabla([['Ingrediente', 'Origen', '¿Cómo llegó a Campeche?', 'Su ruta'], ...L.map(x => [{ runs: [[x.n, { b: true }], ...(eq && x.por ? [[`\n✍ ${x.por}`, { color: '3F7A4F', tam: 8 }]] : [])] }, nO(x.o), nL(x.l), (x.ruta || '').trim() || '—'])], { anchos: [1900, 1600, 2000, 3860] });
+  else D.texto('');
+  D.ficha(RECADOS.campos.map(([k, t]) => [t.replace(/^\S+\s/, ''), c[k], eq ? por[k] : '']));
+  return `Recado_campechano_${quien(eq, nombre)}`;
 }
 
 // ---------- Desarma el platillo (la ficha calificada)
@@ -94,10 +109,11 @@ async function atlas(D, c, eq, nombre, cont) {
 }
 
 // a: tarea (TAREAS_DIG); datos: lo guardado (para atlas, ya normalizado como c); eq: equipo o null.
-export async function wordTarea(a, datos, { eq = null, nombre = '', alumnoId = '' } = {}) {
+export async function wordTarea(a, datos, { eq = null, nombre = '', alumnoId = '', fotos = null } = {}) {
   const D = new DocITES(); await D.cargarLogo();
-  const fn = { cuadro, influencias, especias, desarma, atlas }[a.tipo];
+  const fn = { cuadro, influencias, especias, desarma, atlas, recado }[a.tipo];
   if (!fn) throw new Error('Esta tarea no tiene Word.');
   const archivo = await fn(D, datos || {}, eq, nombre, a.tipo === 'atlas' ? a.cont : alumnoId);
+  if (fotos && fotos.length) await fotosAlWord(D, fotos);
   return { blob: D.blob ? D.blob() : D._xml(), archivo: archivo + '.docx', D };
 }

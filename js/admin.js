@@ -16,8 +16,10 @@ import { vistaRapida } from "./matriz.js?v=2026110501";
 import { BASE, enEquipo, formacionDe, formaciones, ordenFormaciones, formacionDeTarea, equiposDe, tareasDeFormacion, urlUnir, qrSvg } from "./equipos.js";
 import { wordMiPlato, numsDe as numsMiPlato, estadoEntrega as estadoMiPlato, slugArchivo, ORDEN as ORDEN_MP } from "./mi-plato-word.js?v=2026102901";
 import { zipDocx } from "./docx-ites.js?v=2026102901";
-import { wordTarea } from "./tarea-word.js?v=2026110501";
+import { wordTarea } from "./tarea-word.js?v=2026110601";
 import { TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, nombreCatalogo, sugerirAtlas, sugerirCuadro, MIN_PALABRAS_CELDA, sugerirDesarma, CUADRO_MM, INFLUENCIAS, sugerirInfluencias, ESPECIAS, subregionDe, sugerirEspecias } from "./clase-datos.js";
+import { RECADOS, ORIGENES, LLEGADAS, INGS, CLAVE_RECADO, recadoDe, ingsDe, sugerirRecado } from "./recado-datos.js";
+import { idFoto } from "./fotos.js";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -906,7 +908,7 @@ async function iniciarMonitor() {
     document.querySelectorAll('#mon-ver [data-v]').forEach(b => b.addEventListener('click', () => { MON.ver = b.dataset.v; document.querySelectorAll('#mon-ver [data-v]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); pintarMonitor(true); }));
     document.querySelectorAll('#mon-act [data-a]').forEach(b => b.addEventListener('click', () => {
       MON.act = b.dataset.a; document.querySelectorAll('#mon-act [data-a]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-      document.getElementById('mon-expo').hidden = MON.act !== 'especias';
+      document.getElementById('mon-expo').hidden = !['especias', 'recado'].includes(MON.act); document.getElementById('mon-r1').hidden = document.getElementById('mon-r2').hidden = MON.act !== 'recado';
       document.getElementById('mon-clave').hidden = MON.act !== 'cuadro'; document.getElementById('mon-votar').hidden = MON.act !== 'influencias'; document.getElementById('mon-resultados').hidden = MON.act !== 'influencias'; document.getElementById('mon-conts').hidden = MON.act !== 'atlas'; document.getElementById('mon-ver').querySelectorAll('[data-v]').forEach(x => { x.hidden = MON.act !== 'atlas'; });
       Object.keys(MON.datos).filter(k => k.startsWith('e:')).forEach(k => delete MON.datos[k]); suscribirEquiposCont(); pintarMonitor(true);
     }));
@@ -920,6 +922,7 @@ async function iniciarMonitor() {
     document.getElementById('mon-qr').addEventListener('click', () => abrirProyeccion(formacionDeTarea(MON.g, monTarea()), false));
     document.getElementById('voto-cerrar').addEventListener('click', cerrarResultados);
     document.getElementById('mon-clave').addEventListener('click', async () => { await setDoc(doc(db, 'grupos', grupoActivo), { claves: { cuadroMM: !MON.clave } }, { merge: true }); });
+    ['recado1', 'recado2'].forEach((k, i) => document.getElementById('mon-r' + (i + 1)).addEventListener('click', async () => { const on = !((MON.g.claves || {})[k]); await setDoc(doc(db, 'grupos', grupoActivo), { claves: { [k]: on } }, { merge: true }); }));
     document.getElementById('mon-full').addEventListener('click', e => { const on = document.body.classList.toggle('mon-completo'); e.currentTarget.setAttribute('aria-pressed', String(on)); e.currentTarget.textContent = on ? '✕ Salir de pantalla completa' : '⛶ Pantalla completa'; });
     document.getElementById('mon-det-cerrar').addEventListener('click', cerrarDetalle);
     document.getElementById('mon-detalle').addEventListener('click', e => { if (e.target.id === 'mon-detalle') cerrarDetalle(); });
@@ -937,14 +940,14 @@ async function iniciarMonitor() {
     MON.todos = sn.docs.map(d => ({ id: d.id, ...d.data() }));
     suscribirEquiposCont(); pintarMonitor(true);
   }, () => {});
-  MON.subs.push(onSnapshot(doc(db, 'grupos', g), sn => { MON.g = sn.exists() ? sn.data() : {}; if (monFiltrar()) { Object.keys(MON.datos).filter(k => k.startsWith('e:')).forEach(k => delete MON.datos[k]); suscribirEquiposCont(); pintarMonitor(true); } MON.votacion = sn.exists() ? ((sn.data().votaciones || {})[INFLUENCIAS.votacion] || 'cerrada') : 'cerrada'; const bv = document.getElementById('mon-votar'); bv.setAttribute('aria-pressed', String(MON.votacion === 'abierta')); bv.textContent = MON.votacion === 'abierta' ? '🔒 Cerrar votación' : '🗳️ Abrir votación'; MON.clave = !!(sn.exists() && (sn.data().claves || {}).cuadroMM); const b = document.getElementById('mon-clave'); b.setAttribute('aria-pressed', String(MON.clave)); b.textContent = MON.clave ? '🔒 Ocultar clave a los alumnos' : '🔑 Liberar clave'; }, () => {}));
+  MON.subs.push(onSnapshot(doc(db, 'grupos', g), sn => { MON.g = sn.exists() ? sn.data() : {}; if (monFiltrar()) { Object.keys(MON.datos).filter(k => k.startsWith('e:')).forEach(k => delete MON.datos[k]); suscribirEquiposCont(); pintarMonitor(true); } MON.votacion = sn.exists() ? ((sn.data().votaciones || {})[INFLUENCIAS.votacion] || 'cerrada') : 'cerrada'; const bv = document.getElementById('mon-votar'); bv.setAttribute('aria-pressed', String(MON.votacion === 'abierta')); bv.textContent = MON.votacion === 'abierta' ? '🔒 Cerrar votación' : '🗳️ Abrir votación'; MON.clave = !!(sn.exists() && (sn.data().claves || {}).cuadroMM); const b = document.getElementById('mon-clave'); b.setAttribute('aria-pressed', String(MON.clave)); b.textContent = MON.clave ? '🔒 Ocultar clave a los alumnos' : '🔑 Liberar clave'; const cl = (MON.g.claves || {}), r1 = document.getElementById('mon-r1'), r2 = document.getElementById('mon-r2'); r1.setAttribute('aria-pressed', String(!!cl.recado1)); r1.textContent = cl.recado1 ? '🔒 Ocultar clave 1' : '🔑 Liberar clave 1 · ingredientes y guisos'; r2.setAttribute('aria-pressed', String(!!cl.recado2)); r2.textContent = cl.recado2 ? '🔒 Ocultar clave 2' : '🔑 Liberar clave 2 · rutas'; }, () => {}));
   MON.reloj = setInterval(() => pintarTiempos(), 10000);
   pintarMonitor(true);
 }
 // actividades de documento vivo (equipo o individual), a diferencia de Mi atlas
-const monVivo = () => ['cuadro', 'influencias', 'especias'].includes(MON.act);
+const monVivo = () => ['cuadro', 'influencias', 'especias', 'recado'].includes(MON.act);
 // en el monitor solo aparecen los equipos que usa la tarea que estás viendo
-const monTarea = () => MON.act === 'cuadro' ? 'cuadro-mm' : MON.act === 'influencias' ? 'influencias' : MON.act === 'especias' ? 'especias' : 'atlas-' + MON.cont;
+const monTarea = () => MON.act === 'cuadro' ? 'cuadro-mm' : MON.act === 'influencias' ? 'influencias' : MON.act === 'especias' ? 'especias' : MON.act === 'recado' ? 'recado' : 'atlas-' + MON.cont;
 function monFiltrar() {
   const antes = MON.equipos.map(e => e.id).join();
   MON.equipos = equiposDe(MON.todos || [], formacionDeTarea(MON.g, monTarea())).sort(ordenEq);
@@ -953,14 +956,14 @@ function monFiltrar() {
 function suscribirEquiposCont() {
   (MON.eqSubs || []).forEach(u => u()); MON.eqSubs = [];
   monFiltrar();
-  const docAct = MON.act === 'cuadro' ? 'act-cuadro-mm' : MON.act === 'influencias' ? INFLUENCIAS.id : MON.act === 'especias' ? ESPECIAS.id : MON.cont;
+  const docAct = MON.act === 'cuadro' ? 'act-cuadro-mm' : MON.act === 'influencias' ? INFLUENCIAS.id : MON.act === 'especias' ? ESPECIAS.id : MON.act === 'recado' ? RECADOS.id : MON.cont;
   MON.equipos.forEach(eq => MON.eqSubs.push(onSnapshot(doc(db, 'grupos', MON.grupo, 'equipos', eq.id, 'atlas', docAct), sn => {
     MON.datos['e:' + eq.id] = sn.exists() ? sn.data() : null; programarPintado('e:' + eq.id);
   }, () => {})));
   // quienes hacen el cuadro o las influencias solos (sin equipo): su trabajo vive en su cuenta
   Object.keys(MON.datos).filter(k => k.startsWith('i:')).forEach(k => delete MON.datos[k]);
   if (monVivo()) {
-    const docInd = { cuadro: 'tarea-cuadro-mm', influencias: 'tarea-influencias', especias: 'tarea-especias' }[MON.act];
+    const docInd = { cuadro: 'tarea-cuadro-mm', influencias: 'tarea-influencias', especias: 'tarea-especias', recado: 'tarea-recado' }[MON.act];
     alumnosCache.forEach(a => MON.eqSubs.push(onSnapshot(doc(db, 'grupos', MON.grupo, 'alumnos', a.id, 'atlas', docInd), sn => {
       MON.datos['i:' + a.id] = sn.exists() ? { ...sn.data(), ultimoNombre: sn.data().ultimoNombre || a.nombre } : null; programarPintado('i:' + a.id);
     }, () => {})));
@@ -1007,7 +1010,7 @@ function hace(ts) {
 function monTarjetas() {
   const out = [];
   if (monVivo()) {
-    const sr = (eq, id) => MON.act === 'especias' ? `${subregionDe(eq, id)[1]} · ` : '';
+    const sr = (eq, id) => MON.act === 'especias' ? `${subregionDe(eq, id)[1]} · ` : MON.act === 'recado' ? `${recadoDe(eq, id)[1]} · ` : '';
     MON.equipos.forEach(eq => out.push({ clave: 'e:' + eq.id, titulo: eq.nombre, sub: sr(eq) + ((eq.nombres || []).join(', ') || 'sin integrantes'), tipo: 'equipo' }));
     alumnosCache.forEach(a => { if (MON.datos['i:' + a.id]) out.push({ clave: 'i:' + a.id, titulo: a.nombre, sub: sr(null, a.id) + 'trabajo individual', tipo: 'alumno' }); });
     return out;
@@ -1037,6 +1040,7 @@ function actualizarTarjeta(clave, nuevo) {
   if (MON.act === 'cuadro') return actualizarCuadro(card, clave, nuevo);
   if (MON.act === 'influencias') return actualizarInfluencias(card, clave, nuevo);
   if (MON.act === 'especias') return actualizarEspecias(card, clave, nuevo);
+  if (MON.act === 'recado') return actualizarRecado(card, clave, nuevo);
   const v = monVista(clave), st = monStats(v);
   const mapa = card.querySelector('[data-mapa]');
   if (nuevo || !mapa.firstChild) mapa.innerHTML = monMapa(v, 'mon-svg');
@@ -1093,20 +1097,56 @@ function fichaEspeciasHTML(clave, grande) {
   return `<div class="expo-ficha ${grande ? 'grande' : ''}" style="--c:${col}">${grande ? '' : `<p class="expo-sr"><b>${escaparHTML(sn)}</b> · ${escaparHTML(pista)}</p>`}
     ${ESPECIAS.campos.map(([k, t]) => `<section class="expo-c expo-${k}"><h4>${t}${por[k] && !grande ? ` <small class="mon-autor">✍️ ${escaparHTML(por[k])}</small>` : ''}</h4><p>${(c[k] || '').trim() ? e(c[k]) : '<span class="mon-vacio">—</span>'}</p></section>`).join('')}</div>`;
 }
+// ---- fotos de la exposición: se leen solo al abrir la ficha o proyectar (no en las tarjetas)
+const FOTOS_MON = {};
+async function cargarFotosMon(clave, forzar) {
+  if (!forzar && clave in FOTOS_MON) return FOTOS_MON[clave];
+  const id = clave.slice(2), eq = clave.startsWith('e:'), base = MON.act === 'recado' ? (eq ? RECADOS.id : 'tarea-recado') : (eq ? ESPECIAS.id : 'tarea-especias');
+  const out = [];
+  for (const i of [1, 2]) { try { const s = await getDoc(eq ? doc(db, 'grupos', MON.grupo, 'equipos', id, 'atlas', idFoto(base, i)) : doc(db, 'grupos', MON.grupo, 'alumnos', id, 'atlas', idFoto(base, i))); if (s.exists() && s.data().img) out.push(s.data()); } catch { /* */ } }
+  FOTOS_MON[clave] = out; return out;
+}
+const fotosHTML = L => (L || []).map(f => `<figure class="expo-foto"><img src="${f.img}" alt="${escaparHTML(f.pie || 'Foto de la exposición')}">${(f.pie || '').trim() ? `<figcaption>${escaparHTML(f.pie)}</figcaption>` : ''}</figure>`).join('');
+// ---- El recado campechano: tarjeta, ficha y proyección
+const recDe = clave => { const id = clave.slice(2), eq = clave.startsWith('e:') ? MON.equipos.find(e => e.id === id) : null; return recadoDe(eq, eq ? null : id); };
+const nomOr = k => (ORIGENES.find(x => x[0] === k) || [, ''])[1], colOr = k => (ORIGENES.find(x => x[0] === k) || [, , '#C9BFAE'])[2], nomLl = k => (LLEGADAS.find(x => x[0] === k) || [, ''])[1];
+function actualizarRecado(card, clave, nuevo) {
+  const d = MON.datos[clave] || {}, L = ingsDe(d), [, rn, col] = recDe(clave), sg = sugerirRecado(d);
+  card.querySelector('[data-mapa]').innerHTML = `<div class="in-mini"><p style="color:${col === '#2B2622' ? '#555' : col}">🫙 <b>${escaparHTML(rn)}</b></p><div>${L.length ? L.map(x => `<span title="${escaparHTML(nomOr(x.o) || 'sin origen')}" style="${x.o ? `background:${colOr(x.o)};color:#fff` : ''}">${escaparHTML(x.n.slice(0, 12))}</span>`).join('') : '<i>sin ingredientes</i>'}</div></div>`;
+  card.querySelector('[data-barra]').style.width = Math.round(10 * sg.nota) + '%';
+  card.querySelector('[data-num]').innerHTML = `<b>${L.length}</b> ingredientes · ${L.filter(x => x.o && x.l).length} con origen · sugerida <b>${sg.nota}</b>${d.entregado ? ' · ✅ entregada' : ''}`;
+  card.querySelector('[data-ult]').innerHTML = d.ultimoCambio ? `✍️ <b>${escaparHTML(d.ultimoNombre || '')}</b> ${escaparHTML(d.ultimoCambio)}` : '<i>todavía no empiezan</i>';
+  pintarTiempo(card, d.actualizado || null);
+  if (!nuevo) { card.classList.remove('mon-latido'); void card.offsetWidth; card.classList.add('mon-latido'); }
+  if (!document.getElementById('expo-proy').hidden) pintarExpo();
+}
+function fichaRecadoHTML(clave, grande) {
+  const d = MON.datos[clave] || {}, c = d.campos || {}, por = d.por || {}, L = ingsDe(d), [, rn, col, pista] = recDe(clave);
+  const e = x => escaparHTML(x || '').replace(/\n/g, '<br>');
+  const conts = [...new Set(L.map(x => x.o).filter(Boolean))];
+  return `<div class="expo-ficha re-ficha ${grande ? 'grande' : ''}" style="--c:${col}">${grande ? '' : `<p class="expo-sr"><b>${escaparHTML(rn)}</b> · ${escaparHTML(pista)}</p>`}
+    <div class="re-mon-conts">${conts.map(k => `<span style="background:${colOr(k)}">${escaparHTML(nomOr(k))} · ${L.filter(x => x.o === k).length}</span>`).join('')}</div>
+    <div class="re-mon-ings">${L.length ? L.map(x => `<div class="re-mon-ing" style="--o:${colOr(x.o)}"><b>${escaparHTML(x.n)}</b> <small>${escaparHTML(nomOr(x.o) || 'sin origen')} · ${escaparHTML(nomLl(x.l) || 'sin llegada')}</small>${(x.ruta || '').trim() ? `<p>${e(x.ruta)}</p>` : ''}${x.por && !grande ? `<small class="mon-autor">✍️ ${escaparHTML(x.por)}</small>` : ''}</div>`).join('') : '<p class="mon-vacio">Todavía sin ingredientes.</p>'}</div>
+    ${RECADOS.campos.map(([k, t]) => `<section class="expo-c"><h4>${t}${por[k] && !grande ? ` <small class="mon-autor">✍️ ${escaparHTML(por[k])}</small>` : ''}</h4><p>${(c[k] || '').trim() ? e(c[k]) : '<span class="mon-vacio">—</span>'}</p></section>`).join('')}
+    ${grande ? '' : '<div class="expo-fotos" data-fotos></div>'}</div>`;
+}
 let EXPO = 0;
 const expoClaves = () => monTarjetas().filter(t => MON.datos[t.clave]).map(t => t.clave)
-  .sort((a, b) => ESPECIAS.subregiones.findIndex(x => x[0] === subDe(a)[0]) - ESPECIAS.subregiones.findIndex(x => x[0] === subDe(b)[0]));
-function abrirExpo(i) { EXPO = i; document.getElementById('expo-proy').hidden = false; document.body.classList.add('con-qr'); pintarExpo(); }
+  .sort((a, b) => MON.act === 'recado' ? RECADOS.lista.findIndex(x => x[0] === recDe(a)[0]) - RECADOS.lista.findIndex(x => x[0] === recDe(b)[0])
+    : ESPECIAS.subregiones.findIndex(x => x[0] === subDe(a)[0]) - ESPECIAS.subregiones.findIndex(x => x[0] === subDe(b)[0]));
+function abrirExpo(i) { Object.keys(FOTOS_MON).forEach(k => delete FOTOS_MON[k]); EXPO = i; document.getElementById('expo-proy').hidden = false; document.body.classList.add('con-qr'); pintarExpo(); }
 function cerrarExpo() { document.getElementById('expo-proy').hidden = true; document.body.classList.remove('con-qr'); }
 function moverExpo(d) { const n = expoClaves().length; if (!n) return; EXPO = (EXPO + d + n) % n; pintarExpo(); }
 function pintarExpo() {
   const ks = expoClaves(), cuerpo = document.getElementById('expo-cuerpo');
-  if (!ks.length) { document.getElementById('expo-tit').textContent = 'Las especias de Asia'; document.getElementById('expo-tit').style.color = ''; document.getElementById('expo-sub').textContent = ''; cuerpo.innerHTML = '<p>Todavía ningún equipo ha escrito su ficha.</p>'; return; }
+  if (!ks.length) { document.getElementById('expo-tit').textContent = MON.act === 'recado' ? 'El recado campechano' : 'Las especias de Asia'; document.getElementById('expo-tit').style.color = ''; document.getElementById('expo-sub').textContent = ''; cuerpo.innerHTML = '<p>Todavía ningún equipo ha escrito su ficha.</p>'; return; }
   EXPO = Math.min(EXPO, ks.length - 1);
-  const k = ks[EXPO], t = monTarjetas().find(x => x.clave === k) || { titulo: '' }, [, sn, col] = subDe(k);
-  const et = document.getElementById('expo-tit'); et.textContent = sn; et.style.color = col;
+  const k = ks[EXPO], t = monTarjetas().find(x => x.clave === k) || { titulo: '' }, [, sn, col] = MON.act === 'recado' ? recDe(k) : subDe(k);
+  const et = document.getElementById('expo-tit'); et.textContent = MON.act === 'recado' ? '🫙 ' + sn : sn; et.style.color = col;
   document.getElementById('expo-sub').textContent = `${t.titulo} · ${EXPO + 1} de ${ks.length} · usa ← → para cambiar de equipo`;
-  cuerpo.innerHTML = fichaEspeciasHTML(k, true);
+  const fotos = FOTOS_MON[k];
+  cuerpo.innerHTML = `<div class="expo-con-fotos">${MON.act === 'recado' ? fichaRecadoHTML(k, true) : fichaEspeciasHTML(k, true)}${fotos && fotos.length ? `<div class="expo-fotos">${fotosHTML(fotos)}</div>` : ''}</div>`;
+  if (!(k in FOTOS_MON)) cargarFotosMon(k).then(f => { if (f.length && !document.getElementById('expo-proy').hidden) pintarExpo(); });
 }
 // ---- resultados de la votación, en vivo para proyectar
 let VOTOS = { subs: [], votos: {} };
@@ -1131,17 +1171,26 @@ function pintarTiempos() { document.querySelectorAll('.mon-card').forEach(c => p
 function pintarResumen() {
   const el = document.getElementById('mon-resumen'); if (!el) return;
   const ts = monTarjetas(); const activos = ts.filter(t => hace(actividadDe(t.clave)).cls === 'verde').length;
-  el.innerHTML = `<span class="mon-punto verde"></span> <b>${activos}</b> trabajando ahora (últimos 2 min) · ${ts.length} en total · ${MON.act === 'especias' ? 'Las especias de Asia' : MON.act === 'influencias' ? 'Siete influencias' : MON.act === 'cuadro' ? 'Cuadro mexica–maya' : escaparHTML(MON_ATLAS ? MON_ATLAS.continentes[MON.cont].nombre : '')} · 👥 ${escaparHTML((formaciones(MON.g)[formacionDeTarea(MON.g, monTarea())] || {}).nombre || '')}`;
+  el.innerHTML = `<span class="mon-punto verde"></span> <b>${activos}</b> trabajando ahora (últimos 2 min) · ${ts.length} en total · ${MON.act === 'especias' ? 'Las especias de Asia' : MON.act === 'recado' ? 'El recado campechano' : MON.act === 'influencias' ? 'Siete influencias' : MON.act === 'cuadro' ? 'Cuadro mexica–maya' : escaparHTML(MON_ATLAS ? MON_ATLAS.continentes[MON.cont].nombre : '')} · 👥 ${escaparHTML((formaciones(MON.g)[formacionDeTarea(MON.g, monTarea())] || {}).nombre || '')}`;
 }
 function abrirDetalle(clave) { MON.abierto = clave; document.getElementById('mon-detalle').hidden = false; document.body.classList.add('con-qr'); pintarDetalle(true); }
 function cerrarDetalle() { MON.abierto = null; document.getElementById('mon-detalle').hidden = true; document.body.classList.remove('con-qr'); }
 function pintarDetalle(nuevo) {
   const clave = MON.abierto; if (!clave) return;
+  if (MON.act === 'recado') {
+    const t = monTarjetas().find(x => x.clave === clave) || { titulo: '', sub: '' }, d = MON.datos[clave] || {};
+    document.getElementById('mon-det-titulo').textContent = t.titulo;
+    document.getElementById('mon-det-sub').textContent = `${t.sub} · El recado campechano · ${hace(d.actualizado).txt} · sugerida ${sugerirRecado(d).nota}`;
+    document.getElementById('mon-det-cuerpo').innerHTML = fichaRecadoHTML(clave);
+    cargarFotosMon(clave).then(f => { if (MON.abierto === clave) { const z = document.querySelector('#mon-det-cuerpo [data-fotos]'); if (z) z.innerHTML = fotosHTML(f); } });
+    return;
+  }
   if (MON.act === 'especias') {
     const t = monTarjetas().find(x => x.clave === clave) || { titulo: '', sub: '' }, d = MON.datos[clave] || {};
     document.getElementById('mon-det-titulo').textContent = t.titulo;
     document.getElementById('mon-det-sub').textContent = `${t.sub} · Las especias de Asia · ${hace(d.actualizado).txt} · sugerida ${sugerirEspecias(d).nota}`;
-    document.getElementById('mon-det-cuerpo').innerHTML = fichaEspeciasHTML(clave);
+    document.getElementById('mon-det-cuerpo').innerHTML = fichaEspeciasHTML(clave) + '<div class="expo-fotos" data-fotos></div>';
+    cargarFotosMon(clave, nuevo).then(f => { if (MON.abierto === clave) { const z = document.querySelector('#mon-det-cuerpo [data-fotos]'); if (z) z.innerHTML = fotosHTML(f); } });
     return;
   }
   if (MON.act === 'influencias') {
@@ -1256,6 +1305,10 @@ async function calificarTareaDig(a, enCatalogo) {
         let datos = eq ? await docEquipo(eq, ESPECIAS.id) : null;
         if (!datos) { const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'tarea-especias')); datos = s.exists() ? s.data() : null; }
         if (datos) { word = datos; sug = sugerirEspecias(datos); entregado = datos.entregado || null; const c = datos.campos || {}; resumen = `${subregionDe(eq, al.id)[1]} · ` + ESPECIAS.campos.slice(0, 3).map(([k, t]) => `${t.replace(/^\S+\s/, '')}: ${(c[k] || '—').slice(0, 80)}`).join(' · '); }
+      } else if (a.tipo === 'recado') {
+        let datos = eq ? await docEquipo(eq, RECADOS.id) : null;
+        if (!datos) { const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'tarea-recado')); datos = s.exists() ? s.data() : null; }
+        if (datos) { word = datos; sug = sugerirRecado(datos); entregado = datos.entregado || null; resumen = `${recadoDe(eq, al.id)[1]} · ` + ingsDe(datos).map(x => x.n).join(', ') + ((datos.campos || {}).guisos ? ' · Guisos: ' + datos.campos.guisos.slice(0, 160) : ''); }
       } else if (a.tipo === 'desarma') {
         const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'tarea-desarma'));
         if (s.exists()) { const m = s.data().datos || {}; if ((m.ficha || {}).nombre) word = m; sug = sugerirDesarma(m); entregado = s.data().entregado || null; resumen = ['q1', 'q2', 'q3'].map(k => ((m.ficha || {})[k] || '').trim()).filter(Boolean).join(' · ').slice(0, 400); }
@@ -1266,7 +1319,7 @@ async function calificarTareaDig(a, enCatalogo) {
   const f = t => t && t.toDate ? t.toDate().toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : typeof t === 'number' ? new Date(t).toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
   wrap.innerHTML = `<h4 class="td-h4">Calificar: ${escaparHTML(nombreCatalogo(a))}</h4>
     ${enCatalogo ? '' : '<p class="aviso-td">⚠️ Esta tarea todavía no está en el catálogo: las calificaciones se guardan, pero no cuentan en el promedio hasta que la agregues.</p>'}
-    <p class="field-hint">La calificación sugerida sale de qué tan completo está el trabajo${a.tipo === 'atlas' ? ' (la mitad por países clasificados y la mitad por fichas con al menos 4 de 7 apartados)' : a.tipo === 'cuadro' ? ` (8 puntos por las ${CUADRO_MM.filas.length * CUADRO_MM.columnas.length} celdas llenas —cuenta la que tiene ${MIN_PALABRAS_CELDA} palabras o más— y 2 puntos por las fuentes de las 4 filas de investigación, medio punto cada una)` : a.tipo === 'influencias' ? ' (1 punto por elegir platillo, 1.5 por cada influencia con evidencia —hasta 4— y 3 por un argumento de al menos 60 palabras)' : a.tipo === 'especias' ? ' (1.5 por cada uno de especia, técnica, platillo y conexión con México con 8 palabras o más, hasta 3 por un «por qué» de 30 palabras y 1 por la fuente)' : ' (solo la ficha del platillo investigado: datos 1.5, ingredientes clasificados y su origen 4, técnicas 1, conclusión de 25 palabras por pregunta 3 y fuentes 0.5; la del proyecto no cuenta)'}. En equipo, todos reciben la misma sugerencia; puedes ajustar a quien no aportó (en el Monitor ves quién escribió qué).</p>
+    <p class="field-hint">La calificación sugerida sale de qué tan completo está el trabajo${a.tipo === 'atlas' ? ' (la mitad por países clasificados y la mitad por fichas con al menos 4 de 7 apartados)' : a.tipo === 'cuadro' ? ` (8 puntos por las ${CUADRO_MM.filas.length * CUADRO_MM.columnas.length} celdas llenas —cuenta la que tiene ${MIN_PALABRAS_CELDA} palabras o más— y 2 puntos por las fuentes de las 4 filas de investigación, medio punto cada una)` : a.tipo === 'influencias' ? ' (1 punto por elegir platillo, 1.5 por cada influencia con evidencia —hasta 4— y 3 por un argumento de al menos 60 palabras)' : a.tipo === 'especias' ? ' (1.5 por cada uno de especia, técnica, platillo y conexión con México con 8 palabras o más, hasta 3 por un «por qué» de 30 palabras y 1 por la fuente)' : a.tipo === 'recado' ? ' (0.5 por ingrediente con origen y llegada —hasta 6—, 0.5 por ruta explicada con 10 palabras o más —hasta 4—, 2 por los guisos, 2 por la conclusión y 1 por las fuentes)' : ' (solo la ficha del platillo investigado: datos 1.5, ingredientes clasificados y su origen 4, técnicas 1, conclusión de 25 palabras por pregunta 3 y fuentes 0.5; la del proyecto no cuenta)'}. En equipo, todos reciben la misma sugerencia; puedes ajustar a quien no aportó (en el Monitor ves quién escribió qué).</p>
     <div class="quiz-actions" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;"><button type="button" class="btn btn-ghost-dark btn-small" id="td-usar">Usar sugeridas en las vacías</button><button type="button" class="btn btn-ghost-dark btn-small" id="td-zip">⬇ Word de todos (.zip)</button><button type="button" class="btn btn-ghost-dark btn-small" id="td-cerrar">Cerrar</button><span class="field-hint" id="td-zip-msg"></span></div>
     <div class="taller-tabla-wrap"><table class="taller-tabla td-tabla"><thead><tr><th>Alumno</th><th>Trabajo</th><th>Entrega</th><th>Sugerida</th><th>Calificación</th><th title="Falta justificada: la tarea no le cuenta en el promedio">Exento</th><th>Word</th></tr></thead><tbody>
     ${filas.map(x => `<tr data-id="${x.al.id}"><td><b>${escaparHTML(x.al.nombre)}</b>${x.eq ? `<br><small>👥 ${escaparHTML(x.eq.nombre)}</small>` : ''}</td>
@@ -1278,7 +1331,14 @@ async function calificarTareaDig(a, enCatalogo) {
       <td>${x.word ? `<button type="button" class="btn btn-small td-word" data-w="${x.al.id}" title="Descargar su trabajo en Word">⬇</button>` : '<small>—</small>'}</td></tr>`).join('')}</tbody></table></div>
     <button type="button" class="btn btn-primary btn-block" id="td-guardar">Guardar calificaciones</button><p class="save-msg" id="td-msg" hidden></p>`;
   document.getElementById('td-cerrar').addEventListener('click', () => { wrap.hidden = true; });
-  const wordDe = x => wordTarea(a, x.word, { eq: x.eq, nombre: x.al.nombre, alumnoId: x.al.id });
+  // en especias y recado, las fotos de la exposición también van al Word
+  const fotosDe = async x => {
+    if (!['especias', 'recado'].includes(a.tipo)) return null;
+    const base = a.tipo === 'recado' ? (x.eq ? RECADOS.id : 'tarea-recado') : (x.eq ? ESPECIAS.id : 'tarea-especias'), out = [];
+    for (const i of [1, 2]) { try { const s = await getDoc(x.eq ? doc(db, 'grupos', g, 'equipos', x.eq.id, 'atlas', idFoto(base, i)) : doc(db, 'grupos', g, 'alumnos', x.al.id, 'atlas', idFoto(base, i))); if (s.exists() && s.data().img) out.push(s.data()); } catch { /* */ } }
+    return out;
+  };
+  const wordDe = async x => wordTarea(a, x.word, { eq: x.eq, nombre: x.al.nombre, alumnoId: x.al.id, fotos: await fotosDe(x) });
   wrap.querySelectorAll('.td-word').forEach(b => b.addEventListener('click', async () => {
     const x = filas.find(y => y.al.id === b.dataset.w); b.disabled = true;
     try { const r = await wordDe(x); bajarArchivo(r.blob, r.archivo); } catch (e) { alert('No se pudo generar el Word: ' + (e.message || e)); } finally { b.disabled = false; }

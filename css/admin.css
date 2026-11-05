@@ -711,3 +711,25 @@ body.mon-completo .mon-grid { grid-template-columns: repeat(auto-fill, minmax(21
 .mz-exento { display: inline-grid; place-items: center; width: 54px; padding: 8px 0; border-radius: 8px; background: color-mix(in srgb, #2E6FA8 14%, transparent); color: #2E6FA8; font: 800 .8rem var(--font-body); }
 .td-cierre { display: inline-flex; align-items: center; gap: 6px; font-size: .82rem; font-weight: 600; }
 .td-cierre input { font: inherit; font-weight: 400; padding: 5px 8px; border-radius: 8px; border: 1.5px solid var(--line); background: var(--cream); color: var(--ink); }
+
+/* ---- Fotos de la exposición y el recado campechano */
+.expo-con-fotos { display: grid; gap: 16px; max-width: 1400px; margin: 0 auto; }
+.expo-fotos { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; grid-column: 1 / -1; }
+.expo-foto { margin: 0; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 6px rgba(0,0,0,.12); }
+.expo-foto img { display: block; width: 100%; max-height: 46vh; object-fit: contain; background: #f2efe8; }
+.expo-foto figcaption { padding: 6px 12px; font-size: 1rem; color: #4a4339; }
+.re-ficha .re-mon-conts { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; }
+.re-mon-conts span { color: #fff; font-weight: 700; padding: 4px 12px; border-radius: 999px; font-size: .9rem; }
+.re-mon-ings { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px; }
+.re-mon-ing { --o: #C9BFAE; background: #fff; border-left: 6px solid var(--o); border-radius: 8px; padding: 8px 12px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+.re-mon-ing small { display: block; color: #6b6358; }
+.re-mon-ing p { margin: 4px 0 0; font-size: .92rem; line-height: 1.4; }
+.re-ficha .expo-c { grid-column: span 1; }
+.expo-ficha.grande .re-mon-ing b { font-size: 1.25rem; }
+.expo-ficha.grande .re-mon-ing p, .expo-ficha.grande .re-mon-ing small { font-size: 1.05rem; }
+.expo-ficha.grande .re-mon-conts span { font-size: 1.1rem; }
+@media (min-width: 1000px) {
+  .expo-con-fotos:has(> .expo-fotos) { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); align-items: start; }
+  .expo-con-fotos > .expo-fotos { grid-template-columns: 1fr; grid-column: auto; }
+  .expo-con-fotos > .expo-fotos img { max-height: 40vh; }
+}
