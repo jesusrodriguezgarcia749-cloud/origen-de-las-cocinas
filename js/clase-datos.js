@@ -135,9 +135,11 @@ export const TEMAS_TAREAS = [
     { id: 'atlas-asia', tipo: 'atlas', cont: 'asia', icono: '🗺️', nombre: 'Mi atlas: Asia', modo: 'En equipo o individual', desc: 'Tus regiones culinarias de Asia.' },
   ] },
   { tema: '3.4', titulo: 'Cocinas europeas', fecha: '2026-11-06', fechaTexto: 'Vie 6 de noviembre', acts: [
+    { id: 'que-europa', tipo: 'practica', icono: '🧭', nombre: '¿De qué bloque de Europa es?', modo: 'Juego de práctica', desc: 'Paella, chucrut, gravlax, fish and chips, baguette… ¿Mediterráneo, Centroeuropa y Este, Nórdico, Islas Británicas o Francia? Con las trampas de los ingredientes americanos.' },
     { id: 'atlas-europa', tipo: 'atlas', cont: 'europa', icono: '🗺️', nombre: 'Mi atlas: Europa', modo: 'En equipo o individual', desc: 'Tus regiones culinarias de Europa.' },
   ] },
   { tema: '3.5', titulo: 'Cocinas de Oceanía', fecha: '2026-11-12', fechaTexto: 'Jue 12 de noviembre', acts: [
+    { id: 'vuelta-mundo', tipo: 'practica', icono: '🌍', nombre: 'Vuelta al mundo: gran repaso del Tema 3', modo: 'Juego de práctica', desc: 'Hangi, injera, chuño, kimchi, chucrut, pavlova… ¿de qué continente es? Las cinco regiones del Tema 3 en un solo juego, con las trampas que los conectan.' },
     { id: 'atlas-oceania', tipo: 'atlas', cont: 'oceania', icono: '🗺️', nombre: 'Mi atlas: Oceanía', modo: 'En equipo o individual', desc: 'Tus regiones culinarias de Oceanía y sus islas.' },
   ] },
 ];

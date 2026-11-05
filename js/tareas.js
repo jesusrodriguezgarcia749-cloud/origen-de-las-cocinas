@@ -14,6 +14,8 @@ import { DocITES } from "./docx-ites.js";
 import { INGREDIENTES, CONTINENTES } from "./aporto-datos.js";
 import { BALUARTES, CAMPECHE, QUE_INFLUENCIA, PAISES_AM, PLATILLOS_AM } from "./america-datos.js";
 import { QUE_ASIA } from "./asia-datos.js";
+import { QUE_EUROPA, BLOQUES_EU } from "./europa-datos.js";
+import { VUELTA_MUNDO, CONTINENTES_T3 } from "./oceania-datos.js";
 import { formacionDe, formaciones, formacionDeTarea, abiertas as inscAbiertas, equipoDe, equiposDe, tareasDeFormacion, enEquipo } from "./equipos.js";
 
 const db = getFirestore(initializeApp(firebaseConfig));
@@ -194,7 +196,7 @@ function ruta() {
   const c = $('#cl-actividad');
   c.innerHTML = `<a class="cl-volver" href="#">← Todas las tareas</a><p class="cl-fecha">Tema ${esc(a.tema)} · ${esc(a.titulo)} · ${esc(a.fechaTexto)}</p><h2 class="cl-h2">${a.icono} ${esc(a.nombre)}</h2>
     ${califica(a) ? '<p class="cl-vale">📌 Cuenta como una tarea del Parcial 2.</p>' : '<p class="cl-vale cl-vale-p">🎯 Práctica para repasar: no lleva calificación.</p>'}<div id="cl-cuerpo"></div>`;
-  (a.tipo === 'practica' ? { aporto: actAporto, campeche: actCampeche, 'que-influencia': actQueInfluencia, 'platillos-america': actPlatillosAmerica, 'que-asia': actQueAsia }[a.id] : { cuadro: actCuadro, desarma: actDesarma, influencias: actInfluencias, especias: actEspecias }[a.tipo])($('#cl-cuerpo'));
+  (a.tipo === 'practica' ? { aporto: actAporto, campeche: actCampeche, 'que-influencia': actQueInfluencia, 'platillos-america': actPlatillosAmerica, 'que-asia': actQueAsia, 'que-europa': actQueEuropa, 'vuelta-mundo': actVueltaMundo }[a.id] : { cuadro: actCuadro, desarma: actDesarma, influencias: actInfluencias, especias: actEspecias }[a.tipo])($('#cl-cuerpo'));
   window.scrollTo({ top: 0 });
 }
 // El QR de un equipo abre tareas.html#unir-CODIGO (vía unir.html): entra, se une y va a su tarea.
@@ -1060,4 +1062,34 @@ function especias(cont, eq) {
   const salir = () => V.flush();
   window.addEventListener('beforeunload', salir);
   detener = () => { V.cerrar(); window.removeEventListener('estado-tareas', repEntrega); window.removeEventListener('beforeunload', salir); };
+}
+
+// ---- Juegos de «¿de dónde es?» con opciones de color (bloques de Europa, continentes del Tema 3)
+function juegoOpciones(cont, { clave, intro, niveles, items, opciones, que, estudiarBoton, estudiarIntro }) {
+  const nom = k => (opciones.find(x => x[0] === k) || [])[1];
+  juegoPreguntas(cont, {
+    clave, seg: 12, intro, niveles, items,
+    preparar: x => ({ carta: `<span class="ap-emo">${x.e}</span><b class="jp-q">${esc(x.q)}</b>`, opciones: opciones.map(([k, n, col]) => ({ v: k, t: esc(n), style: `--c:${col}` })), correctas: [x.c], clase: 'jp-infl' }),
+    mal: x => `No: la respuesta es ${nom(x.c)}.`,
+    explicar: x => `<p class="ap-dato">${esc(x.x)}</p>`,
+    repaso: x => `${x.e} <b>${esc(x.q)}</b> → ${esc(nom(x.c))}. <span class="ap-dato">${esc(x.x)}</span>`,
+    estudiar: { boton: estudiarBoton, intro: estudiarIntro, filtros: [['todos', 'Todos', () => true], ...opciones.map(([k, n]) => [k, n, x => x.c === k])], uno: 'ejemplo', varios: 'ejemplos', texto: x => x.q + ' ' + nom(x.c) + ' ' + x.x,
+      fila: x => { const S = opciones.find(y => y[0] === x.c); return `<div class="ap-fila" style="border-left-color:${S[2]}"><span class="ap-fe">${x.e}</span><div><b>${esc(x.q)}</b> <small class="ap-tag">${esc(S[1])}</small><p class="ap-dato">${esc(x.x)}</p></div></div>`; } },
+  });
+}
+function actQueEuropa(cont) {
+  juegoOpciones(cont, {
+    clave: 'queeuropa', items: QUE_EUROPA, opciones: BLOQUES_EU, que: '',
+    intro: 'La cocina europea se estudia en <b>cuatro bloques</b> (Mediterráneo, Centroeuropa y Este, Nórdico e Islas Británicas) y <b>Francia</b>, «el caso aparte». Aparece un platillo, ingrediente o dato: <b>¿de qué bloque es?</b> Cuidado con las trampas: muchos ingredientes «europeos» llegaron de América. Es el calentamiento para tu Mi atlas: Europa.',
+    niveles: [{ id: 'basico', n: 'Básico', ico: '🌱', preg: 12, desc: 'Los platillos y rasgos más conocidos de cada bloque.', filtro: x => x.niv === 1 }, { id: 'experto', n: 'Experto', ico: '🏆', preg: 20, desc: 'Todo, con las trampas de los ingredientes americanos.', filtro: () => true }],
+    estudiarBoton: 'Estudiar los bloques de Europa', estudiarIntro: 'Cada bloque de Europa con sus platillos, ingredientes y datos del juego.',
+  });
+}
+function actVueltaMundo(cont) {
+  juegoOpciones(cont, {
+    clave: 'vueltamundo', items: VUELTA_MUNDO, opciones: CONTINENTES_T3, que: '',
+    intro: 'El <b>gran repaso del Tema 3</b>: las cinco regiones del mundo en un solo juego. Aparece un platillo, una técnica o un dato: <b>¿de qué continente es?</b> Ojo con las trampas que conectan continentes: los hornos de tierra, el camote en la Polinesia, el curry en Fiyi.',
+    niveles: [{ id: 'ronda', n: 'Ronda de 15', ico: '🌍', preg: 15, desc: '15 preguntas al azar de los cinco continentes.', filtro: x => x.niv === 1 }, { id: 'experto', n: 'Experto', ico: '🏆', preg: 25, desc: 'Con trampas: lo que parece de un continente y es de otro.', filtro: () => true }, { id: 'todas', n: 'Todas', ico: '📚', preg: 999, desc: `Las ${VUELTA_MUNDO.length} preguntas, para dominar el Tema 3 antes del examen.`, filtro: () => true }],
+    estudiarBoton: 'Estudiar el Tema 3 completo', estudiarIntro: 'Todo lo del juego, por continente: un repaso del Tema 3 para el examen.',
+  });
 }
