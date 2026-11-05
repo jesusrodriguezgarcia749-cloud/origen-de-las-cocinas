@@ -259,3 +259,17 @@ body.cp-sin-scroll { overflow: hidden; }
 @keyframes cp-chispa { 0% { opacity: 1; transform: rotate(var(--a)) translateX(0); } 100% { opacity: 0; transform: rotate(var(--a)) translateX(46px); } }
 .cp-barco-f { animation: cp-navega 1.8s ease-out both; animation-delay: var(--d); }
 .cp-quieto *, .cp-quieto { animation-duration: .01s !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; }
+/* ---- Las especias de Asia */
+.es-sub { margin: 14px 0; padding: 14px 18px; border-radius: var(--radius); background: color-mix(in srgb, var(--c) 12%, var(--cream)); border-left: 8px solid var(--c); box-shadow: var(--shadow-card); }
+.es-sub small { display: block; font: 700 .78rem var(--font-body); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
+.es-sub b { display: block; font: 700 1.7rem var(--font-display, Georgia, serif); color: var(--c); margin: 2px 0 4px; }
+.es-sub p { margin: 0; font-size: .95rem; }
+.es-campos { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+.es-campo { display: grid; gap: 4px; background: var(--cream); border-radius: 12px; padding: 12px 14px; box-shadow: var(--shadow-card); }
+.es-campo[data-c="porque"] { grid-column: 1 / -1; }
+.es-cab { display: flex; flex-wrap: wrap; gap: 6px; align-items: baseline; justify-content: space-between; }
+.es-ayuda { color: var(--ink-soft); font-size: .84rem; line-height: 1.35; }
+.es-campo textarea { font: inherit; font-size: .95rem; width: 100%; box-sizing: border-box; padding: 9px 11px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--parchment); color: var(--ink); resize: vertical; }
+.es-cuenta { font-size: .8rem; color: var(--ink-soft); }
+.es-cuenta.ok { color: #2e7d32; font-weight: 700; }
+.es-sug { color: var(--ink-soft); font-size: .88rem; margin: 10px 2px; }

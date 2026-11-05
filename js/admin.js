@@ -16,7 +16,7 @@ import { vistaRapida } from "./matriz.js";
 import { BASE, enEquipo, formacionDe, formaciones, ordenFormaciones, formacionDeTarea, equiposDe, tareasDeFormacion, urlUnir, qrSvg } from "./equipos.js";
 import { wordMiPlato, numsDe as numsMiPlato, estadoEntrega as estadoMiPlato, slugArchivo, ORDEN as ORDEN_MP } from "./mi-plato-word.js?v=2026102901";
 import { zipDocx } from "./docx-ites.js?v=2026102901";
-import { TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, nombreCatalogo, sugerirAtlas, sugerirCuadro, MIN_PALABRAS_CELDA, sugerirDesarma, CUADRO_MM, INFLUENCIAS, sugerirInfluencias } from "./clase-datos.js";
+import { TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, nombreCatalogo, sugerirAtlas, sugerirCuadro, MIN_PALABRAS_CELDA, sugerirDesarma, CUADRO_MM, INFLUENCIAS, sugerirInfluencias, ESPECIAS, subregionDe, sugerirEspecias } from "./clase-datos.js";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -898,11 +898,17 @@ async function iniciarMonitor() {
     document.querySelectorAll('#mon-ver [data-v]').forEach(b => b.addEventListener('click', () => { MON.ver = b.dataset.v; document.querySelectorAll('#mon-ver [data-v]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); pintarMonitor(true); }));
     document.querySelectorAll('#mon-act [data-a]').forEach(b => b.addEventListener('click', () => {
       MON.act = b.dataset.a; document.querySelectorAll('#mon-act [data-a]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+      document.getElementById('mon-expo').hidden = MON.act !== 'especias';
       document.getElementById('mon-clave').hidden = MON.act !== 'cuadro'; document.getElementById('mon-votar').hidden = MON.act !== 'influencias'; document.getElementById('mon-resultados').hidden = MON.act !== 'influencias'; document.getElementById('mon-conts').hidden = MON.act !== 'atlas'; document.getElementById('mon-ver').querySelectorAll('[data-v]').forEach(x => { x.hidden = MON.act !== 'atlas'; });
       Object.keys(MON.datos).filter(k => k.startsWith('e:')).forEach(k => delete MON.datos[k]); suscribirEquiposCont(); pintarMonitor(true);
     }));
     document.getElementById('mon-votar').addEventListener('click', async () => { const ab = MON.votacion === 'abierta'; if (ab && !confirm('¿Cerrar la votación? Los alumnos ya no podrán votar ni cambiar su voto.')) return; await setDoc(doc(db, 'grupos', grupoActivo), { votaciones: { [INFLUENCIAS.votacion]: ab ? 'cerrada' : 'abierta' } }, { merge: true }); });
     document.getElementById('mon-resultados').addEventListener('click', abrirResultados);
+    document.getElementById('mon-expo').addEventListener('click', () => abrirExpo(0));
+    document.getElementById('expo-cerrar').addEventListener('click', cerrarExpo);
+    document.getElementById('expo-ant').addEventListener('click', () => moverExpo(-1));
+    document.getElementById('expo-sig').addEventListener('click', () => moverExpo(1));
+    document.addEventListener('keydown', e => { if (document.getElementById('expo-proy').hidden) return; if (e.key === 'ArrowRight') moverExpo(1); else if (e.key === 'ArrowLeft') moverExpo(-1); else if (e.key === 'Escape') cerrarExpo(); });
     document.getElementById('mon-qr').addEventListener('click', () => abrirProyeccion(formacionDeTarea(MON.g, monTarea()), false));
     document.getElementById('voto-cerrar').addEventListener('click', cerrarResultados);
     document.getElementById('mon-clave').addEventListener('click', async () => { await setDoc(doc(db, 'grupos', grupoActivo), { claves: { cuadroMM: !MON.clave } }, { merge: true }); });
@@ -927,8 +933,10 @@ async function iniciarMonitor() {
   MON.reloj = setInterval(() => pintarTiempos(), 10000);
   pintarMonitor(true);
 }
+// actividades de documento vivo (equipo o individual), a diferencia de Mi atlas
+const monVivo = () => ['cuadro', 'influencias', 'especias'].includes(MON.act);
 // en el monitor solo aparecen los equipos que usa la tarea que estás viendo
-const monTarea = () => MON.act === 'cuadro' ? 'cuadro-mm' : MON.act === 'influencias' ? 'influencias' : 'atlas-' + MON.cont;
+const monTarea = () => MON.act === 'cuadro' ? 'cuadro-mm' : MON.act === 'influencias' ? 'influencias' : MON.act === 'especias' ? 'especias' : 'atlas-' + MON.cont;
 function monFiltrar() {
   const antes = MON.equipos.map(e => e.id).join();
   MON.equipos = equiposDe(MON.todos || [], formacionDeTarea(MON.g, monTarea())).sort(ordenEq);
@@ -937,14 +945,14 @@ function monFiltrar() {
 function suscribirEquiposCont() {
   (MON.eqSubs || []).forEach(u => u()); MON.eqSubs = [];
   monFiltrar();
-  const docAct = MON.act === 'cuadro' ? 'act-cuadro-mm' : MON.act === 'influencias' ? INFLUENCIAS.id : MON.cont;
+  const docAct = MON.act === 'cuadro' ? 'act-cuadro-mm' : MON.act === 'influencias' ? INFLUENCIAS.id : MON.act === 'especias' ? ESPECIAS.id : MON.cont;
   MON.equipos.forEach(eq => MON.eqSubs.push(onSnapshot(doc(db, 'grupos', MON.grupo, 'equipos', eq.id, 'atlas', docAct), sn => {
     MON.datos['e:' + eq.id] = sn.exists() ? sn.data() : null; programarPintado('e:' + eq.id);
   }, () => {})));
   // quienes hacen el cuadro o las influencias solos (sin equipo): su trabajo vive en su cuenta
   Object.keys(MON.datos).filter(k => k.startsWith('i:')).forEach(k => delete MON.datos[k]);
-  if (MON.act === 'cuadro' || MON.act === 'influencias') {
-    const docInd = MON.act === 'cuadro' ? 'tarea-cuadro-mm' : 'tarea-influencias';
+  if (monVivo()) {
+    const docInd = { cuadro: 'tarea-cuadro-mm', influencias: 'tarea-influencias', especias: 'tarea-especias' }[MON.act];
     alumnosCache.forEach(a => MON.eqSubs.push(onSnapshot(doc(db, 'grupos', MON.grupo, 'alumnos', a.id, 'atlas', docInd), sn => {
       MON.datos['i:' + a.id] = sn.exists() ? { ...sn.data(), ultimoNombre: sn.data().ultimoNombre || a.nombre } : null; programarPintado('i:' + a.id);
     }, () => {})));
@@ -990,9 +998,10 @@ function hace(ts) {
 }
 function monTarjetas() {
   const out = [];
-  if (MON.act === 'cuadro' || MON.act === 'influencias') {
-    MON.equipos.forEach(eq => out.push({ clave: 'e:' + eq.id, titulo: eq.nombre, sub: (eq.nombres || []).join(', ') || 'sin integrantes', tipo: 'equipo' }));
-    alumnosCache.forEach(a => { if (MON.datos['i:' + a.id]) out.push({ clave: 'i:' + a.id, titulo: a.nombre, sub: 'trabajo individual', tipo: 'alumno' }); });
+  if (monVivo()) {
+    const sr = (eq, id) => MON.act === 'especias' ? `${subregionDe(eq, id)[1]} · ` : '';
+    MON.equipos.forEach(eq => out.push({ clave: 'e:' + eq.id, titulo: eq.nombre, sub: sr(eq) + ((eq.nombres || []).join(', ') || 'sin integrantes'), tipo: 'equipo' }));
+    alumnosCache.forEach(a => { if (MON.datos['i:' + a.id]) out.push({ clave: 'i:' + a.id, titulo: a.nombre, sub: sr(null, a.id) + 'trabajo individual', tipo: 'alumno' }); });
     return out;
   }
   if (MON.ver !== 'individual') MON.equipos.forEach(eq => out.push({ clave: 'e:' + eq.id, titulo: eq.nombre, sub: (eq.nombres || []).join(', ') || 'sin integrantes', tipo: 'equipo' }));
@@ -1019,6 +1028,7 @@ function actualizarTarjeta(clave, nuevo) {
   if (!card) { if ((clave.startsWith('a:') && MON.ver !== 'equipos' || clave.startsWith('i:')) && MON.datos[clave]) pintarMonitor(true); return; }
   if (MON.act === 'cuadro') return actualizarCuadro(card, clave, nuevo);
   if (MON.act === 'influencias') return actualizarInfluencias(card, clave, nuevo);
+  if (MON.act === 'especias') return actualizarEspecias(card, clave, nuevo);
   const v = monVista(clave), st = monStats(v);
   const mapa = card.querySelector('[data-mapa]');
   if (nuevo || !mapa.firstChild) mapa.innerHTML = monMapa(v, 'mon-svg');
@@ -1055,6 +1065,41 @@ function actualizarInfluencias(card, clave, nuevo) {
   pintarTiempo(card, d.actualizado || null);
   if (!nuevo) { card.classList.remove('mon-latido'); void card.offsetWidth; card.classList.add('mon-latido'); }
 }
+// ---- Las especias de Asia: tarjeta, ficha y proyección de las exposiciones
+const subDe = clave => { const id = clave.slice(2), eq = clave.startsWith('e:') ? MON.equipos.find(e => e.id === id) : null; return subregionDe(eq, eq ? null : id); };
+function actualizarEspecias(card, clave, nuevo) {
+  const d = MON.datos[clave] || {}, c = d.campos || {}, [, sn, col] = subDe(clave);
+  const pal = k => ((c[k] || '').trim().match(/\S+/g) || []).length;
+  const listos = ESPECIAS.campos.filter(([k, , , min]) => k === 'fuente' ? (c[k] || '').trim() : pal(k) >= min).length;
+  card.querySelector('[data-mapa]').innerHTML = `<div class="in-mini"><p style="color:${col}">🌶️ <b>${escaparHTML(sn)}</b></p><div>${ESPECIAS.campos.map(([k, t, , min]) => `<span title="${escaparHTML(t)}" style="${(k === 'fuente' ? (c[k] || '').trim() : pal(k) >= min) ? `background:${col};color:#fff` : ''}">${t.split(' ')[0]}</span>`).join('')}</div></div>`;
+  card.querySelector('[data-barra]').style.width = Math.round(100 * listos / ESPECIAS.campos.length) + '%';
+  card.querySelector('[data-num]').innerHTML = `<b>${listos}/${ESPECIAS.campos.length}</b> apartados · sugerida <b>${sugerirEspecias(d).nota}</b>${d.entregado ? ' · ✅ entregada' : ''}`;
+  card.querySelector('[data-ult]').innerHTML = d.ultimoCambio ? `✍️ <b>${escaparHTML(d.ultimoNombre || '')}</b> ${escaparHTML(d.ultimoCambio)}` : '<i>todavía no empiezan</i>';
+  pintarTiempo(card, d.actualizado || null);
+  if (!nuevo) { card.classList.remove('mon-latido'); void card.offsetWidth; card.classList.add('mon-latido'); }
+  if (!document.getElementById('expo-proy').hidden) pintarExpo();
+}
+function fichaEspeciasHTML(clave, grande) {
+  const d = MON.datos[clave] || {}, c = d.campos || {}, por = d.por || {}, [, sn, col, pista] = subDe(clave);
+  const e = x => escaparHTML(x || '').replace(/\n/g, '<br>');
+  return `<div class="expo-ficha ${grande ? 'grande' : ''}" style="--c:${col}">${grande ? '' : `<p class="expo-sr"><b>${escaparHTML(sn)}</b> · ${escaparHTML(pista)}</p>`}
+    ${ESPECIAS.campos.map(([k, t]) => `<section class="expo-c expo-${k}"><h4>${t}${por[k] && !grande ? ` <small class="mon-autor">✍️ ${escaparHTML(por[k])}</small>` : ''}</h4><p>${(c[k] || '').trim() ? e(c[k]) : '<span class="mon-vacio">—</span>'}</p></section>`).join('')}</div>`;
+}
+let EXPO = 0;
+const expoClaves = () => monTarjetas().filter(t => MON.datos[t.clave]).map(t => t.clave)
+  .sort((a, b) => ESPECIAS.subregiones.findIndex(x => x[0] === subDe(a)[0]) - ESPECIAS.subregiones.findIndex(x => x[0] === subDe(b)[0]));
+function abrirExpo(i) { EXPO = i; document.getElementById('expo-proy').hidden = false; document.body.classList.add('con-qr'); pintarExpo(); }
+function cerrarExpo() { document.getElementById('expo-proy').hidden = true; document.body.classList.remove('con-qr'); }
+function moverExpo(d) { const n = expoClaves().length; if (!n) return; EXPO = (EXPO + d + n) % n; pintarExpo(); }
+function pintarExpo() {
+  const ks = expoClaves(), cuerpo = document.getElementById('expo-cuerpo');
+  if (!ks.length) { document.getElementById('expo-tit').textContent = 'Las especias de Asia'; document.getElementById('expo-tit').style.color = ''; document.getElementById('expo-sub').textContent = ''; cuerpo.innerHTML = '<p>Todavía ningún equipo ha escrito su ficha.</p>'; return; }
+  EXPO = Math.min(EXPO, ks.length - 1);
+  const k = ks[EXPO], t = monTarjetas().find(x => x.clave === k) || { titulo: '' }, [, sn, col] = subDe(k);
+  const et = document.getElementById('expo-tit'); et.textContent = sn; et.style.color = col;
+  document.getElementById('expo-sub').textContent = `${t.titulo} · ${EXPO + 1} de ${ks.length} · usa ← → para cambiar de equipo`;
+  cuerpo.innerHTML = fichaEspeciasHTML(k, true);
+}
 // ---- resultados de la votación, en vivo para proyectar
 let VOTOS = { subs: [], votos: {} };
 function abrirResultados() {
@@ -1073,17 +1118,24 @@ function pintarResultados() {
   document.getElementById('voto-barras').innerHTML = filas.length ? filas.map((x, i) => `<div class="voto-fila ${i === 0 && x.n ? 'lider' : ''}"><div class="voto-nom"><b>${escaparHTML(x.pl || '(sin platillo)')}</b><small>${escaparHTML(x.eq.nombre)}</small></div><div class="voto-barra"><i style="width:${Math.round(100 * x.n / max)}%"></i></div><span class="voto-n">${x.n}</span></div>`).join('') : '<p>Todavía ningún equipo eligió platillo.</p>';
 }
 function pintarTiempo(card, ts) { const h = hace(ts), p = card.querySelector('[data-punto]'); p.className = 'mon-punto ' + h.cls; p.textContent = h.txt; }
-function actividadDe(clave) { if (MON.act === 'cuadro' || MON.act === 'influencias') return (MON.datos[clave] || {}).actualizado || null; const v = monVista(clave); return v ? v.act : null; }
+function actividadDe(clave) { if (monVivo()) return (MON.datos[clave] || {}).actualizado || null; const v = monVista(clave); return v ? v.act : null; }
 function pintarTiempos() { document.querySelectorAll('.mon-card').forEach(c => pintarTiempo(c, actividadDe(c.dataset.clave))); pintarResumen(); }
 function pintarResumen() {
   const el = document.getElementById('mon-resumen'); if (!el) return;
   const ts = monTarjetas(); const activos = ts.filter(t => hace(actividadDe(t.clave)).cls === 'verde').length;
-  el.innerHTML = `<span class="mon-punto verde"></span> <b>${activos}</b> trabajando ahora (últimos 2 min) · ${ts.length} en total · ${MON.act === 'influencias' ? 'Siete influencias' : MON.act === 'cuadro' ? 'Cuadro mexica–maya' : escaparHTML(MON_ATLAS ? MON_ATLAS.continentes[MON.cont].nombre : '')} · 👥 ${escaparHTML((formaciones(MON.g)[formacionDeTarea(MON.g, monTarea())] || {}).nombre || '')}`;
+  el.innerHTML = `<span class="mon-punto verde"></span> <b>${activos}</b> trabajando ahora (últimos 2 min) · ${ts.length} en total · ${MON.act === 'especias' ? 'Las especias de Asia' : MON.act === 'influencias' ? 'Siete influencias' : MON.act === 'cuadro' ? 'Cuadro mexica–maya' : escaparHTML(MON_ATLAS ? MON_ATLAS.continentes[MON.cont].nombre : '')} · 👥 ${escaparHTML((formaciones(MON.g)[formacionDeTarea(MON.g, monTarea())] || {}).nombre || '')}`;
 }
 function abrirDetalle(clave) { MON.abierto = clave; document.getElementById('mon-detalle').hidden = false; document.body.classList.add('con-qr'); pintarDetalle(true); }
 function cerrarDetalle() { MON.abierto = null; document.getElementById('mon-detalle').hidden = true; document.body.classList.remove('con-qr'); }
 function pintarDetalle(nuevo) {
   const clave = MON.abierto; if (!clave) return;
+  if (MON.act === 'especias') {
+    const t = monTarjetas().find(x => x.clave === clave) || { titulo: '', sub: '' }, d = MON.datos[clave] || {};
+    document.getElementById('mon-det-titulo').textContent = t.titulo;
+    document.getElementById('mon-det-sub').textContent = `${t.sub} · Las especias de Asia · ${hace(d.actualizado).txt} · sugerida ${sugerirEspecias(d).nota}`;
+    document.getElementById('mon-det-cuerpo').innerHTML = fichaEspeciasHTML(clave);
+    return;
+  }
   if (MON.act === 'influencias') {
     const t = monTarjetas().find(x => x.clave === clave) || { titulo: '', sub: '' }, d = MON.datos[clave] || {}, inf = d.inf || {}, por = d.por || {};
     const e = x => escaparHTML(x || '').replace(/\n/g, '<br>');
@@ -1185,6 +1237,10 @@ async function calificarTareaDig(a, enCatalogo) {
         let datos = eq ? await docEquipo(eq, INFLUENCIAS.id) : null;
         if (!datos) { const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'tarea-influencias')); datos = s.exists() ? s.data() : null; }
         if (datos) { sug = sugerirInfluencias(datos); entregado = datos.entregado || null; resumen = INFLUENCIAS.lista.map(([k, n]) => `${n}: ${((datos.inf || {})[k] || {}).si ? 'sí' : '—'}`).join(' · ') + (datos.argumento ? ' · ' + datos.argumento.slice(0, 200) : ''); }
+      } else if (a.tipo === 'especias') {
+        let datos = eq ? await docEquipo(eq, ESPECIAS.id) : null;
+        if (!datos) { const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'tarea-especias')); datos = s.exists() ? s.data() : null; }
+        if (datos) { sug = sugerirEspecias(datos); entregado = datos.entregado || null; const c = datos.campos || {}; resumen = `${subregionDe(eq, al.id)[1]} · ` + ESPECIAS.campos.slice(0, 3).map(([k, t]) => `${t.replace(/^\S+\s/, '')}: ${(c[k] || '—').slice(0, 80)}`).join(' · '); }
       } else if (a.tipo === 'desarma') {
         const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'tarea-desarma'));
         if (s.exists()) { const m = s.data().datos || {}; sug = sugerirDesarma(m); entregado = s.data().entregado || null; resumen = ['q1', 'q2', 'q3'].map(k => ((m.ficha || {})[k] || '').trim()).filter(Boolean).join(' · ').slice(0, 400); }
@@ -1195,7 +1251,7 @@ async function calificarTareaDig(a, enCatalogo) {
   const f = t => t && t.toDate ? t.toDate().toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : typeof t === 'number' ? new Date(t).toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
   wrap.innerHTML = `<h4 class="td-h4">Calificar: ${escaparHTML(nombreCatalogo(a))}</h4>
     ${enCatalogo ? '' : '<p class="aviso-td">⚠️ Esta tarea todavía no está en el catálogo: las calificaciones se guardan, pero no cuentan en el promedio hasta que la agregues.</p>'}
-    <p class="field-hint">La calificación sugerida sale de qué tan completo está el trabajo${a.tipo === 'atlas' ? ' (la mitad por países clasificados y la mitad por fichas con al menos 4 de 7 apartados)' : a.tipo === 'cuadro' ? ` (8 puntos por las ${CUADRO_MM.filas.length * CUADRO_MM.columnas.length} celdas llenas —cuenta la que tiene ${MIN_PALABRAS_CELDA} palabras o más— y 2 puntos por las fuentes de las 4 filas de investigación, medio punto cada una)` : a.tipo === 'influencias' ? ' (1 punto por elegir platillo, 1.5 por cada influencia con evidencia —hasta 4— y 3 por un argumento de al menos 60 palabras)' : ' (solo la ficha del platillo investigado: datos 1.5, ingredientes clasificados y su origen 4, técnicas 1, conclusión de 25 palabras por pregunta 3 y fuentes 0.5; la del proyecto no cuenta)'}. En equipo, todos reciben la misma sugerencia; puedes ajustar a quien no aportó (en el Monitor ves quién escribió qué).</p>
+    <p class="field-hint">La calificación sugerida sale de qué tan completo está el trabajo${a.tipo === 'atlas' ? ' (la mitad por países clasificados y la mitad por fichas con al menos 4 de 7 apartados)' : a.tipo === 'cuadro' ? ` (8 puntos por las ${CUADRO_MM.filas.length * CUADRO_MM.columnas.length} celdas llenas —cuenta la que tiene ${MIN_PALABRAS_CELDA} palabras o más— y 2 puntos por las fuentes de las 4 filas de investigación, medio punto cada una)` : a.tipo === 'influencias' ? ' (1 punto por elegir platillo, 1.5 por cada influencia con evidencia —hasta 4— y 3 por un argumento de al menos 60 palabras)' : a.tipo === 'especias' ? ' (1.5 por cada uno de especia, técnica, platillo y conexión con México con 8 palabras o más, hasta 3 por un «por qué» de 30 palabras y 1 por la fuente)' : ' (solo la ficha del platillo investigado: datos 1.5, ingredientes clasificados y su origen 4, técnicas 1, conclusión de 25 palabras por pregunta 3 y fuentes 0.5; la del proyecto no cuenta)'}. En equipo, todos reciben la misma sugerencia; puedes ajustar a quien no aportó (en el Monitor ves quién escribió qué).</p>
     <div class="quiz-actions" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;"><button type="button" class="btn btn-ghost-dark btn-small" id="td-usar">Usar sugeridas en las vacías</button><button type="button" class="btn btn-ghost-dark btn-small" id="td-cerrar">Cerrar</button></div>
     <div class="taller-tabla-wrap"><table class="taller-tabla td-tabla"><thead><tr><th>Alumno</th><th>Trabajo</th><th>Entrega</th><th>Sugerida</th><th>Calificación</th></tr></thead><tbody>
     ${filas.map(x => `<tr data-id="${x.al.id}"><td><b>${escaparHTML(x.al.nombre)}</b>${x.eq ? `<br><small>👥 ${escaparHTML(x.eq.nombre)}</small>` : ''}</td>

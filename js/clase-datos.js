@@ -130,6 +130,8 @@ export const TEMAS_TAREAS = [
     { id: 'platillos-america', tipo: 'practica', icono: '🌎', nombre: 'Platillos de América', modo: 'Juego de práctica', desc: '¿De qué país es? Ceviche, pupusa, feijoada, mofongo, gumbo… se ilumina en el mapa y descubres sus raíces.' },
   ] },
   { tema: '3.3', titulo: 'Cocinas asiáticas', fecha: '2026-11-05', fechaTexto: 'Jue 5 de noviembre', acts: [
+    { id: 'que-asia', tipo: 'practica', icono: '🧭', nombre: '¿De qué parte de Asia es?', modo: 'Juego de práctica', desc: 'Sushi, kimchi, curry, pad thai, hummus, plov, pimienta de Sichuan… ¿de qué subregión de Asia es? Con trampas, el Galeón de Manila y el chile mexicano en Asia.' },
+    { id: 'especias', tipo: 'especias', icono: '🌶️', nombre: 'Las especias de Asia', modo: 'En equipo · en vivo', desc: 'A cada equipo le toca por sorteo una subregión de Asia: su especia clave, su técnica, su platillo emblemático, por qué y su conexión con México. Luego la exponen al grupo.' },
     { id: 'atlas-asia', tipo: 'atlas', cont: 'asia', icono: '🗺️', nombre: 'Mi atlas: Asia', modo: 'En equipo o individual', desc: 'Tus regiones culinarias de Asia.' },
   ] },
   { tema: '3.4', titulo: 'Cocinas europeas', fecha: '2026-11-06', fechaTexto: 'Vie 6 de noviembre', acts: [
@@ -140,7 +142,7 @@ export const TEMAS_TAREAS = [
   ] },
 ];
 export const TAREAS_DIG = Object.fromEntries(TEMAS_TAREAS.flatMap(t => t.acts.map(a => [a.id, { ...a, tema: t.tema, titulo: t.titulo, fecha: t.fecha, fechaTexto: t.fechaTexto }])));
-export const califica = a => a && ['atlas', 'cuadro', 'desarma', 'influencias'].includes(a.tipo);
+export const califica = a => a && ['atlas', 'cuadro', 'desarma', 'influencias', 'especias'].includes(a.tipo);
 export const catalogoId = id => 'dig-' + id;
 export const nombreCatalogo = a => `${a.tema} · ${a.nombre}`;
 
@@ -207,4 +209,44 @@ export function sugerirInfluencias(d) {
   const marcadas = INFLUENCIAS.lista.filter(([k]) => inf[k] && inf[k].si).length, pal = palabras(d.argumento);
   const nota = 1 + 1.5 * Math.min(4, conEv) + 3 * Math.min(1, pal / 60);
   return { nota: r1(nota), detalle: `${d.platillo}: ${marcadas} de 7 influencias (${conEv} con evidencia) · argumento de ${pal} palabras` };
+}
+
+// ---------- Las especias de Asia (compendio 3.3): una subregión por equipo, asignada por sorteo
+export const ESPECIAS = {
+  id: 'act-especias',
+  subregiones: [
+    ['oriental', 'Asia Oriental', '#C0392B', 'China, Japón y Corea. Piensen en la soya y la fermentación, el arroz, el jengibre, la pimienta de Sichuan, el umami y el wok.'],
+    ['sur', 'Asia del Sur', '#E07B39', 'La India y sus vecinos. Piensen en las masalas (cúrcuma, comino, cardamomo, pimienta), la tradición vegetariana y el horno tandoor.'],
+    ['sureste', 'Sureste asiático', '#1F9E8F', 'Tailandia, Vietnam, Indonesia y Filipinas. Piensen en el equilibrio ácido-dulce-salado-picante, el clavo y la nuez moscada de las Molucas y el Galeón de Manila.'],
+    ['medio', 'Medio Oriente', '#8E5BA8', 'El mundo árabe, Persia y Turquía. Piensen en el comino, el sumac y el zaatar, las normas halal, el mezze y el shawarma.'],
+    ['central', 'Asia Central', '#6B7A3E', 'La Ruta de la Seda. Piensen en el plov, el kumis, los hornos de barro y las caravanas que llevaban especias entre China y el Mediterráneo.'],
+  ],
+  // [clave, título, ayuda, palabras mínimas para que cuente]
+  campos: [
+    ['especia', '🌶️ Especia o ingrediente clave', '¿Cuál es y cómo es? Color, aroma, sabor y de dónde sale (semilla, corteza, raíz, fruto…).', 8],
+    ['tecnica', '🔥 Técnica distintiva', '¿Cómo se cocina ahí? Fermentar, saltear en wok, hornear en tandoor, cocer en kazán…', 8],
+    ['platillo', '🍽️ Platillo emblemático', 'El nombre del platillo, qué lleva y cómo se come.', 8],
+    ['porque', '🤔 ¿Por qué se volvió central ahí?', 'Explíquenlo con el clima, la religión o el comercio. Al menos 30 palabras.', 30],
+    ['mexico', '🇲🇽 Conexión con México', '¿Hay algo de su subregión en nuestra cocina, o algo nuestro allá? Piensen en el Galeón de Manila, el chile, la canela, los libaneses y el taco al pastor.', 8],
+    ['fuente', '📚 Fuente', 'De dónde lo sacaron: compendio, libro o página (autor, año, título, sitio).', 1],
+  ],
+};
+const semilla = t => { let h = 2166136261; for (const ch of String(t)) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; } return h; };
+// Sorteo estable: la misma formación de equipos siempre reparte las subregiones igual; si hay más
+// equipos que subregiones, se repiten en el mismo orden. Quien trabaja solo recibe una por su nombre.
+export function subregionDe(eq, alumnoId) {
+  const L = ESPECIAS.subregiones, n = L.length, idx = [...Array(n).keys()];
+  let r = semilla((eq ? eq.formacion || 'actual' : 'individual') + '|especias');
+  for (let i = n - 1; i > 0; i--) { r = (Math.imul(r, 1103515245) + 12345) >>> 0; const j = r % (i + 1); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+  const num = eq ? (Number(eq.numero) || (semilla(eq.id) % n) + 1) : (semilla(alumnoId || '') % n) + 1;
+  return L[idx[(num - 1) % n]];
+}
+// Sugerida: 1.5 por cada uno de especia, técnica, platillo y conexión con México (8 palabras o más),
+// hasta 3 por el «por qué» (30 palabras) y 1 por la fuente.
+export function sugerirEspecias(d) {
+  if (!d) return { nota: 0, detalle: 'Sin trabajo' };
+  const c = d.campos || {}, pal = k => palabras(c[k]);
+  const cortos = ['especia', 'tecnica', 'platillo', 'mexico'].filter(k => pal(k) >= 8).length;
+  const nota = 1.5 * cortos + 3 * Math.min(1, pal('porque') / 30) + (String(c.fuente || '').trim() ? 1 : 0);
+  return { nota: r1(nota), detalle: `${cortos}/4 apartados completos · «por qué» de ${pal('porque')} palabras · ${String(c.fuente || '').trim() ? 'con' : 'sin'} fuente` };
 }

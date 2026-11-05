@@ -7,7 +7,7 @@
 // Módulo sin Firebase: solo funciones sobre los datos ya leídos.
 
 export const BASE = 'actual';
-export const TIPOS_EQUIPO = ['atlas', 'cuadro', 'influencias'];
+export const TIPOS_EQUIPO = ['atlas', 'cuadro', 'influencias', 'especias'];
 export const enEquipo = a => !!a && TIPOS_EQUIPO.includes(a.tipo);
 export const formacionDe = e => (e && e.formacion) || BASE;
 

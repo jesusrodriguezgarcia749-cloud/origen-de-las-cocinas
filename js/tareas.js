@@ -9,10 +9,11 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, FieldPath, collection, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
-import { CUADRO_MM, PLATILLOS, TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, sugerirCuadro, MIN_PALABRAS_CELDA, INFLUENCIAS, sugerirInfluencias } from "./clase-datos.js";
+import { CUADRO_MM, PLATILLOS, TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, sugerirCuadro, MIN_PALABRAS_CELDA, INFLUENCIAS, sugerirInfluencias, ESPECIAS, subregionDe, sugerirEspecias } from "./clase-datos.js";
 import { DocITES } from "./docx-ites.js";
 import { INGREDIENTES, CONTINENTES } from "./aporto-datos.js";
 import { BALUARTES, CAMPECHE, QUE_INFLUENCIA, PAISES_AM, PLATILLOS_AM } from "./america-datos.js";
+import { QUE_ASIA } from "./asia-datos.js";
 import { formacionDe, formaciones, formacionDeTarea, abiertas as inscAbiertas, equipoDe, equiposDe, tareasDeFormacion, enEquipo } from "./equipos.js";
 
 const db = getFirestore(initializeApp(firebaseConfig));
@@ -120,6 +121,9 @@ async function estadoDe(a) {
     } else if (a.tipo === 'influencias') {
       const s = await getDoc(eq ? doc(db, 'grupos', g, 'equipos', eq.id, 'atlas', INFLUENCIAS.id) : doc(db, 'grupos', g, 'alumnos', al, 'atlas', 'tarea-influencias'));
       if (s.exists()) { out.avance = sugerirInfluencias(s.data()).detalle; out.entregado = s.data().entregado || null; }
+    } else if (a.tipo === 'especias') {
+      const s = await getDoc(eq ? doc(db, 'grupos', g, 'equipos', eq.id, 'atlas', ESPECIAS.id) : doc(db, 'grupos', g, 'alumnos', al, 'atlas', 'tarea-especias'));
+      if (s.exists()) { out.avance = sugerirEspecias(s.data()).detalle; out.entregado = s.data().entregado || null; }
     } else if (a.tipo === 'desarma') {
       const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al, 'atlas', 'tarea-desarma'));
       if (s.exists()) { const m = (s.data().datos || {}).ficha || {}; out.avance = m.nombre ? `${m.nombre}: ${(m.ingredientes || []).length} ingredientes` : ''; out.entregado = s.data().entregado || null; }
@@ -183,7 +187,7 @@ function ruta() {
   const c = $('#cl-actividad');
   c.innerHTML = `<a class="cl-volver" href="#">← Todas las tareas</a><p class="cl-fecha">Tema ${esc(a.tema)} · ${esc(a.titulo)} · ${esc(a.fechaTexto)}</p><h2 class="cl-h2">${a.icono} ${esc(a.nombre)}</h2>
     ${califica(a) ? '<p class="cl-vale">📌 Cuenta como una tarea del Parcial 2.</p>' : '<p class="cl-vale cl-vale-p">🎯 Práctica para repasar: no lleva calificación.</p>'}<div id="cl-cuerpo"></div>`;
-  (a.tipo === 'practica' ? { aporto: actAporto, campeche: actCampeche, 'que-influencia': actQueInfluencia, 'platillos-america': actPlatillosAmerica }[a.id] : { cuadro: actCuadro, desarma: actDesarma, influencias: actInfluencias }[a.tipo])($('#cl-cuerpo'));
+  (a.tipo === 'practica' ? { aporto: actAporto, campeche: actCampeche, 'que-influencia': actQueInfluencia, 'platillos-america': actPlatillosAmerica, 'que-asia': actQueAsia }[a.id] : { cuadro: actCuadro, desarma: actDesarma, influencias: actInfluencias, especias: actEspecias }[a.tipo])($('#cl-cuerpo'));
   window.scrollTo({ top: 0 });
 }
 // El QR de un equipo abre tareas.html#unir-CODIGO (vía unir.html): entra, se une y va a su tarea.
@@ -971,4 +975,82 @@ function influencias(cont, eq) {
   const salir = () => V.flush();
   window.addEventListener('beforeunload', salir);
   detener = () => { V.cerrar(); window.removeEventListener('estado-tareas', onEst); window.removeEventListener('estado-tareas', repEntrega); window.removeEventListener('beforeunload', salir); };
+}
+
+// ---- 🧭 ¿De qué parte de Asia es? (calentamiento para «Las especias de Asia»)
+function actQueAsia(cont) {
+  const L = ESPECIAS.subregiones, nom = k => (L.find(x => x[0] === k) || [])[1];
+  juegoPreguntas(cont, {
+    clave: 'queasia', seg: 12,
+    intro: 'Asia no es una sola cocina: hoy recorremos <b>cinco subregiones</b>. Aparece un platillo, un ingrediente, una técnica o un hecho: <b>¿de qué parte de Asia es?</b> Cuidado con las trampas del Galeón de Manila y del chile mexicano. Es el calentamiento para la tarea en equipo de las especias de Asia.',
+    niveles: [{ id: 'basico', n: 'Básico', ico: '🌱', preg: 12, desc: 'Los platillos y rasgos más conocidos de cada subregión.', filtro: x => x.niv === 1 }, { id: 'experto', n: 'Experto', ico: '🏆', preg: 20, desc: 'Todo, con las trampas: especias, técnicas, el Galeón y el taco al pastor.', filtro: () => true }],
+    items: QUE_ASIA,
+    preparar: x => ({ carta: `<span class="ap-emo">${x.e}</span><b class="jp-q">${esc(x.q)}</b>`, opciones: L.map(([k, n, col]) => ({ v: k, t: esc(n), style: `--c:${col}` })), correctas: [x.c], clase: 'jp-infl' }),
+    mal: x => `No: es de ${nom(x.c)}.`,
+    explicar: x => `<p class="ap-dato">${esc(x.x)}</p>`,
+    repaso: x => `${x.e} <b>${esc(x.q)}</b> → ${esc(nom(x.c))}. <span class="ap-dato">${esc(x.x)}</span>`,
+    estudiar: { boton: 'Estudiar las cinco subregiones', intro: 'Cada subregión de Asia con sus platillos, especias, técnicas y datos del juego.', filtros: [['todos', 'Todas', () => true], ...L.map(([k, n]) => [k, n, x => x.c === k])], uno: 'ejemplo', varios: 'ejemplos', texto: x => x.q + ' ' + nom(x.c) + ' ' + x.x,
+      fila: x => { const S = L.find(y => y[0] === x.c); return `<div class="ap-fila" style="border-left-color:${S[2]}"><span class="ap-fe">${x.e}</span><div><b>${esc(x.q)}</b> <small class="ap-tag">${esc(S[1])}</small><p class="ap-dato">${esc(x.x)}</p></div></div>`; } },
+  });
+}
+
+// ======================================================= 5. LAS ESPECIAS DE ASIA (en equipo o individual, en vivo)
+function actEspecias(cont) {
+  const entrar = async () => {
+    escucharGrupo();
+    cont.innerHTML = '<p class="atlas-ayuda">Buscando a tu equipo…</p>';
+    const eq = await equipo('especias');
+    if (eq) return especias(cont, eq);
+    cont.innerHTML = `<div class="cl-sin-eq"><p><b>Todavía no estás en un equipo.</b> Escribe el código de 4 letras de tu equipo (o escanea el QR que proyecta tu maestro).</p>
+      <form id="cl-unir" class="ma-unir"><div><input id="cl-cod" maxlength="4" autocomplete="off" placeholder="ABCD" aria-label="Código del equipo"><button class="btn-at" type="submit">Unirme</button></div></form>
+      <p class="ma-msg mal" id="cl-unir-msg" hidden></p><p class="cl-o">o</p><button type="button" class="btn-ruta" id="cl-solo">Hacerla solo (se guarda en tu cuenta)</button></div>`;
+    $('#cl-unir').addEventListener('submit', async e => { e.preventDefault(); try { especias(cont, await unirseCodigo($('#cl-cod').value, 'especias')); } catch (er) { const m = $('#cl-unir-msg'); m.textContent = er.message || er; m.hidden = false; } });
+    $('#cl-solo').addEventListener('click', () => especias(cont, null));
+  };
+  if (sesion) entrar(); else formAcceso(cont, entrar, 'Entra con tu nombre y PIN para trabajar en esta tarea');
+}
+function especias(cont, eq) {
+  const a = TAREAS_DIG.especias, E = ESPECIAS, [sk, sn, scol, spista] = subregionDe(eq, sesion.alumnoId);
+  const ref = eq ? doc(db, 'grupos', sesion.grupoId, 'equipos', eq.id, 'atlas', E.id) : doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'atlas', 'tarea-especias');
+  cont.innerHTML = `<div class="ma-barra"><span>${eq ? `👥 <b>${esc(eq.nombre)}</b>: ${esc((eq.nombres || []).join(', '))}` : `👤 <b>${esc(sesion.nombre)}</b> (individual)`}</span><span class="ma-estado" id="es-estado"></span>
+      <button type="button" class="btn-ruta" id="es-word">⬇ Descargar en Word</button></div>
+    <div data-entrega></div>
+    <div class="es-sub" style="--c:${scol}"><small>${eq ? 'Por sorteo, a su equipo le tocó' : 'Por sorteo, te tocó'}</small><b>${esc(sn)}</b><p>${esc(spista)}</p></div>
+    <p class="atlas-ayuda">Llenen la ficha de su subregión con el compendio (subtema 3.3) y lo que investiguen. ${eq ? 'Repártanse los apartados: cada quien escribe desde su celular y todo se guarda solo.' : 'Se guarda solo en tu cuenta.'} Al final la <b>exponen al grupo</b>.</p>
+    <div class="es-campos">${E.campos.map(([k, t, ayuda, min], i) => `<label class="es-campo" data-c="${k}"><span class="es-cab"><b>${t}</b><small class="ma-autor" data-autor="${k}"></small></span><small class="es-ayuda">${esc(ayuda)}</small>
+      <textarea data-k="${k}" rows="${k === 'porque' ? 5 : k === 'fuente' ? 2 : 3}"></textarea><small class="es-cuenta" data-cuenta="${k}"></small></label>`).join('')}</div>
+    <p class="es-sug" id="es-sug"></p>`;
+  const estado = (t, c = '') => { const e = $('#es-estado'); if (e) { e.textContent = t; e.className = 'ma-estado ' + c; } };
+  const pintar = S => {
+    const act = document.activeElement, c = S.campos || {}, por = S.por || {};
+    E.campos.forEach(([k, , , min]) => {
+      const ta = $(`[data-k="${k}"]`, cont); if (ta !== act && ta.value !== (c[k] || '')) ta.value = c[k] || '';
+      const n = palabras(c[k]), el = $(`[data-cuenta="${k}"]`, cont);
+      el.textContent = k === 'fuente' ? ((c[k] || '').trim() ? '✓ con fuente' : 'falta la fuente') : `${n} palabra${n === 1 ? '' : 's'}${n >= min ? ' ✓' : ` · mínimo ${min}`}`;
+      el.className = 'es-cuenta ' + ((k === 'fuente' ? (c[k] || '').trim() : n >= min) ? 'ok' : '');
+      const au = eq && por[k]; $(`[data-autor="${k}"]`, cont).textContent = au ? `✍️ ${au}` : '';
+    });
+    const sg = sugerirEspecias(S); $('#es-sug').textContent = `Avance: ${sg.detalle}.`;
+    repEntrega();
+  };
+  let repEntrega = () => {};
+  const V = docVivo(ref, eq, (S, st) => { pintar(S); estado(st === 'ok' ? (eq ? 'Sincronizado con tu equipo ✓' : 'Guardado en tu cuenta ✓') : st === 'error' ? 'No se pudo guardar. Reintentando…' : 'Guardando…', st === 'ok' ? 'ok' : st === 'error' ? 'mal' : ''); });
+  const puede = () => abierta(a.id);
+  if (!V.S.subregion) V.poner(['subregion'], sk, `les tocó ${sn}`, true);
+  $$('[data-k]', cont).forEach(ta => ta.addEventListener('input', () => {
+    if (!puede()) return; const k = ta.dataset.k, t = E.campos.find(x => x[0] === k)[1].replace(/^\S+\s/, '').toLowerCase();
+    V.poner(['campos', k], ta.value, `escribe ${t}`); V.poner(['por', k], sesion.nombre); V.poner(['subregion'], sk);
+  }));
+  repEntrega = barraEntrega(cont, a, { entregado: () => V.S.entregado, alEntregar: async () => { if (!E.campos.some(([k]) => ((V.S.campos || {})[k] || '').trim())) throw new Error('Primero llenen su ficha.'); await V.entregar(); } });
+  $('#es-word').addEventListener('click', async () => {
+    await V.flush(); const S = V.S, c = S.campos || {}, por = S.por || {};
+    const D = new DocITES(); await D.cargarLogo();
+    D.portada({ kicker: 'Tema 3.3 · Cocinas asiáticas', titulo: `Las especias de Asia: ${sn}`, subtitulo: 'Ficha de una subregión de Asia', etiqueta: eq ? `Equipo «${eq.nombre}»` : 'Alumno', personas: eq ? eq.nombres || [] : [sesion.nombre] });
+    D.h1(sn, spista);
+    D.ficha(E.campos.map(([k, t]) => [t.replace(/^\S+\s/, ''), c[k], eq ? por[k] : '']));
+    D.descargar(`Especias_de_Asia_${slug(eq ? 'equipo ' + eq.nombre : sesion.nombre)}`);
+  });
+  const salir = () => V.flush();
+  window.addEventListener('beforeunload', salir);
+  detener = () => { V.cerrar(); window.removeEventListener('estado-tareas', repEntrega); window.removeEventListener('beforeunload', salir); };
 }

@@ -683,3 +683,20 @@ body.mon-completo .mon-grid { grid-template-columns: repeat(auto-fill, minmax(21
 .taller-tabla td.taller-acc { white-space: nowrap; }
 .taller-tabla .taller-word { padding: 4px 10px; font-size: .82rem; margin-left: 4px; }
 .taller-resp { white-space: pre-wrap; padding: .4rem .6rem; border-left: 3px solid var(--saffron); }
+/* ---- Las especias de Asia: ficha y proyección de exposiciones */
+.expo-nav { display: flex; gap: 8px; }
+.expo-nav .btn { font-size: 1.1rem; }
+.expo-ficha { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.expo-sr { grid-column: 1 / -1; margin: 0; padding: 10px 12px; border-left: 6px solid var(--c); background: color-mix(in srgb, var(--c) 10%, #fff); border-radius: 8px; }
+.expo-c { border-top: 5px solid var(--c); background: #fff; border-radius: 10px; padding: 10px 14px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+.expo-c h4 { margin: 0 0 6px; font-size: 1rem; }
+.expo-c p { margin: 0; line-height: 1.45; }
+.expo-porque, .expo-mexico { grid-column: span 2; }
+.expo-fuente { grid-column: 1 / -1; }
+.expo-ficha.grande { max-width: 1300px; margin: 0 auto; }
+.expo-ficha.grande .expo-c { padding: 16px 20px; }
+.expo-ficha.grande .expo-c h4 { font-size: 1.35rem; }
+.expo-ficha.grande .expo-c p { font-size: 1.35rem; line-height: 1.5; }
+.expo-ficha.grande .expo-fuente p { font-size: 1rem; }
+#expo-tit { font-size: 2.4rem; }
+@media (max-width: 700px) { .expo-porque, .expo-mexico { grid-column: auto; } }

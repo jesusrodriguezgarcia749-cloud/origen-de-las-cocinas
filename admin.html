@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css?v=2026102305">
-<link rel="stylesheet" href="css/admin.css?v=2026102901">
+<link rel="stylesheet" href="css/admin.css?v=2026110401">
 <link rel="stylesheet" href="css/progreso.css?v=2026102305">
 <link rel="stylesheet" href="css/index.css?v=2026102305">
 <link rel="stylesheet" href="css/extra.css?v=2026102305">
@@ -235,15 +235,17 @@
   </div>
 
   <div id="tab-monitor" class="tab-panel">
-    <p class="field-hint">Lo que los equipos y los alumnos están haciendo, en vivo. Elige la actividad: al elegir el Cuadro aparece el botón de la clave, y al elegir las Siete influencias, el de la votación. Toca una tarjeta para ver su trabajo completo.</p>
+    <p class="field-hint">Lo que los equipos y los alumnos están haciendo, en vivo. Elige la actividad: al elegir el Cuadro aparece el botón de la clave, y al elegir las Siete influencias, el de la votación; y al elegir las Especias de Asia, el de proyectar las exposiciones. Toca una tarjeta para ver su trabajo completo.</p>
     <div class="mon-chips mon-act" id="mon-act">
       <span>Actividad:</span>
       <button type="button" class="chip-mon" data-a="atlas" aria-pressed="true">🗺️ Mi atlas</button>
       <button type="button" class="chip-mon" data-a="cuadro" aria-pressed="false">🤝 Cuadro mexica–maya</button>
       <button type="button" class="chip-mon" data-a="influencias" aria-pressed="false">⚖️ Siete influencias</button>
+      <button type="button" class="chip-mon" data-a="especias" aria-pressed="false">🌶️ Especias de Asia</button>
       <button type="button" class="chip-mon mon-clave" id="mon-clave" hidden aria-pressed="false">🔑 Liberar clave</button>
       <button type="button" class="chip-mon mon-clave" id="mon-votar" hidden aria-pressed="false">🗳️ Abrir votación</button>
       <button type="button" class="chip-mon" id="mon-resultados" hidden>📽️ Resultados</button>
+      <button type="button" class="chip-mon mon-clave" id="mon-expo" hidden>📽️ Proyectar exposiciones</button>
       <button type="button" class="chip-mon" id="mon-qr">🔳 Códigos QR</button>
     </div>
     <div class="mon-filtros">
@@ -389,11 +391,15 @@
   <div class="qr-cab"><div><b>¿Qué platillo representa mejor las siete influencias?</b><span id="voto-total"></span></div><button type="button" class="btn" id="voto-cerrar">Cerrar ✕</button></div>
   <div class="voto-barras" id="voto-barras"></div>
 </div>
+<div id="expo-proy" class="qr-proyeccion expo-proy" hidden>
+  <div class="qr-cab"><div><b id="expo-tit">Las especias de Asia</b><span id="expo-sub"></span></div><div class="expo-nav"><button type="button" class="btn" id="expo-ant" aria-label="Equipo anterior">←</button><button type="button" class="btn" id="expo-sig" aria-label="Equipo siguiente">→</button><button type="button" class="btn" id="expo-cerrar">Cerrar ✕</button></div></div>
+  <div id="expo-cuerpo"></div>
+</div>
 <div id="qr-proyeccion" class="qr-proyeccion" hidden>
   <div class="qr-cab"><div><b id="qr-tit">Únete a tu equipo</b><span id="qr-sub"></span></div><button type="button" class="btn" id="qr-cerrar">Cerrar ✕</button></div>
   <div class="qr-grid" id="qr-grid"></div>
 </div>
 <script src="js/vendor/qrcode.js"></script>
-<script type="module" src="js/admin.js?v=2026102901"></script>
+<script type="module" src="js/admin.js?v=2026110401"></script>
 </body>
 </html>
