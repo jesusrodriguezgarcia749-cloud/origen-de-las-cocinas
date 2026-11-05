@@ -70,8 +70,8 @@ async function entrar() {
   T = Object.assign(vacio(), (t(local) > t(remoto) ? local : remoto) || local || remoto || {});
   T.refs = Object.assign({ libro: true, lista: [], otras: '' }, T.refs || {});
   estado(sesion.anon ? 'Se guarda solo en este dispositivo' : 'Tu avance se guarda en tu cuenta');
-  // Abre en la entrega que está en curso: la primera con preguntas abiertas sin terminar.
-  entSel = ORDEN.find(k => numsDe(D, k).some(n => abierta(n) && palabras(T.respuestas[n]) < D.minPalabras)) || 'entrega2';
+  // Abre en la entrega que toca según el calendario (la Entrega 1 ya se entregó en papel el 15 de octubre).
+  entSel = entregaEnCurso();
   pintarTodo();
   cargarCompendio();
 }
@@ -136,16 +136,33 @@ function pintarTodo() {
       </div>
       <div id="mp-import"></div>
     </section>
-    <div class="lab-chips" id="c-ent">${ORDEN.map(k => { const ns = numsDe(D, k), h = ns.filter(hecha).length; return `<button type="button" class="chip-lab" aria-pressed="${k === entSel}" data-e="${k}">${esc(D.entregas[k].nombre)} <small>${h}/${ns.length}</small></button>`; }).join('')}</div>
+    <h3 class="mp-h3">Tu ficha tiene tres partes</h3>
+    <p class="lab-ayuda">Son las tres entregas de «Mi Plato, Mi Historia». Toca una para trabajar sus preguntas. Las preguntas de cada entrega se van abriendo conforme las vemos en clase.</p>
+    <div class="mp-pasos" id="c-ent">${ORDEN.map(tarjetaEntrega).join('')}</div>
     <div id="c-lista"></div>`;
   $('#mp-plat').addEventListener('input', e => { T.platillo = e.target.value; cambio(); const ck = $('#e1-checks'); if (ck && ck._checks) ck._checks(); });
   $('#mp-file').addEventListener('change', async e => { const f = e.target.files[0]; e.target.value = ''; if (f) await importar(() => leerArchivo(f)); });
   $('#mp-pegar').addEventListener('click', pintarPegar);
-  $$('#c-ent .chip-lab').forEach(b => b.addEventListener('click', () => { entSel = b.dataset.e; $$('#c-ent .chip-lab').forEach(x => x.setAttribute('aria-pressed', String(x === b))); pintarGuiada(); }));
+  $$('#c-ent .mp-paso').forEach(b => b.addEventListener('click', () => { entSel = b.dataset.e; $$('#c-ent .mp-paso').forEach(x => x.setAttribute('aria-pressed', String(x === b))); pintarGuiada(); $('#c-lista').scrollIntoView({ behavior: 'smooth', block: 'start' }); }));
   pintarGuiada();
 }
+// ---- Las tres partes de la ficha, como pasos: cuál ya pasó, cuál está en curso y cuál viene después
+const LIMITE = { entrega1: '2026-10-15', entrega2: '2026-11-27', entregaFinal: '2026-12-04' };
+const entregaEnCurso = () => { const h = hoyISO(); return h <= LIMITE.entrega1 ? 'entrega1' : h <= LIMITE.entrega2 ? 'entrega2' : 'entregaFinal'; };
+function tarjetaEntrega(k, i) {
+  const ns = numsDe(D, k), h = ns.filter(hecha).length, ab = ns.filter(abierta), cur = entregaEnCurso(), idx = ORDEN.indexOf(k), idxCur = ORDEN.indexOf(cur);
+  const etapa = idx < idxCur ? 'pasada' : idx === idxCur ? 'actual' : 'futura';
+  const est = estadoEntrega(T, D, k);
+  const tag = etapa === 'pasada' ? (h === ns.length ? '✅ Ya en tu ficha' : '📥 Pásala a tu ficha') : etapa === 'actual' ? '✍️ Ahora' : '⏳ Después';
+  const abiertasTxt = ab.length === ns.length ? 'todas abiertas' : ab.length ? `abiertas: ${ab[0]} a ${ab[ab.length - 1]} · las demás se abren en clase` : 'se abren en clase';
+  return `<button type="button" class="mp-paso ${etapa}" aria-pressed="${k === entSel}" data-e="${k}">
+    <span class="mp-paso-n">${i + 1}</span>
+    <span class="mp-paso-txt"><b>${esc(D.entregas[k].corto)}</b> · preguntas ${ns[0]} a ${ns[ns.length - 1]}
+      <small>${etapa === 'pasada' ? 'Se entregó el 15 de octubre' : `Se entrega el ${esc(D.entregas[k].fecha.toLowerCase())}`}${etapa !== 'pasada' ? ` · ${abiertasTxt}` : ''}${est.entregada ? ' · 📬 entregada' : ''}</small></span>
+    <span class="mp-paso-tag">${tag}</span><span class="mp-paso-cuenta">${h}/${ns.length}</span></button>`;
+}
 function refrescarChips() {
-  $$('#c-ent .chip-lab').forEach(b => { const ns = numsDe(D, b.dataset.e); b.querySelector('small').textContent = `${ns.filter(hecha).length}/${ns.length}`; });
+  $$('#c-ent .mp-paso').forEach(b => { const ns = numsDe(D, b.dataset.e); b.querySelector('.mp-paso-cuenta').textContent = `${ns.filter(hecha).length}/${ns.length}`; });
 }
 
 // ======================================================= importar la Entrega 1
@@ -209,10 +226,11 @@ function pintarGuiada() {
   const paso = Math.min(tot, pasoDe(ent)); fijarPaso(ent, paso);
   const est = estadoEntrega(T, D, ent);
   $('#c-lista').innerHTML = `<div class="t-entrega"><b>${esc(E.nombre)}</b> · ${esc(E.fecha)}<p>${esc(E.req)}</p><p>Vas pregunta por pregunta. <b>Todo se guarda solo</b> mientras escribes.${est.entregada ? ` <span class="t-entregada">${est.modificada ? '✏️ Entregada y modificada después' : '📬 Entregada'} el ${new Date(est.t).toLocaleDateString('es-MX', { day: 'numeric', month: 'short' })}</span>` : ''}</p>
-      ${ent !== 'entrega1' ? `<p class="t-nota">Las preguntas ${ent === 'entrega2' ? '1 a 12' : '1 a 20'} entran solas a tu Word. Puedes corregirlas en su pestaña.</p>` : ''}</div>
+      ${ent !== 'entrega1' ? (() => { const f1 = numsDe(D, 'entrega1').filter(n => !hecha(n)).length; return f1 ? `<p class="t-recuerda">📥 Te falta${f1 === 1 ? '' : 'n'} <b>${f1} de 12</b> preguntas de la Entrega 1 en tu ficha. Entran a tu Word de esta entrega: súbelas con <b>«Subir mi Word»</b> (arriba) o tócale a <b>Entrega 1</b> y escríbelas. <button type="button" class="btn-lab-l" id="ir-e1">Ir a la Entrega 1 →</button></p>` : `<p class="t-nota">Las preguntas ${ent === 'entrega2' ? '1 a 12' : '1 a 20'} ya están en tu ficha y entran solas a tu Word. Si quieres corregirlas, toca su entrega arriba.</p>`; })() : ''}</div>
     <nav class="e1-pasos" aria-label="Preguntas de la ${esc(E.nombre)}">${NS.map((n, i) => `<button type="button" data-p="${i}" class="${paso === i ? 'actual' : ''} ${hecha(n) ? 'hecha' : ''} ${abierta(n) ? '' : 'cerrada'}" title="${abierta(n) ? '' : 'Se abre el ' + fechaLarga(APERTURA[n])}">${hecha(n) ? '✓' : abierta(n) ? n : '🔒'}</button>`).join('')}<button type="button" data-p="${tot}" class="e1-desc ${paso === tot ? 'actual' : ''}">📚 Referencias y Word</button></nav>
     <div id="e1-cuerpo"></div>`;
   const ir = v => { fijarPaso(ent, v); cambio(); pintarGuiada(); $('#c-lista').scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+  const be1 = $('#ir-e1'); if (be1) be1.addEventListener('click', () => { const b = $('#c-ent [data-e="entrega1"]'); if (b) b.click(); });
   $$('.e1-pasos button').forEach(b => b.addEventListener('click', () => ir(+b.dataset.p)));
   const cuerpo = $('#e1-cuerpo');
   if (paso === tot) return pintarFinal(ent, cuerpo, ir);

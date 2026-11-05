@@ -325,3 +325,16 @@ html[data-theme="dark"] .t-paso-n { color: #8fb8e0; }
 .mp-campo input { width: 100%; box-sizing: border-box; font: inherit; font-size: .92rem; padding: .45rem .6rem; border: 1.5px solid var(--line); border-radius: 8px; background: var(--parchment); color: var(--ink); }
 .mp-prev { font-size: .92rem; background: var(--parchment); border-radius: 8px; padding: .5rem .7rem; margin: 0 0 .6rem; }
 .t-contenido .e1-k { font-weight: 800; margin: 0 0 .35rem; }
+/* Las tres partes de la ficha, como pasos */
+.mp-h3 { margin: 1.2rem 0 .2rem; font-size: 1.15rem; }
+.mp-pasos { display: grid; gap: 8px; margin: .6rem 0 1rem; }
+.mp-paso { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 10px; text-align: left; width: 100%; padding: 10px 12px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--cream); color: var(--ink); font: inherit; cursor: pointer; }
+.mp-paso[aria-pressed="true"] { border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink) inset; }
+.mp-paso-n { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; background: var(--line); font-weight: 800; }
+.mp-paso.actual .mp-paso-n { background: var(--saffron, #C98A2C); color: #fff; }
+.mp-paso.pasada .mp-paso-n { background: #3F7A4F; color: #fff; }
+.mp-paso-txt small { display: block; color: var(--ink-soft); font-size: .82rem; margin-top: 2px; }
+.mp-paso-tag { font-size: .78rem; font-weight: 700; white-space: nowrap; }
+.mp-paso.futura { opacity: .8; }
+.mp-paso-cuenta { font: 800 .85rem var(--font-body); color: var(--ink-soft); }
+@media (max-width: 520px) { .mp-paso { grid-template-columns: auto 1fr auto; } .mp-paso-tag { grid-column: 2; } .mp-paso-cuenta { grid-row: 1; grid-column: 3; } }
