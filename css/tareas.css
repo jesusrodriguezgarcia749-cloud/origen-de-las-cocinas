@@ -323,3 +323,11 @@ body.cp-sin-scroll { overflow: hidden; }
 .ft-vacio b { color: var(--ink); }
 .ft-cargando { display: none; position: absolute; inset: 0; place-items: center; background: rgba(255,255,255,.8); border-radius: 10px; font-weight: 700; }
 .ft-subiendo .ft-cargando { display: grid; }
+.re-viaje { list-style: none; margin: 8px 0 0; padding: 0 0 0 14px; border-left: 2px dashed var(--c); display: grid; gap: 5px; }
+.re-viaje li { position: relative; font-size: .86rem; line-height: 1.35; }
+.re-viaje li::before { content: ''; position: absolute; left: -20px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+.re-viaje b { display: block; font-size: .76rem; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-soft); }
+.re-viaje .re-fin b { color: #2e7d32; }
+.re-linea { margin-top: 10px; background: var(--cream); border-radius: 10px; padding: 8px 12px; }
+.re-linea summary { cursor: pointer; font-weight: 700; }
+.re-linea ol { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 4px; font-size: .9rem; }

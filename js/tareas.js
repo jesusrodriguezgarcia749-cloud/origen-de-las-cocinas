@@ -16,7 +16,7 @@ import { BALUARTES, CAMPECHE, QUE_INFLUENCIA, PAISES_AM, PLATILLOS_AM } from "./
 import { QUE_ASIA } from "./asia-datos.js";
 import { QUE_EUROPA, BLOQUES_EU } from "./europa-datos.js";
 import { VUELTA_MUNDO, CONTINENTES_T3 } from "./oceania-datos.js";
-import { RECADOS, ORIGENES, LLEGADAS, INGS, CLAVE_RECADO, recadoDe, reconocer, ingsDe, sugerirRecado } from "./recado-datos.js";
+import { RECADOS, ORIGENES, LLEGADAS, INGS, CLAVE_RECADO, HISTORIA, LINEA_TIEMPO, recadoDe, reconocer, ingsDe, sugerirRecado } from "./recado-datos.js";
 import { comprimir, idFoto, MAX_FOTOS, fotosAlWord } from "./fotos.js";
 import { wordTarea } from "./tarea-word.js?v=2026110601";
 import { formacionDe, formaciones, formacionDeTarea, abiertas as inscAbiertas, equipoDe, equiposDe, tareasDeFormacion, enEquipo } from "./equipos.js";
@@ -1224,13 +1224,14 @@ function recado(cont, eq) {
     if (claves.c2) {
       const ks = [...new Set([...CL.ings, ...suyos])];
       h += `<div class="re-clave"><div class="re-clave-cab"><b>🔑 Clave 2 · De dónde viene cada ingrediente y cómo llegó a Campeche</b>${b('c2', 'Ver las rutas')}</div>${abiertaC.c2 ? `<div class="re-rutas">${ks.map(k => {
-        const I = INGS[k], x = L.find(y => reconocer(y.n) === k);
+        const I = INGS[k], H = HISTORIA[k], x = L.find(y => reconocer(y.n) === k);
         const okO = x && x.o ? x.o === I.o : null, okL = x && x.l ? I.l.includes(x.l) : null;
         const marca = v => v === null ? '' : v ? ' ✓' : ' ✗';
         return `<div class="re-rt" style="--c:${colOrigen(I.o)}"><b>${I.e} ${esc(I.n)}</b> <small class="re-tag">${esc(nomOrigen(I.o))} · ${esc(I.l.map(nomLlegada).join(' o '))}</small>
           ${x ? `<p class="re-suyo">Ustedes pusieron: ${x.o ? esc(nomOrigen(x.o)) + marca(okO) : '<i>sin origen</i>'} · ${x.l ? esc(nomLlegada(x.l)) + marca(okL) : '<i>sin llegada</i>'}</p>` : '<p class="re-suyo"><i>No lo tienen en su lista.</i></p>'}
-          <p>${esc(I.ruta)}</p>${I.trampa ? `<p class="re-trampa">⚠️ ${esc(I.trampa)}</p>` : ''}</div>`;
-      }).join('')}</div>` : ''}</div>`;
+          <p>${esc(I.ruta)}</p>${H ? `<ol class="re-viaje">${H.pasos.map(([f, t]) => `<li><b>${esc(f)}</b> ${esc(t)}</li>`).join('')}<li class="re-fin"><b>Hoy en Campeche</b> ${esc(H.cultura)}</li></ol>` : ''}${I.trampa ? `<p class="re-trampa">⚠️ ${esc(I.trampa)}</p>` : ''}</div>`;
+      }).join('')}</div>
+        <details class="re-linea"><summary>🕰️ La línea del tiempo: cómo viajaron los ingredientes hasta Campeche</summary><ol>${LINEA_TIEMPO.map(([f, t]) => `<li><b>${esc(f)}</b> ${esc(t)}</li>`).join('')}</ol></details>` : ''}</div>`;
     }
     caja.innerHTML = h;
     $$('.re-ver', caja).forEach(x => x.addEventListener('click', () => { abiertaC[x.dataset.c] = !abiertaC[x.dataset.c]; pintarClaves(); }));

@@ -138,3 +138,60 @@ export function sugerirRecado(d) {
   const nota = 0.5 * Math.min(6, marcados) + 0.5 * Math.min(4, rutas) + 2 * Math.min(1, palabras(c.guisos) / 20) + 2 * Math.min(1, palabras(c.conclusion) / 25) + (String(c.fuentes || '').trim() ? 1 : 0);
   return { nota: Math.round(Math.min(10, nota) * 10) / 10, detalle: `${L.length} ingredientes (${marcados} con origen y llegada, ${rutas} con su ruta) · guisos ${palabras(c.guisos)} palabras · ${String(c.fuentes || '').trim() ? 'con' : 'sin'} fuentes` };
 }
+
+// ---------- La historia del viaje (Clave 2): paradas con fecha y cómo se volvió parte de la cultura.
+// Fechas clave: Hispania romana (desde 218 a. C.); al-Ándalus (711-1492, casi ocho siglos);
+// Colón (1492 y 1493); Vasco da Gama en la India (1498); Hernández de Córdoba en Campeche (1517);
+// Magallanes-Elcano (1519-1522); fundación de San Francisco de Campeche (1540); Galeón de Manila (1565-1815).
+export const LINEA_TIEMPO = [
+  ['218 a. C.', 'Roma llega a la península ibérica: nace Hispania. Con los romanos llegan el ajo, la cebolla, el comino y el laurel a la mesa de todos los días.'],
+  ['Siglo I', 'Los barcos romanos cruzan el mar Arábigo hasta la costa de Malabar (India) para comprar pimienta.'],
+  ['711', 'Árabes y bereberes cruzan el estrecho de Gibraltar. Nace al-Ándalus, que duró casi ocho siglos.'],
+  ['Siglos VIII a XII', 'Al-Ándalus siembra naranjos agrios, arroz, caña de azúcar y berenjena con nuevos sistemas de riego, y cocina con comino, canela, azafrán y vinagre (el escabeche).'],
+  ['1453', 'Los otomanos toman Constantinopla. Las especias de Asia se encarecen y Europa busca otros caminos por mar.'],
+  ['1492', 'Cae Granada, el último reino de al-Ándalus. Ese mismo año Colón llega a América.'],
+  ['1493', 'Segundo viaje de Colón: lleva al Caribe semillas de cítricos (entre ellas la naranja), caña de azúcar, cebolla, ajo… y animales.'],
+  ['1498', 'Vasco da Gama rodea África y llega a la India: Portugal abre la ruta de las especias por mar.'],
+  ['1517', 'Francisco Hernández de Córdoba llega a Can Pech: el primer contacto de los españoles con Campeche.'],
+  ['1519-1522', 'La expedición de Magallanes y Elcano da la vuelta al mundo; la nave Victoria regresa a España cargada de clavo.'],
+  ['1540', 'Francisco de Montejo «el Mozo» funda San Francisco de Campeche: el puerto por donde entran los productos de España.'],
+  ['1565-1815', 'El Galeón de Manila une Asia con Acapulco: clavo, canela, pimienta, seda y porcelana entran a la Nueva España por el Pacífico.'],
+];
+export const HISTORIA = {
+  achiote: { pasos: [['Época prehispánica', 'Los mayas lo cultivan y lo usan para pintar la comida, el cacao y en ceremonias.'], ['Siglo XVI', 'Los españoles lo conocen aquí y lo llevan a Europa y a Asia como colorante.']],
+    cultura: 'Nunca se fue: hoy es la base de la cochinita pibil, el símbolo de la cocina de la península.' },
+  chile: { pasos: [['Hace unos 6,000 años', 'Se domestica en México.'], ['Siglo XVI', 'Los portugueses lo llevan a África y a la India; el Galeón de Manila, a Filipinas y China.'], ['Siglos XVII-XIX', 'Se vuelve paprika en Hungría y base del curry picante en la India.']],
+    cultura: 'Es el ingrediente mexicano que más culturas adoptaron como propio.' },
+  maiz: { pasos: [['Hace unos 9,000 años', 'Se domestica en el centro y sur de México.'], ['Época prehispánica', 'Los mayas lo nixtamalizan y hacen tortillas.']],
+    cultura: 'Quemar la tortilla para el recado negro es una técnica de aquí, de la península.' },
+  pepita: { pasos: [['Hace unos 10,000 años', 'La calabaza es de las primeras plantas cultivadas en Mesoamérica.'], ['Época prehispánica', 'Los mayas tuestan y muelen la pepita: el sikil.']],
+    cultura: 'El sikil p\'aak y los papadzules siguen siendo cocina maya viva.' },
+  epazote: { pasos: [['Época prehispánica', 'Hierba de la milpa; su nombre viene del náhuatl «epazotl».']],
+    cultura: 'Acompaña frijoles, papadzules y caldos en todo el sureste.' },
+  pimientaTab: { pasos: [['Época prehispánica', 'Los mayas la usan para sazonar y en el cacao.'], ['Siglo XVI', 'Los españoles la llaman «pimienta» y la mandan a Europa.'], ['Siglos XVII-XIX', 'Jamaica se vuelve su gran productor; en Inglaterra la usan en pasteles y encurtidos.']],
+    cultura: 'Viajó de aquí al mundo: en inglés se llama «allspice», «todas las especias».' },
+  oregano: { pasos: [['Época prehispánica', 'Planta silvestre de la península; se usa seca y tostada.'], ['Siglo XVI', 'Los españoles le dan el nombre de la planta del Mediterráneo por su aroma parecido.']],
+    cultura: 'El orégano yucateco tostado es parte de casi todos los recados.' },
+  sal: { pasos: [['Época prehispánica', 'Los mayas la sacan de las salinas de la costa norte de la península.'], ['Época prehispánica', 'Se comercia en canoas y por caminos hasta el centro de México y Centroamérica.'], ['Época colonial', 'Las salinas de la península siguen surtiendo a la Nueva España.']],
+    cultura: 'Es de aquí desde siempre: la península fue una de las grandes productoras de sal de Mesoamérica.' },
+  pimienta: { pasos: [['Siglo I', 'Los barcos romanos la compran en la costa de Malabar (India).'], ['408', 'Alarico, rey visigodo, pide pimienta como parte del rescate de Roma.'], ['Edad Media', 'Venecia y Génova la revenden carísima; los mercaderes árabes la traen desde la India.'], ['1498', 'Vasco da Gama llega a la India por mar.'], ['Siglo XVI', 'Entra a la Nueva España por Veracruz y Campeche (desde Sevilla) y, desde 1565, por Acapulco con el Galeón de Manila.']],
+    cultura: 'De lujo de reyes pasó a estar en cualquier cocina campechana, molida en el recado.' },
+  clavo: { pasos: [['Antigüedad', 'Desde las islas Molucas lo llevan comerciantes chinos, indios y árabes.'], ['1512', 'Los portugueses llegan a las Molucas.'], ['1522', 'La nave Victoria de Elcano regresa a España con clavo suficiente para pagar todo el viaje.'], ['1565-1815', 'Llega a la Nueva España con el Galeón de Manila, y también desde España.']],
+    cultura: 'En la península se volvió inseparable de los recados, el puchero y los dulces.' },
+  canela: { pasos: [['Antigüedad', 'Los mercaderes árabes la traen de Ceilán y guardan en secreto de dónde sale.'], ['1505', 'Los portugueses llegan a Ceilán; después la controlan los holandeses (1658).'], ['Siglo XVI', 'Llega a la Nueva España desde España y con el Galeón de Manila.']],
+    cultura: 'México la hizo suya: en el chocolate, el café de olla, el arroz con leche y los recados.' },
+  naranja: { pasos: [['Antigüedad', 'Nace en el sur de China y el noreste de la India.'], ['Siglos VIII-X', 'Pasa a Persia; los árabes la llevan a al-Ándalus y la siembran en patios y huertas de Sevilla y Córdoba.'], ['1493', 'Colón lleva semillas de cítricos al Caribe en su segundo viaje.'], ['Siglo XVI', 'Los españoles la siembran en la península de Yucatán.']],
+    cultura: 'Aquí se volvió indispensable: la cochinita, el poc chuc y el escabeche no se entienden sin ella.' },
+  ajo: { pasos: [['Antigüedad', 'De Asia Central pasa a Egipto, donde lo comían los trabajadores de las pirámides.'], ['218 a. C. en adelante', 'Los romanos lo cultivan en Hispania.'], ['1493', 'Colón lo lleva a América.'], ['Siglo XVI', 'Llega a Campeche con los españoles.']],
+    cultura: 'Asado o crudo, está en todos los recados de la península.' },
+  cebolla: { pasos: [['Antigüedad', 'De Asia Central y el actual Irán pasa a Egipto y al Mediterráneo.'], ['218 a. C. en adelante', 'Los romanos la cultivan en Hispania.'], ['1493', 'Colón la siembra en el Caribe.'], ['Siglo XVI', 'Llega a Campeche con los españoles.']],
+    cultura: 'La cebolla morada en naranja agria es hoy el acompañante de la cochinita.' },
+  comino: { pasos: [['Antigüedad', 'Se usa en Egipto y en todo el Medio Oriente.'], ['218 a. C. en adelante', 'Los romanos ya cocinan con él en Hispania.'], ['711-1492', 'Los árabes de al-Ándalus lo vuelven básico en guisos y adobos.'], ['Siglo XVI', 'Los españoles lo traen a la Nueva España.']],
+    cultura: 'En los recados se muele con el achiote y la pimienta: una mezcla que solo existe aquí.' },
+  cilantro: { pasos: [['Hacia 1325 a. C.', 'Se encontraron semillas en la tumba de Tutankamón, en Egipto.'], ['Antigüedad', 'Los romanos lo llevan por toda Europa.'], ['Siglo XVI', 'Llega a la Nueva España con los españoles.']],
+    cultura: 'En México se adoptó sobre todo la hoja fresca; en los recados se usa la semilla.' },
+  laurel: { pasos: [['Antigüedad', 'Los griegos y romanos coronan con laurel a los vencedores.'], ['Siglo XVI', 'Llega a la Nueva España con los españoles.']],
+    cultura: 'Se volvió hoja de todos los días en escabeches, caldos y recados.' },
+  vinagre: { pasos: [['Siglo X', 'En Bagdad se escribe la receta del «sikbaj», carne en vinagre.'], ['711-1492', 'Los árabes lo llevan a al-Ándalus; en 1324 un recetario catalán ya lo llama «escabeig».'], ['Siglo XVI', 'Los españoles traen el escabeche a la Nueva España.']],
+    cultura: 'Campeche lo hizo suyo con pescado del Golfo y naranja agria: el pámpano en escabeche.' },
+};
