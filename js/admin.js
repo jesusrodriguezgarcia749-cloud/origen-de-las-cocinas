@@ -22,6 +22,11 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// Al abrir el panel, todas las listas de «Parcial» empiezan en el parcial en curso según la fecha
+// (calendario del curso: examen del Parcial 1 el 15 de octubre y del Parcial 2 el 27 de noviembre).
+const parcialDeHoy = (hoy = new Date()) => { const d = hoy.toISOString().slice(0, 10); return d <= '2026-10-15' ? 'p1' : d <= '2026-11-27' ? 'p2' : 'final'; };
+document.querySelectorAll('select').forEach(sel => { if ([...sel.options].some(o => o.value === 'p1')) { const p = parcialDeHoy(); if ([...sel.options].some(o => o.value === p)) sel.value = p; } });
+
 // PARCIALES: usado únicamente para todo lo que depende de calculo.js
 // (Historial, exportar CSV, resumen del alumno) — el Diagnóstico NO
 // participa en ningún cálculo de calificación, así que NO va aquí.
