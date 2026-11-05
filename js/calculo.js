@@ -242,7 +242,15 @@ export function calcularParcial(parcial, datos) {
   return r;
 }
 
+// Tarea marcada como «exento» (falta justificada): no cuenta en el promedio ni como no entregada.
+// El documento queda en alumnos/{id}/tareas/{idDeLaTarea} con exento: true y sin calificación.
+function quitarExentos(datos) {
+  const ex = new Set((datos.tareas || []).filter(t => t && t.exento).map(t => t.id));
+  if (!ex.size) return datos;
+  return { ...datos, tareas: (datos.tareas || []).filter(t => !ex.has(t.id)), catalogoTareas: (datos.catalogoTareas || []).filter(t => !ex.has(t.id)), exentas: ex };
+}
 function calcularParcialBase(parcial, datos) {
+  datos = quitarExentos(datos || {});
   const tareasDelParcial = (datos.tareas || []).filter(t => t.parcial === parcial);
   const participacionDelParcial = (datos.participaciones || []).filter(p => p.parcial === parcial);
   const asistenciaDelParcial = (datos.asistencias || []).filter(a => a.parcial === parcial);

@@ -38,7 +38,7 @@ let editando = null;
 // ---- modo equipo: el atlas vive en grupos/{g}/equipos/{e}/atlas/{continente} y se edita en vivo
 let ultimaNota = '', TAREA_EST = {}, entregaEq = {};
 const tareaDe = k => TAREAS_DIG['atlas-' + k];
-const cerrada = () => { const t = tareaDe(cont); return !!(t && TAREA_EST[t.id] && TAREA_EST[t.id].abierta === false); };
+const cerrada = () => { const t = tareaDe(cont), e = t && TAREA_EST[t.id]; return !!(e && (e.abierta === false || (e.cierre && Date.now() > Date.parse(e.cierre)))); };
 function avisoCerrada() { estado('🔒 Tu maestro cerró esta tarea: ya no se guardan cambios.', 'mal'); }
 const nota = d => { ultimaNota = d; };
 const nomCampo = f => ({ nombre: 'el nombre', ...Object.fromEntries(CAMPOS_REGION.map(([k, t]) => [k, t])) })[f] || f;
@@ -387,7 +387,7 @@ function pintarTarea() {
   const t = tareaDe(cont);
   if (!t || !sesion || sesion.anon) { z.innerHTML = ''; return; }
   const en = entregadoActual(), f = x => { const d = x && x.toDate ? x.toDate() : typeof x === 'number' ? new Date(x) : null; return d ? d.toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : ''; };
-  z.innerHTML = `<div class="ma-tarea-f ${cerrada() ? 'cerr' : en ? 'ent' : ''}"><span>📌 <b>Tarea ${t.tema} · ${t.nombre}</b> · cuenta para el Parcial 2. ${cerrada() ? '🔒 Tu maestro la cerró: ya no se guardan cambios.' : en ? `✅ Entregada el ${f(en.t)}${en.por ? ` por ${en.por}.` : /\.$/.test(f(en.t)) ? '' : '.'} Puedes corregir mientras siga abierta.` : 'Cuando terminen, entréguenla.'}</span>${!cerrada() && !en ? '<button type="button" class="btn-at" id="ma-entregar">📤 Entregar tarea</button>' : ''}</div>`;
+  z.innerHTML = `<div class="ma-tarea-f ${cerrada() ? 'cerr' : en ? 'ent' : ''}"><span>📌 <b>Tarea ${t.tema} · ${t.nombre}</b> · cuenta para el Parcial 2. ${cerrada() ? `🔒 ${(TAREA_EST[t.id] || {}).abierta === false ? 'Tu maestro la cerró' : 'Ya pasó su fecha límite'}: ya no se guardan cambios.` : en ? `✅ Entregada el ${f(en.t)}${en.por ? ` por ${en.por}.` : /\.$/.test(f(en.t)) ? '' : '.'} Puedes corregir mientras siga abierta.` : 'Cuando terminen, entréguenla.'}</span>${!cerrada() && !en ? '<button type="button" class="btn-at" id="ma-entregar">📤 Entregar tarea</button>' : ''}</div>`;
   const b = $('#ma-entregar');
   if (b) b.addEventListener('click', async () => {
     if (!C().regiones.length) { alert('Primero creen al menos una región y clasifiquen países.'); return; }

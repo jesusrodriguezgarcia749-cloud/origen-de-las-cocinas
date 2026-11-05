@@ -30,7 +30,10 @@ const punto = t => /\.$/.test(t) ? t : t + '.';
 const fechaHora = ts => { const d = ts && ts.toDate ? ts.toDate() : typeof ts === 'number' ? new Date(ts) : null; return d ? d.toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : ''; };
 let sesion = null; try { sesion = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null'); } catch { sesion = null; }
 let EQS = null, GDATA = {}, ESTADO = {}, unsubGrupo = null, detener = null;
-const abierta = id => !(ESTADO[id] && ESTADO[id].abierta === false);
+// Una tarea está cerrada si el docente la cerró o si ya pasó su fecha límite (grupos/{g}.tareasDig.{id}.cierre).
+const vencida = id => { const c = ESTADO[id] && ESTADO[id].cierre; return !!c && Date.now() > Date.parse(c); };
+const abierta = id => !(ESTADO[id] && ESTADO[id].abierta === false) && !vencida(id);
+const cierreTxt = id => { const c = ESTADO[id] && ESTADO[id].cierre; return c ? new Date(c).toLocaleString('es-MX', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }) : ''; };
 
 // ======================================================= acceso y equipo
 async function cargarGruposEn(sel) {
@@ -93,9 +96,13 @@ function escucharGrupo() {
   if (!sesion) return;
   unsubGrupo = onSnapshot(doc(db, 'grupos', sesion.grupoId), sn => {
     ESTADO = (sn.exists() && sn.data().tareasDig) || {};
-    window.dispatchEvent(new CustomEvent('estado-tareas', { detail: sn.exists() ? sn.data() : {} }));
+    ULT_GRUPO = sn.exists() ? sn.data() : {};
+    window.dispatchEvent(new CustomEvent('estado-tareas', { detail: ULT_GRUPO }));
   }, () => {});
 }
+// Cada 30 s se revisa si alguna tarea llegó a su fecha límite, para cerrarla en pantalla sin recargar.
+let ULT_GRUPO = {};
+setInterval(() => { if (Object.values(ESTADO).some(e => e && e.cierre)) window.dispatchEvent(new CustomEvent('estado-tareas', { detail: ULT_GRUPO })); }, 30000);
 
 // ======================================================= portada: temas que se despliegan
 const ATLAS_TOTAL = {};
@@ -134,7 +141,7 @@ async function estadoDe(a) {
 function insignia(a, st) {
   if (a.tipo === 'practica') return '<span class="tq tq-practica">Práctica · sin calificación</span>';
   if (a.tipo === 'pronto') return '<span class="tq tq-pronto">Próximamente</span>';
-  if (!st) return `<span class="tq">${abierta(a.id) ? 'Tarea' : '🔒 Cerrada'}</span>`;
+  if (!st) return `<span class="tq">${abierta(a.id) ? 'Tarea' + (cierreTxt(a.id) ? ` · cierra ${esc(cierreTxt(a.id))}` : '') : '🔒 Cerrada'}</span>`;
   if (st.cal !== null) return `<span class="tq tq-cal">Calificada: <b>${st.cal}</b></span>`;
   if (st.entregado) return `<span class="tq tq-ent">Entregada ✓ ${esc(fechaHora(st.entregado.t))}</span>`;
   if (!abierta(a.id)) return '<span class="tq tq-cerr">🔒 Cerrada</span>';
@@ -224,9 +231,9 @@ function barraEntrega(cont, a, { entregado, alEntregar }) {
   const zona = $('[data-entrega]', cont);
   const pintar = () => {
     const ab = abierta(a.id);
-    zona.innerHTML = !ab ? `<div class="cl-cerrada">🔒 Tu maestro cerró esta tarea: ya no se guardan cambios.${entregado() ? ` Entregada el ${esc(punto(fechaHora(entregado().t)))}` : ''}</div>`
+    zona.innerHTML = !ab ? `<div class="cl-cerrada">🔒 ${vencida(a.id) ? `Esta tarea cerró el ${esc(cierreTxt(a.id))}` : 'Tu maestro cerró esta tarea'}: ya no se guardan cambios.${entregado() ? ` Entregada el ${esc(punto(fechaHora(entregado().t)))}` : ''}</div>`
       : entregado() ? `<div class="cl-entregada">✅ Entregada el ${esc(entregado().por ? fechaHora(entregado().t) + ' por ' + entregado().por + '.' : punto(fechaHora(entregado().t)))} Aún puedes corregir mientras la tarea siga abierta.</div>`
-      : '<div class="cl-entregar"><span>¿Ya terminaron? Entreguen la tarea para que su maestro la califique.</span><button type="button" class="btn-at" data-entregar>📤 Entregar tarea</button></div>';
+      : `<div class="cl-entregar"><span>¿Ya terminaron? Entreguen la tarea para que su maestro la califique.${cierreTxt(a.id) ? ` <b>Cierra: ${esc(cierreTxt(a.id))}.</b>` : ''}</span><button type="button" class="btn-at" data-entregar>📤 Entregar tarea</button></div>`;
     const b = $('[data-entregar]', zona); if (b) b.addEventListener('click', async () => { if (!confirm('¿Entregar la tarea? Podrás seguir corrigiendo mientras tu maestro no la cierre.')) return; b.disabled = true; try { await alEntregar(); } catch (e) { alert('No se pudo entregar: ' + (e.message || e)); b.disabled = false; } pintar(); });
     $$('textarea, input:not([type=hidden])', cont).forEach(t => { if (!t.closest('[data-entrega]')) t.readOnly = !ab; });
   };

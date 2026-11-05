@@ -16,6 +16,7 @@ import { vistaRapida } from "./matriz.js?v=2026110501";
 import { BASE, enEquipo, formacionDe, formaciones, ordenFormaciones, formacionDeTarea, equiposDe, tareasDeFormacion, urlUnir, qrSvg } from "./equipos.js";
 import { wordMiPlato, numsDe as numsMiPlato, estadoEntrega as estadoMiPlato, slugArchivo, ORDEN as ORDEN_MP } from "./mi-plato-word.js?v=2026102901";
 import { zipDocx } from "./docx-ites.js?v=2026102901";
+import { wordTarea } from "./tarea-word.js?v=2026110501";
 import { TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, nombreCatalogo, sugerirAtlas, sugerirCuadro, MIN_PALABRAS_CELDA, sugerirDesarma, CUADRO_MM, INFLUENCIAS, sugerirInfluencias, ESPECIAS, subregionDe, sugerirEspecias } from "./clase-datos.js";
 
 const app = initializeApp(firebaseConfig);
@@ -469,9 +470,9 @@ async function calificarItem(tipo, item) {
   document.getElementById(cfg.calificarTitulo).textContent = `Calificar: ${item.nombre}`;
   const cont = document.getElementById(cfg.calificarLista);
   cont.innerHTML = '<p class="empty-inline">Cargando…</p>';
-  const valores = {};
+  const valores = {}, exentos = {};
   await Promise.all(alumnosCache.map(async (a) => {
-    try { const snap = await getDoc(doc(db, 'grupos', grupoActivo, 'alumnos', a.id, cfg.sub, item.id)); valores[a.id] = snap.exists() ? snap.data().calificacion : ''; }
+    try { const snap = await getDoc(doc(db, 'grupos', grupoActivo, 'alumnos', a.id, cfg.sub, item.id)); valores[a.id] = snap.exists() ? snap.data().calificacion ?? '' : ''; exentos[a.id] = snap.exists() && !!snap.data().exento; }
     catch { valores[a.id] = ''; }
   }));
 
@@ -491,13 +492,14 @@ async function calificarItem(tipo, item) {
       const marcado = valores[a.id] !== '' && valores[a.id] !== undefined && valores[a.id] !== null;
       row.innerHTML = `<label class="part-check" style="display:flex; align-items:center; gap:10px; width:100%; cursor:pointer;"><input type="checkbox" class="part-input" ${marcado ? 'checked' : ''} style="width:22px; height:22px; flex:none;"><span class="student-name">${escaparHTML(a.nombre)}</span></label>`;
     } else {
-      row.innerHTML = `<span class="student-name">${escaparHTML(a.nombre)}</span><input type="number" min="0" max="10" step="0.1" class="calif-input" value="${valores[a.id] ?? ''}" placeholder="0-10"><textarea class="proy-comentario" rows="2" placeholder="Comentarios para el alumno: qué salió bien y qué debe corregir (lo verá en Mi progreso)">${escaparHTML(comentarios[a.id] || '')}</textarea>`;
+      row.innerHTML = `<span class="student-name">${escaparHTML(a.nombre)}</span><input type="number" min="0" max="10" step="0.1" class="calif-input" value="${valores[a.id] ?? ''}" placeholder="0-10" ${exentos[a.id] ? 'disabled' : ''}><label class="ex-check" title="Falta justificada: esta tarea no le cuenta en el promedio"><input type="checkbox" class="ex-input" ${exentos[a.id] ? 'checked' : ''}> Exento</label><textarea class="proy-comentario" rows="2" placeholder="Comentarios para el alumno: qué salió bien y qué debe corregir (lo verá en Mi progreso)">${escaparHTML(comentarios[a.id] || '')}</textarea>`;
     }
     filasCont.appendChild(row);
+    const ex = row.querySelector('.ex-input'); if (ex) ex.addEventListener('change', () => { const i = row.querySelector('.calif-input'); i.disabled = ex.checked; if (ex.checked) i.value = ''; });
   });
   cont.querySelector('[data-accion="marcar-diez"]').addEventListener('click', () => {
     if (esParticipacion) filasCont.querySelectorAll('.part-input').forEach(inp => { inp.checked = true; });
-    else filasCont.querySelectorAll('.calif-input').forEach(inp => { inp.value = '10'; });
+    else filasCont.querySelectorAll('.calif-input:not(:disabled)').forEach(inp => { inp.value = '10'; });
   });
   cont.querySelector('[data-accion="limpiar-todos"]').addEventListener('click', () => {
     if (!confirm('¿Vaciar la captura de todos los alumnos para esta actividad?')) return;
@@ -530,8 +532,9 @@ async function guardarCalificaciones(tipo) {
       }
       return;
     }
-    const input = row.querySelector('.calif-input');
-    if (input.value === '') { escrituras.push(deleteDoc(ref).catch(() => {})); }
+    const input = row.querySelector('.calif-input'), ex = row.querySelector('.ex-input');
+    if (ex && ex.checked) { escrituras.push(setDoc(ref, { parcial: item.parcial, nombre: item.nombre, fecha: item.fecha, exento: true, actualizado: serverTimestamp() })); }
+    else if (input.value === '') { escrituras.push(deleteDoc(ref).catch(() => {})); }
     else {
       const calificacion = parseFloat(input.value);
       escrituras.push(setDoc(ref, { parcial: item.parcial, nombre: item.nombre, fecha: item.fecha, calificacion, actualizado: serverTimestamp() }));
@@ -1183,10 +1186,11 @@ async function cargarTareasDig() {
   try { const g = await getDoc(doc(db, 'grupos', grupoActivo)); est = (g.exists() && g.data().tareasDig) || {}; } catch { /* */ }
   try { const sn = await getDocs(collection(db, 'grupos', grupoActivo, 'tareas_catalogo')); sn.forEach(d => { if (d.id.startsWith('dig-')) enCat.add(d.id); }); } catch { /* */ }
   cont.innerHTML = TEMAS_TAREAS.map(t => `<div class="td-tema"><p class="td-tit"><b>${escaparHTML(t.tema)} · ${escaparHTML(t.titulo)}</b> <small>${escaparHTML(t.fechaTexto)}</small></p>${t.acts.filter(califica).map(a => {
-    const cat = enCat.has(catalogoId(a.id)), ab = !(est[a.id] && est[a.id].abierta === false);
+    const cat = enCat.has(catalogoId(a.id)), cierre = (est[a.id] && est[a.id].cierre) || '', vencida = !!cierre && Date.now() > Date.parse(cierre), ab = !(est[a.id] && est[a.id].abierta === false) && !vencida;
     return `<div class="td-fila"><span class="td-nom">${a.icono} ${escaparHTML(a.nombre)}</span>
+      <label class="td-cierre" title="Fecha y hora límite: la tarea se cierra sola. Déjala vacía para cerrarla tú."><span>⏰ Cierra</span><input type="datetime-local" data-cierre="${a.id}" value="${escaparHTML(cierre)}"></label>
       <button type="button" class="btn btn-small td-cat ${cat ? 'si' : ''}" data-cat="${a.id}" ${cat ? 'disabled' : ''}>${cat ? '✓ En el catálogo' : '+ Agregar al catálogo'}</button>
-      <button type="button" class="btn btn-small td-ab ${ab ? 'si' : 'no'}" data-ab="${a.id}">${ab ? '🔓 Abierta' : '🔒 Cerrada'}</button>
+      <button type="button" class="btn btn-small td-ab ${ab ? 'si' : 'no'}" data-ab="${a.id}">${ab ? '🔓 Abierta' : vencida ? '🔒 Cerrada (venció)' : '🔒 Cerrada'}</button>
       ${enEquipo(a) ? `<button type="button" class="btn btn-small td-eq" data-eqt="${a.id}" aria-expanded="false">👥 Equipos</button>` : ''}
       <button type="button" class="btn btn-small btn-primary" data-cal="${a.id}">Calificar</button></div>`;
   }).join('')}</div>`).join('');
@@ -1197,9 +1201,14 @@ async function cargarTareasDig() {
     cargarTareasDig(); cargarCatalogo('tareas');
   }));
   cont.querySelectorAll('[data-ab]').forEach(b => b.addEventListener('click', async () => {
-    const id = b.dataset.ab, ab = !(est[id] && est[id].abierta === false);
+    const id = b.dataset.ab, c = (est[id] && est[id].cierre) || '', venc = !!c && Date.now() > Date.parse(c), ab = !(est[id] && est[id].abierta === false) && !venc;
     if (ab && !confirm('¿Cerrar la tarea? Los alumnos ya no podrán hacer cambios (lo que llevan se conserva).')) return;
-    await setDoc(doc(db, 'grupos', grupoActivo), { tareasDig: { [id]: { abierta: !ab } } }, { merge: true });
+    if (!ab && venc && !confirm('Esta tarea se cerró porque pasó su fecha límite. ¿Abrirla otra vez? Se quitará la fecha límite.')) return;
+    await setDoc(doc(db, 'grupos', grupoActivo), { tareasDig: { [id]: { abierta: !ab, ...(venc ? { cierre: '' } : {}) } } }, { merge: true });
+    cargarTareasDig();
+  }));
+  cont.querySelectorAll('[data-cierre]').forEach(i => i.addEventListener('change', async () => {
+    await setDoc(doc(db, 'grupos', grupoActivo), { tareasDig: { [i.dataset.cierre]: { cierre: i.value || '', ...(i.value && Date.parse(i.value) > Date.now() ? { abierta: true } : {}) } } }, { merge: true });
     cargarTareasDig();
   }));
   escucharEquiposAdmin(); pintarTdEquipos();
@@ -1225,53 +1234,72 @@ async function calificarTareaDig(a, enCatalogo) {
   const docEquipo = async (eq, id) => { const k = eq.id + '/' + id; if (!(k in cacheEq)) { try { const s = await getDoc(doc(db, 'grupos', g, 'equipos', eq.id, 'atlas', id)); cacheEq[k] = s.exists() ? s.data() : null; } catch { cacheEq[k] = null; } } return cacheEq[k]; };
   const filas = await Promise.all(alumnosCache.map(async al => {
     const eq = enEquipo(a) ? equipos.find(e => (e.integrantes || []).includes(al.id)) || null : null;
-    let sug = { nota: 0, detalle: 'Sin trabajo' }, entregado = null, resumen = '', cal = '';
-    try { const c = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'tareas', catalogoId(a.id))); if (c.exists()) cal = c.data().calificacion ?? ''; } catch { /* */ }
+    let sug = { nota: 0, detalle: 'Sin trabajo' }, entregado = null, resumen = '', cal = '', exento = false, word = null;
+    try { const c = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'tareas', catalogoId(a.id))); if (c.exists()) { cal = c.data().calificacion ?? ''; exento = !!c.data().exento; } } catch { /* */ }
     try {
       if (a.tipo === 'atlas') {
         let c = null;
-        if (eq) { const d = await docEquipo(eq, a.cont); if (d) { c = { regiones: Object.entries(d.regiones || {}).map(([id, r]) => ({ ...r, id })), asign: d.asign || {} }; entregado = d.entregado || null; } }
+        if (eq) { const d = await docEquipo(eq, a.cont); if (d) { c = { regiones: Object.entries(d.regiones || {}).map(([id, r]) => ({ ...r, id })).sort((x, y) => (x.orden || 0) - (y.orden || 0)), asign: d.asign || {}, paises: d.paises || {}, por: d.por || {} }; entregado = d.entregado || null; } }
         if (!c) { const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'mi-atlas')); if (s.exists()) { const dd = s.data().datos || {}; c = (dd.conts || {})[a.cont] || null; const en = (dd.entregas || {})[a.cont]; if (en) entregado = { t: en }; } }
+        word = c && (c.regiones || []).length ? c : null;
         sug = sugerirAtlas(c, total); resumen = c ? (c.regiones || []).map(r => `${r.nombre} (${Object.values(c.asign).filter(x => x === r.id).length})`).join(' · ') : '';
       } else if (a.tipo === 'cuadro') {
         const d = eq ? await docEquipo(eq, CUADRO_MM.id) : null;
         let datos = d;
         if (!datos) { const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'tarea-cuadro-mm')); datos = s.exists() ? s.data() : null; }
-        if (datos) { sug = sugerirCuadro(datos.celdas); entregado = datos.entregado || null; resumen = CUADRO_MM.filas.map(([f, t]) => `${t}: ${CUADRO_MM.columnas.map(([c]) => ((datos.celdas || {})[`${f}_${c}`] || '').trim().split(/\s+/).filter(Boolean).length >= MIN_PALABRAS_CELDA ? '●' : '○').join('')}`).join(' · '); }
+        if (datos) { word = datos; sug = sugerirCuadro(datos.celdas); entregado = datos.entregado || null; resumen = CUADRO_MM.filas.map(([f, t]) => `${t}: ${CUADRO_MM.columnas.map(([c]) => ((datos.celdas || {})[`${f}_${c}`] || '').trim().split(/\s+/).filter(Boolean).length >= MIN_PALABRAS_CELDA ? '●' : '○').join('')}`).join(' · '); }
       } else if (a.tipo === 'influencias') {
         let datos = eq ? await docEquipo(eq, INFLUENCIAS.id) : null;
         if (!datos) { const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'tarea-influencias')); datos = s.exists() ? s.data() : null; }
-        if (datos) { sug = sugerirInfluencias(datos); entregado = datos.entregado || null; resumen = INFLUENCIAS.lista.map(([k, n]) => `${n}: ${((datos.inf || {})[k] || {}).si ? 'sí' : '—'}`).join(' · ') + (datos.argumento ? ' · ' + datos.argumento.slice(0, 200) : ''); }
+        if (datos) { word = datos; sug = sugerirInfluencias(datos); entregado = datos.entregado || null; resumen = INFLUENCIAS.lista.map(([k, n]) => `${n}: ${((datos.inf || {})[k] || {}).si ? 'sí' : '—'}`).join(' · ') + (datos.argumento ? ' · ' + datos.argumento.slice(0, 200) : ''); }
       } else if (a.tipo === 'especias') {
         let datos = eq ? await docEquipo(eq, ESPECIAS.id) : null;
         if (!datos) { const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'tarea-especias')); datos = s.exists() ? s.data() : null; }
-        if (datos) { sug = sugerirEspecias(datos); entregado = datos.entregado || null; const c = datos.campos || {}; resumen = `${subregionDe(eq, al.id)[1]} · ` + ESPECIAS.campos.slice(0, 3).map(([k, t]) => `${t.replace(/^\S+\s/, '')}: ${(c[k] || '—').slice(0, 80)}`).join(' · '); }
+        if (datos) { word = datos; sug = sugerirEspecias(datos); entregado = datos.entregado || null; const c = datos.campos || {}; resumen = `${subregionDe(eq, al.id)[1]} · ` + ESPECIAS.campos.slice(0, 3).map(([k, t]) => `${t.replace(/^\S+\s/, '')}: ${(c[k] || '—').slice(0, 80)}`).join(' · '); }
       } else if (a.tipo === 'desarma') {
         const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'tarea-desarma'));
-        if (s.exists()) { const m = s.data().datos || {}; sug = sugerirDesarma(m); entregado = s.data().entregado || null; resumen = ['q1', 'q2', 'q3'].map(k => ((m.ficha || {})[k] || '').trim()).filter(Boolean).join(' · ').slice(0, 400); }
+        if (s.exists()) { const m = s.data().datos || {}; if ((m.ficha || {}).nombre) word = m; sug = sugerirDesarma(m); entregado = s.data().entregado || null; resumen = ['q1', 'q2', 'q3'].map(k => ((m.ficha || {})[k] || '').trim()).filter(Boolean).join(' · ').slice(0, 400); }
       }
     } catch { /* */ }
-    return { al, eq, sug, entregado, resumen, cal };
+    return { al, eq, sug, entregado, resumen, cal, exento, word };
   }));
   const f = t => t && t.toDate ? t.toDate().toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : typeof t === 'number' ? new Date(t).toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
   wrap.innerHTML = `<h4 class="td-h4">Calificar: ${escaparHTML(nombreCatalogo(a))}</h4>
     ${enCatalogo ? '' : '<p class="aviso-td">⚠️ Esta tarea todavía no está en el catálogo: las calificaciones se guardan, pero no cuentan en el promedio hasta que la agregues.</p>'}
     <p class="field-hint">La calificación sugerida sale de qué tan completo está el trabajo${a.tipo === 'atlas' ? ' (la mitad por países clasificados y la mitad por fichas con al menos 4 de 7 apartados)' : a.tipo === 'cuadro' ? ` (8 puntos por las ${CUADRO_MM.filas.length * CUADRO_MM.columnas.length} celdas llenas —cuenta la que tiene ${MIN_PALABRAS_CELDA} palabras o más— y 2 puntos por las fuentes de las 4 filas de investigación, medio punto cada una)` : a.tipo === 'influencias' ? ' (1 punto por elegir platillo, 1.5 por cada influencia con evidencia —hasta 4— y 3 por un argumento de al menos 60 palabras)' : a.tipo === 'especias' ? ' (1.5 por cada uno de especia, técnica, platillo y conexión con México con 8 palabras o más, hasta 3 por un «por qué» de 30 palabras y 1 por la fuente)' : ' (solo la ficha del platillo investigado: datos 1.5, ingredientes clasificados y su origen 4, técnicas 1, conclusión de 25 palabras por pregunta 3 y fuentes 0.5; la del proyecto no cuenta)'}. En equipo, todos reciben la misma sugerencia; puedes ajustar a quien no aportó (en el Monitor ves quién escribió qué).</p>
-    <div class="quiz-actions" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;"><button type="button" class="btn btn-ghost-dark btn-small" id="td-usar">Usar sugeridas en las vacías</button><button type="button" class="btn btn-ghost-dark btn-small" id="td-cerrar">Cerrar</button></div>
-    <div class="taller-tabla-wrap"><table class="taller-tabla td-tabla"><thead><tr><th>Alumno</th><th>Trabajo</th><th>Entrega</th><th>Sugerida</th><th>Calificación</th></tr></thead><tbody>
+    <div class="quiz-actions" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;"><button type="button" class="btn btn-ghost-dark btn-small" id="td-usar">Usar sugeridas en las vacías</button><button type="button" class="btn btn-ghost-dark btn-small" id="td-zip">⬇ Word de todos (.zip)</button><button type="button" class="btn btn-ghost-dark btn-small" id="td-cerrar">Cerrar</button><span class="field-hint" id="td-zip-msg"></span></div>
+    <div class="taller-tabla-wrap"><table class="taller-tabla td-tabla"><thead><tr><th>Alumno</th><th>Trabajo</th><th>Entrega</th><th>Sugerida</th><th>Calificación</th><th title="Falta justificada: la tarea no le cuenta en el promedio">Exento</th><th>Word</th></tr></thead><tbody>
     ${filas.map(x => `<tr data-id="${x.al.id}"><td><b>${escaparHTML(x.al.nombre)}</b>${x.eq ? `<br><small>👥 ${escaparHTML(x.eq.nombre)}</small>` : ''}</td>
       <td><small>${escaparHTML(x.sug.detalle)}</small>${x.resumen ? `<details><summary>Ver</summary><small>${escaparHTML(x.resumen)}</small></details>` : ''}</td>
       <td>${x.entregado ? `<span class="td-ok">✓ ${escaparHTML(f(x.entregado.t))}</span>` : '<span class="td-no">No entregada</span>'}</td>
       <td><b class="td-sug">${x.sug.nota}</b></td>
-      <td><input type="number" min="0" max="10" step="0.1" class="calif-input td-in" value="${x.cal}" placeholder="0-10" data-sug="${x.sug.nota}"></td></tr>`).join('')}</tbody></table></div>
+      <td><input type="number" min="0" max="10" step="0.1" class="calif-input td-in" value="${x.cal}" placeholder="0-10" data-sug="${x.sug.nota}" ${x.exento ? 'disabled' : ''}></td>
+      <td><input type="checkbox" class="td-ex" ${x.exento ? 'checked' : ''} aria-label="Exento"></td>
+      <td>${x.word ? `<button type="button" class="btn btn-small td-word" data-w="${x.al.id}" title="Descargar su trabajo en Word">⬇</button>` : '<small>—</small>'}</td></tr>`).join('')}</tbody></table></div>
     <button type="button" class="btn btn-primary btn-block" id="td-guardar">Guardar calificaciones</button><p class="save-msg" id="td-msg" hidden></p>`;
   document.getElementById('td-cerrar').addEventListener('click', () => { wrap.hidden = true; });
-  document.getElementById('td-usar').addEventListener('click', () => wrap.querySelectorAll('.td-in').forEach(i => { if (i.value === '') i.value = i.dataset.sug; }));
+  const wordDe = x => wordTarea(a, x.word, { eq: x.eq, nombre: x.al.nombre, alumnoId: x.al.id });
+  wrap.querySelectorAll('.td-word').forEach(b => b.addEventListener('click', async () => {
+    const x = filas.find(y => y.al.id === b.dataset.w); b.disabled = true;
+    try { const r = await wordDe(x); bajarArchivo(r.blob, r.archivo); } catch (e) { alert('No se pudo generar el Word: ' + (e.message || e)); } finally { b.disabled = false; }
+  }));
+  document.getElementById('td-zip').addEventListener('click', async e => {
+    const b = e.currentTarget, msg = document.getElementById('td-zip-msg'), vistos = new Set();
+    // en equipo, un solo Word por equipo
+    const con = filas.filter(x => x.word && !(x.eq && vistos.has(x.eq.id)) && (x.eq ? vistos.add(x.eq.id) : true));
+    if (!con.length) { msg.textContent = 'Todavía nadie tiene trabajo en esta tarea.'; return; }
+    b.disabled = true; msg.textContent = `Armando ${con.length} documentos…`;
+    try { const docs = []; for (const x of con) docs.push(await wordDe(x)); await bajarZipWord(docs, `${slugArchivo(nombreCatalogo(a))}_${slugArchivo(grupoActivo)}.zip`); msg.textContent = `✓ ${docs.length} documentos en el .zip`; }
+    catch (er) { msg.textContent = 'No se pudo armar el .zip: ' + (er.message || er); } finally { b.disabled = false; }
+  });
+  document.getElementById('td-usar').addEventListener('click', () => wrap.querySelectorAll('.td-in:not(:disabled)').forEach(i => { if (i.value === '') i.value = i.dataset.sug; }));
+  wrap.querySelectorAll('.td-ex').forEach(c => c.addEventListener('change', () => { const i = c.closest('tr').querySelector('.td-in'); i.disabled = c.checked; if (c.checked) i.value = ''; }));
   document.getElementById('td-guardar').addEventListener('click', async () => {
     const msg = document.getElementById('td-msg'), escr = [];
     wrap.querySelectorAll('tr[data-id]').forEach(tr => {
-      const i = tr.querySelector('.td-in'), ref = doc(db, 'grupos', g, 'alumnos', tr.dataset.id, 'tareas', catalogoId(a.id));
-      if (i.value === '') escr.push(deleteDoc(ref).catch(() => {}));
+      const i = tr.querySelector('.td-in'), ex = tr.querySelector('.td-ex'), ref = doc(db, 'grupos', g, 'alumnos', tr.dataset.id, 'tareas', catalogoId(a.id));
+      if (ex.checked) escr.push(setDoc(ref, { parcial: 'p2', nombre: nombreCatalogo(a), fecha: a.fecha, exento: true, actualizado: serverTimestamp() }));
+      else if (i.value === '') escr.push(deleteDoc(ref).catch(() => {}));
       else escr.push(setDoc(ref, { parcial: 'p2', nombre: nombreCatalogo(a), fecha: a.fecha, calificacion: Math.max(0, Math.min(10, parseFloat(i.value))), actualizado: serverTimestamp() }));
     });
     try { await Promise.all(escr); msg.textContent = '✓ Calificaciones guardadas. Ya se ven en Mi progreso.'; msg.hidden = false; }

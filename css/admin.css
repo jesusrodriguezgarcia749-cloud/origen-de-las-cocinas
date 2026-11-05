@@ -705,3 +705,9 @@ body.mon-completo .mon-grid { grid-template-columns: repeat(auto-fill, minmax(21
 .mz-extra { text-align: center; }
 .mz-act-si { display: inline-grid; place-items: center; width: 2.1rem; height: 2.1rem; border-radius: 8px; background: #3F7A4F; color: #fff; font-weight: 800; }
 .mz-act-no { display: inline-grid; place-items: center; width: 2.1rem; height: 2.1rem; border-radius: 8px; border: 1.5px dashed var(--line); color: var(--ink-soft); }
+/* Exento por falta justificada */
+.ex-check { display: inline-flex; align-items: center; gap: 6px; font-size: .85rem; font-weight: 600; white-space: nowrap; cursor: pointer; }
+.ex-check input, .td-ex { width: 20px; height: 20px; }
+.mz-exento { display: inline-grid; place-items: center; width: 54px; padding: 8px 0; border-radius: 8px; background: color-mix(in srgb, #2E6FA8 14%, transparent); color: #2E6FA8; font: 800 .8rem var(--font-body); }
+.td-cierre { display: inline-flex; align-items: center; gap: 6px; font-size: .82rem; font-weight: 600; }
+.td-cierre input { font: inherit; font-weight: 400; padding: 5px 8px; border-radius: 8px; border: 1.5px solid var(--line); background: var(--cream); color: var(--ink); }
