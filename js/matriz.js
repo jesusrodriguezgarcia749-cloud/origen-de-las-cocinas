@@ -17,7 +17,7 @@ import {
   collection, doc, getDoc, getDocs, setDoc, deleteDoc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-import { calcularParcial, calcularCuatrimestre, PESO_CUATRIMESTRE, calcularCuatrimestreRedondeado } from "./calculo.js";
+import { calcularParcial, calcularCuatrimestre, PESO_CUATRIMESTRE, calcularCuatrimestreRedondeado, META_PARTICIPACION, ACTIVIDADES_PARCIAL, PARTICIPACION_MIXTA } from "./calculo.js";
 
 const ESTADOS = ['presente', 'retardo', 'justificado', 'falta'];
 const ETIQUETA_ESTADO = { presente: 'Presente', retardo: 'Retardo', justificado: 'Justificado', falta: 'Falta' };
@@ -61,9 +61,10 @@ function cargando(cont, titulo) {
 //   columnas: [{ id, titulo, sub }]
 //   valores:  { [alumnoId]: { [colId]: valor } }
 //   tipo:     'num' | 'check' | 'estado'
-//   resumen:  (valoresDelAlumno) => texto de la última columna
+//   resumen:  (valoresDelAlumno, alumnoId) => texto de la última columna
+//   extras:   [{ titulo, sub, celda: alumno => html }] columnas de solo lectura antes del total
 // ---------------------------------------------------------------------------
-function dibujar(cont, { titulo, ayuda, alumnos, columnas, valores, tipo, resumen, onGuardar, textoBoton }) {
+function dibujar(cont, { titulo, ayuda, alumnos, columnas, valores, tipo, resumen, onGuardar, textoBoton, extras = [] }) {
   if (!alumnos.length) {
     cont.innerHTML = `<h3 class="section-title">${esc(titulo)}</h3><p class="empty-inline">Este grupo aún no tiene alumnos.</p>`;
     return;
@@ -97,6 +98,7 @@ function dibujar(cont, { titulo, ayuda, alumnos, columnas, valores, tipo, resume
           <tr>
             <th class="mz-col-nombre">Alumno</th>
             ${columnas.map(c => `<th class="mz-col-act" title="${esc(c.titulo)}${c.sub ? ` · ${esc(c.sub)}` : ''}"><span class="mz-col-tit">${esc(c.titulo)}</span>${c.sub ? `<span class="mz-col-sub">${esc(c.sub)}</span>` : ''}</th>`).join('')}
+            ${extras.map(x => `<th class="mz-col-act mz-col-extra" title="${esc(x.titulo)}"><span class="mz-col-tit">${esc(x.titulo)}</span>${x.sub ? `<span class="mz-col-sub">${esc(x.sub)}</span>` : ''}</th>`).join('')}
             <th class="mz-col-total">Total</th>
           </tr>
         </thead>
@@ -105,7 +107,8 @@ function dibujar(cont, { titulo, ayuda, alumnos, columnas, valores, tipo, resume
             <tr data-fila="${esc(a.id)}">
               <th class="mz-col-nombre" scope="row" title="${esc(a.nombre)}"><span class="mz-nombre-txt">${esc(a.nombre)}</span></th>
               ${columnas.map(c => celda(a, c)).join('')}
-              <td class="mz-col-total" data-total="${esc(a.id)}">${esc(resumen(valores[a.id] || {}))}</td>
+              ${extras.map(x => `<td class="mz-celda mz-extra">${x.celda(a)}</td>`).join('')}
+              <td class="mz-col-total" data-total="${esc(a.id)}">${esc(resumen(valores[a.id] || {}, a.id))}</td>
             </tr>`).join('')}
         </tbody>
       </table>
@@ -115,7 +118,7 @@ function dibujar(cont, { titulo, ayuda, alumnos, columnas, valores, tipo, resume
 
   const refrescarTotal = (alumnoId) => {
     const td = cont.querySelector(`[data-total="${CSS.escape(alumnoId)}"]`);
-    if (td) td.textContent = resumen(valores[alumnoId] || {});
+    if (td) td.textContent = resumen(valores[alumnoId] || {}, alumnoId);
   };
 
   // Palomita: alterna sí/no.
@@ -204,16 +207,37 @@ async function vistaCatalogo(ctx, tipo) {
     } catch { /* sin datos */ }
   }));
 
+  // Desde el Parcial 2 la participación es mixta: 10 pts en clase (meta de 4) + 15 pts de las
+  // actividades de repaso de la página Actividades (un tema cuenta cuando lo termina sin errores).
+  const temas = !esTarea ? (ACTIVIDADES_PARCIAL[parcial] || []) : [];
+  const repaso = {};
+  if (temas.length) await Promise.all(alumnos.map(async a => {
+    try { const snap = await getDocs(collection(db, 'grupos', grupoActivo, 'alumnos', a.id, 'actividades')); repaso[a.id] = new Set(snap.docs.map(d => d.data()).filter(x => x.completado).map(x => Number(x.tema))); }
+    catch { repaso[a.id] = new Set(); }
+  }));
+  const meta = META_PARTICIPACION[parcial] || 0;
+  const ptsDe = (v, id) => {
+    const enClase = columnas.filter(c => v[c.id] !== undefined && v[c.id] !== null && v[c.id] !== '').length;
+    const clase = meta ? Math.min(enClase, meta) / meta * PARTICIPACION_MIXTA.clase : 0;
+    const hechos = temas.filter(n => (repaso[id] || new Set()).has(n)).length;
+    return { enClase, hechos, pts: clase + hechos / temas.length * PARTICIPACION_MIXTA.actividades };
+  };
+  const extras = temas.map(n => ({ titulo: `Repaso Tema ${n}`, sub: 'Actividades', celda: a => (repaso[a.id] || new Set()).has(n) ? '<span class="mz-act-si" title="Terminado sin errores">✓</span>' : '<span class="mz-act-no" title="Todavía no lo termina sin errores">·</span>' }));
+
   dibujar(cont, {
     titulo,
-    ayuda: esTarea
+    extras,
+    ayuda: !esTarea && temas.length
+      ? `Toca para poner o quitar la palomita de participación en clase. La participación del parcial vale <strong>25 puntos</strong>: <strong>${PARTICIPACION_MIXTA.clase}</strong> por participar en clase (con ${meta} participaciones se llega al máximo) y <strong>${PARTICIPACION_MIXTA.actividades}</strong> por las <strong>actividades de repaso</strong> de los temas ${temas.join(' y ')} (página Actividades). Las columnas «Repaso» se llenan solas cuando el alumno termina el tema sin errores.`
+      : esTarea
       ? 'Un casillero vacío significa <strong>no entregada</strong>, y cuenta como cero. Si recibes una tarea atrasada, escribe aquí su calificación y guarda.'
       : 'Toca para poner o quitar la palomita. Cuenta cuántas veces participó cada alumno, no con qué calificación.',
     alumnos,
     columnas,
     valores,
     tipo: esTarea ? 'num' : 'check',
-    resumen: (v) => {
+    resumen: (v, id) => {
+      if (temas.length) { const r = ptsDe(v, id); return `${r.pts.toFixed(1)} de 25 pts · ${r.enClase} en clase · ${r.hechos} de ${temas.length} repasos`; }
       const hechas = columnas.filter(c => v[c.id] !== undefined && v[c.id] !== null && v[c.id] !== '').length;
       return `${hechas} de ${columnas.length}`;
     },
