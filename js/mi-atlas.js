@@ -258,6 +258,7 @@ async function flushEquipo() {
     if (!existe[k]) { const s0 = await getDoc(ref); if (!s0.exists()) await setDoc(ref, { regiones: {}, asign: {}, paises: {}, por: {}, ultimoAutor: sesion.alumnoId, ultimoPin: sesion.pin, actualizado: serverTimestamp() }); existe[k] = true; }
     const args = [];
     lote.forEach(([ruta, v]) => { args.push(new FieldPath(...ruta), v === null ? deleteField() : v); });
+    args.push(new FieldPath('aportes', sesion.alumnoId), sesion.nombre);   // quién aportó (para el cero automático)
     args.push('ultimoAutor', sesion.alumnoId, 'ultimoPin', sesion.pin, 'ultimoNombre', sesion.nombre, 'ultimoCambio', ultimaNota, 'actualizado', serverTimestamp());
     await updateDoc(ref, ...args);
     lote.forEach(([ruta]) => vuelo.delete(ruta.join('\u0001')));

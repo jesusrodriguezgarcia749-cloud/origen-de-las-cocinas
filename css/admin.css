@@ -733,3 +733,5 @@ body.mon-completo .mon-grid { grid-template-columns: repeat(auto-fill, minmax(21
   .expo-con-fotos > .expo-fotos { grid-template-columns: 1fr; grid-column: auto; }
   .expo-con-fotos > .expo-fotos img { max-height: 40vh; }
 }
+.td-noap { color: #a3341f; font-weight: 700; }
+.td-siap { color: #3f7a4f; }

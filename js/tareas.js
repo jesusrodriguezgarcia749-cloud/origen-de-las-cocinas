@@ -862,6 +862,7 @@ function docVivo(ref, eq, alCambiar) {
     try {
       if (!existe) { const s0 = await getDoc(ref); if (!s0.exists()) await setDoc(ref, { ...base(), actualizado: serverTimestamp() }); existe = true; }
       const args = []; lote.forEach(([r, v]) => args.push(new FieldPath(...r), v));
+      if (eq) args.push(new FieldPath('aportes', sesion.alumnoId), sesion.nombre);   // quién aportó (para el cero automático)
       args.push(...Object.entries(base()).flat(), 'ultimoCambio', ultima, 'actualizado', serverTimestamp());
       await updateDoc(ref, ...args);
       lote.forEach(([r]) => vuelo.delete(r.join('|')));

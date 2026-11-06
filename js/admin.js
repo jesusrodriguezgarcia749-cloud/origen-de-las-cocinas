@@ -1270,6 +1270,17 @@ async function cargarTareasDig() {
   }));
   cont.querySelectorAll('[data-cal]').forEach(b => b.addEventListener('click', () => calificarTareaDig(TAREAS_DIG[b.dataset.cal], enCat.has(catalogoId(b.dataset.cal)))));
 }
+// ¿Escribió algo este alumno en el trabajo del equipo? Se ve en «aportes» (desde nov 2026) y, para
+// trabajos anteriores, en los «por» (quién escribió por último cada campo) y en el último autor.
+function aporteDe(d, al) {
+  if (!d) return { si: false, n: 0 };
+  let n = 0;
+  const contar = v => { if (typeof v === 'string') { if (v === al.nombre) n++; } else if (v && typeof v === 'object') Object.values(v).forEach(contar); };
+  const andar = o => { if (!o || typeof o !== 'object') return; Object.entries(o).forEach(([k, v]) => { if (k === 'por') contar(v); else if (v && typeof v === 'object' && k !== 'aportes') andar(v); }); };
+  andar(d);
+  const si = n > 0 || !!(d.aportes && d.aportes[al.id]) || d.ultimoAutor === al.id;
+  return { si, n };
+}
 async function calificarTareaDig(a, enCatalogo) {
   const wrap = document.getElementById('td-calificar'); wrap.hidden = false;
   wrap.innerHTML = '<p class="empty-inline">Reuniendo el trabajo de cada alumno…</p>';
@@ -1314,18 +1325,25 @@ async function calificarTareaDig(a, enCatalogo) {
         if (s.exists()) { const m = s.data().datos || {}; if ((m.ficha || {}).nombre) word = m; sug = sugerirDesarma(m); entregado = s.data().entregado || null; resumen = ['q1', 'q2', 'q3'].map(k => ((m.ficha || {})[k] || '').trim()).filter(Boolean).join(' · ').slice(0, 400); }
       }
     } catch { /* */ }
-    return { al, eq, sug, entregado, resumen, cal, exento, word };
+    // Cero automático: en equipo, quien no escribió nada lleva 0; los que aportaron, la sugerencia del equipo.
+    let ap = null;
+    if (eq) {
+      const idDoc = { atlas: a.cont, cuadro: CUADRO_MM.id, influencias: INFLUENCIAS.id, especias: ESPECIAS.id, recado: RECADOS.id }[a.tipo];
+      const d = idDoc ? await docEquipo(eq, idDoc) : null;
+      if (d) { ap = aporteDe(d, al); if (!ap.si) sug = { nota: 0, detalle: '✋ No aportó: no escribió nada en el trabajo del equipo · ' + sug.detalle }; }
+    }
+    return { al, eq, sug, entregado, resumen, cal, exento, word, ap };
   }));
   const f = t => t && t.toDate ? t.toDate().toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : typeof t === 'number' ? new Date(t).toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
   wrap.innerHTML = `<h4 class="td-h4">Calificar: ${escaparHTML(nombreCatalogo(a))}</h4>
     ${enCatalogo ? '' : '<p class="aviso-td">⚠️ Esta tarea todavía no está en el catálogo: las calificaciones se guardan, pero no cuentan en el promedio hasta que la agregues.</p>'}
-    <p class="field-hint">La calificación sugerida sale de qué tan completo está el trabajo${a.tipo === 'atlas' ? ' (la mitad por países clasificados y la mitad por fichas con al menos 4 de 7 apartados)' : a.tipo === 'cuadro' ? ` (8 puntos por las ${CUADRO_MM.filas.length * CUADRO_MM.columnas.length} celdas llenas —cuenta la que tiene ${MIN_PALABRAS_CELDA} palabras o más— y 2 puntos por las fuentes de las 4 filas de investigación, medio punto cada una)` : a.tipo === 'influencias' ? ' (1 punto por elegir platillo, 1.5 por cada influencia con evidencia —hasta 4— y 3 por un argumento de al menos 60 palabras)' : a.tipo === 'especias' ? ' (1.5 por cada uno de especia, técnica, platillo y conexión con México con 8 palabras o más, hasta 3 por un «por qué» de 30 palabras y 1 por la fuente)' : a.tipo === 'recado' ? ' (0.5 por ingrediente con origen y llegada —hasta 6—, 0.5 por ruta explicada con 10 palabras o más —hasta 4—, 2 por los guisos, 2 por la conclusión y 1 por las fuentes)' : ' (solo la ficha del platillo investigado: datos 1.5, ingredientes clasificados y su origen 4, técnicas 1, conclusión de 25 palabras por pregunta 3 y fuentes 0.5; la del proyecto no cuenta)'}. En equipo, todos reciben la misma sugerencia; puedes ajustar a quien no aportó (en el Monitor ves quién escribió qué).</p>
+    <p class="field-hint">La calificación sugerida sale de qué tan completo está el trabajo${a.tipo === 'atlas' ? ' (la mitad por países clasificados y la mitad por fichas con al menos 4 de 7 apartados)' : a.tipo === 'cuadro' ? ` (8 puntos por las ${CUADRO_MM.filas.length * CUADRO_MM.columnas.length} celdas llenas —cuenta la que tiene ${MIN_PALABRAS_CELDA} palabras o más— y 2 puntos por las fuentes de las 4 filas de investigación, medio punto cada una)` : a.tipo === 'influencias' ? ' (1 punto por elegir platillo, 1.5 por cada influencia con evidencia —hasta 4— y 3 por un argumento de al menos 60 palabras)' : a.tipo === 'especias' ? ' (1.5 por cada uno de especia, técnica, platillo y conexión con México con 8 palabras o más, hasta 3 por un «por qué» de 30 palabras y 1 por la fuente)' : a.tipo === 'recado' ? ' (0.5 por ingrediente con origen y llegada —hasta 6—, 0.5 por ruta explicada con 10 palabras o más —hasta 4—, 2 por los guisos, 2 por la conclusión y 1 por las fuentes)' : ' (solo la ficha del platillo investigado: datos 1.5, ingredientes clasificados y su origen 4, técnicas 1, conclusión de 25 palabras por pregunta 3 y fuentes 0.5; la del proyecto no cuenta)'}. En equipo, quien <b>no escribió nada</b> en el trabajo sale con sugerida <b>0</b> (✋ No aportó); los que sí aportaron llevan la del equipo. Puedes corregirla a mano si alguien trabajó desde el celular de un compañero.</p>
     <div class="quiz-actions" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;"><button type="button" class="btn btn-ghost-dark btn-small" id="td-usar">Usar sugeridas en las vacías</button><button type="button" class="btn btn-ghost-dark btn-small" id="td-zip">⬇ Word de todos (.zip)</button><button type="button" class="btn btn-ghost-dark btn-small" id="td-cerrar">Cerrar</button><span class="field-hint" id="td-zip-msg"></span></div>
     <div class="taller-tabla-wrap"><table class="taller-tabla td-tabla"><thead><tr><th>Alumno</th><th>Trabajo</th><th>Entrega</th><th>Sugerida</th><th>Calificación</th><th title="Falta justificada: la tarea no le cuenta en el promedio">Exento</th><th>Word</th></tr></thead><tbody>
     ${filas.map(x => `<tr data-id="${x.al.id}"><td><b>${escaparHTML(x.al.nombre)}</b>${x.eq ? `<br><small>👥 ${escaparHTML(x.eq.nombre)}</small>` : ''}</td>
       <td><small>${escaparHTML(x.sug.detalle)}</small>${x.resumen ? `<details><summary>Ver</summary><small>${escaparHTML(x.resumen)}</small></details>` : ''}</td>
       <td>${x.entregado ? `<span class="td-ok">✓ ${escaparHTML(f(x.entregado.t))}</span>` : '<span class="td-no">No entregada</span>'}</td>
-      <td><b class="td-sug">${x.sug.nota}</b></td>
+      <td><b class="td-sug">${x.sug.nota}</b>${x.ap && !x.ap.si ? `<br><small class="td-noap" title="No escribió nada en el trabajo del equipo">✋ No aportó${x.cal !== '' && Number(x.cal) > 0 ? ' · ⚠️ revisa: ya tiene calificación' : ''}</small>` : x.ap && x.ap.n ? `<br><small class="td-siap">✍️ ${x.ap.n} campo${x.ap.n === 1 ? '' : 's'}</small>` : ''}</td>
       <td><input type="number" min="0" max="10" step="0.1" class="calif-input td-in" value="${x.cal}" placeholder="0-10" data-sug="${x.sug.nota}" ${x.exento ? 'disabled' : ''}></td>
       <td><input type="checkbox" class="td-ex" ${x.exento ? 'checked' : ''} aria-label="Exento"></td>
       <td>${x.word ? `<button type="button" class="btn btn-small td-word" data-w="${x.al.id}" title="Descargar su trabajo en Word">⬇</button>` : '<small>—</small>'}</td></tr>`).join('')}</tbody></table></div>
