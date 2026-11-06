@@ -422,6 +422,21 @@ async function agregarItemCatalogo(tipo) {
   cargarCatalogo(tipo);
 }
 
+// ¿Cuántos alumnos ya tienen calificación (o están exentos) en cada tarea del catálogo? Para marcar en la lista
+// cuáles ya se calificaron y cuáles faltan. Se lee una vez por alumno.
+async function conteoCalificadas() {
+  const cuenta = {};
+  await Promise.all(alumnosCache.map(async a => {
+    try { (await getDocs(collection(db, 'grupos', grupoActivo, 'alumnos', a.id, 'tareas'))).forEach(d => { const x = d.data(); if (x.exento || (x.calificacion !== undefined && x.calificacion !== null && x.calificacion !== '')) cuenta[d.id] = (cuenta[d.id] || 0) + 1; }); } catch { /* */ }
+  }));
+  return cuenta;
+}
+// Después de guardar calificaciones, se actualizan las marcas de las dos listas sin cerrar lo que está abierto.
+async function refrescarMarcas() {
+  const cuenta = await conteoCalificadas(), tot = alumnosCache.length;
+  document.querySelectorAll('[data-marca]').forEach(el => { el.innerHTML = marcaCalificada(cuenta[el.dataset.marca] || 0, tot); });
+}
+const marcaCalificada = (n, total) => !total ? '' : n >= total ? '<span class="cal-marca si">✅ Calificada</span>' : n > 0 ? `<span class="cal-marca medio">🟡 ${n} de ${total} calificados</span>` : '<span class="cal-marca no">⏳ Sin calificar</span>';
 async function cargarCatalogo(tipo) {
   const cfg = CONFIG_TIPO[tipo];
   const cont = document.getElementById(cfg.listaCatalogo);
@@ -456,10 +471,11 @@ async function cargarCatalogo(tipo) {
     nota.textContent = `Hay ${items.length} tarea(s) en este parcial. El promedio se saca sobre ese total: lo no entregado cuenta como cero.`;
     cont.appendChild(nota);
   }
+  const cuenta = tipo === 'tareas' ? await conteoCalificadas() : null;
   items.forEach(item => {
     const row = document.createElement('button');
     row.type = 'button'; row.className = 'asis-row';
-    row.innerHTML = `<span class="student-name">${escaparHTML(item.nombre)}${item.fecha ? ` <small class="res-extra">(${escaparHTML(item.fecha)})</small>` : ''}</span><span class="asis-estado-label">Calificar →</span>`;
+    row.innerHTML = `<span class="student-name">${escaparHTML(item.nombre)}${item.fecha ? ` <small class="res-extra">(${escaparHTML(item.fecha)})</small>` : ''}</span>${cuenta ? `<span data-marca="${escaparHTML(item.id)}">${marcaCalificada(cuenta[item.id] || 0, alumnosCache.length)}</span>` : ''}<span class="asis-estado-label">Calificar →</span>`;
     row.addEventListener('click', () => calificarItem(tipo, item));
     cont.appendChild(row);
   });
@@ -544,6 +560,7 @@ async function guardarCalificaciones(tipo) {
   });
   try { await Promise.all(escrituras); } catch (err) { marcarResultado(cfg.btnGuardarCalif, cfg.msgCalif, false, '', 'No se pudo guardar: ' + (err.message || err)); return; }
   marcarResultado(cfg.btnGuardarCalif, cfg.msgCalif, true, '✓ Calificaciones guardadas.', '');
+  if (tipo === 'tareas') refrescarMarcas();
 }
 
 // ---------- ASISTENCIA ----------
@@ -1234,9 +1251,10 @@ async function cargarTareasDig() {
   let est = {}, enCat = new Set();
   try { const g = await getDoc(doc(db, 'grupos', grupoActivo)); est = (g.exists() && g.data().tareasDig) || {}; } catch { /* */ }
   try { const sn = await getDocs(collection(db, 'grupos', grupoActivo, 'tareas_catalogo')); sn.forEach(d => { if (d.id.startsWith('dig-')) enCat.add(d.id); }); } catch { /* */ }
+  const cuenta = await conteoCalificadas();
   cont.innerHTML = TEMAS_TAREAS.map(t => `<div class="td-tema"><p class="td-tit"><b>${escaparHTML(t.tema)} · ${escaparHTML(t.titulo)}</b> <small>${escaparHTML(t.fechaTexto)}</small></p>${t.acts.filter(califica).map(a => {
     const cat = enCat.has(catalogoId(a.id)), cierre = (est[a.id] && est[a.id].cierre) || '', vencida = !!cierre && Date.now() > Date.parse(cierre), ab = !(est[a.id] && est[a.id].abierta === false) && !vencida;
-    return `<div class="td-fila"><span class="td-nom">${a.icono} ${escaparHTML(a.nombre)}</span>
+    return `<div class="td-fila"><span class="td-nom">${a.icono} ${escaparHTML(a.nombre)}${cat ? ` <span data-marca="${catalogoId(a.id)}">${marcaCalificada(cuenta[catalogoId(a.id)] || 0, alumnosCache.length)}</span>` : ''}</span>
       <label class="td-cierre" title="Fecha y hora límite: la tarea se cierra sola. Déjala vacía para cerrarla tú."><span>⏰ Cierra</span><input type="datetime-local" data-cierre="${a.id}" value="${escaparHTML(cierre)}"></label>
       <button type="button" class="btn btn-small td-cat ${cat ? 'si' : ''}" data-cat="${a.id}" ${cat ? 'disabled' : ''}>${cat ? '✓ En el catálogo' : '+ Agregar al catálogo'}</button>
       <button type="button" class="btn btn-small td-ab ${ab ? 'si' : 'no'}" data-ab="${a.id}">${ab ? '🔓 Abierta' : vencida ? '🔒 Cerrada (venció)' : '🔒 Cerrada'}</button>
@@ -1380,7 +1398,7 @@ async function calificarTareaDig(a, enCatalogo) {
       else if (i.value === '') escr.push(deleteDoc(ref).catch(() => {}));
       else escr.push(setDoc(ref, { parcial: 'p2', nombre: nombreCatalogo(a), fecha: a.fecha, calificacion: Math.max(0, Math.min(10, parseFloat(i.value))), actualizado: serverTimestamp() }));
     });
-    try { await Promise.all(escr); msg.textContent = '✓ Calificaciones guardadas. Ya se ven en Mi progreso.'; msg.hidden = false; }
+    try { await Promise.all(escr); msg.textContent = '✓ Calificaciones guardadas. Ya se ven en Mi progreso.'; msg.hidden = false; refrescarMarcas(); }
     catch (e) { msg.textContent = 'No se pudo guardar: ' + (e.message || e); msg.hidden = false; }
   });
 }

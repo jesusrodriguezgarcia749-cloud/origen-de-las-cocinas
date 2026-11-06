@@ -1,7 +1,7 @@
 // sw.js — permite instalar el Aula Virtual como app y leerla sin conexión.
 // Estrategia "primero la red": siempre se pide la versión en línea; solo si
 // no hay internet se usa la copia guardada. Firebase y Google nunca se cachean.
-const CACHE = 'aula-v37';
+const CACHE = 'aula-v38';
 const BASICOS = ['./', 'index.html', 'compendio.html', 'tema.html', 'calendario.html', 'proyecto.html', 'rubricas.html',
   'biblioteca.html', 'actividades.html', 'atlas.html', 'css/atlas.css', 'js/atlas.js', 'js/mi-atlas.js', 'js/docx-ites.js', 'tareas.html', 'css/tareas.css', 'js/tareas.js', 'js/clase-datos.js', 'js/equipos.js', 'js/aporto-datos.js', 'js/america-datos.js', 'js/asia-datos.js', 'js/europa-datos.js', 'js/oceania-datos.js', 'js/tarea-word.js', 'js/recado-datos.js', 'js/fotos.js', 'unir.html', 'mi-plato.html', 'css/mi-plato.css', 'js/mi-plato.js', 'js/mi-plato-word.js', 'js/leer-entrega.js', 'js/apa-word.js', 'data/mi-plato.json', 'js/vendor/qrcode.js', 'data/atlas.json', 'css/styles.css', 'css/index.css', 'css/extra.css', 'css/compendio.css',
   'css/tema.css', 'js/app.js', 'js/curso.js', 'js/compendio.js', 'js/tema.js', 'js/lector.js', 'data/curso.json', 'assets/icon-192.png'];

@@ -735,3 +735,7 @@ body.mon-completo .mon-grid { grid-template-columns: repeat(auto-fill, minmax(21
 }
 .td-noap { color: #a3341f; font-weight: 700; }
 .td-siap { color: #3f7a4f; }
+.cal-marca { display: inline-block; font-size: .78rem; font-weight: 700; padding: 2px 9px; border-radius: 999px; margin: 0 8px; white-space: nowrap; }
+.cal-marca.si { background: #e3f1e6; color: #2e6b3a; }
+.cal-marca.medio { background: #fff3d6; color: #8a5a00; }
+.cal-marca.no { background: #f6e3df; color: #a3341f; }
