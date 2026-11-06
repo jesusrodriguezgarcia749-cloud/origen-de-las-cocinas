@@ -16,9 +16,9 @@ import { vistaRapida } from "./matriz.js?v=2026110501";
 import { BASE, enEquipo, formacionDe, formaciones, ordenFormaciones, formacionDeTarea, equiposDe, tareasDeFormacion, urlUnir, qrSvg } from "./equipos.js";
 import { wordMiPlato, numsDe as numsMiPlato, estadoEntrega as estadoMiPlato, slugArchivo, ORDEN as ORDEN_MP } from "./mi-plato-word.js?v=2026102901";
 import { zipDocx } from "./docx-ites.js?v=2026102901";
-import { wordTarea } from "./tarea-word.js?v=2026110601";
+import { wordTarea } from "./tarea-word.js?v=2026110602";
 import { TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, nombreCatalogo, sugerirAtlas, sugerirCuadro, MIN_PALABRAS_CELDA, sugerirDesarma, CUADRO_MM, INFLUENCIAS, sugerirInfluencias, ESPECIAS, subregionDe, sugerirEspecias } from "./clase-datos.js";
-import { RECADOS, ORIGENES, LLEGADAS, INGS, CLAVE_RECADO, recadoDe, ingsDe, sugerirRecado } from "./recado-datos.js";
+import { RECADOS, ORIGENES, LLEGADAS, INGS, CLAVE_RECADO, recadoDe, ingsDe, sugerirRecado, infoRecado, recadosDe } from "./recado-datos.js";
 import { idFoto } from "./fotos.js";
 
 const app = initializeApp(firebaseConfig);
@@ -1031,7 +1031,7 @@ function hace(ts) {
 function monTarjetas() {
   const out = [];
   if (monVivo()) {
-    const sr = (eq, id) => MON.act === 'especias' ? `${subregionDe(eq, id)[1]} · ` : MON.act === 'recado' ? `${recadoDe(eq, id)[1]} · ` : '';
+    const sr = (eq, id) => MON.act === 'especias' ? `${subregionDe(eq, id)[1]} · ` : MON.act === 'recado' ? `${recDe(eq ? 'e:' + eq.id : 'a:' + id)[1]} · ` : '';
     MON.equipos.forEach(eq => out.push({ clave: 'e:' + eq.id, titulo: eq.nombre, sub: sr(eq) + ((eq.nombres || []).join(', ') || 'sin integrantes'), tipo: 'equipo' }));
     alumnosCache.forEach(a => { if (MON.datos['i:' + a.id]) out.push({ clave: 'i:' + a.id, titulo: a.nombre, sub: sr(null, a.id) + 'trabajo individual', tipo: 'alumno' }); });
     return out;
@@ -1129,7 +1129,12 @@ async function cargarFotosMon(clave, forzar) {
 }
 const fotosHTML = L => (L || []).map(f => `<figure class="expo-foto"><img src="${f.img}" alt="${escaparHTML(f.pie || 'Foto de la exposición')}">${(f.pie || '').trim() ? `<figcaption>${escaparHTML(f.pie)}</figcaption>` : ''}</figure>`).join('');
 // ---- El recado campechano: tarjeta, ficha y proyección
-const recDe = clave => { const id = clave.slice(2), eq = clave.startsWith('e:') ? MON.equipos.find(e => e.id === id) : null; return recadoDe(eq, eq ? null : id); };
+// El recado de un equipo: el guardado en su trabajo (o el del sorteo). Si es el verde, también hace el blanco.
+const recDe = clave => {
+  const d = MON.datos[clave] || {}, id = clave.slice(2), eq = clave.startsWith('e:') ? MON.equipos.find(e => e.id === id) : null;
+  const k = d.recado || recadoDe(eq, eq ? null : id)[0], L = recadosDe(k), [, , col, pista, otros] = infoRecado(k);
+  return [k, L.map(x => infoRecado(x)[1]).join(' y '), col, L.length > 1 ? L.map(x => `${infoRecado(x)[1]}: ${infoRecado(x)[3]}`).join(' · ') : pista, otros];
+};
 const nomOr = k => (ORIGENES.find(x => x[0] === k) || [, ''])[1], colOr = k => (ORIGENES.find(x => x[0] === k) || [, , '#C9BFAE'])[2], nomLl = k => (LLEGADAS.find(x => x[0] === k) || [, ''])[1];
 function actualizarRecado(card, clave, nuevo) {
   const d = MON.datos[clave] || {}, L = ingsDe(d), [, rn, col] = recDe(clave), sg = sugerirRecado(d);
@@ -1145,7 +1150,9 @@ function fichaRecadoHTML(clave, grande) {
   const d = MON.datos[clave] || {}, c = d.campos || {}, por = d.por || {}, L = ingsDe(d), [, rn, col, pista] = recDe(clave);
   const e = x => escaparHTML(x || '').replace(/\n/g, '<br>');
   const conts = [...new Set(L.map(x => x.o).filter(Boolean))];
-  return `<div class="expo-ficha re-ficha ${grande ? 'grande' : ''}" style="--c:${col}">${grande ? '' : `<p class="expo-sr"><b>${escaparHTML(rn)}</b> · ${escaparHTML(pista)}</p>`}
+  const [rk] = recDe(clave);
+  return `<div class="expo-ficha re-ficha ${grande ? 'grande' : ''}" style="--c:${col}">${grande ? '' : `<p class="expo-sr"><b>${escaparHTML(rn)}</b> · ${escaparHTML(pista)}</p>
+    <label class="re-cambiar">Cambiar el recado de este equipo: <select data-cambiar-recado="${escaparHTML(clave)}">${RECADOS.lista.map(([k, n]) => `<option value="${k}"${k === rk ? ' selected' : ''}>${escaparHTML(n)}${recadosDe(k).length > 1 ? ' (y blanco)' : ''}</option>`).join('')}</select></label>`}
     <div class="re-mon-conts">${conts.map(k => `<span style="background:${colOr(k)}">${escaparHTML(nomOr(k))} · ${L.filter(x => x.o === k).length}</span>`).join('')}</div>
     <div class="re-mon-ings">${L.length ? L.map(x => `<div class="re-mon-ing" style="--o:${colOr(x.o)}"><b>${escaparHTML(x.n)}</b> <small>${escaparHTML(nomOr(x.o) || 'sin origen')} · ${escaparHTML(nomLl(x.l) || 'sin llegada')}</small>${(x.ruta || '').trim() ? `<p>${e(x.ruta)}</p>` : ''}${x.por && !grande ? `<small class="mon-autor">✍️ ${escaparHTML(x.por)}</small>` : ''}</div>`).join('') : '<p class="mon-vacio">Todavía sin ingredientes.</p>'}</div>
     ${RECADOS.campos.map(([k, t]) => `<section class="expo-c"><h4>${t}${por[k] && !grande ? ` <small class="mon-autor">✍️ ${escaparHTML(por[k])}</small>` : ''}</h4><p>${(c[k] || '').trim() ? e(c[k]) : '<span class="mon-vacio">—</span>'}</p></section>`).join('')}
@@ -1204,6 +1211,13 @@ function pintarDetalle(nuevo) {
     document.getElementById('mon-det-sub').textContent = `${t.sub} · El recado campechano · ${hace(d.actualizado).txt} · sugerida ${sugerirRecado(d).nota}`;
     document.getElementById('mon-det-cuerpo').innerHTML = fichaRecadoHTML(clave);
     cargarFotosMon(clave).then(f => { if (MON.abierto === clave) { const z = document.querySelector('#mon-det-cuerpo [data-fotos]'); if (z) z.innerHTML = fotosHTML(f); } });
+    const sel = document.querySelector('#mon-det-cuerpo [data-cambiar-recado]');
+    if (sel) sel.addEventListener('change', async () => {
+      const id = clave.slice(2), eq = clave.startsWith('e:');
+      if (!confirm(`¿Cambiarle el recado a «${t.titulo}»? Lo que ya escribieron se conserva.`)) { sel.value = recDe(clave)[0]; return; }
+      const ref = eq ? doc(db, 'grupos', MON.grupo, 'equipos', id, 'atlas', RECADOS.id) : doc(db, 'grupos', MON.grupo, 'alumnos', id, 'atlas', 'tarea-recado');
+      try { await setDoc(ref, { recado: sel.value }, { merge: true }); } catch (e) { alert('No se pudo cambiar: ' + (e.message || e)); }
+    });
     return;
   }
   if (MON.act === 'especias') {
@@ -1341,7 +1355,7 @@ async function calificarTareaDig(a, enCatalogo) {
       } else if (a.tipo === 'recado') {
         let datos = eq ? await docEquipo(eq, RECADOS.id) : null;
         if (!datos) { const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'tarea-recado')); datos = s.exists() ? s.data() : null; }
-        if (datos) { word = datos; sug = sugerirRecado(datos); entregado = datos.entregado || null; resumen = `${recadoDe(eq, al.id)[1]} · ` + ingsDe(datos).map(x => x.n).join(', ') + ((datos.campos || {}).guisos ? ' · Guisos: ' + datos.campos.guisos.slice(0, 160) : ''); }
+        if (datos) { word = datos; sug = sugerirRecado(datos); entregado = datos.entregado || null; resumen = `${recadosDe(datos.recado || recadoDe(eq, al.id)[0]).map(k => infoRecado(k)[1]).join(' y ')} · ` + ingsDe(datos).map(x => x.n).join(', ') + ((datos.campos || {}).guisos ? ' · Guisos: ' + datos.campos.guisos.slice(0, 160) : ''); }
       } else if (a.tipo === 'desarma') {
         const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'tarea-desarma'));
         if (s.exists()) { const m = s.data().datos || {}; if ((m.ficha || {}).nombre) word = m; sug = sugerirDesarma(m); entregado = s.data().entregado || null; resumen = ['q1', 'q2', 'q3'].map(k => ((m.ficha || {})[k] || '').trim()).filter(Boolean).join(' · ').slice(0, 400); }

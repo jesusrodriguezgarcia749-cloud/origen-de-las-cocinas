@@ -116,6 +116,13 @@ export const CLAVE_RECADO = {
     nota: 'Es el único recado casi 100% americano: el que no tuvo que viajar.' },
 };
 
+// El recado verde es muy corto (tres ingredientes, todos de América): el equipo que lo tiene también hace el blanco
+// y los compara: el recado que no viajó frente a uno de los que más viajaron.
+export const RECADO_EXTRA = { verde: 'blanco' };
+export const infoRecado = k => RECADOS.lista.find(x => x[0] === k) || RECADOS.lista[0];
+// Los recados de un equipo: el guardado en su trabajo (o el del sorteo) y, si aplica, el extra.
+export const recadosDe = k => [k, ...(RECADO_EXTRA[k] ? [RECADO_EXTRA[k]] : [])];
+export const nombreRecados = k => recadosDe(k).map(x => infoRecado(x)[1]).join(' y ');
 const semilla = t => { let h = 2166136261; for (const ch of String(t)) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; } return h; };
 // Sorteo estable: la misma formación de equipos siempre reparte los recados igual (equipo 1, 2, 3…).
 // Con 6 equipos sale uno distinto para cada uno. Quien trabaja solo recibe uno por su nombre.

@@ -16,9 +16,9 @@ import { BALUARTES, CAMPECHE, QUE_INFLUENCIA, PAISES_AM, PLATILLOS_AM } from "./
 import { QUE_ASIA } from "./asia-datos.js";
 import { QUE_EUROPA, BLOQUES_EU } from "./europa-datos.js";
 import { VUELTA_MUNDO, CONTINENTES_T3 } from "./oceania-datos.js";
-import { RECADOS, ORIGENES, LLEGADAS, INGS, CLAVE_RECADO, HISTORIA, LINEA_TIEMPO, recadoDe, reconocer, ingsDe, sugerirRecado } from "./recado-datos.js";
+import { RECADOS, ORIGENES, LLEGADAS, INGS, CLAVE_RECADO, HISTORIA, LINEA_TIEMPO, recadoDe, reconocer, ingsDe, sugerirRecado, infoRecado, recadosDe, nombreRecados } from "./recado-datos.js";
 import { comprimir, idFoto, MAX_FOTOS, fotosAlWord } from "./fotos.js";
-import { wordTarea } from "./tarea-word.js?v=2026110601";
+import { wordTarea } from "./tarea-word.js?v=2026110602";
 import { formacionDe, formaciones, formacionDeTarea, abiertas as inscAbiertas, equipoDe, equiposDe, tareasDeFormacion, enEquipo } from "./equipos.js";
 
 const db = getFirestore(initializeApp(firebaseConfig));
@@ -1123,12 +1123,13 @@ const nomOrigen = k => (ORIGENES.find(x => x[0] === k) || [, ''])[1];
 const colOrigen = k => (ORIGENES.find(x => x[0] === k) || [, , '#C9BFAE'])[2];
 const nomLlegada = k => (LLEGADAS.find(x => x[0] === k) || [, ''])[1];
 function recado(cont, eq) {
-  const a = TAREAS_DIG.recado, R = RECADOS, [rk, rn, rcol, rpista, rotros] = recadoDe(eq, sesion.alumnoId), CL = CLAVE_RECADO[rk];
+  const a = TAREAS_DIG.recado, R = RECADOS, [rk] = recadoDe(eq, sesion.alumnoId);
+  let REC = rk;   // el recado del equipo: el que quedó guardado en su trabajo (el docente lo puede cambiar) o el del sorteo
   const ref = eq ? doc(db, 'grupos', sesion.grupoId, 'equipos', eq.id, 'atlas', R.id) : doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'atlas', 'tarea-recado');
   cont.innerHTML = `<div class="ma-barra"><span>${eq ? `👥 <b>${esc(eq.nombre)}</b>: ${esc((eq.nombres || []).join(', '))}` : `👤 <b>${esc(sesion.nombre)}</b> (individual)`}</span><span class="ma-estado" id="re-estado"></span>
       <button type="button" class="btn-ruta" id="re-word">⬇ Descargar en Word</button></div>
     <div data-entrega></div>
-    <div class="es-sub re-sub" style="--c:${rcol}"><small>${eq ? 'Por sorteo, a su equipo le tocó' : 'Por sorteo, te tocó'}</small><b>🫙 ${esc(rn)}</b><p>${esc(rpista)} <i>${esc(rotros)}</i></p></div>
+    <div id="re-sub"></div>
     <p class="atlas-ayuda">Un recado es <b>un mapa del mundo en una pasta</b>: cada ingrediente llegó de un lugar distinto. Investiguen ${eq ? 'en equipo' : ''} qué lleva su recado, en qué guisos se usa y <b>de dónde viene cada ingrediente y cómo llegó a Campeche</b>. ${eq ? 'Repártanse los ingredientes: cada quien desde su celular, todo se guarda solo.' : 'Se guarda solo en tu cuenta.'} Al final lo <b>exponen al grupo</b> con sus fotos.</p>
     <div class="re-claves" id="re-claves" hidden></div>
     <h3 class="re-h">1 · Los ingredientes de nuestro recado</h3>
@@ -1144,7 +1145,19 @@ function recado(cont, eq) {
   const estado = (t, c = '') => { const e = $('#re-estado'); if (e) { e.textContent = t; e.className = 'ma-estado ' + c; } };
   const puede = () => abierta(a.id);
   const opts = (L, v, vacio) => `<option value="">${vacio}</option>` + L.map(([k, n]) => `<option value="${k}"${k === v ? ' selected' : ''}>${esc(n)}</option>`).join('');
+  let subPintado = '';
+  const opcRec = () => '<option value="">— ¿De qué recado? —</option>' + recadosDe(REC).map(k => `<option value="${k}">${esc(infoRecado(k)[1])}</option>`).join('') + (recadosDe(REC).length > 1 ? '<option value="ambos">De los dos</option>' : '');
+  const pintarSub = () => {
+    const L = recadosDe(REC), clave = L.join('+'); if (clave === subPintado) return; subPintado = clave;
+    const dos = L.length > 1, [, n1, c1, p1, o1] = infoRecado(L[0]);
+    $('#re-sub').innerHTML = dos
+      ? `<div class="es-sub re-sub" style="--c:${c1}"><small>${eq ? 'A su equipo le tocaron dos recados: compárenlos' : 'Te tocaron dos recados: compáralos'}</small><b>🫙 ${esc(L.map(k => infoRecado(k)[1]).join(' y 🫙 '))}</b>${L.map(k => { const [, n, , p, o] = infoRecado(k); return `<p><b>${esc(n)}:</b> ${esc(p)} <i>${esc(o)}</i></p>`; }).join('')}<p>💡 <b>Para la conclusión:</b> uno es el recado que casi no viajó y el otro, uno de los que más viajaron. ¿Qué nos dice esa diferencia sobre Campeche antes y después de 1521?</p></div>`
+      : `<div class="es-sub re-sub" style="--c:${c1}"><small>${eq ? 'Por sorteo, a su equipo le tocó' : 'Por sorteo, te tocó'}</small><b>🫙 ${esc(n1)}</b><p>${esc(p1)} <i>${esc(o1)}</i></p></div>`;
+    $$('.re-ing [data-f="r"]', cont).forEach(x => { const v = x.value; x.innerHTML = opcRec(); x.value = v; });
+    $('#re-nuevo').placeholder = dos ? 'Ej.: pepita, clavo, naranja agria…' : 'Ej.: clavo, naranja agria…';
+  };
   const tarjeta = x => `<div class="re-ing" data-id="${x.id}"><div class="re-ing-cab"><input class="re-nom" data-f="n" maxlength="40" aria-label="Ingrediente"><small class="ma-autor" data-por></small><button type="button" class="re-x" data-borrar aria-label="Quitar ingrediente" title="Quitar">✕</button></div>
+      <label class="re-cual" hidden><small>¿De qué recado es?</small><select data-f="r">${opcRec()}</select></label>
       <div class="re-sel"><label><small>¿De dónde es originario?</small><select data-f="o">${opts(ORIGENES, '', '— Elige —')}</select></label><label><small>¿Cómo llegó a Campeche?</small><select data-f="l">${opts(LLEGADAS, '', '— Elige —')}</select></label></div>
       <label class="re-ruta"><small>Su ruta: de dónde salió, por dónde pasó y quién lo trajo</small><textarea data-f="ruta" rows="2"></textarea><small class="es-cuenta" data-cr></small></label></div>`;
   let enviando = false, claves = { c1: false, c2: false }, abiertaC = { c1: false, c2: false };
@@ -1155,7 +1168,8 @@ function recado(cont, eq) {
       let el = $(`.re-ing[data-id="${x.id}"]`, caja);
       if (!el) { caja.insertAdjacentHTML('beforeend', tarjeta(x)); el = $(`.re-ing[data-id="${x.id}"]`, caja); conectar(el, x.id); }
       if (caja.children[i] !== el) caja.insertBefore(el, caja.children[i] || null);
-      ['n', 'o', 'l', 'ruta'].forEach(f => { const c = $(`[data-f="${f}"]`, el); if (c !== act && c.value !== (x[f] || '')) c.value = x[f] || ''; });
+      ['n', 'r', 'o', 'l', 'ruta'].forEach(f => { const c = $(`[data-f="${f}"]`, el); if (c !== act && c.value !== (x[f] || '')) c.value = x[f] || ''; });
+      $('.re-cual', el).hidden = recadosDe(REC).length < 2;
       el.style.setProperty('--c', colOrigen(x.o));
       $('[data-por]', el).textContent = eq && x.por ? `✍️ ${x.por}` : '';
       const n = palabras(x.ruta), cr = $('[data-cr]', el); cr.textContent = `${n} palabra${n === 1 ? '' : 's'}${n >= 10 ? ' ✓' : ' · mínimo 10'}`; cr.className = 'es-cuenta ' + (n >= 10 ? 'ok' : '');
@@ -1165,6 +1179,8 @@ function recado(cont, eq) {
   };
   const pintar = S => {
     const act = document.activeElement, c = S.campos || {}, por = S.por || {};
+    if (S.recado && S.recado !== REC) { REC = S.recado; subPintado = ''; }
+    pintarSub();
     pintarIngs(S);
     R.campos.forEach(([k, , , min]) => {
       const ta = $(`[data-k="${k}"]`, cont); if (ta !== act && ta.value !== (c[k] || '')) ta.value = c[k] || '';
@@ -1177,13 +1193,17 @@ function recado(cont, eq) {
     pintarClaves(); repEntrega();
   };
   let repEntrega = () => {};
-  const V = docVivo(ref, eq, (S, st) => { pintar(S); estado(st === 'ok' ? (eq ? 'Sincronizado con tu equipo ✓' : 'Guardado en tu cuenta ✓') : st === 'error' ? 'No se pudo guardar. Reintentando…' : 'Guardando…', st === 'ok' ? 'ok' : st === 'error' ? 'mal' : ''); });
-  if (!V.S.recado) V.poner(['recado'], rk, `les tocó el ${rn.toLowerCase()}`, true);
+  let llego = false;
+  const V = docVivo(ref, eq, (S, st) => {
+    // El recado se guarda la primera vez (si el trabajo ya tenía uno, se respeta): así ya no cambia aunque se rehagan los equipos.
+    if (!llego && st !== 'guardando') { llego = true; if (st === 'ok' && !S.recado) setTimeout(() => V.poner(['recado'], rk, `les tocó el ${infoRecado(rk)[1].toLowerCase()}`, true), 0); }
+    pintar(S); estado(st === 'ok' ? (eq ? 'Sincronizado con tu equipo ✓' : 'Guardado en tu cuenta ✓') : st === 'error' ? 'No se pudo guardar. Reintentando…' : 'Guardando…', st === 'ok' ? 'ok' : st === 'error' ? 'mal' : ''); });
+  pintarSub();
   function conectar(el, id) {
     $$('[data-f]', el).forEach(c => c.addEventListener(c.tagName === 'SELECT' ? 'change' : 'input', () => {
       if (!puede()) { pintar(V.S); return; }
       const f = c.dataset.f, nom = ((V.S.ings || {})[id] || {}).n || 'un ingrediente';
-      V.poner(['ings', id, f], c.value, f === 'n' ? 'renombra un ingrediente' : f === 'ruta' ? `escribe la ruta de ${nom}` : `marca de dónde viene ${nom}`);
+      V.poner(['ings', id, f], c.value, f === 'n' ? 'renombra un ingrediente' : f === 'ruta' ? `escribe la ruta de ${nom}` : f === 'r' ? `marca de qué recado es ${nom}` : `marca de dónde viene ${nom}`);
       V.poner(['ings', id, 'por'], sesion.nombre);
       if (f !== 'ruta' && f !== 'n') pintar(V.S);
     }));
@@ -1215,15 +1235,16 @@ function recado(cont, eq) {
     const b = (c, t) => `<button type="button" class="btn-at re-ver" data-c="${c}" aria-pressed="${abiertaC[c]}">${abiertaC[c] ? 'Ocultar' : t}</button>`;
     let h = '';
     if (claves.c1) {
-      const extra = L.filter(x => { const k = reconocer(x.n); return !k || !CL.ings.includes(k); });
-      h += `<div class="re-clave"><div class="re-clave-cab"><b>🔑 Clave 1 · Ingredientes y guisos del ${esc(rn.toLowerCase())}</b>${b('c1', 'Comparar con la clave')}</div>${abiertaC.c1 ? `
+      const LR = recadosDe(REC), todos = new Set(LR.flatMap(k => CLAVE_RECADO[k].ings));
+      const extra = L.filter(x => { const k = reconocer(x.n); return !k || !todos.has(k); });
+      h += `<div class="re-clave"><div class="re-clave-cab"><b>🔑 Clave 1 · Ingredientes y guisos del ${esc(nombreRecados(REC).toLowerCase())}</b>${b('c1', 'Comparar con la clave')}</div>${abiertaC.c1 ? `
         <p class="re-ayuda">✅ = ya lo tienen · ➕ = les faltó: agréguenlo e investiguen su ruta.</p>
-        <div class="re-chips">${CL.ings.map(k => `<span class="re-chip ${suyos.has(k) ? 'ok' : 'falta'}">${suyos.has(k) ? '✅' : '➕'} ${INGS[k].e} ${esc(INGS[k].n)}</span>`).join('')}</div>
-        ${extra.length ? `<p class="re-ayuda">Ustedes además pusieron: <b>${esc(extra.map(x => x.n).join(', '))}</b>. Puede ser la receta de su familia: ¡está bien! Investiguen también su ruta.</p>` : ''}
-        <p><b>Guisos:</b> ${esc(CL.guisos.join(' · '))}</p><p class="re-nota">💡 ${esc(CL.nota)}</p>` : ''}</div>`;
+        ${LR.map(k => { const CL = CLAVE_RECADO[k]; return `${LR.length > 1 ? `<p class="re-sub-clave"><b>🫙 ${esc(infoRecado(k)[1])}</b></p>` : ''}<div class="re-chips">${CL.ings.map(i => `<span class="re-chip ${suyos.has(i) ? 'ok' : 'falta'}">${suyos.has(i) ? '✅' : '➕'} ${INGS[i].e} ${esc(INGS[i].n)}</span>`).join('')}</div>
+        <p><b>Guisos:</b> ${esc(CL.guisos.join(' · '))}</p><p class="re-nota">💡 ${esc(CL.nota)}</p>`; }).join('')}
+        ${extra.length ? `<p class="re-ayuda">Ustedes además pusieron: <b>${esc(extra.map(x => x.n).join(', '))}</b>. Puede ser la receta de su familia: ¡está bien! Investiguen también su ruta.</p>` : ''}` : ''}</div>`;
     }
     if (claves.c2) {
-      const ks = [...new Set([...CL.ings, ...suyos])];
+      const ks = [...new Set([...recadosDe(REC).flatMap(k => CLAVE_RECADO[k].ings), ...suyos])];
       h += `<div class="re-clave"><div class="re-clave-cab"><b>🔑 Clave 2 · De dónde viene cada ingrediente y cómo llegó a Campeche</b>${b('c2', 'Ver las rutas')}</div>${abiertaC.c2 ? `<div class="re-rutas">${ks.map(k => {
         const I = INGS[k], H = HISTORIA[k], x = L.find(y => reconocer(y.n) === k);
         const okO = x && x.o ? x.o === I.o : null, okL = x && x.l ? I.l.includes(x.l) : null;

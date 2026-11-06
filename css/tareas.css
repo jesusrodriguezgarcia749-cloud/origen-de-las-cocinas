@@ -331,3 +331,7 @@ body.cp-sin-scroll { overflow: hidden; }
 .re-linea { margin-top: 10px; background: var(--cream); border-radius: 10px; padding: 8px 12px; }
 .re-linea summary { cursor: pointer; font-weight: 700; }
 .re-linea ol { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 4px; font-size: .9rem; }
+.re-cual { display: grid; gap: 3px; }
+.re-cual small { font-size: .76rem; color: var(--ink-soft); font-weight: 700; }
+.re-cual select { font: inherit; font-size: .88rem; padding: 7px 8px; border-radius: 9px; border: 1.5px solid var(--line); background: var(--parchment); color: var(--ink); }
+.re-sub-clave { margin: 10px 0 2px; }

@@ -4,7 +4,7 @@
 import { DocITES } from "./docx-ites.js?v=2026110501";
 import { mapaContinentePNG } from "./docx-ites.js?v=2026110501";
 import { CUADRO_MM, INFLUENCIAS, ESPECIAS, subregionDe } from "./clase-datos.js";
-import { RECADOS, ORIGENES, LLEGADAS, recadoDe, ingsDe } from "./recado-datos.js";
+import { RECADOS, ORIGENES, LLEGADAS, recadoDe, ingsDe, infoRecado, recadosDe } from "./recado-datos.js";
 import { fotosAlWord } from "./fotos.js";
 
 export const slugArchivo = n => String(n || '').trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
@@ -45,12 +45,15 @@ async function especias(D, S, eq, nombre, alumnoId) {
 
 // ---------- El recado campechano
 async function recado(D, S, eq, nombre, alumnoId) {
-  const [, rn, , rpista] = recadoDe(eq, alumnoId), c = S.campos || {}, por = S.por || {}, L = ingsDe(S);
+  const LR = recadosDe(S.recado || recadoDe(eq, alumnoId)[0]), dos = LR.length > 1, c = S.campos || {}, por = S.por || {}, L = ingsDe(S);
+  const rn = LR.map(k => infoRecado(k)[1]).join(' y '), rpista = dos ? 'Comparación: el recado que casi no viajó y uno de los que más viajaron.' : infoRecado(LR[0])[3];
+  const nR = k => k === 'ambos' ? 'Los dos' : k ? infoRecado(k)[1].replace('Recado ', '') : '—';
   const nO = k => (ORIGENES.find(x => x[0] === k) || [, '—'])[1], nL = k => (LLEGADAS.find(x => x[0] === k) || [, '—'])[1];
   portadaDe(D, { kicker: 'Tema 3.4 · Cocinas europeas · Tema 3.3 · Cocinas asiáticas', titulo: `El recado campechano: ${rn.toLowerCase()}`, subtitulo: 'El mundo en una pasta: de dónde viene cada ingrediente y cómo llegó a Campeche' }, eq, nombre);
   const conts = new Set(L.map(x => x.o).filter(Boolean));
   D.h1(rn, `${rpista} ${L.length} ingredientes de ${conts.size} ${conts.size === 1 ? 'origen' : 'orígenes'} distintos.`);
-  if (L.length) D.tabla([['Ingrediente', 'Origen', '¿Cómo llegó a Campeche?', 'Su ruta'], ...L.map(x => [{ runs: [[x.n, { b: true }], ...(eq && x.por ? [[`\n✍ ${x.por}`, { color: '3F7A4F', tam: 8 }]] : [])] }, nO(x.o), nL(x.l), (x.ruta || '').trim() || '—'])], { anchos: [1900, 1600, 2000, 3860] });
+  const nombreIng = x => ({ runs: [[x.n, { b: true }], ...(dos ? [[`\n${nR(x.r)}`, { color: '6B6358', tam: 8 }]] : []), ...(eq && x.por ? [[`\n✍ ${x.por}`, { color: '3F7A4F', tam: 8 }]] : [])] });
+  if (L.length) D.tabla([['Ingrediente', 'Origen', '¿Cómo llegó a Campeche?', 'Su ruta'], ...L.map(x => [nombreIng(x), nO(x.o), nL(x.l), (x.ruta || '').trim() || '—'])], { anchos: [1900, 1600, 2000, 3860] });
   else D.texto('');
   D.ficha(RECADOS.campos.map(([k, t]) => [t.replace(/^\S+\s/, ''), c[k], eq ? por[k] : '']));
   return `Recado_campechano_${quien(eq, nombre)}`;
