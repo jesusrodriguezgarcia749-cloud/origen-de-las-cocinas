@@ -338,3 +338,4 @@ html[data-theme="dark"] .t-paso-n { color: #8fb8e0; }
 .mp-paso.futura { opacity: .8; }
 .mp-paso-cuenta { font: 800 .85rem var(--font-body); color: var(--ink-soft); }
 @media (max-width: 520px) { .mp-paso { grid-template-columns: auto 1fr auto; } .mp-paso-tag { grid-column: 2; } .mp-paso-cuenta { grid-row: 1; grid-column: 3; } }
+.t-reintentar { margin-left: 8px; font: inherit; font-size: .8rem; padding: 3px 10px; border-radius: 999px; border: 1.5px solid #b3261e; background: #fff; color: #b3261e; cursor: pointer; }

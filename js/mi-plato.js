@@ -43,7 +43,8 @@ $('#t-form').addEventListener('submit', async e => {
     const alumnoId = slug(nombre);
     const snap = await getDoc(doc(db, 'grupos', grupoId, 'alumnos', alumnoId));
     if (!snap.exists() || String(snap.data().pin) !== pin) { err.textContent = 'No encontramos ese nombre y PIN en el grupo elegido. Verifica con tu docente.'; err.hidden = false; return; }
-    sesion = { grupoId, alumnoId, nombre: snap.data().nombre, pin };
+    // El PIN se guarda tal como está en su ficha (texto o número): así la regla de Firestore siempre coincide.
+    sesion = { grupoId, alumnoId, nombre: snap.data().nombre, pin: snap.data().pin };
     try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(sesion)); } catch { /* */ }
     entrar();
   } catch (e2) { err.textContent = 'No se pudo entrar: ' + (e2.message || e2); err.hidden = false; }
@@ -67,9 +68,11 @@ async function entrar() {
     catch { /* sin conexión: se usa la copia local */ }
   }
   const t = x => (x && x._t) || 0;
+  const subirLocal = !sesion.anon && local && t(local) > t(remoto);   // trabajó sin que se subiera: se sube ahora
   T = Object.assign(vacio(), (t(local) > t(remoto) ? local : remoto) || local || remoto || {});
   T.refs = Object.assign({ libro: true, lista: [], otras: '' }, T.refs || {});
   estado(sesion.anon ? 'Se guarda solo en este dispositivo' : 'Tu avance se guarda en tu cuenta');
+  if (subirLocal) { estado('Subiendo a tu cuenta el avance que estaba solo en este dispositivo…'); guardarYa(); }
   // Abre en la entrega que toca según el calendario (la Entrega 1 ya se entregó en papel el 15 de octubre).
   entSel = entregaEnCurso();
   pintarTodo();
@@ -112,11 +115,24 @@ async function guardarYa() {
       pinVerificado: sesion.pin, nombre: sesion.nombre, datos: T, platillo: T.platillo || '', avance: avance(), actualizado: serverTimestamp()
     });
     estado('Guardado en tu cuenta ✓', 'ok');
-  } catch {
-    estado('Guardado solo en este dispositivo (no se pudo subir a tu cuenta). Avísale a tu maestro.', 'mal');
+    pendiente = false; clearTimeout(reintento);
+  } catch (e) {
+    // No se perdió nada: sigue en este dispositivo. Se reintenta solo y se explica por qué falló.
+    pendiente = true; clearTimeout(reintento); reintento = setTimeout(guardarYa, 20000);
+    const cod = (e && e.code) || '';
+    const porque = cod === 'permission-denied'
+      ? 'Tu cuenta no aceptó el guardado: quizá tu PIN o tu nombre cambiaron. Toca «Salir», vuelve a entrar con tu nombre y PIN, y se subirá solo.'
+      : cod === 'resource-exhausted' ? 'Tu proyecto es demasiado grande para guardarse. Avísale a tu maestro.'
+      : 'No hay conexión con tu cuenta. Se vuelve a intentar sola cada 20 segundos.';
+    estado(`⚠️ Guardado solo en este dispositivo. ${porque} No cierres esta computadora sin que diga «Guardado en tu cuenta ✓».`, 'mal');
+    const b = document.createElement('button'); b.type = 'button'; b.className = 't-reintentar'; b.textContent = '↻ Reintentar ahora';
+    b.addEventListener('click', () => { estado('Guardando…'); guardarYa(); });
+    $('#t-estado').appendChild(b);
   }
 }
-window.addEventListener('beforeunload', () => { if (timer) guardarYa(); });
+let pendiente = false, reintento = null;
+window.addEventListener('online', () => { if (pendiente) guardarYa(); });
+window.addEventListener('beforeunload', e => { if (timer || pendiente) { guardarYa(); if (pendiente) { e.preventDefault(); e.returnValue = ''; } } });
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && timer) guardarYa(); });
 
 // ======================================================= apertura por calendario
