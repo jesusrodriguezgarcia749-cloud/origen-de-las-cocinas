@@ -739,3 +739,6 @@ body.mon-completo .mon-grid { grid-template-columns: repeat(auto-fill, minmax(21
 .cal-marca.si { background: #e3f1e6; color: #2e6b3a; }
 .cal-marca.medio { background: #fff3d6; color: #8a5a00; }
 .cal-marca.no { background: #f6e3df; color: #a3341f; }
+.btn.cal-hecha, .asis-estado-label.cal-hecha { background: #2e7d3c !important; border-color: #2e7d3c !important; color: #fff !important; }
+.btn.cal-medio, .asis-estado-label.cal-medio { background: #c98a2c !important; border-color: #c98a2c !important; color: #fff !important; }
+.asis-estado-label.cal-hecha, .asis-estado-label.cal-medio { padding: 3px 10px; border-radius: 999px; }

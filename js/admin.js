@@ -435,7 +435,11 @@ async function conteoCalificadas() {
 async function refrescarMarcas() {
   const cuenta = await conteoCalificadas(), tot = alumnosCache.length;
   document.querySelectorAll('[data-marca]').forEach(el => { el.innerHTML = marcaCalificada(cuenta[el.dataset.marca] || 0, tot); });
+  document.querySelectorAll('[data-btncal]').forEach(el => { const n = cuenta[el.dataset.btncal] || 0; el.textContent = textoBotonCal(n, tot, el.dataset.flecha || ''); el.classList.remove('cal-hecha', 'cal-medio'); const c = claseBotonCal(n, tot); if (c) el.classList.add(c); });
 }
+// El botón de calificar dice en qué va: «✅ Calificada», «Calificar · 12 de 21» o «Calificar».
+const textoBotonCal = (n, total, flecha = '') => !total || !n ? 'Calificar' + flecha : n >= total ? '✅ Calificada' + flecha : `Calificar · ${n} de ${total}` + flecha;
+const claseBotonCal = (n, total) => !total || !n ? '' : n >= total ? 'cal-hecha' : 'cal-medio';
 const marcaCalificada = (n, total) => !total ? '' : n >= total ? '<span class="cal-marca si">✅ Calificada</span>' : n > 0 ? `<span class="cal-marca medio">🟡 ${n} de ${total} calificados</span>` : '<span class="cal-marca no">⏳ Sin calificar</span>';
 async function cargarCatalogo(tipo) {
   const cfg = CONFIG_TIPO[tipo];
@@ -475,7 +479,7 @@ async function cargarCatalogo(tipo) {
   items.forEach(item => {
     const row = document.createElement('button');
     row.type = 'button'; row.className = 'asis-row';
-    row.innerHTML = `<span class="student-name">${escaparHTML(item.nombre)}${item.fecha ? ` <small class="res-extra">(${escaparHTML(item.fecha)})</small>` : ''}</span>${cuenta ? `<span data-marca="${escaparHTML(item.id)}">${marcaCalificada(cuenta[item.id] || 0, alumnosCache.length)}</span>` : ''}<span class="asis-estado-label">Calificar →</span>`;
+    row.innerHTML = `<span class="student-name">${escaparHTML(item.nombre)}${item.fecha ? ` <small class="res-extra">(${escaparHTML(item.fecha)})</small>` : ''}</span>${cuenta ? `<span data-marca="${escaparHTML(item.id)}">${marcaCalificada(cuenta[item.id] || 0, alumnosCache.length)}</span>` : ''}<span class="asis-estado-label ${cuenta ? claseBotonCal(cuenta[item.id] || 0, alumnosCache.length) : ''}" ${cuenta ? `data-btncal="${escaparHTML(item.id)}" data-flecha=" →"` : ''}>${cuenta ? textoBotonCal(cuenta[item.id] || 0, alumnosCache.length, ' →') : 'Calificar →'}</span>`;
     row.addEventListener('click', () => calificarItem(tipo, item));
     cont.appendChild(row);
   });
@@ -1259,7 +1263,7 @@ async function cargarTareasDig() {
       <button type="button" class="btn btn-small td-cat ${cat ? 'si' : ''}" data-cat="${a.id}" ${cat ? 'disabled' : ''}>${cat ? '✓ En el catálogo' : '+ Agregar al catálogo'}</button>
       <button type="button" class="btn btn-small td-ab ${ab ? 'si' : 'no'}" data-ab="${a.id}">${ab ? '🔓 Abierta' : vencida ? '🔒 Cerrada (venció)' : '🔒 Cerrada'}</button>
       ${enEquipo(a) ? `<button type="button" class="btn btn-small td-eq" data-eqt="${a.id}" aria-expanded="false">👥 Equipos</button>` : ''}
-      <button type="button" class="btn btn-small btn-primary" data-cal="${a.id}">Calificar</button></div>`;
+      <button type="button" class="btn btn-small btn-primary ${cat ? claseBotonCal(cuenta[catalogoId(a.id)] || 0, alumnosCache.length) : ''}" data-cal="${a.id}" ${cat ? `data-btncal="${catalogoId(a.id)}"` : ''}>${cat ? textoBotonCal(cuenta[catalogoId(a.id)] || 0, alumnosCache.length) : 'Calificar'}</button></div>`;
   }).join('')}</div>`).join('');
   cont.querySelectorAll('[data-cat]').forEach(b => b.addEventListener('click', async () => {
     const a = TAREAS_DIG[b.dataset.cat];
