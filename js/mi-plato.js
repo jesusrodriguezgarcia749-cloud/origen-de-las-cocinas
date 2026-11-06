@@ -111,8 +111,12 @@ async function guardarYa() {
   if (!T) return;
   if (sesion.anon) { estado('Guardado en este dispositivo ✓', 'ok'); return; }
   try {
+    // Copia limpia: Firestore rechaza todo el guardado si hay un valor «undefined» o una lista dentro de otra lista.
+    const limpio = JSON.parse(JSON.stringify(T, (k, v) => (Array.isArray(v) ? v.map(x => (Array.isArray(x) ? x.join('\n') : x)) : v)));
+    const tam = JSON.stringify(limpio).length;
+    if (tam > 900000) throw Object.assign(new Error(`El proyecto pesa ${Math.round(tam / 1024)} KB`), { code: 'resource-exhausted' });
     await setDoc(doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'investigacion', 'mi-plato'), {
-      pinVerificado: sesion.pin, nombre: sesion.nombre, datos: T, platillo: T.platillo || '', avance: avance(), actualizado: serverTimestamp()
+      pinVerificado: sesion.pin, nombre: sesion.nombre, datos: limpio, platillo: T.platillo || '', avance: avance(), actualizado: serverTimestamp()
     });
     estado('Guardado en tu cuenta ✓', 'ok');
     pendiente = false; clearTimeout(reintento);
@@ -124,7 +128,7 @@ async function guardarYa() {
       ? 'Tu cuenta no aceptó el guardado: quizá tu PIN o tu nombre cambiaron. Toca «Salir», vuelve a entrar con tu nombre y PIN, y se subirá solo.'
       : cod === 'resource-exhausted' ? 'Tu proyecto es demasiado grande para guardarse. Avísale a tu maestro.'
       : 'No hay conexión con tu cuenta. Se vuelve a intentar sola cada 20 segundos.';
-    estado(`⚠️ Guardado solo en este dispositivo. ${porque} No cierres esta computadora sin que diga «Guardado en tu cuenta ✓».`, 'mal');
+    estado(`⚠️ Guardado solo en este dispositivo. ${porque} No cierres esta computadora sin que diga «Guardado en tu cuenta ✓». (Código para tu maestro: ${cod || 'sin código'} · ${String((e && e.message) || e).slice(0, 120)})`, 'mal');
     const b = document.createElement('button'); b.type = 'button'; b.className = 't-reintentar'; b.textContent = '↻ Reintentar ahora';
     b.addEventListener('click', () => { estado('Guardando…'); guardarYa(); });
     $('#t-estado').appendChild(b);
