@@ -415,20 +415,6 @@
    "explicacion": "La nouvelle cuisine reaccionó a Escoffier; Slow Food, a la comida rápida."
   },
   {
-   "id": "oc-97",
-   "subtema": "2.4",
-   "tipo": "opcion_multiple",
-   "pregunta": "El vegetarianismo, el veganismo y el flexitarianismo son corrientes definidas por restricción _______, a diferencia de las religiosas.",
-   "opciones": [
-    "dietética no religiosa",
-    "religiosa",
-    "económica",
-    "geográfica"
-   ],
-   "correcta": 0,
-   "explicacion": "Vegetarianismo y veganismo son restricciones por ética, salud o ambiente, no por religión."
-  },
-  {
    "id": "oc-98",
    "subtema": "2.4",
    "tipo": "opcion_multiple",

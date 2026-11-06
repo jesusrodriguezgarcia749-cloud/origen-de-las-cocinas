@@ -42,20 +42,6 @@
    "explicacion": "Rachel Laudan, Cuisine and Empire (2013)."
   },
   {
-   "id": "oc-161",
-   "subtema": "4.1",
-   "tipo": "opcion_multiple",
-   "pregunta": "¿Qué hambruna histórica menciona el libro relacionada con la pérdida de cosechas de papa?",
-   "opciones": [
-    "La hambruna de Bengala",
-    "La gran hambruna irlandesa",
-    "La hambruna de la Rusia soviética",
-    "La hambruna del Sahel"
-   ],
-   "correcta": 1,
-   "explicacion": "Entre 1845 y 1852 el tizón tardío destruyó la papa en Irlanda: un millón de muertos y otro de emigrantes."
-  },
-  {
    "id": "oc-162",
    "subtema": "4.1",
    "tipo": "opcion_multiple",
@@ -260,20 +246,6 @@
    ],
    "correcta": 0,
    "explicacion": "La annona repartía grano; «pan y circo» resume esa política."
-  },
-  {
-   "id": "oc-168",
-   "subtema": "4.3",
-   "tipo": "opcion_multiple",
-   "pregunta": "¿Cómo se llama la comida pública del rey en la corte de Versalles?",
-   "opciones": [
-    "El grand couvert",
-    "El iftar real",
-    "El banquete imperial",
-    "La secunda mensa"
-   ],
-   "correcta": 0,
-   "explicacion": "En el grand couvert el rey comía en público y la cercanía a su mesa marcaba jerarquía."
   },
   {
    "id": "oc-169",
@@ -693,20 +665,6 @@
    ],
    "correcta": 1,
    "explicacion": "tuvo una historia de exclusión de las mujeres que se abrió progresivamente en la segunda mitad del siglo XX."
-  },
-  {
-   "id": "oc-197",
-   "subtema": "4.5",
-   "tipo": "opcion_multiple",
-   "pregunta": "El noble francés y antiguo crítico teatral _______ es considerado el primer crítico gastronómico sistemático de la historia.",
-   "opciones": [
-    "Grimod de La Reynière",
-    "Antoine Beauvilliers",
-    "Boulanger",
-    "Charles Ranhofer"
-   ],
-   "correcta": 0,
-   "explicacion": "Grimod de La Reynière, con su Almanach, inventó la crítica gastronómica."
   },
   {
    "id": "oc-198",

@@ -254,34 +254,6 @@
    "explicacion": "Las caravanas transaharianas cambiaban oro del sur por sal del norte."
   },
   {
-   "id": "oc-254",
-   "subtema": "3.1",
-   "tipo": "opcion_multiple",
-   "pregunta": "¿Qué grano es la base de la mesa del Sahel, la franja semiárida al sur del Sahara?",
-   "opciones": [
-    "El trigo y la cebada",
-    "El arroz asiático",
-    "El maíz americano",
-    "El mijo y el sorgo"
-   ],
-   "correcta": 3,
-   "explicacion": "Mijo y sorgo resisten la sequía."
-  },
-  {
-   "id": "oc-255",
-   "subtema": "3.1",
-   "tipo": "opcion_multiple",
-   "pregunta": "¿Qué fruto, hoy bebido en todo el mundo, es originario de los bosques del suroeste de Etiopía?",
-   "opciones": [
-    "La vainilla",
-    "El café",
-    "El té",
-    "El cacao"
-   ],
-   "correcta": 1,
-   "explicacion": "Nació en Etiopía y se difundió desde Yemen."
-  },
-  {
    "id": "oc-256",
    "subtema": "3.1",
    "tipo": "opcion_multiple",
@@ -308,20 +280,6 @@
    ],
    "correcta": 2,
    "explicacion": "La tercera raíz es la africana, junto a la indígena y la española."
-  },
-  {
-   "id": "oc-107",
-   "subtema": "3.2",
-   "tipo": "opcion_multiple",
-   "pregunta": "¿Qué documento histórico es la fuente más completa sobre la alimentación mexica?",
-   "opciones": [
-    "El Popol Vuh",
-    "La Historia general de las cosas de Nueva España (Códice Florentino), de Sahagún",
-    "De re coquinaria",
-    "El Chilam Balam"
-   ],
-   "correcta": 1,
-   "explicacion": "Sahagún escribió con informantes nahuas el Códice Florentino, terminado hacia 1577."
   },
   {
    "id": "oc-108",
@@ -445,20 +403,6 @@
    "explicacion": "Campeche sufrió más de veinte ataques piratas entre 1558 y 1685."
   },
   {
-   "id": "oc-117",
-   "subtema": "3.2",
-   "tipo": "opcion_multiple",
-   "pregunta": "¿De qué país europeo provenía el queso que dio origen al queso relleno campechano?",
-   "opciones": [
-    "España",
-    "Francia",
-    "Holanda",
-    "Portugal"
-   ],
-   "correcta": 2,
-   "explicacion": "Según la tradición, el queso de bola tipo Edam llegaba de Holanda por el puerto."
-  },
-  {
    "id": "oc-118",
    "subtema": "3.2",
    "tipo": "opcion_multiple",
@@ -497,20 +441,6 @@
    ],
    "correcta": 2,
    "explicacion": "Meneses López identifica siete: maya, española, árabe, francesa, holandesa, africana y caribeña."
-  },
-  {
-   "id": "oc-122",
-   "subtema": "3.2",
-   "tipo": "opcion_multiple",
-   "pregunta": "¿Qué técnica de conservación andina consistía en ciclos de congelación nocturna y secado solar diurno de la papa?",
-   "opciones": [
-    "El charqui",
-    "El chuño",
-    "El garum",
-    "El braai"
-   ],
-   "correcta": 1,
-   "explicacion": "El chuño se congela de noche, se pisa y se seca al sol; dura años."
   },
   {
    "id": "oc-123",
@@ -1170,34 +1100,6 @@
    ],
    "correcta": 0,
    "explicacion": "Sobre la base polinesia se sumaron los trabajadores migrantes de las plantaciones."
-  },
-  {
-   "id": "oc-150",
-   "subtema": "3.5",
-   "tipo": "opcion_multiple",
-   "pregunta": "¿Qué técnica ancestral comparten culturas de Oceanía separadas por miles de kilómetros de océano?",
-   "opciones": [
-    "El horno de tierra",
-    "El comal",
-    "El garum",
-    "El grand couvert"
-   ],
-   "correcta": 0,
-   "explicacion": "Hāngī, umu, lovo e imu: el horno de tierra une al Pacífico."
-  },
-  {
-   "id": "oc-152",
-   "subtema": "3.5",
-   "tipo": "opcion_multiple",
-   "pregunta": "La \"cocina de plato combinado\" (plate lunch) de Hawái mezcla arroz japonés, ensalada de macarrón y carnes adobadas de origen _______ o coreano.",
-   "opciones": [
-    "filipino",
-    "chino",
-    "indonesio",
-    "vietnamita"
-   ],
-   "correcta": 0,
-   "explicacion": "El plate lunch mezcla arroz japonés, ensalada de macarrón y carnes adobadas filipinas o coreanas."
   },
   {
    "id": "oc-153",
