@@ -198,7 +198,7 @@ function renderReactivoActual() {
   actualizarBarra();
   let cuerpo;
   if (r.tipo === 'relacionar') {
-    const derechas = barajar(r.pares.map((p, i) => ({ t: p.derecha, i })));
+    const derechas = barajar(r.pares.map((p, i) => ({ t: p.derecha, i }))).filter((d, k, L) => L.findIndex(x => x.t === d.t) === k);   // sin repetidos
     cuerpo = `<div class="relacionar-list">${r.pares.map((p, i) => `
       <div class="relacionar-row">
         <span class="relacionar-izq">${esc(p.izquierda)}</span>
@@ -258,7 +258,8 @@ function comprobarRelacionar(r) {
   let todoCorrecto = true;
   document.querySelectorAll('.relacionar-select').forEach(sel => {
     const elegido = sel.value === '' ? null : Number(sel.value);
-    if (elegido !== Number(sel.dataset.idx)) todoCorrecto = false;
+    const i = Number(sel.dataset.idx);   // se compara el texto: si dos pares comparten respuesta, cualquiera vale
+    if (elegido === null || !r.pares[elegido] || r.pares[elegido].derecha !== r.pares[i].derecha) todoCorrecto = false;
     sel.disabled = true;
   });
   $('btn-comprobar').remove();

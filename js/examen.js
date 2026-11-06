@@ -343,13 +343,13 @@ function tarjetaReactivo(r, numero) {
 
   if (r.tipo === 'relacionar') {
     const semilla = semillaDe(r.id + intento.semilla);
-    const derechas = barajarConSemilla(r.pares.map((p, i) => ({ t: p.derecha, i })), semilla);
+    const derechas = barajarConSemilla(r.pares.map((p, i) => ({ t: p.derecha, i })), semilla).filter((d, k, L) => L.findIndex(x => x.t === d.t) === k);   // sin repetidos
     cuerpo = `<div class="relacionar-list">${r.pares.map((p, i) => `
       <div class="relacionar-row">
         <span class="relacionar-izq">${esc(p.izquierda)}</span>
         <select class="relacionar-select" data-idx="${i}">
           <option value="">— Elige —</option>
-          ${derechas.map(d => `<option value="${d.i}" ${guardada && guardada[i] === d.i ? 'selected' : ''}>${esc(d.t)}</option>`).join('')}
+          ${derechas.map(d => `<option value="${d.i}" ${guardada && guardada[i] !== undefined && r.pares[guardada[i]] && r.pares[guardada[i]].derecha === d.t ? 'selected' : ''}>${esc(d.t)}</option>`).join('')}
         </select>
       </div>`).join('')}</div>`;
   } else {
@@ -538,7 +538,7 @@ function mostrarBloqueado(est) {
 function esCorrecta(r) {
   const g = intento.respuestas[r.id];
   if (g === undefined || g === null) return false;
-  if (r.tipo === 'relacionar') return r.pares.every((_, i) => g[i] === i);
+  if (r.tipo === 'relacionar') return r.pares.every((p, i) => g[i] !== undefined && r.pares[g[i]] && r.pares[g[i]].derecha === p.derecha);
   return g === r.correcta;
 }
 

@@ -283,12 +283,12 @@ function detalleReactivoHTML(r, numero, intento) {
   const semilla = semillaDe(r.id + intento.semilla);
   let cuerpo = ''; let correcto;
   if (r.tipo === 'relacionar') {
-    correcto = r.pares.every((_, i) => g && g[i] === i);
+    correcto = r.pares.every((p, i) => g && g[i] !== undefined && r.pares[g[i]] && r.pares[g[i]].derecha === p.derecha);
     const derechas = barajarConSemilla(r.pares.map((p, i) => ({ t: p.derecha, i })), semilla);
     cuerpo = `<table class="ex-tabla-relacionar"><thead><tr><th>Columna</th><th>Respuesta del alumno</th><th>Respuesta correcta</th></tr></thead><tbody>${r.pares.map((p, i) => {
       const elegidoIdx = g ? g[i] : undefined;
       const elegido = elegidoIdx !== undefined ? (derechas.find(d => d.i === elegidoIdx)?.t ?? '—') : '— sin responder —';
-      const ok = elegidoIdx === i;
+      const ok = elegidoIdx !== undefined && r.pares[elegidoIdx] && r.pares[elegidoIdx].derecha === p.derecha;
       return `<tr><td>${esc(p.izquierda)}</td><td class="${ok ? 'ex-ok' : 'ex-mal'}">${esc(elegido)}</td><td>${esc(p.derecha)}</td></tr>`;
     }).join('')}</tbody></table>`;
   } else {
