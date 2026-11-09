@@ -69,7 +69,7 @@ function dibujar(cont, { titulo, ayuda, alumnos, columnas, valores, tipo, resume
     cont.innerHTML = `<h3 class="section-title">${esc(titulo)}</h3><p class="empty-inline">Este grupo aún no tiene alumnos.</p>`;
     return;
   }
-  if (!columnas.length) {
+  if (!columnas.length && !extras.length) {
     cont.innerHTML = `<h3 class="section-title">${esc(titulo)}</h3><p class="empty-inline">Todavía no hay nada registrado en este parcial.</p>`;
     return;
   }
