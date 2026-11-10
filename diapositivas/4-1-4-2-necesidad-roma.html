@@ -29,7 +29,7 @@ const PRESENTACION = {
         "Vas a entender cómo una necesidad biológica se volvió cultura.",
         "Vas a reconocer el reverso de la historia: el hambre.",
         "Vas a descubrir por qué Roma marcó un antes y un después.",
-        "Vas a discutir en grupo un ejemplo propio de comida que va más allá de la nutrición."
+        "Vas a discutir en grupo un ejemplo propio de comida que va más allá de la nutrición y a escribirlo en la plataforma."
       ] },
 
     { tipo: "tema",
@@ -68,50 +68,62 @@ const PRESENTACION = {
           ] }
       ] },
 
-    { tipo: "tema",
+    { tipo: "diagramaPasos",
       titulo: "Cocinar nos hizo humanos",
-      notas: "La fecha exacta del control del fuego se discute; las evidencias firmes rondan el millón de años.",
-      puntos: [
-        "**Richard Wrangham** (Harvard), *Catching Fire* (**2009**): cocinar influyó en la **evolución** humana.",
-        "La comida cocida es más blanda, digerible y segura: **más energía con menos esfuerzo**.",
-        "Eso habría favorecido intestinos más cortos, mandíbulas más pequeñas y **cerebros más grandes** (consumen ~1/5 de la energía del cuerpo).",
-        "Alrededor de la hoguera se cocinaba, se compartía y se contaban historias: **la cocina nace como hecho social**."
-      ],
-      pasoAPaso: true },
-
-    { tipo: "tema",
+      intro: "**Richard Wrangham** (Harvard), *Catching Fire*, **2009**: cocinar no solo cambió la comida, cambió **nuestro cuerpo**. Avanza (→) y sigue la cadena.",
+      notas: "Arma la cadena paso a paso. En el cerebro, pregunta antes de mostrar. La fecha exacta del control del fuego se discute; las evidencias firmes rondan el millón de años.",
+      svg: `<svg viewBox="0 0 640 430" role="img" aria-label="Cadena: fuego, comida cocida, más energía, cuerpo distinto, cerebro más grande, hecho social"><defs><marker id="ckF" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="12" refY="8" orient="auto"><path d="M0,0 L14,8 L0,16z" fill="#5C5A55"/></marker></defs><g font-family="Public Sans,sans-serif" text-anchor="middle"><g data-paso="0" data-anim="resaltar"><rect x="20" y="40" width="170" height="110" rx="14" fill="#FBE3D2" stroke="#D9542B" stroke-width="4"/><text x="105" y="88" font-size="40">🔥</text><text x="105" y="128" font-size="18" font-weight="700" fill="#252734">El fuego</text></g><g data-paso="1" data-anim="resaltar"><rect x="235" y="40" width="170" height="110" rx="14" fill="#F4E9D8" stroke="#8C6A2E" stroke-width="4"/><text x="320" y="88" font-size="40">🍖</text><text x="320" y="120" font-size="17" font-weight="700" fill="#252734">Comida cocida</text><text x="320" y="140" font-size="13" fill="#5C5A55">blanda y segura</text></g><g data-paso="2" data-anim="resaltar"><rect x="450" y="40" width="170" height="110" rx="14" fill="#FFF3C4" stroke="#C98A2C" stroke-width="4"/><text x="535" y="88" font-size="40">⚡</text><text x="535" y="120" font-size="17" font-weight="700" fill="#252734">Más energía</text><text x="535" y="140" font-size="13" fill="#5C5A55">con menos esfuerzo</text></g><g data-paso="3" data-anim="resaltar"><rect x="450" y="230" width="170" height="110" rx="14" fill="#E1ECF4" stroke="#2E6FA8" stroke-width="4"/><text x="535" y="278" font-size="40">🦷</text><text x="535" y="310" font-size="16" font-weight="700" fill="#252734">Intestino corto,</text><text x="535" y="330" font-size="16" font-weight="700" fill="#252734">mandíbula pequeña</text></g><g data-paso="4" data-anim="resaltar"><rect x="235" y="230" width="170" height="110" rx="14" fill="#EFE3F4" stroke="#6B3E75" stroke-width="4"/><text x="320" y="278" font-size="40">🧠</text><text x="320" y="312" font-size="17" font-weight="700" fill="#252734">Cerebro</text><text x="320" y="332" font-size="17" font-weight="700" fill="#252734">más grande</text></g><g data-paso="5" data-anim="resaltar"><rect x="20" y="230" width="170" height="110" rx="14" fill="#DDEFE2" stroke="#3F7A4F" stroke-width="4"/><text x="105" y="278" font-size="40">👥</text><text x="105" y="312" font-size="17" font-weight="700" fill="#252734">Alrededor de</text><text x="105" y="332" font-size="17" font-weight="700" fill="#252734">la hoguera</text></g></g><g stroke="#5C5A55" stroke-width="4" fill="none" marker-end="url(#ckF)"><path data-paso="1" data-anim="fade" d="M192,95 H230"/><path data-paso="2" data-anim="fade" d="M407,95 H445"/><path data-paso="3" data-anim="fade" d="M535,152 V225"/><path data-paso="4" data-anim="fade" d="M448,285 H410"/><path data-paso="5" data-anim="fade" d="M233,285 H195"/></g><g data-paso="5" data-anim="zoom"><rect x="120" y="370" width="400" height="44" rx="22" fill="#252734"/><text x="320" y="399" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="20" font-weight="700" fill="#F3C969">La cocina nace como hecho social</text></g></svg>`,
+      pasos: [
+        { num: "1", titulo: "El fuego", color: "#D9542B", texto: "Hace cientos de miles de años, nuestros antepasados aprendieron a **controlar el fuego**." },
+        { num: "2", titulo: "Comida cocida", color: "#8C6A2E", texto: "La comida cocida es **más blanda, más digerible y más segura**: el fuego mata parásitos y bacterias." },
+        { num: "3", titulo: "Más energía con menos esfuerzo", color: "#C98A2C", texto: "Del mismo alimento se obtiene **más energía**, y se gasta menos tiempo masticando y digiriendo." },
+        { num: "4", titulo: "Un cuerpo distinto", color: "#2E6FA8", texto: "Eso habría favorecido **intestinos más cortos** y **mandíbulas y dientes más pequeños**." },
+        { num: "5", titulo: "Un cerebro más grande", color: "#6B3E75",
+          pregunta: "¿Qué órgano consume cerca de **una quinta parte** de la energía de todo el cuerpo?",
+          respuesta: "**El cerebro.** La energía que «sobraba» gracias a la cocina pudo alimentar cerebros más grandes." },
+        { num: "6", titulo: "La cocina nace como hecho social", color: "#3F7A4F", texto: "Alrededor de la hoguera se cocinaba, **se compartía** y se contaban historias. Desde el principio, cocinar fue algo que se hace **con otros**." }
+      ] },
+    { tipo: "tablaPasos",
       titulo: "De la necesidad a la cultura",
-      puntos: [
-        "**Identidad:** qué come mi comunidad y qué no.",
-        "**Religión:** qué está permitido y qué prohibido, como vimos en el Tema 2.",
-        "**Economía:** qué puedo pagar y qué no.",
-        "**Vínculo social:** con quién comparto la mesa.",
-        "**La gastronomía nace exactamente en ese cruce.**"
-      ],
-      pasoAPaso: true },
-
-    { tipo: "tema",
-      titulo: "Lo crudo, lo cocido y el placer de la mesa",
-      puntos: [
-        "**Lévi-Strauss** (*Lo crudo y lo cocido*, 1964): la cocina funciona como un **lenguaje**. Crudo = naturaleza; cocido = cultura; podrido = transformación natural.",
-        "**Brillat-Savarin** (*Fisiología del gusto*, **1825**): el **placer de comer** (biológico, lo compartimos con los animales) y el **placer de la mesa** (humano: compañía, lugar, conversación).",
-        "«**Dime lo que comes y te diré quién eres**».",
-        "**Compañero** viene del latín *cum panis*: «el que comparte el pan»."
-      ],
-      pasoAPaso: true },
-
-    { tipo: "tabla",
-      titulo: "La comida como cultura",
-      columnas: ["Dimensión", "Pregunta", "Ejemplo"],
+      revelar: "fila",
+      columnas: ["Dimensión", "La pregunta", "Ejemplo"],
       filas: [
-        ["Identidad", "¿Qué come mi comunidad?", "El maíz en Mesoamérica"],
-        ["Religión", "¿Qué está permitido?", "Kashrut, halal, la vaca sagrada"],
-        ["Economía", "¿Qué puedo pagar?", "Las especias medievales"],
-        ["Poder", "¿Quién come qué y con quién?", "El grand couvert de Versalles"],
-        ["Vínculo social", "¿Con quién comparto la mesa?", "La ofrenda de Día de Muertos"]
+        ["**Identidad**", "¿Qué come mi comunidad?", "El maíz en Mesoamérica"],
+        ["**Religión**", "¿Qué está permitido?", "Kashrut, halal, la vaca sagrada"],
+        ["**Economía**", "¿Qué puedo pagar?", "Las especias medievales"],
+        ["**Poder**", "¿Quién come qué y con quién?", "El grand couvert de Versalles"],
+        ["**Vínculo social**", "¿Con quién comparto la mesa?", "La ofrenda de Día de Muertos"]
       ],
+      pie: "Antes de cada clic: **¿qué pregunta hace esta dimensión y qué ejemplo se les ocurre?** La gastronomía nace en ese cruce.",
       notas: "Rachel Laudan, Cuisine and Empire (2013): las cocinas se explican por decisiones políticas, económicas y religiosas; las grandes cocinas viajaron con los imperios." },
+    { tipo: "diagramaPasos",
+      titulo: "Lo crudo, lo cocido y el placer de la mesa",
+      intro: "Dos autores para entender por qué la cocina es **cultura**. Avanza (→) y armamos el **triángulo culinario**.",
+      notas: "Lévi-Strauss, Lo crudo y lo cocido (1964). Lo cocido es transformación cultural; lo podrido, transformación natural. En el último paso, pregunta de dónde viene «compañero».",
+      svg: `<svg viewBox="0 0 640 430" role="img" aria-label="El triángulo culinario de Lévi-Strauss: crudo, cocido y podrido"><path d="M320,60 L95,350 L545,350 Z" fill="#F4F2ED" stroke="#C9CED6" stroke-width="4" stroke-dasharray="10 8"/><g font-family="Public Sans,sans-serif" text-anchor="middle"><g data-paso="0" data-anim="resaltar"><circle cx="320" cy="60" r="48" fill="#3F7A4F"/><text x="320" y="56" font-size="28">🥩</text><text x="320" y="82" font-size="15" font-weight="700" fill="#fff">CRUDO</text><text x="320" y="130" font-size="15" fill="#3F7A4F" font-weight="700">naturaleza</text></g><g data-paso="1" data-anim="resaltar"><path d="M290,100 L130,300" stroke="#A63D2F" stroke-width="6" fill="none"/><circle cx="95" cy="350" r="48" fill="#A63D2F"/><text x="95" y="346" font-size="28">🍲</text><text x="95" y="372" font-size="15" font-weight="700" fill="#fff">COCIDO</text><text x="160" y="220" font-size="15" fill="#A63D2F" font-weight="700" transform="rotate(-52 160 220)">transformación cultural</text></g><g data-paso="2" data-anim="resaltar"><path d="M350,100 L510,300" stroke="#8C6A2E" stroke-width="6" fill="none" stroke-dasharray="12 8"/><circle cx="545" cy="350" r="48" fill="#8C6A2E"/><text x="545" y="346" font-size="28">🍂</text><text x="545" y="372" font-size="15" font-weight="700" fill="#fff">PODRIDO</text><text x="480" y="220" font-size="15" fill="#8C6A2E" font-weight="700" transform="rotate(52 480 220)">transformación natural</text></g><g data-paso="3" data-anim="zoom"><rect x="200" y="200" width="240" height="96" rx="14" fill="#fff" stroke="#252734" stroke-width="3"/><text x="320" y="232" font-size="15" font-weight="700" fill="#252734">Brillat-Savarin</text><text x="320" y="258" font-size="14" fill="#5C5A55">placer de comer 🐾</text><text x="320" y="280" font-size="14" fill="#5C5A55">placer de la mesa 🍽️</text></g><g data-paso="4" data-anim="caer"><rect x="230" y="372" width="180" height="44" rx="22" fill="#252734"/><text x="320" y="400" font-size="17" font-weight="700" fill="#F3C969">cum panis 🍞</text></g></g></svg>`,
+      pasos: [
+        { num: "Lévi-Strauss · 1", titulo: "Lo crudo", color: "#3F7A4F", texto: "**Claude Lévi-Strauss** (*Lo crudo y lo cocido*, 1964): la cocina funciona como un **lenguaje**. Lo crudo es la **naturaleza** tal cual." },
+        { num: "Lévi-Strauss · 2", titulo: "Lo cocido", color: "#A63D2F", texto: "Cocinar es una **transformación cultural**: el ser humano interviene con fuego, técnica y reglas. Lo cocido es **cultura**." },
+        { num: "Lévi-Strauss · 3", titulo: "Lo podrido", color: "#8C6A2E", texto: "Lo podrido también transforma, pero lo hace **la naturaleza** sola, sin intervención humana." },
+        { num: "Brillat-Savarin", titulo: "Dos placeres distintos", color: "#252734", texto: ["*Fisiología del gusto*, **1825**: el **placer de comer** es biológico y lo compartimos con los animales; el **placer de la mesa** es humano: compañía, lugar y conversación.", "«**Dime lo que comes y te diré quién eres**»."] },
+        { num: "Para cerrar", titulo: "¿De dónde viene «compañero»?", color: "#C98A2C",
+          pregunta: "La palabra **compañero** viene del latín. ¿Qué crees que quiere decir?",
+          respuesta: "Viene de *cum panis*: «**el que comparte el pan**». El lenguaje guarda que comer juntos crea lazos." }
+      ] },
 
+    { tipo: "plataforma",
+      etiqueta: "En la plataforma", tipoAct: "Individual · 5 minutos",
+      titulo: "¿Qué función cumple?",
+      enlace: "../tareas.html#que-funcion", textoEnlace: "Tareas → ¿Qué función cumple?",
+      evaluacion: "Práctica",
+      notas: "Calentamiento para la discusión: cinco minutos desde el celular. Después, que compartan su propio ejemplo.",
+      pasos: [
+        "Entra a **Tareas → ¿Qué función cumple?** (escanea el QR).",
+        "Aparece una comida, una costumbre o una escena romana.",
+        "Elige su función: **necesidad, identidad, religión, economía, poder o vínculo social**.",
+        "Juega el nivel **Básico**; si te sobra tiempo, el **Experto**."
+      ],
+      pasoAPaso: true },
     { tipo: "cita",
       texto: "Qué significa cocinar, cómo se conecta la comida con la política, la economía y la religión, y de qué forma es un instrumento esencial para entender una cultura entera.",
       autor: "Rachel Laudan, sobre el hilo conductor de toda historia seria de la gastronomía",
@@ -154,25 +166,20 @@ const PRESENTACION = {
           ] }
       ] },
 
-    { tipo: "tema",
-      titulo: "Hambrunas, pelagra y el hambre de hoy",
-      puntos: [
-        "**Irlanda, 1845-1852:** el tizón tardío destruyó la papa; murió **un millón** de personas y **otro millón emigró**. Riesgo de depender de un solo cultivo.",
-        "**Pelagra:** el maíz sin nixtamal enfermó a los pobres de Europa y del sur de EE. UU.",
-        "**FAO, 2023:** entre **700 y 760 millones** de personas padecen hambre, cerca de **una de cada once**.",
-        "Al mismo tiempo, cerca de **una quinta parte** de los alimentos se desperdicia en hogares, comercios y servicios de comida."
-      ],
-      pasoAPaso: true },
-
-    { tipo: "tema",
-      titulo: "La alimentación como derecho",
-      notas: "Pregunta: ¿qué se tira en una cocina profesional al final del día y qué se podría hacer con ello?",
-      puntos: [
-        "La **Declaración Universal de los Derechos Humanos (1948)** incluyó la alimentación en un nivel de vida adecuado.",
-        "**Artículo 4.º constitucional (2011):** «toda persona tiene derecho a la alimentación **nutritiva, suficiente y de calidad**».",
-        "Para un profesional: **reducir el desperdicio**, aprovechar integralmente los ingredientes y donar alimentos también es ética del oficio."
-      ],
-      pasoAPaso: true },
+    { tipo: "lineaTiempo",
+      titulo: "Del hambre al derecho a la alimentación",
+      intro: "El refinamiento tiene un reverso. Avanza (→) y recorre casi tres siglos de hambre… y de respuestas.",
+      notas: "FAO (2024): entre 713 y 757 millones de personas padecieron hambre en 2023. PNUMA, Índice de desperdicio de alimentos (2024): cerca del 19 % de los alimentos se desperdicia en hogares, comercios y servicios de comida. Al final, pregunta qué se tira en una cocina profesional y qué se podría hacer con ello.",
+      eventos: [
+        { fecha: "1735", ico: "🌽", color: "#8C6A2E", titulo: "Se describe la pelagra", texto: "El médico **Gaspar Casal** la describe en Asturias, entre campesinos que comían casi solo maíz **sin nixtamalizar**." },
+        { fecha: "1845 – 1852", ico: "🥔", color: "#A63D2F", titulo: "La Gran Hambruna de Irlanda", texto: "El **tizón tardío** destruyó la papa: murió **un millón** de personas y **otro millón emigró**. Es el riesgo de depender de un solo cultivo." },
+        { fecha: "1900 – 1940", ico: "🏚️", color: "#8C6A2E", titulo: "La pelagra en el sur de EE. UU.", texto: "Unos **tres millones** de enfermos y cerca de **cien mil** muertes entre familias pobres que comían maíz sin nixtamal. Lo que Mesoamérica resolvía con cal, allá se volvió epidemia." },
+        { fecha: "1948", ico: "📜", color: "#2E6FA8", titulo: "Declaración Universal de los Derechos Humanos", texto: "Incluye la **alimentación** dentro del derecho a un nivel de vida adecuado." },
+        { fecha: "2011", ico: "⚖️", color: "#3F7A4F", titulo: "Artículo 4.º constitucional", texto: "«Toda persona tiene derecho a la alimentación **nutritiva, suficiente y de calidad**»." },
+        { fecha: "Hoy", ico: "🌍", color: "#252734", titulo: "El hambre de hoy", texto: "Cerca de **una de cada once** personas en el mundo padece hambre (FAO).",
+          pregunta: "Al mismo tiempo, ¿qué parte de los alimentos crees que se **desperdicia** en hogares, comercios y restaurantes?",
+          respuesta: "Cerca de **una quinta parte**. Para un profesional, **reducir el desperdicio**, aprovechar todo el ingrediente y donar alimentos también es ética del oficio." }
+      ] },
 
     { tipo: "pausa",
       titulo: "¡Pausa activa!",
@@ -191,39 +198,57 @@ const PRESENTACION = {
       ],
       pasoAPaso: true,
       subtemas: [
-        { tipo: "observa",
+        { tipo: "lupa",
           titulo: "Leer el banquete romano otra vez",
           imagen: "img/banquete_romano.jpg",
-          notas: "Esta escena ya la vieron en el Tema 1, cuando estudiaron la gustatio, la prima mensa y la secunda mensa. Hoy la leemos distinto: no por lo que se come, sino por lo que dice del poder. La imagen es una recreación artística.",
+          intro: "Esta escena ya la vieron en el Tema 1. Hoy la leemos con otra pregunta: **¿qué dice sobre el poder?** Avanza (→).",
+          notas: "En el Tema 1 nos interesaba qué se comía; hoy, qué dice la escena sobre el poder. La imagen es una recreación artística. En el detalle 2, pregunta antes de revelar.",
           puntos: [
-            "**Recostados, no sentados:** comer acostado en el triclinio era **privilegio de los libres y acomodados**. La postura ya es un mensaje.",
-            "**Quién está recostado y quién de pie:** los sirvientes nunca se recuestan. La jerarquía se ve antes de probar un bocado.",
-            "**Mosaicos, columnas y lámparas de aceite:** el salón es parte del platillo. Hospedar bien era mostrar posición.",
-            "**Pescado, aves, higos y uvas** en bandejas al centro, con ánforas de vino: la variedad era la forma de presumir alcance comercial.",
-            "**Lo mismo que vimos en el Tema 1, con otra pregunta:** antes nos interesaba **qué** se comía; hoy, **qué dice esta escena sobre el poder**."
-          ] }
+            { x: 10, y: 52, zoom: 2.2, titulo: "Recostados, no sentados", color: "#A63D2F", texto: "Comer acostado en el triclinio era **privilegio de los libres y acomodados**. La postura ya es un mensaje." },
+            { x: 37, y: 40, zoom: 2.2, titulo: "¿Quién está de pie?", color: "#252734", texto: "Mira con atención antes de avanzar.",
+              pregunta: "¿Por qué él está de pie y los demás recostados?", respuesta: "Porque es un **sirviente**: los sirvientes nunca se recuestan. La jerarquía se ve antes de probar un bocado." },
+            { x: 50, y: 40, zoom: 2.1, titulo: "El lecho del medio", color: "#C98A2C", texto: "Al centro, en el **lecho del medio**, estaban los lugares más importantes: ahí se sentaba el **invitado de honor**, junto al anfitrión." },
+            { x: 50, y: 72, zoom: 2.2, titulo: "Bandejas al centro", color: "#3F7A4F", texto: "**Pescado, aves, higos y uvas**, con ánforas de vino: la variedad era la forma de presumir **alcance comercial**." },
+            { x: 70, y: 88, zoom: 2.2, titulo: "Mosaicos en el piso", color: "#2E6FA8", texto: "El salón es parte del platillo: mosaicos, columnas y pinturas. **Hospedar bien era mostrar posición.**" },
+            { x: 80, y: 11, zoom: 2.6, titulo: "Lámparas de aceite", color: "#8C6A2E", texto: "Cenar de noche, con luz de aceite, también era un lujo: el aceite costaba." }
+          ],
+          final: { titulo: "Antes y ahora", color: "#A63D2F", texto: "En el Tema 1 nos preguntamos **qué** se comía. Hoy: **qué dice esta mesa sobre el poder**." } }
+
       ] },
 
-    { tipo: "tema",
+    { tipo: "diagramaPasos",
       titulo: "El triclinio y la cena",
-      puntos: [
-        "De la **puls** campesina de la República al **lujo imperial** tras las conquistas del siglo II a.C.",
-        "**Triclinio:** tres lechos en U; hasta **nueve comensales recostados** sobre el codo izquierdo; el lugar marcaba el **rango**.",
-        "Tres tiempos: **gustatio** (huevos, aceitunas, mulsum), **prima mensa** (carnes y guisos) y **secunda mensa** (frutas y pasteles con miel).",
-        "*Ab ovo usque ad mala*: «del huevo a las manzanas», de principio a fin."
-      ],
-      pasoAPaso: true },
-
-    { tipo: "tema",
+      intro: "Así se acomodaba un banquete romano, visto desde arriba. Avanza (→) y lo armamos.",
+      notas: "De la puls campesina de la República al lujo imperial tras las conquistas del siglo II a. C. En el lugar de honor, pregunta antes: ¿dónde creen que se sentaba el invitado más importante?",
+      svg: `<svg viewBox="0 0 640 440" role="img" aria-label="Plano del triclinio romano visto desde arriba"><rect x="10" y="10" width="620" height="420" rx="12" fill="#F1E7D6"/><g data-paso="0" data-anim="resaltar"><circle cx="320" cy="225" r="62" fill="#8C6A2E" stroke="#5E4429" stroke-width="4"/><text x="320" y="220" text-anchor="middle" font-family="Public Sans,sans-serif" font-size="15" font-weight="700" fill="#fff">mesa</text><text x="320" y="240" text-anchor="middle" font-family="Public Sans,sans-serif" font-size="13" fill="#F4E9D8">(mensa)</text></g><g data-paso="1" data-anim="resaltar" font-family="Public Sans,sans-serif" font-weight="700" font-size="14"><rect x="165" y="60" width="310" height="70" rx="12" fill="#A63D2F"/><text x="320" y="50" text-anchor="middle" fill="#A63D2F">lecho del medio (lectus medius)</text><rect x="70" y="140" width="70" height="230" rx="12" fill="#C98A2C"/><text x="62" y="255" text-anchor="middle" fill="#8C6A2E" transform="rotate(-90 62 255)">lecho alto (summus)</text><rect x="500" y="140" width="70" height="230" rx="12" fill="#C98A2C"/><text x="590" y="255" text-anchor="middle" fill="#8C6A2E" transform="rotate(90 590 255)">lecho bajo (imus)</text></g><g data-paso="2" data-anim="zoom" fill="#F4E9D8" stroke="#252734" stroke-width="3"><circle cx="215" cy="95" r="15"/><circle cx="320" cy="95" r="15"/><circle cx="425" cy="95" r="15"/><circle cx="105" cy="185" r="15"/><circle cx="105" cy="255" r="15"/><circle cx="105" cy="325" r="15"/><circle cx="535" cy="185" r="15"/><circle cx="535" cy="255" r="15"/><circle cx="535" cy="325" r="15"/></g><g data-paso="3" data-anim="zoom"><circle cx="425" cy="95" r="22" fill="none" stroke="#F3C969" stroke-width="6"/><text x="425" y="102" text-anchor="middle" font-size="18">⭐</text><circle cx="535" cy="185" r="22" fill="none" stroke="#2E6FA8" stroke-width="6"/><text x="535" y="192" text-anchor="middle" font-size="18">🏠</text><text x="430" y="160" text-anchor="middle" font-family="Public Sans,sans-serif" font-size="13" font-weight="700" fill="#252734">invitado de honor</text><text x="455" y="225" text-anchor="end" font-family="Public Sans,sans-serif" font-size="13" font-weight="700" fill="#2E6FA8">anfitrión</text></g><g data-paso="4" data-anim="subir"><path d="M320,420 V310" stroke="#3F7A4F" stroke-width="6" stroke-dasharray="10 8" fill="none"/><path d="M308,320 L320,298 L332,320 Z" fill="#3F7A4F"/><text x="335" y="395" font-family="Public Sans,sans-serif" font-size="14" font-weight="700" fill="#3F7A4F">por aquí sirven los esclavos</text></g><g data-paso="5" data-anim="caer" font-family="Public Sans,sans-serif" font-size="13" font-weight="700" text-anchor="middle"><rect x="20" y="380" width="230" height="44" rx="22" fill="#252734"/><text x="135" y="407" fill="#F3C969">🥚 → 🍖 → 🍎 ab ovo usque ad mala</text></g></svg>`,
+      pasos: [
+        { num: "1", titulo: "La mesa al centro", color: "#8C6A2E", texto: "Una mesa baja (*mensa*) en medio de la sala. De la **puls** campesina de la República se pasó al **lujo imperial** tras las conquistas del siglo II a. C." },
+        { num: "2", titulo: "Tres lechos en U", color: "#A63D2F", texto: "*Tri-clinium*: **tres lechos** alrededor de la mesa, uno por lado. El cuarto lado queda libre." },
+        { num: "3", titulo: "Nueve comensales", color: "#252734", texto: "Hasta **nueve invitados**, tres por lecho, **recostados sobre el codo izquierdo**; comían con la mano derecha." },
+        { num: "4", titulo: "El lugar marca el rango", color: "#C98A2C",
+          pregunta: "¿Dónde crees que se recostaba el **invitado más importante**?",
+          respuesta: "En el **lecho del medio**, en el extremo junto al **anfitrión**, que ocupaba el primer lugar del lecho bajo. El lugar en la mesa decía quién eras." },
+        { num: "5", titulo: "El lado abierto", color: "#3F7A4F", texto: "Por el lado libre entraban los **esclavos** a servir y retirar los platos." },
+        { num: "6", titulo: "Tres tiempos", color: "#6B3E75", texto: "**Gustatio** (huevos, aceitunas, *mulsum*), **prima mensa** (carnes y guisos) y **secunda mensa** (frutas y pasteles con miel).", ejemplo: "*Ab ovo usque ad mala*: «**del huevo a las manzanas**», es decir, de principio a fin." }
+      ] },
+    { tipo: "mapaRuta",
+      mapa: "mediterraneo",
       titulo: "El garum: el condimento del imperio",
-      puntos: [
-        "Salsa de **pescado fermentado** con sal al sol durante semanas, rica en **umami**.",
-        "El más fino, de caballa, era carísimo; el residuo, el **allec**, lo comían los pobres.",
-        "Grandes fábricas en **Hispania** (Baelo Claudia, Gades/Cádiz) y el norte de África; se exportaba en **ánforas**.",
-        "Pariente lejano del **nam pla** tailandés (3.3)."
-      ],
-      pasoAPaso: true },
-
+      intro: "Salsa de **pescado fermentado** con sal, al sol durante semanas, rica en **umami**. Avanza (→) y sigue su viaje.",
+      notas: "Garum, liquamen y muria eran variantes. El más fino, de caballa, era carísimo; el residuo, el allec, lo comían los pobres. En el último paso pregunta si existe algo parecido hoy.",
+      pasos: [
+        { num: "1 · Dónde se hacía", titulo: "Las fábricas de Hispania", color: "#A63D2F", lugares: ["gades", "baelo"],
+          texto: "En la costa del Estrecho había grandes fábricas de salazón y garum: **Gades (Cádiz)** y **Baelo Claudia**, donde todavía se ven sus piletas." },
+        { num: "2 · También en África", titulo: "Lixus", color: "#A63D2F", lugares: ["lixus"],
+          texto: "En **Lixus** (hoy Marruecos) hubo uno de los complejos de salazón más grandes del Mediterráneo." },
+        { num: "3 · El viaje", titulo: "En ánforas, rumbo a Roma", color: "#252734", rutas: [["gades", [-2.5, 36.3], [4, 38.4], [10, 39.6], "roma"]], arco: .05,
+          texto: "Se envasaba en **ánforas** de barro y viajaba por mar. El más fino, de caballa, era **carísimo**; el residuo, el **allec**, lo comían los pobres." },
+        { num: "4 · A todo el imperio", titulo: "Un negocio de ricos", color: "#2E6FA8", lugares: ["pompeya"], rutas: [["gades", [-9.8, 39], [-9.3, 43.6], [-5, 48.4], "londinium"], ["roma", [14.5, 38.3], [21, 35], "alejandria"]], arco: .05,
+          texto: "Se han hallado ánforas de garum de **Britania a Egipto**. En **Pompeya**, el comerciante **Umbricio Escauro** se hizo rico vendiéndolo: su casa tenía mosaicos de jarras de garum." },
+        { num: "5 · ¿Y hoy?", titulo: "Sus parientes vivos", color: "#3F7A4F", lugares: ["cetara"], alResponder: true,
+          pregunta: "¿Existe hoy algo parecido al garum?",
+          respuesta: "Sí: la **colatura di alici** de **Cetara**, en la costa de Amalfi, se hace casi igual. Y es pariente lejano de las salsas de pescado de Asia, como el **nam pla** tailandés (3.3)." }
+      ] },
     { tipo: "pregunta",
       pregunta: "¿Por qué importa tanto que Roma lo pusiera por escrito?",
       respuesta: "Porque lo escrito **se conserva y se transmite**. Una tradición oral puede perderse en una generación; un recetario puede leerse veinte siglos después. Es la misma razón por la que **Sahagún** fue tan valioso para la cocina prehispánica." },
@@ -238,39 +263,40 @@ const PRESENTACION = {
       ],
       pasoAPaso: true,
       subtemas: [
-        { tipo: "observa",
+        { tipo: "lupa",
           titulo: "Un banquete medieval",
           imagen: "img/banquete_medieval.jpg",
-          notas: "Pregunta: ¿qué falta en esta mesa que hoy nos parecería indispensable? (Tenedores y platos individuales). La imagen es una recreación artística.",
+          intro: "Siglos después, la mesa sigue siendo un escenario del poder. Avanza (→) y mira los detalles.",
+          notas: "En el detalle 3 pregunta antes: ¿qué falta en esta mesa que hoy nos parecería indispensable? La imagen es una recreación artística.",
           puntos: [
-            "**Herederos de Roma:** la idea del banquete como escenario del poder se mantuvo después de la caída del Imperio.",
-            "**Aves asadas enteras y pan:** el asado era la técnica de prestigio; el pan servía también de plato.",
-            "**Casi no hay cubiertos:** se comía con las manos y con cuchillo propio. El tenedor llegó a Europa mucho después.",
-            "**Quién se sienta dónde importa:** la mesa principal, el músico, los sirvientes. La jerarquía se ve en el acomodo.",
-            "**Sin refrigeración:** especias, salazones y conservas, las mismas técnicas que Roma difundió."
-          ] }
+            { x: 48, y: 50, zoom: 2.4, titulo: "La mesa principal", color: "#A63D2F", texto: "El señor y la señora, al fondo y al centro: **quién se sienta dónde importa**. La idea romana del banquete como escenario del poder siguió viva." },
+            { x: 49, y: 80, zoom: 2.4, titulo: "Aves asadas enteras", color: "#8C6A2E", texto: "El **asado** era la técnica de prestigio, y las piezas enteras impresionaban a los invitados." },
+            { x: 67, y: 90, zoom: 2.8, titulo: "Mira los cubiertos", color: "#252734", texto: "Observa qué hay junto a los platos.",
+              pregunta: "¿Qué falta en esta mesa que hoy nos parecería indispensable?", respuesta: "**El tenedor.** Se comía con las manos y con cuchillo propio; el tenedor tardó siglos en generalizarse en Europa." },
+            { x: 64, y: 80, zoom: 2.6, titulo: "El pan como plato", color: "#C98A2C", texto: "Rebanadas gruesas de pan servían de **plato** para la carne; empapadas de jugo, se daban después a los pobres o a los perros." },
+            { x: 63, y: 30, zoom: 3, titulo: "Los músicos", color: "#6B3E75", texto: "Desde el balcón, música para los comensales: el banquete era **espectáculo**." },
+            { x: 81, y: 44, zoom: 2.4, titulo: "Los sirvientes", color: "#3F7A4F", texto: "Como en Roma, de pie y sirviendo: la jerarquía se ve en quién se sienta y quién no." }
+          ],
+          final: { titulo: "Herederos de Roma", color: "#A63D2F", texto: "**Sin refrigeración**, con especias, salazones y conservas: las mismas técnicas que Roma difundió por todo el Mediterráneo." } }
+
       ] },
 
-    { tipo: "tema",
-      titulo: "Apicio, Lúculo y Trimalción",
-      puntos: [
-        "**Apicio** (siglo I d.C.): *De re coquinaria* se compiló hacia los siglos IV-V: unas **470 recetas en diez libros**.",
-        "**Lúculo:** «**Hoy Lúculo cena con Lúculo**» (Plutarco); Plinio le atribuye haber llevado el cerezo a Roma.",
-        "**Trimalción**, en *El Satiricón* de Petronio: el nuevo rico y su banquete absurdo; la primera gran sátira del lujo en la mesa."
-      ],
-      pasoAPaso: true },
-
-    { tipo: "tema",
-      titulo: "Leyes contra el lujo y comida del pueblo",
-      notas: "Enlace: los thermopolia son el antecedente de las fondas que veremos en 4.4.",
-      puntos: [
-        "**Leyes suntuarias:** Ley Orquia (181 a.C.) limitó invitados; Ley Fania (161 a.C.) topó el gasto. Se repetían porque **se incumplían**.",
-        "**Thermopolia:** mostradores de comida caliente para quienes vivían en *insulae* sin cocina; en Pompeya hay decenas.",
-        "**Annona:** reparto estatal de grano, gratis desde el 58 a.C. para parte de la población.",
-        "«**Pan y circo**» (Juvenal): la comida como **política de Estado**."
-      ],
-      pasoAPaso: true },
-
+    { tipo: "lineaTiempo",
+      titulo: "Roma a la mesa",
+      intro: "Lujo, leyes contra el lujo y comida para el pueblo. Avanza (→) y recorre seis siglos de Roma en la mesa.",
+      notas: "Enlace: los thermopolia son el antecedente de las fondas que veremos en 4.4. En «pan y circo», pregunta antes qué quería decir Juvenal.",
+      eventos: [
+        { fecha: "181 y 161 a. C.", ico: "📜", color: "#A63D2F", titulo: "Leyes suntuarias", texto: "La **Ley Orquia** limitó el número de invitados y la **Ley Fania** topó el gasto en banquetes. Se repetían porque **se incumplían**." },
+        { fecha: "Hacia el 60 a. C.", ico: "🍒", color: "#8C6A2E", titulo: "Lúculo", texto: "Célebre por sus banquetes: «**Hoy Lúculo cena con Lúculo**» (Plutarco). Plinio le atribuye haber llevado el cerezo a Roma." },
+        { fecha: "58 a. C.", ico: "🌾", color: "#C98A2C", titulo: "La annona, gratis", texto: "El reparto estatal de grano se vuelve **gratuito** para parte del pueblo de Roma." },
+        { fecha: "Siglo I d. C.", ico: "📖", color: "#252734", titulo: "Apicio", texto: "El gastrónomo más famoso de Roma; a él se atribuye el recetario **De re coquinaria**." },
+        { fecha: "Hacia el 60 d. C.", ico: "🍗", color: "#6B3E75", titulo: "Trimalción", texto: "En *El Satiricón*, **Petronio** se burla del nuevo rico y su banquete absurdo: la primera gran sátira del lujo en la mesa." },
+        { fecha: "79 d. C.", ico: "🌋", color: "#A63D2F", titulo: "Pompeya", texto: "El Vesubio sepulta la ciudad con decenas de **thermopolia**: mostradores de comida caliente para quienes vivían en *insulae* sin cocina." },
+        { fecha: "Hacia el 100 d. C.", ico: "🏟️", color: "#2E6FA8", titulo: "«Pan y circo»", texto: "La frase del poeta **Juvenal**.",
+          pregunta: "¿Qué quería decir Juvenal con «pan y circo»?",
+          respuesta: "Que el pueblo se conformaba con **comida y espectáculos**: la comida se volvió **política de Estado**." },
+        { fecha: "Siglos IV – V", ico: "🏛️", color: "#3F7A4F", titulo: "Se compila De re coquinaria", texto: "Unas **470 recetas en diez libros**, compiladas siglos después de Apicio. Gracias a que se puso **por escrito**, podemos leerlas hoy." }
+      ] },
     { tipo: "video",
       titulo: "El menú de un romano",
       youtube: "https://www.youtube.com/watch?v=xowRd3Tkauw",
@@ -282,16 +308,19 @@ const PRESENTACION = {
       autor: "Origen de las Cocinas, Tema 4.2",
       notas: "Es el hilo de todo el Tema 4: lo veremos en la realeza, en el primer restaurante y en la cocina profesional." },
 
-    { tipo: "tarea",
-      titulo: "Reflexión escrita",
-      minutos: "81-100", evaluacion: "Sumativo · Rúbrica de Tarea",
-      puntos: [
-        "Redacta **media cuartilla** explicando, con un ejemplo propio, cómo la necesidad de alimentarse se entrelaza con la **identidad cultural**.",
-        "Usa una comida concreta de tu familia, tu comunidad o tu región.",
+    { tipo: "plataforma",
+      etiqueta: "Tarea en la plataforma", tipoAct: "Individual · para la próxima clase",
+      titulo: "Una comida que es más que comida",
+      enlace: "../tareas.html#mas-que-comida", textoEnlace: "Tareas → Una comida que es más que comida",
+      minutos: "81-100", evaluacion: "Sumativo · cuenta como tarea del Parcial 2",
+      notas: "Es la reflexión escrita de la clase, ahora en la plataforma. Agrégala al catálogo y ponle fecha de cierre. Cada espacio trae un ejemplo guía con el panettone italiano para que no lo copien. Se califica en Panel → Tareas → Calificar, con calificación sugerida y Word.",
+      pasos: [
+        "Entra a **Tareas → Una comida que es más que comida** (escanea el QR).",
+        "Elige **una comida concreta** de tu familia, tu comunidad o tu región.",
         "Explica **qué función cumple** además de alimentar y **de dónde viene** esa costumbre.",
-        "Se entrega la próxima clase."
-      ] },
-
+        "Relaciónala con **necesidad y cultura** (4.1), anota tus fuentes y entrega. Debajo de cada espacio hay un ejemplo."
+      ],
+      pasoAPaso: true },
     { tipo: "repaso",
       notas: "Unos 5 minutos. Lanza cada pregunta al grupo y espera respuestas antes de mostrarla.",
       preguntas: [
@@ -308,11 +337,17 @@ const PRESENTACION = {
         { numero: "·", texto: "¿Tiene relación, directa o indirecta, con la Antigua Roma vista en el Tema 4.2?" }
       ] },
 
+    { tipo: "palabrasHoy",
+      titulo: "Palabras de hoy",
+      pasoAPaso: false,
+      notas: "Repásenlas en voz alta. Están en el Glosario del Aula Virtual, y en las diapositivas aparecen subrayadas: al tocarlas sale su definición.",
+      terminos: ["Crudo y cocido", "Pelagra", "Triclinio", "Gustatio", "Garum", "Puls", "Annona", "Leyes suntuarias", "Thermopolium"] },
+
     { tipo: "cierre",
       minutos: "113-120",
       evidencia: "La reflexión escrita conecta una comida concreta con una función cultural identificable, más allá de la nutrición.",
       materiales: "Libro de texto, Temas 4.1 y 4.2.",
-      proxima: "Leer el subtema 4.3, **Influencia de la comida en la realeza**. Entregar la media cuartilla sobre necesidad e identidad." }
+      proxima: "Leer el subtema 4.3, **Influencia de la comida en la realeza**. Entregar en la plataforma la tarea **Una comida que es más que comida**." }
   ]
 };
 </script>

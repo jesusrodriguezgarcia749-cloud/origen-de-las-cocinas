@@ -1,0 +1,43 @@
+// tema4-datos.js — Juegos del Tema 4 (la comida y el poder).
+// ¿Qué función cumple? (4.1 y 4.2): de la necesidad biológica a las funciones culturales de la comida.
+export const FUNCIONES = [
+  ['necesidad', 'Necesidad biológica', '#5E4429'],
+  ['identidad', 'Identidad', '#3F7A4F'],
+  ['religion', 'Religión', '#6B3E75'],
+  ['economia', 'Economía', '#C98A2C'],
+  ['poder', 'Poder y estatus', '#A63D2F'],
+  ['vinculo', 'Vínculo social', '#2E6FA8'],
+];
+// q: la situación · e: emoji · c: función · x: por qué · niv: 1 = básico
+export const QUE_FUNCION = [
+  { q: 'Comer lo que sea porque llevas ocho horas sin probar bocado', e: '🥱', c: 'necesidad', x: 'Es el hambre pura: el cuerpo necesita energía. Aquí todavía no hay cultura.', niv: 1 },
+  { q: 'Cocinar la carne en el fuego para matar parásitos', e: '🔥', c: 'necesidad', x: 'Cocinar hace la comida más segura y digerible: así empezó todo, según Wrangham.', niv: 1 },
+  { q: 'Los marineros que comían limones para no enfermar de escorbuto', e: '🍋', c: 'necesidad', x: 'Comían para cubrir una carencia del cuerpo (la vitamina C), no por gusto ni por costumbre.', niv: 2 },
+  { q: 'Tomar suero oral después de deshidratarse', e: '💧', c: 'necesidad', x: 'Reponer agua y sales es una necesidad biológica, sin más significado.', niv: 1 },
+  { q: 'Un campechano que extraña el pan de cazón viviendo en Monterrey', e: '🦈', c: 'identidad', x: 'El platillo dice de dónde es: comerlo lejos es volver a casa.', niv: 1 },
+  { q: '«Somos gente de maíz»', e: '🌽', c: 'identidad', x: 'El maíz define quién es una comunidad mesoamericana: es identidad.', niv: 1 },
+  { q: 'La tortilla de maíz en cada comida mexicana', e: '🫓', c: 'identidad', x: 'Comer tortilla marca a quién perteneces: «sin maíz no hay país».', niv: 2 },
+  { q: 'La UNESCO reconoce el arte del pizzero napolitano', e: '🍕', c: 'identidad', x: 'Se protege como parte de la identidad de un pueblo, no por lo que nutre.', niv: 2 },
+  { q: 'No comer carne los viernes de Cuaresma', e: '✝️', c: 'religion', x: 'Una regla religiosa decide qué se come y qué no.', niv: 1 },
+  { q: 'Una familia judía que solo come kosher', e: '✡️', c: 'religion', x: 'El kashrut, la ley religiosa, dice qué alimentos están permitidos.', niv: 1 },
+  { q: 'Ayunar de día y comer al anochecer durante el Ramadán', e: '🌙', c: 'religion', x: 'El ayuno del islam marca cuándo se puede comer.', niv: 1 },
+  { q: 'La vaca sagrada en la India', e: '🐄', c: 'religion', x: 'Para el hinduismo la vaca no se come: la religión decide el menú.', niv: 1 },
+  { q: 'El pan y el vino de la misa', e: '🍷', c: 'religion', x: 'Alimentos con significado sagrado en un rito.', niv: 2 },
+  { q: 'Las especias medievales que valían como oro', e: '🧂', c: 'economia', x: 'Su precio altísimo movió el comercio y los viajes de exploración.', niv: 1 },
+  { q: 'Elegir frijol en lugar de carne porque no alcanza el dinero', e: '💸', c: 'economia', x: 'Lo que se come lo decide el bolsillo: es la dimensión económica.', niv: 1 },
+  { q: 'El garum fino para los ricos y el allec, su residuo, para los pobres', e: '🐟', c: 'economia', x: 'El mismo producto, en dos calidades y dos precios: la economía separa las mesas.', niv: 2 },
+  { q: 'El palo de tinte que hizo rico al puerto de Campeche', e: '🪵', c: 'economia', x: 'Un producto de la tierra mueve la economía y atrae piratas.', niv: 2 },
+  { q: 'El rey come en público y la corte lo mira (grand couvert)', e: '👑', c: 'poder', x: 'La mesa es un escenario del poder: comer se vuelve espectáculo político.', niv: 1 },
+  { q: 'Comer recostado en el triclinio, privilegio de los libres', e: '🛋️', c: 'poder', x: 'La postura ya dice quién manda: los sirvientes nunca se recostaban.', niv: 1 },
+  { q: 'El lugar de honor en el lecho del medio del triclinio', e: '🏛️', c: 'poder', x: 'El sitio en la mesa marcaba el rango de cada invitado.', niv: 2 },
+  { q: 'Las leyes suntuarias que limitaban el lujo de los banquetes', e: '📜', c: 'poder', x: 'El Estado regula la mesa para que nadie presuma demasiado: es política.', niv: 2 },
+  { q: '«Pan y circo»: Roma reparte grano gratis al pueblo', e: '🌾', c: 'poder', x: 'Dar de comer se vuelve política de Estado para mantener contento al pueblo.', niv: 1 },
+  { q: 'El banquete absurdo de Trimalción para presumir su nueva riqueza', e: '🍗', c: 'poder', x: 'El nuevo rico usa la mesa para mostrar estatus: la sátira de Petronio.', niv: 2 },
+  { q: 'Reservar en un restaurante caro solo para subir la foto', e: '📸', c: 'poder', x: 'Comer para mostrar estatus: la mesa como escaparate.', niv: 2 },
+  { q: '«Compañero» viene de cum panis: el que comparte el pan', e: '🍞', c: 'vinculo', x: 'La palabra misma nace de comer juntos: la comida crea lazos.', niv: 1 },
+  { q: 'La comida familiar del domingo', e: '👨‍👩‍👧', c: 'vinculo', x: 'Más que alimentar, reúne a la familia cada semana.', niv: 1 },
+  { q: 'Partir la rosca de reyes con los compañeros de trabajo', e: '👑', c: 'vinculo', x: 'Compartirla hace grupo (y compromete a llevar tamales el 2 de febrero).', niv: 1 },
+  { q: 'Llevarle comida a una vecina que acaba de perder a un familiar', e: '🍲', c: 'vinculo', x: 'La comida acompaña y cuida: es un lazo entre personas.', niv: 1 },
+  { q: 'La ofrenda de Día de Muertos con la comida favorita del difunto', e: '🕯️', c: 'vinculo', x: 'La comida mantiene el lazo con quienes ya no están.', niv: 2 },
+  { q: 'Comer alrededor de la hoguera hace miles de años', e: '🏕️', c: 'vinculo', x: 'Alrededor del fuego se compartía y se contaban historias: la cocina nace como hecho social.', niv: 2 },
+];

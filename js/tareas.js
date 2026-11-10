@@ -19,6 +19,8 @@ import { VUELTA_MUNDO, CONTINENTES_T3 } from "./oceania-datos.js";
 import { RECADOS, ORIGENES, LLEGADAS, INGS, CLAVE_RECADO, HISTORIA, LINEA_TIEMPO, recadoDe, reconocer, ingsDe, sugerirRecado, infoRecado, recadosDe, nombreRecados } from "./recado-datos.js";
 import { comprimir, idFoto, MAX_FOTOS, fotosAlWord } from "./fotos.js";
 import { actArmaHangi } from "./arma-hangi.js?v=2026111001";
+import { FICHAS, sugerirFicha, palabrasF } from "./fichas-datos.js?v=2026111001";
+import { FUNCIONES, QUE_FUNCION } from "./tema4-datos.js?v=2026111001";
 import { wordTarea } from "./tarea-word.js?v=2026111001";
 import { formacionDe, formaciones, formacionDeTarea, abiertas as inscAbiertas, equipoDe, equiposDe, tareasDeFormacion, enEquipo } from "./equipos.js";
 
@@ -140,6 +142,9 @@ async function estadoDe(a) {
     } else if (a.tipo === 'recado') {
       const s = await getDoc(eq ? doc(db, 'grupos', g, 'equipos', eq.id, 'atlas', RECADOS.id) : doc(db, 'grupos', g, 'alumnos', al, 'atlas', 'tarea-recado'));
       if (s.exists()) { out.avance = sugerirRecado(s.data()).detalle; out.entregado = s.data().entregado || null; }
+    } else if (a.tipo === 'ficha') {
+      const F = FICHAS[a.id], s = await getDoc(doc(db, 'grupos', g, 'alumnos', al, 'atlas', F.ind));
+      if (s.exists()) { out.avance = sugerirFicha(F, s.data()).detalle; out.entregado = s.data().entregado || null; }
     } else if (a.tipo === 'fusion') {
       const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al, 'atlas', FUSION.ind));
       if (s.exists()) { out.avance = sugerirFusion(s.data()).detalle; out.entregado = s.data().entregado || null; }
@@ -208,7 +213,7 @@ function ruta() {
   const c = $('#cl-actividad');
   c.innerHTML = `<a class="cl-volver" href="#">← Todas las tareas</a><p class="cl-fecha">Tema ${esc(a.tema)} · ${esc(a.titulo)} · ${esc(a.fechaTexto)}</p><h2 class="cl-h2">${a.icono} ${esc(a.nombre)}</h2>
     ${califica(a) ? '<p class="cl-vale">📌 Cuenta como una tarea del Parcial 2.</p>' : '<p class="cl-vale cl-vale-p">🎯 Práctica para repasar: no lleva calificación.</p>'}<div id="cl-cuerpo"></div>`;
-  (a.tipo === 'practica' ? { aporto: actAporto, campeche: actCampeche, 'que-influencia': actQueInfluencia, 'platillos-america': actPlatillosAmerica, 'que-asia': actQueAsia, 'que-europa': actQueEuropa, 'vuelta-mundo': actVueltaMundo, 'arma-hangi': c => actArmaHangi(c, sesion && sesion.nombre) }[a.id] : { cuadro: actCuadro, desarma: actDesarma, influencias: actInfluencias, especias: actEspecias, recado: actRecado, fusion: actFusion }[a.tipo])($('#cl-cuerpo'));
+  (a.tipo === 'practica' ? { aporto: actAporto, campeche: actCampeche, 'que-influencia': actQueInfluencia, 'platillos-america': actPlatillosAmerica, 'que-asia': actQueAsia, 'que-europa': actQueEuropa, 'vuelta-mundo': actVueltaMundo, 'arma-hangi': c => actArmaHangi(c, sesion && sesion.nombre), 'que-funcion': actQueFuncion }[a.id] : { cuadro: actCuadro, desarma: actDesarma, influencias: actInfluencias, especias: actEspecias, recado: actRecado, fusion: actFusion, ficha: c => actFicha(c, a) }[a.tipo])($('#cl-cuerpo'));
   window.scrollTo({ top: 0 });
 }
 // El QR de un equipo abre tareas.html#unir-CODIGO (vía unir.html): entra, se une y va a su tarea.
@@ -1013,6 +1018,57 @@ function actQueAsia(cont) {
     repaso: x => `${x.e} <b>${esc(x.q)}</b> → ${esc(nom(x.c))}. <span class="ap-dato">${esc(x.x)}</span>`,
     estudiar: { boton: 'Estudiar las cinco subregiones', intro: 'Cada subregión de Asia con sus platillos, especias, técnicas y datos del juego.', filtros: [['todos', 'Todas', () => true], ...L.map(([k, n]) => [k, n, x => x.c === k])], uno: 'ejemplo', varios: 'ejemplos', texto: x => x.q + ' ' + nom(x.c) + ' ' + x.x,
       fila: x => { const S = L.find(y => y[0] === x.c); return `<div class="ap-fila" style="border-left-color:${S[2]}"><span class="ap-fe">${x.e}</span><div><b>${esc(x.q)}</b> <small class="ap-tag">${esc(S[1])}</small><p class="ap-dato">${esc(x.x)}</p></div></div>`; } },
+  });
+}
+
+// ======================================================= FICHAS (tareas individuales con ejemplo guía)
+function actFicha(cont, a) {
+  const entrar = () => { escucharGrupo(); ficha(cont, a); };
+  if (sesion) entrar(); else formAcceso(cont, entrar, 'Entra con tu nombre y PIN para trabajar en esta tarea');
+}
+function ficha(cont, a) {
+  const F = FICHAS[a.id], ref = doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'atlas', F.ind);
+  cont.innerHTML = `<div class="ma-barra"><span>👤 <b>${esc(sesion.nombre)}</b> (individual)</span><span class="ma-estado" id="fi-estado"></span>
+      <button type="button" class="btn-ruta" id="fi-word">⬇ Descargar en Word</button></div>
+    <div data-entrega></div>
+    <p class="atlas-ayuda">${F.intro} Se guarda solo en tu cuenta.</p>
+    <div class="cu-ej-aviso"><b>💡 Debajo de cada espacio hay un ejemplo</b> resuelto con otro caso: <i>${esc(F.ejemploCaso)}</i>. Úsalo para ver qué se pide y cuánto escribir, pero <b>no lo copies</b>: escribe sobre tu propio caso.</div>
+    <div class="es-campos">${F.campos.map(([k, t, ayuda, min, ej]) => `<label class="es-campo"><span class="es-cab"><b>${t}</b></span><small class="es-ayuda">${esc(ayuda)}</small>
+      <textarea data-k="${k}" rows="${k === 'fuentes' ? 3 : min >= 25 ? 5 : 4}"></textarea><small class="es-cuenta" data-cuenta="${k}"></small>
+      <p class="cu-ej"><b>💡 Ejemplo</b> ${esc(ej)}</p></label>`).join('')}</div>
+    <p class="es-sug" id="fi-sug"></p>`;
+  const estado = (t, c = '') => { const e = $('#fi-estado'); if (e) { e.textContent = t; e.className = 'ma-estado ' + c; } };
+  let repEntrega = () => {};
+  const pintar = S => {
+    const act = document.activeElement, c = S.campos || {};
+    F.campos.forEach(([k, , , min]) => {
+      const ta = $(`[data-k="${k}"]`, cont); if (ta !== act && ta.value !== (c[k] || '')) ta.value = c[k] || '';
+      const n = palabrasF(c[k]), el = $(`[data-cuenta="${k}"]`, cont), ok = k === 'fuentes' ? !!(c[k] || '').trim() : n >= min;
+      el.textContent = k === 'fuentes' ? (ok ? '✓ con fuentes' : 'faltan las fuentes') : `${n} palabra${n === 1 ? '' : 's'}${ok ? ' ✓' : ` · mínimo ${min}`}`;
+      el.className = 'es-cuenta ' + (ok ? 'ok' : '');
+    });
+    $('#fi-sug').textContent = `Avance: ${sugerirFicha(F, S).detalle}.`;
+    repEntrega();
+  };
+  const V = docVivo(ref, null, (S, st) => { pintar(S); estado(st === 'ok' ? 'Guardado en tu cuenta ✓' : st === 'error' ? 'No se pudo guardar. Reintentando…' : 'Guardando…', st === 'ok' ? 'ok' : st === 'error' ? 'mal' : ''); });
+  $$('[data-k]', cont).forEach(ta => ta.addEventListener('input', () => { if (!abierta(a.id)) return; V.poner(['campos', ta.dataset.k], ta.value, 'escribe'); }));
+  repEntrega = barraEntrega(cont, a, { entregado: () => V.S.entregado, alEntregar: async () => { if (!F.campos.some(([k]) => ((V.S.campos || {})[k] || '').trim())) throw new Error('Primero llena tu tarea.'); await V.entregar(); } });
+  $('#fi-word').addEventListener('click', async () => {
+    await V.flush();
+    const { blob, archivo } = await wordTarea(a, V.S, { nombre: sesion.nombre, alumnoId: sesion.alumnoId });
+    const url = URL.createObjectURL(blob instanceof Blob ? blob : new Blob([blob], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }));
+    const l = document.createElement('a'); l.href = url; l.download = archivo; document.body.appendChild(l); l.click(); l.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000);
+  });
+  const salir = () => V.flush();
+  window.addEventListener('beforeunload', salir);
+  detener = () => { V.cerrar(); window.removeEventListener('estado-tareas', repEntrega); window.removeEventListener('beforeunload', salir); };
+}
+function actQueFuncion(cont) {
+  juegoOpciones(cont, {
+    clave: 'quefuncion', items: QUE_FUNCION, opciones: FUNCIONES, que: '',
+    intro: 'Comer empezó como <b>necesidad biológica</b>, pero se volvió cultura: <b>identidad, religión, economía, poder y vínculo social</b>. Aparece una comida, una costumbre o una escena romana: <b>¿qué función cumple?</b>',
+    niveles: [{ id: 'basico', n: 'Básico', ico: '🌱', preg: 12, desc: 'Los casos más claros de cada función.', filtro: x => x.niv === 1 }, { id: 'experto', n: 'Experto', ico: '🏆', preg: 20, desc: 'Todos, con Roma y casos que hay que pensar dos veces.', filtro: () => true }],
+    estudiarBoton: 'Estudiar las funciones de la comida', estudiarIntro: 'Cada función de la comida con sus ejemplos del juego.',
   });
 }
 

@@ -145,9 +145,13 @@ export const TEMAS_TAREAS = [
     { id: 'vuelta-mundo', tipo: 'practica', icono: '🌍', nombre: 'Vuelta al mundo: gran repaso del Tema 3', modo: 'Juego de práctica', desc: 'Hangi, injera, chuño, kimchi, chucrut, pavlova… ¿de qué continente es? Las cinco regiones del Tema 3 en un solo juego, con las trampas que los conectan.' },
     { id: 'atlas-oceania', tipo: 'atlas', cont: 'oceania', icono: '🗺️', nombre: 'Mi atlas: Oceanía', modo: 'En equipo o individual', desc: 'Tus regiones culinarias de Oceanía y sus islas.' },
   ] },
+  { tema: '4.1 y 4.2', titulo: 'La necesidad de alimentarse y la influencia de Roma', fecha: '2026-11-13', fechaTexto: 'Vie 13 de noviembre', acts: [
+    { id: 'que-funcion', tipo: 'practica', icono: '🎯', nombre: '¿Qué función cumple?', modo: 'Juego de práctica · 5 min', desc: 'Una comida, una costumbre o una escena romana: ¿es necesidad biológica, identidad, religión, economía, poder o vínculo social?' },
+    { id: 'mas-que-comida', tipo: 'ficha', icono: '🍞', nombre: 'Una comida que es más que comida', modo: 'Individual', desc: 'Tu reflexión de 4.1: una comida de tu familia o tu comunidad, la función que cumple además de alimentar y de dónde viene. Con ejemplo guía en cada espacio.' },
+  ] },
 ];
 export const TAREAS_DIG = Object.fromEntries(TEMAS_TAREAS.flatMap(t => t.acts.map(a => [a.id, { ...a, tema: t.tema, titulo: t.titulo, fecha: t.fecha, fechaTexto: t.fechaTexto }])));
-export const califica = a => a && ['atlas', 'cuadro', 'desarma', 'influencias', 'especias', 'recado', 'fusion'].includes(a.tipo);
+export const califica = a => a && ['atlas', 'cuadro', 'desarma', 'influencias', 'especias', 'recado', 'fusion', 'ficha'].includes(a.tipo);
 export const catalogoId = id => 'dig-' + id;
 export const nombreCatalogo = a => `${a.tema} · ${a.nombre}`;
 

@@ -396,7 +396,7 @@
   }
 
   function iniciar() {
-    script(new URL("pasos.js?v=2026111001", AQUI).href).catch(() => console.warn("No se pudo cargar pasos.js"))
+    script(new URL("pasos.js?v=2026111002", AQUI).href).catch(() => console.warn("No se pudo cargar pasos.js"))
       .then(() => { construir(); return script(REVEAL + "dist/reveal.js"); })
       .then(() => script(REVEAL + "plugin/notes/notes.js").catch(() => {}))
       .then(() => {

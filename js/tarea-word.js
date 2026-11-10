@@ -4,6 +4,7 @@
 import { DocITES } from "./docx-ites.js?v=2026110501";
 import { mapaContinentePNG } from "./docx-ites.js?v=2026110501";
 import { CUADRO_MM, INFLUENCIAS, ESPECIAS, subregionDe, FUSION } from "./clase-datos.js";
+import { FICHAS } from "./fichas-datos.js?v=2026111001";
 import { RECADOS, ORIGENES, LLEGADAS, recadoDe, ingsDe, infoRecado, recadosDe } from "./recado-datos.js";
 import { fotosAlWord } from "./fotos.js";
 
@@ -50,6 +51,15 @@ async function fusion(D, S, eq, nombre) {
   D.h1('Investigación');
   D.ficha(FUSION.campos.map(([k, t]) => [t.replace(/^\S+\s/, ''), c[k]]));
   return `Platillo_de_fusion_${quien(null, nombre)}`;
+}
+
+// ---------- Fichas individuales (con ejemplo guía en la plataforma)
+async function ficha(D, S, nombre, F) {
+  const c = S.campos || {};
+  portadaDe(D, { kicker: F.kicker, titulo: F.titulo, subtitulo: '' }, null, nombre);
+  D.h1('Mi trabajo');
+  D.ficha(F.campos.map(([k, t]) => [t.replace(/^\S+\s/, ''), c[k]]));
+  return `${F.titulo.replace(/[^\wáéíóúñÁÉÍÓÚÑ]+/g, '_')}_${quien(null, nombre)}`;
 }
 
 // ---------- El recado campechano
@@ -123,7 +133,7 @@ async function atlas(D, c, eq, nombre, cont) {
 // a: tarea (TAREAS_DIG); datos: lo guardado (para atlas, ya normalizado como c); eq: equipo o null.
 export async function wordTarea(a, datos, { eq = null, nombre = '', alumnoId = '', fotos = null } = {}) {
   const D = new DocITES(); await D.cargarLogo();
-  const fn = { cuadro, influencias, especias, desarma, atlas, recado, fusion }[a.tipo];
+  const fn = a.tipo === 'ficha' ? (D, S, eq, nombre) => ficha(D, S, nombre, FICHAS[a.id]) : { cuadro, influencias, especias, desarma, atlas, recado, fusion }[a.tipo];
   if (!fn) throw new Error('Esta tarea no tiene Word.');
   const archivo = await fn(D, datos || {}, eq, nombre, a.tipo === 'atlas' ? a.cont : alumnoId);
   if (fotos && fotos.length) await fotosAlWord(D, fotos);

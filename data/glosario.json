@@ -17,6 +17,14 @@
  },
  "terminos": [
   {
+   "id": "ab-ovo-usque-ad-mala",
+   "t": "Ab ovo usque ad mala",
+   "c": "concepto",
+   "tema": "4.2",
+   "d": "«Del huevo a las manzanas»: el banquete romano empezaba con huevos y terminaba con fruta. Quiere decir «de principio a fin».",
+   "o": "Antigua Roma"
+  },
+  {
    "id": "abeja-melipona",
    "t": "Abeja melipona",
    "c": "ingrediente",
@@ -85,6 +93,14 @@
    "tema": "3.4",
    "d": "Aparato para destilar; su nombre es de origen árabe.",
    "o": "Mundo árabe"
+  },
+  {
+   "id": "allec",
+   "t": "Allec",
+   "c": "ingrediente",
+   "tema": "4.2",
+   "d": "El residuo espeso que quedaba al colar el garum. Era barato y lo comían los pobres.",
+   "o": "Antigua Roma"
   },
   {
    "id": "amazigh",
@@ -518,6 +534,14 @@
    "o": "Nueva España"
   },
   {
+   "id": "colatura-di-alici",
+   "t": "Colatura di alici",
+   "c": "ingrediente",
+   "tema": "4.2",
+   "d": "Salsa de anchoas fermentadas de Cetara, en la costa de Amalfi. Es la pariente viva más cercana del garum.",
+   "o": "Italia"
+  },
+  {
    "id": "creciente-fertil",
    "t": "Creciente Fértil",
    "c": "lugar",
@@ -937,6 +961,17 @@
    "o": "Etiopía"
   },
   {
+   "id": "insula",
+   "t": "Insula",
+   "c": "lugar",
+   "tema": "4.2",
+   "d": "Edificio de departamentos de varios pisos donde vivía la mayoría de los romanos, casi siempre sin cocina: por eso comían en los thermopolia.",
+   "o": "Antigua Roma",
+   "v": [
+    "insulae"
+   ]
+  },
+  {
    "id": "intercambio-colombino",
    "t": "Intercambio colombino",
    "c": "concepto",
@@ -1347,6 +1382,14 @@
    ]
   },
   {
+   "id": "mulsum",
+   "t": "Mulsum",
+   "c": "bebida",
+   "tema": "4.2",
+   "d": "Vino mezclado con miel que se servía al empezar el banquete romano, con la gustatio.",
+   "o": "Antigua Roma"
+  },
+  {
    "id": "name",
    "t": "Ñame",
    "c": "ingrediente",
@@ -1625,6 +1668,14 @@
    "o": "África Central"
   },
   {
+   "id": "prima-mensa",
+   "t": "Prima mensa",
+   "c": "concepto",
+   "tema": "4.2",
+   "d": "Segundo tiempo del banquete romano: el plato fuerte, con carnes, pescados y guisos.",
+   "o": "Antigua Roma"
+  },
+  {
    "id": "pulque",
    "t": "Pulque",
    "c": "bebida",
@@ -1762,6 +1813,14 @@
    "tema": "3.4",
    "d": "Recipiente metálico ruso para tener agua caliente todo el día y servir té.",
    "o": "Rusia"
+  },
+  {
+   "id": "secunda-mensa",
+   "t": "Secunda mensa",
+   "c": "concepto",
+   "tema": "4.2",
+   "d": "Último tiempo del banquete romano: frutas, frutos secos y pasteles con miel.",
+   "o": "Antigua Roma"
   },
   {
    "id": "sefardi",
