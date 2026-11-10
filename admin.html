@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css?v=2026102305">
-<link rel="stylesheet" href="css/admin.css?v=2026111003">
+<link rel="stylesheet" href="css/admin.css?v=2026111005">
 <link rel="stylesheet" href="css/progreso.css?v=2026102305">
 <link rel="stylesheet" href="css/index.css?v=2026102305">
 <link rel="stylesheet" href="css/extra.css?v=2026102305">
@@ -89,6 +89,7 @@
   <nav class="admin-tabs" aria-label="Secciones del panel">
     <button class="tab-btn active" data-tab="alumnos">Alumnos</button>
     <button class="tab-btn" data-tab="tareas">Tareas</button>
+    <button class="tab-btn" data-tab="concentrado">📂 Concentrado de trabajos</button>
     <button class="tab-btn" data-tab="participacion">Participación</button>
     <button class="tab-btn" data-tab="proyecto">Proyecto</button>
     <button class="tab-btn" data-tab="equipos">👥 Equipos</button>
@@ -147,6 +148,19 @@
   </div>
 
   <!-- ===== PARTICIPACIÓN ===== -->
+  <!-- ===== CONCENTRADO DE TRABAJOS ===== -->
+  <div id="tab-concentrado" class="tab-panel">
+    <p class="field-hint">Todos los trabajos que generan Word, alumno por alumno. <b>Toca una celda</b> para ver el trabajo y calificarlo (con «Guardar y siguiente» recorres al grupo sin salir de aquí); el botón <b>⬇</b> descarga su Word. ✓ = entregado (con fecha) · ✎ = lo empezó, sin entregar · 👥 = trabajo de equipo.</p>
+    <div class="ct-barra">
+      <input type="search" id="ct-busca" placeholder="Buscar alumno…" aria-label="Buscar alumno" autocomplete="off">
+      <label class="ct-orden"><input type="checkbox" id="ct-recientes" checked> Lo más reciente primero</label>
+      <span class="field-hint" id="ct-estado"></span>
+    </div>
+    <div id="ct-tabla" class="ct-wrap"></div>
+    <p id="ct-zip-msg" class="field-hint"></p>
+  </div>
+  <dialog id="ct-dlg" class="ct-dlg" aria-labelledby="ct-dlg-tit"><div id="ct-dlg-cuerpo"></div></dialog>
+
   <div id="tab-participacion" class="tab-panel">
     <label for="part-parcial" class="field-label">Parcial</label>
     <select id="part-parcial">
@@ -406,6 +420,6 @@
   <div class="qr-grid" id="qr-grid"></div>
 </div>
 <script src="js/vendor/qrcode.js"></script>
-<script type="module" src="js/admin.js?v=2026111703"></script>
+<script type="module" src="js/admin.js?v=2026111705"></script>
 </body>
 </html>
