@@ -163,11 +163,13 @@ async function portada() {
   const d0 = new Date(), hoy = `${d0.getFullYear()}-${String(d0.getMonth() + 1).padStart(2, '0')}-${String(d0.getDate()).padStart(2, '0')}`;
   // se abre desplegado el tema más reciente que ya empezó
   const actual = [...TEMAS_TAREAS].reverse().find(t => t.fecha <= hoy) || TEMAS_TAREAS[0];
+  const deHoy = TEMAS_TAREAS.find(t => t.fecha === hoy), proxima = deHoy ? null : TEMAS_TAREAS.find(t => t.fecha > hoy);
+  const marcaHoy = t => t === deHoy ? '<span class="tq-hoy">★ Hoy</span>' : t === proxima ? '<span class="tq-hoy prox">Próxima clase</span>' : '';
   $('#cl-acceso').innerHTML = sesion ? `<div class="tq-quien">👤 <b>${esc(sesion.nombre)}</b> · aquí ves tu avance y tus calificaciones <button type="button" class="ma-link" id="tq-salir">Salir</button></div>`
     : `<div class="tq-quien">Entra con tu nombre y PIN para ver tu avance, entregar y conocer tus calificaciones. <button type="button" class="btn-at" id="tq-entrar">Entrar</button></div>`;
   if (sesion) $('#tq-salir').addEventListener('click', () => { try { sessionStorage.removeItem(SESSION_KEY); } catch { /* */ } sesion = null; EQS = null; if (unsubGrupo) unsubGrupo(); portada(); });
   else $('#tq-entrar').addEventListener('click', () => formAcceso($('#cl-acceso'), portada));
-  $('#cl-sesiones').innerHTML = TEMAS_TAREAS.map((t, i) => `<details class="tq-tema" data-tema="${i}" ${t === actual ? 'open' : ''}><summary><span class="tq-num">${esc(t.tema)}</span><span><b>${esc(t.titulo)}</b><small>${esc(t.fechaTexto)} · ${t.acts.filter(califica).length} tarea${t.acts.filter(califica).length === 1 ? '' : 's'}</small></span></summary>
+  $('#cl-sesiones').innerHTML = TEMAS_TAREAS.map((t, i) => `<details class="tq-tema${t === deHoy || t === proxima ? ' tq-destacada' : ''}" data-tema="${i}" ${t === actual || t === proxima ? 'open' : ''}><summary><span class="tq-num">${esc(t.tema)}</span><span>${marcaHoy(t)}<b>${esc(t.titulo)}</b><small>${esc(t.fechaTexto)} · ${t.acts.filter(califica).length} tarea${t.acts.filter(califica).length === 1 ? '' : 's'}</small></span></summary>
     <div class="cl-cards">${t.acts.map(a => `<a class="cl-card ${a.tipo === 'pronto' ? 'cl-pronto' : ''}" href="${a.tipo === 'atlas' ? `atlas.html#miatlas=${a.cont}` : a.tipo === 'pronto' ? '#' : '#' + a.id}" data-act="${a.id}"><span class="cl-ico">${a.icono}</span><b>${esc(a.nombre)}</b><small>${esc(a.modo)}</small><p>${esc(a.desc)}</p><span class="cl-estado" data-st="${a.id}">${insignia(a, null)}</span><p class="cl-avance" data-av="${a.id}"></p></a>`).join('')}</div></details>`).join('');
   $$('.cl-pronto').forEach(x => x.addEventListener('click', e => e.preventDefault()));
   if (sesion) {

@@ -744,3 +744,8 @@ body.mon-completo .mon-grid { grid-template-columns: repeat(auto-fill, minmax(21
 .asis-estado-label.cal-hecha, .asis-estado-label.cal-medio { padding: 3px 10px; border-radius: 999px; }
 .re-cambiar { grid-column: 1 / -1; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: .88rem; color: #6b6358; }
 .re-cambiar select { font: inherit; padding: 4px 8px; border-radius: 8px; }
+
+/* Tareas digitales: la clase de hoy (o la próxima) */
+.td-ir-hoy { margin: 0 0 .6rem; background: var(--paprika, #A63D2F); color: #fff; border-color: transparent; }
+.td-tema.td-destacada { border: 3px solid var(--paprika, #A63D2F); border-radius: 12px; padding: .6rem .8rem; background: var(--cream, #fff); box-shadow: 0 6px 18px rgba(0,0,0,.08); scroll-margin-top: 90px; }
+.td-marca-hoy { display: inline-block; background: var(--paprika, #A63D2F); color: #fff; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 2px 9px; border-radius: 999px; vertical-align: middle; }
