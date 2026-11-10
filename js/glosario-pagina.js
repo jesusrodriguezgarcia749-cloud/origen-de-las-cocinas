@@ -20,7 +20,7 @@
 
   function pintar() {
     const q = norm($('#gl-buscar').value.trim());
-    const L = D.terminos.filter(e => (!tema || e.tema[0] === tema) && (!cat || e.c === cat) && (!q || norm([e.t, ...(e.v || []), e.d, e.o].join(' ')).includes(q)));
+    const L = D.terminos.filter(e => (!tema || e.tema.split('.')[0] === tema) && (!cat || e.c === cat) && (!q || norm([e.t, ...(e.v || []), e.d, e.o].join(' ')).includes(q)));
     const grupos = {};
     L.forEach(e => { const l = norm(e.t)[0].toUpperCase(); (grupos[l] = grupos[l] || []).push(e); });
     const letras = Object.keys(grupos).sort();
