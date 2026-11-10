@@ -16,9 +16,9 @@ import { vistaRapida } from "./matriz.js?v=2026110501";
 import { BASE, enEquipo, formacionDe, formaciones, ordenFormaciones, formacionDeTarea, equiposDe, tareasDeFormacion, urlUnir, qrSvg } from "./equipos.js";
 import { wordMiPlato, numsDe as numsMiPlato, estadoEntrega as estadoMiPlato, slugArchivo, ORDEN as ORDEN_MP } from "./mi-plato-word.js?v=2026102901";
 import { zipDocx } from "./docx-ites.js?v=2026102901";
-import { wordTarea } from "./tarea-word.js?v=2026111001";
-import { FICHAS, sugerirFicha } from "./fichas-datos.js?v=2026111001";
-import { TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, nombreCatalogo, sugerirAtlas, sugerirCuadro, MIN_PALABRAS_CELDA, sugerirDesarma, CUADRO_MM, INFLUENCIAS, sugerirInfluencias, ESPECIAS, FUSION, sugerirFusion, subregionDe, sugerirEspecias } from "./clase-datos.js";
+import { wordTarea } from "./tarea-word.js?v=2026111701";
+import { FICHAS, sugerirFicha } from "./fichas-datos.js?v=2026111701";
+import { TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, nombreCatalogo, sugerirAtlas, sugerirCuadro, MIN_PALABRAS_CELDA, sugerirDesarma, CUADRO_MM, CUADROS, INFLUENCIAS, sugerirInfluencias, ESPECIAS, FUSION, sugerirFusion, subregionDe, sugerirEspecias } from "./clase-datos.js";
 import { RECADOS, ORIGENES, LLEGADAS, INGS, CLAVE_RECADO, recadoDe, ingsDe, sugerirRecado, infoRecado, recadosDe } from "./recado-datos.js";
 import { idFoto } from "./fotos.js";
 
@@ -918,7 +918,7 @@ function pintarTdCaja(caja) {
 }
 
 // ---- Monitor en vivo de Mi atlas: equipos e individual, con mapas que se colorean al instante
-const MON = { act: 'atlas', clave: false, cont: 'africa', ver: 'todos', subs: [], datos: {}, equipos: [], grupo: null, reloj: null, abierto: null };
+const MON = { act: 'atlas', cu: 'cuadro-mm', clave: false, cont: 'africa', ver: 'todos', subs: [], datos: {}, equipos: [], grupo: null, reloj: null, abierto: null };
 let MON_ATLAS = null, MON_PAIS = {};
 async function iniciarMonitor() {
   if (!grupoActivo) { document.getElementById('mon-grid').innerHTML = '<p class="empty-inline">Elige un grupo primero.</p>'; return; }
@@ -930,7 +930,7 @@ async function iniciarMonitor() {
     cc.querySelectorAll('[data-c]').forEach(b => b.addEventListener('click', () => { MON.cont = b.dataset.c; cc.querySelectorAll('[data-c]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); suscribirEquiposCont(); pintarMonitor(true); }));
     document.querySelectorAll('#mon-ver [data-v]').forEach(b => b.addEventListener('click', () => { MON.ver = b.dataset.v; document.querySelectorAll('#mon-ver [data-v]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); pintarMonitor(true); }));
     document.querySelectorAll('#mon-act [data-a]').forEach(b => b.addEventListener('click', () => {
-      MON.act = b.dataset.a; document.querySelectorAll('#mon-act [data-a]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+      MON.act = b.dataset.a; MON.cu = b.dataset.cu || 'cuadro-mm'; pintarClaveCu(); document.querySelectorAll('#mon-act [data-a]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
       document.getElementById('mon-expo').hidden = !['especias', 'recado'].includes(MON.act); document.getElementById('mon-r1').hidden = document.getElementById('mon-r2').hidden = MON.act !== 'recado';
       document.getElementById('mon-clave').hidden = MON.act !== 'cuadro'; document.getElementById('mon-votar').hidden = MON.act !== 'influencias'; document.getElementById('mon-resultados').hidden = MON.act !== 'influencias'; document.getElementById('mon-conts').hidden = MON.act !== 'atlas'; document.getElementById('mon-ver').querySelectorAll('[data-v]').forEach(x => { x.hidden = MON.act !== 'atlas'; });
       Object.keys(MON.datos).filter(k => k.startsWith('e:')).forEach(k => delete MON.datos[k]); suscribirEquiposCont(); pintarMonitor(true);
@@ -944,7 +944,7 @@ async function iniciarMonitor() {
     document.addEventListener('keydown', e => { if (document.getElementById('expo-proy').hidden) return; if (e.key === 'ArrowRight') moverExpo(1); else if (e.key === 'ArrowLeft') moverExpo(-1); else if (e.key === 'Escape') cerrarExpo(); });
     document.getElementById('mon-qr').addEventListener('click', () => abrirProyeccion(formacionDeTarea(MON.g, monTarea()), false));
     document.getElementById('voto-cerrar').addEventListener('click', cerrarResultados);
-    document.getElementById('mon-clave').addEventListener('click', async () => { await setDoc(doc(db, 'grupos', grupoActivo), { claves: { cuadroMM: !MON.clave } }, { merge: true }); });
+    document.getElementById('mon-clave').addEventListener('click', async () => { await setDoc(doc(db, 'grupos', grupoActivo), { claves: { [CUA().clave]: !MON.clave } }, { merge: true }); });
     ['recado1', 'recado2'].forEach((k, i) => document.getElementById('mon-r' + (i + 1)).addEventListener('click', async () => { const on = !((MON.g.claves || {})[k]); await setDoc(doc(db, 'grupos', grupoActivo), { claves: { [k]: on } }, { merge: true }); }));
     document.getElementById('mon-full').addEventListener('click', e => { const on = document.body.classList.toggle('mon-completo'); e.currentTarget.setAttribute('aria-pressed', String(on)); e.currentTarget.textContent = on ? '✕ Salir de pantalla completa' : '⛶ Pantalla completa'; });
     document.getElementById('mon-det-cerrar').addEventListener('click', cerrarDetalle);
@@ -963,14 +963,16 @@ async function iniciarMonitor() {
     MON.todos = sn.docs.map(d => ({ id: d.id, ...d.data() }));
     suscribirEquiposCont(); pintarMonitor(true);
   }, () => {});
-  MON.subs.push(onSnapshot(doc(db, 'grupos', g), sn => { MON.g = sn.exists() ? sn.data() : {}; if (monFiltrar()) { Object.keys(MON.datos).filter(k => k.startsWith('e:')).forEach(k => delete MON.datos[k]); suscribirEquiposCont(); pintarMonitor(true); } MON.votacion = sn.exists() ? ((sn.data().votaciones || {})[INFLUENCIAS.votacion] || 'cerrada') : 'cerrada'; const bv = document.getElementById('mon-votar'); bv.setAttribute('aria-pressed', String(MON.votacion === 'abierta')); bv.textContent = MON.votacion === 'abierta' ? '🔒 Cerrar votación' : '🗳️ Abrir votación'; MON.clave = !!(sn.exists() && (sn.data().claves || {}).cuadroMM); const b = document.getElementById('mon-clave'); b.setAttribute('aria-pressed', String(MON.clave)); b.textContent = MON.clave ? '🔒 Ocultar clave a los alumnos' : '🔑 Liberar clave'; const cl = (MON.g.claves || {}), r1 = document.getElementById('mon-r1'), r2 = document.getElementById('mon-r2'); r1.setAttribute('aria-pressed', String(!!cl.recado1)); r1.textContent = cl.recado1 ? '🔒 Ocultar clave 1' : '🔑 Liberar clave 1 · ingredientes y guisos'; r2.setAttribute('aria-pressed', String(!!cl.recado2)); r2.textContent = cl.recado2 ? '🔒 Ocultar clave 2' : '🔑 Liberar clave 2 · rutas'; }, () => {}));
+  MON.subs.push(onSnapshot(doc(db, 'grupos', g), sn => { MON.g = sn.exists() ? sn.data() : {}; if (monFiltrar()) { Object.keys(MON.datos).filter(k => k.startsWith('e:')).forEach(k => delete MON.datos[k]); suscribirEquiposCont(); pintarMonitor(true); } MON.votacion = sn.exists() ? ((sn.data().votaciones || {})[INFLUENCIAS.votacion] || 'cerrada') : 'cerrada'; const bv = document.getElementById('mon-votar'); bv.setAttribute('aria-pressed', String(MON.votacion === 'abierta')); bv.textContent = MON.votacion === 'abierta' ? '🔒 Cerrar votación' : '🗳️ Abrir votación'; pintarClaveCu(); const cl = (MON.g.claves || {}), r1 = document.getElementById('mon-r1'), r2 = document.getElementById('mon-r2'); r1.setAttribute('aria-pressed', String(!!cl.recado1)); r1.textContent = cl.recado1 ? '🔒 Ocultar clave 1' : '🔑 Liberar clave 1 · ingredientes y guisos'; r2.setAttribute('aria-pressed', String(!!cl.recado2)); r2.textContent = cl.recado2 ? '🔒 Ocultar clave 2' : '🔑 Liberar clave 2 · rutas'; }, () => {}));
   MON.reloj = setInterval(() => pintarTiempos(), 10000);
   pintarMonitor(true);
 }
 // actividades de documento vivo (equipo o individual), a diferencia de Mi atlas
 const monVivo = () => ['cuadro', 'influencias', 'especias', 'recado'].includes(MON.act);
 // en el monitor solo aparecen los equipos que usa la tarea que estás viendo
-const monTarea = () => MON.act === 'cuadro' ? 'cuadro-mm' : MON.act === 'influencias' ? 'influencias' : MON.act === 'especias' ? 'especias' : MON.act === 'recado' ? 'recado' : 'atlas-' + MON.cont;
+const CUA = () => CUADROS[MON.cu] || CUADRO_MM;
+function pintarClaveCu() { MON.clave = !!((MON.g || {}).claves || {})[CUA().clave]; const b = document.getElementById('mon-clave'); if (!b) return; b.setAttribute('aria-pressed', String(MON.clave)); b.textContent = MON.clave ? '🔒 Ocultar clave a los alumnos' : '🔑 Liberar clave'; }
+const monTarea = () => MON.act === 'cuadro' ? MON.cu : MON.act === 'influencias' ? 'influencias' : MON.act === 'especias' ? 'especias' : MON.act === 'recado' ? 'recado' : 'atlas-' + MON.cont;
 function monFiltrar() {
   const antes = MON.equipos.map(e => e.id).join();
   MON.equipos = equiposDe(MON.todos || [], formacionDeTarea(MON.g, monTarea())).sort(ordenEq);
@@ -979,14 +981,14 @@ function monFiltrar() {
 function suscribirEquiposCont() {
   (MON.eqSubs || []).forEach(u => u()); MON.eqSubs = [];
   monFiltrar();
-  const docAct = MON.act === 'cuadro' ? 'act-cuadro-mm' : MON.act === 'influencias' ? INFLUENCIAS.id : MON.act === 'especias' ? ESPECIAS.id : MON.act === 'recado' ? RECADOS.id : MON.cont;
+  const docAct = MON.act === 'cuadro' ? CUA().id : MON.act === 'influencias' ? INFLUENCIAS.id : MON.act === 'especias' ? ESPECIAS.id : MON.act === 'recado' ? RECADOS.id : MON.cont;
   MON.equipos.forEach(eq => MON.eqSubs.push(onSnapshot(doc(db, 'grupos', MON.grupo, 'equipos', eq.id, 'atlas', docAct), sn => {
     MON.datos['e:' + eq.id] = sn.exists() ? sn.data() : null; programarPintado('e:' + eq.id);
   }, () => {})));
   // quienes hacen el cuadro o las influencias solos (sin equipo): su trabajo vive en su cuenta
   Object.keys(MON.datos).filter(k => k.startsWith('i:')).forEach(k => delete MON.datos[k]);
   if (monVivo()) {
-    const docInd = { cuadro: 'tarea-cuadro-mm', influencias: 'tarea-influencias', especias: 'tarea-especias', recado: 'tarea-recado' }[MON.act];
+    const docInd = { cuadro: CUA().ind, influencias: 'tarea-influencias', especias: 'tarea-especias', recado: 'tarea-recado' }[MON.act];
     alumnosCache.forEach(a => MON.eqSubs.push(onSnapshot(doc(db, 'grupos', MON.grupo, 'alumnos', a.id, 'atlas', docInd), sn => {
       MON.datos['i:' + a.id] = sn.exists() ? { ...sn.data(), ultimoNombre: sn.data().ultimoNombre || a.nombre } : null; programarPintado('i:' + a.id);
     }, () => {})));
@@ -1076,16 +1078,16 @@ function actualizarTarjeta(clave, nuevo) {
   pintarTiempo(card, v ? v.act : null);
   if (!nuevo) { card.classList.remove('mon-latido'); void card.offsetWidth; card.classList.add('mon-latido'); }
 }
-// ---- cuadro comparativo mexica–maya en el monitor
-const CU_FILAS = CUADRO_MM.filas.map(([f, t, , inv]) => [f, t, inv]);
-const CU_COLS = [['mexica', 'Mexica', '#A63D2F'], ['maya', 'Maya', '#2E6FA8'], ['parecido', 'Se parecen', '#3F7A4F']];
+// ---- cuadros comparativos (mexica–maya, Versalles–Topkapi) en el monitor
+const cuFilas = () => CUA().filas.map(([f, t, , inv]) => [f, t, inv]);
+const cuCols = () => CUA().columnas.map(([c], i) => [c, CUA().cortos[i], CUA().colores[i]]);
 function actualizarCuadro(card, clave, nuevo) {
-  const d = MON.datos[clave] || {}, cel = d.celdas || {};
+  const CU_FILAS = cuFilas(), CU_COLS = cuCols(), d = MON.datos[clave] || {}, cel = d.celdas || {};
   const ok = k => ((cel[k] || '').trim().match(/\S+/g) || []).length >= MIN_PALABRAS_CELDA;
   const llenas = CU_FILAS.flatMap(([f]) => CU_COLS.map(([c]) => ok(`${f}_${c}`))).filter(Boolean).length, total = CU_FILAS.length * CU_COLS.length;
   card.querySelector('[data-mapa]').innerHTML = `<div class="cu-mini">${CU_FILAS.map(([f]) => CU_COLS.map(([c, , col]) => `<i style="${ok(`${f}_${c}`) ? `background:${col}` : (cel[`${f}_${c}`] || '').trim() ? `background:${col};opacity:.35` : ''}"></i>`).join('')).join('')}</div>`;
   card.querySelector('[data-barra]').style.width = Math.round(100 * llenas / total) + '%';
-  card.querySelector('[data-num]').innerHTML = `<b>${llenas}/${total}</b> celdas · sugerida <b>${sugerirCuadro(cel).nota}</b>`;
+  card.querySelector('[data-num]').innerHTML = `<b>${llenas}/${total}</b> celdas · sugerida <b>${sugerirCuadro(cel, CUA()).nota}</b>`;
   card.querySelector('[data-ult]').innerHTML = d.ultimoCambio ? `✍️ <b>${escaparHTML(d.ultimoNombre || '')}</b> ${escaparHTML(d.ultimoCambio)}` : '<i>todavía no empiezan</i>';
   pintarTiempo(card, d.actualizado || null);
   if (!nuevo) { card.classList.remove('mon-latido'); void card.offsetWidth; card.classList.add('mon-latido'); }
@@ -1201,7 +1203,7 @@ function pintarTiempos() { document.querySelectorAll('.mon-card').forEach(c => p
 function pintarResumen() {
   const el = document.getElementById('mon-resumen'); if (!el) return;
   const ts = monTarjetas(); const activos = ts.filter(t => hace(actividadDe(t.clave)).cls === 'verde').length;
-  el.innerHTML = `<span class="mon-punto verde"></span> <b>${activos}</b> trabajando ahora (últimos 2 min) · ${ts.length} en total · ${MON.act === 'especias' ? 'Las especias de Asia' : MON.act === 'recado' ? 'El recado campechano' : MON.act === 'influencias' ? 'Siete influencias' : MON.act === 'cuadro' ? 'Cuadro mexica–maya' : escaparHTML(MON_ATLAS ? MON_ATLAS.continentes[MON.cont].nombre : '')} · 👥 ${escaparHTML((formaciones(MON.g)[formacionDeTarea(MON.g, monTarea())] || {}).nombre || '')}`;
+  el.innerHTML = `<span class="mon-punto verde"></span> <b>${activos}</b> trabajando ahora (últimos 2 min) · ${ts.length} en total · ${MON.act === 'especias' ? 'Las especias de Asia' : MON.act === 'recado' ? 'El recado campechano' : MON.act === 'influencias' ? 'Siete influencias' : MON.act === 'cuadro' ? CUA().corto : escaparHTML(MON_ATLAS ? MON_ATLAS.continentes[MON.cont].nombre : '')} · 👥 ${escaparHTML((formaciones(MON.g)[formacionDeTarea(MON.g, monTarea())] || {}).nombre || '')}`;
 }
 function abrirDetalle(clave) { MON.abierto = clave; document.getElementById('mon-detalle').hidden = false; document.body.classList.add('con-qr'); pintarDetalle(true); }
 function cerrarDetalle() { MON.abierto = null; document.getElementById('mon-detalle').hidden = true; document.body.classList.remove('con-qr'); }
@@ -1240,9 +1242,10 @@ function pintarDetalle(nuevo) {
     return;
   }
   if (MON.act === 'cuadro') {
+    const CU_FILAS = cuFilas(), CU_COLS = cuCols();
     const t = monTarjetas().find(x => x.clave === clave) || { titulo: '', sub: '' }, d = MON.datos[clave] || {}, cel = d.celdas || {}, por = d.por || {};
     document.getElementById('mon-det-titulo').textContent = t.titulo;
-    document.getElementById('mon-det-sub').textContent = `${t.sub} · Cuadro comparativo mexica–maya · ${hace(d.actualizado).txt}`;
+    document.getElementById('mon-det-sub').textContent = `${t.sub} · ${CUA().corto} · ${hace(d.actualizado).txt}`;
     const e = x => escaparHTML(x || '').replace(/\n/g, '<br>');
     document.getElementById('mon-det-cuerpo').innerHTML = `<div class="taller-tabla-wrap"><table class="cu-det"><thead><tr><th></th>${CU_COLS.map(([, n, col]) => `<th style="color:${col}">${n}</th>`).join('')}</tr></thead><tbody>${CU_FILAS.map(([f, n, inv]) => `<tr><th>${inv ? '🔎 ' : ''}${n}${inv ? `<br><small class="mon-autor">📚 ${(cel[f + '_fuente'] || '').trim() ? escaparHTML(cel[f + '_fuente']) : '<i>sin fuente</i>'}</small>` : ''}</th>${CU_COLS.map(([c]) => { const k = `${f}_${c}`; return `<td>${(cel[k] || '').trim() ? e(cel[k]) : '<span class="mon-vacio">—</span>'}${por[k] ? `<br><small class="mon-autor">✍️ ${escaparHTML(por[k])}</small>` : ''}</td>`; }).join('')}</tr>`).join('')}</tbody></table></div>`;
     return;
@@ -1346,10 +1349,11 @@ async function calificarTareaDig(a, enCatalogo) {
         word = c && (c.regiones || []).length ? c : null;
         sug = sugerirAtlas(c, total); resumen = c ? (c.regiones || []).map(r => `${r.nombre} (${Object.values(c.asign).filter(x => x === r.id).length})`).join(' · ') : '';
       } else if (a.tipo === 'cuadro') {
-        const d = eq ? await docEquipo(eq, CUADRO_MM.id) : null;
+        const A = CUADROS[a.id] || CUADRO_MM;
+        const d = eq ? await docEquipo(eq, A.id) : null;
         let datos = d;
-        if (!datos) { const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'tarea-cuadro-mm')); datos = s.exists() ? s.data() : null; }
-        if (datos) { word = datos; sug = sugerirCuadro(datos.celdas); entregado = datos.entregado || null; resumen = CUADRO_MM.filas.map(([f, t]) => `${t}: ${CUADRO_MM.columnas.map(([c]) => ((datos.celdas || {})[`${f}_${c}`] || '').trim().split(/\s+/).filter(Boolean).length >= MIN_PALABRAS_CELDA ? '●' : '○').join('')}`).join(' · '); }
+        if (!datos) { const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', A.ind)); datos = s.exists() ? s.data() : null; }
+        if (datos) { word = datos; sug = sugerirCuadro(datos.celdas, A); entregado = datos.entregado || null; resumen = A.filas.map(([f, t]) => `${t}: ${A.columnas.map(([c]) => ((datos.celdas || {})[`${f}_${c}`] || '').trim().split(/\s+/).filter(Boolean).length >= MIN_PALABRAS_CELDA ? '●' : '○').join('')}`).join(' · '); }
       } else if (a.tipo === 'influencias') {
         let datos = eq ? await docEquipo(eq, INFLUENCIAS.id) : null;
         if (!datos) { const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'tarea-influencias')); datos = s.exists() ? s.data() : null; }
@@ -1376,7 +1380,7 @@ async function calificarTareaDig(a, enCatalogo) {
     // Cero automático: en equipo, quien no escribió nada lleva 0; los que aportaron, la sugerencia del equipo.
     let ap = null;
     if (eq) {
-      const idDoc = { atlas: a.cont, cuadro: CUADRO_MM.id, influencias: INFLUENCIAS.id, especias: ESPECIAS.id, recado: RECADOS.id }[a.tipo];
+      const idDoc = { atlas: a.cont, cuadro: (CUADROS[a.id] || CUADRO_MM).id, influencias: INFLUENCIAS.id, especias: ESPECIAS.id, recado: RECADOS.id }[a.tipo];
       const d = idDoc ? await docEquipo(eq, idDoc) : null;
       if (d) { ap = aporteDe(d, al); if (!ap.si) sug = { nota: 0, detalle: '✋ No aportó: no escribió nada en el trabajo del equipo · ' + sug.detalle }; }
     }
@@ -1385,7 +1389,7 @@ async function calificarTareaDig(a, enCatalogo) {
   const f = t => t && t.toDate ? t.toDate().toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : typeof t === 'number' ? new Date(t).toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
   wrap.innerHTML = `<h4 class="td-h4">Calificar: ${escaparHTML(nombreCatalogo(a))}</h4>
     ${enCatalogo ? '' : '<p class="aviso-td">⚠️ Esta tarea todavía no está en el catálogo: las calificaciones se guardan, pero no cuentan en el promedio hasta que la agregues.</p>'}
-    <p class="field-hint">La calificación sugerida sale de qué tan completo está el trabajo${a.tipo === 'atlas' ? ' (la mitad por países clasificados y la mitad por fichas con al menos 4 de 7 apartados)' : a.tipo === 'cuadro' ? ` (8 puntos por las ${CUADRO_MM.filas.length * CUADRO_MM.columnas.length} celdas llenas —cuenta la que tiene ${MIN_PALABRAS_CELDA} palabras o más— y 2 puntos por las fuentes de las 4 filas de investigación, medio punto cada una)` : a.tipo === 'influencias' ? ' (1 punto por elegir platillo, 1.5 por cada influencia con evidencia —hasta 4— y 3 por un argumento de al menos 60 palabras)' : a.tipo === 'ficha' ? ` (${FICHAS[a.id].campos.map(([, t, , min, , pts]) => `${pts} por «${t.replace(/^\S+\s/, '')}»`).join(', ')}; cada uno en proporción a lo escrito)` : a.tipo === 'fusion' ? ' (1 por el platillo, 2 por cada capa —indígena, británica y migrante— con 15 palabras o más, hasta 2 por una conclusión de 25 palabras y 1 por dos fuentes)' : a.tipo === 'especias' ? ' (1.5 por cada uno de especia, técnica, platillo y conexión con México con 8 palabras o más, hasta 3 por un «por qué» de 30 palabras y 1 por la fuente)' : a.tipo === 'recado' ? ' (0.5 por ingrediente con origen y llegada —hasta 6—, 0.5 por ruta explicada con 10 palabras o más —hasta 4—, 2 por los guisos, 2 por la conclusión y 1 por las fuentes)' : ' (solo la ficha del platillo investigado: datos 1.5, ingredientes clasificados y su origen 4, técnicas 1, conclusión de 25 palabras por pregunta 3 y fuentes 0.5; la del proyecto no cuenta)'}. En equipo, quien <b>no escribió nada</b> en el trabajo sale con sugerida <b>0</b> (✋ No aportó); los que sí aportaron llevan la del equipo. Puedes corregirla a mano si alguien trabajó desde el celular de un compañero.</p>
+    <p class="field-hint">La calificación sugerida sale de qué tan completo está el trabajo${a.tipo === 'atlas' ? ' (la mitad por países clasificados y la mitad por fichas con al menos 4 de 7 apartados)' : a.tipo === 'cuadro' ? ` (8 puntos por las ${(CUADROS[a.id] || CUADRO_MM).filas.length * (CUADROS[a.id] || CUADRO_MM).columnas.length} celdas llenas —cuenta la que tiene ${MIN_PALABRAS_CELDA} palabras o más— y 2 puntos por las fuentes de las ${(CUADROS[a.id] || CUADRO_MM).filas.filter(x => x[3]).length} filas de investigación, repartidos entre ellas)` : a.tipo === 'influencias' ? ' (1 punto por elegir platillo, 1.5 por cada influencia con evidencia —hasta 4— y 3 por un argumento de al menos 60 palabras)' : a.tipo === 'ficha' ? ` (${FICHAS[a.id].campos.map(([, t, , min, , pts]) => `${pts} por «${t.replace(/^\S+\s/, '')}»`).join(', ')}; cada uno en proporción a lo escrito)` : a.tipo === 'fusion' ? ' (1 por el platillo, 2 por cada capa —indígena, británica y migrante— con 15 palabras o más, hasta 2 por una conclusión de 25 palabras y 1 por dos fuentes)' : a.tipo === 'especias' ? ' (1.5 por cada uno de especia, técnica, platillo y conexión con México con 8 palabras o más, hasta 3 por un «por qué» de 30 palabras y 1 por la fuente)' : a.tipo === 'recado' ? ' (0.5 por ingrediente con origen y llegada —hasta 6—, 0.5 por ruta explicada con 10 palabras o más —hasta 4—, 2 por los guisos, 2 por la conclusión y 1 por las fuentes)' : ' (solo la ficha del platillo investigado: datos 1.5, ingredientes clasificados y su origen 4, técnicas 1, conclusión de 25 palabras por pregunta 3 y fuentes 0.5; la del proyecto no cuenta)'}. En equipo, quien <b>no escribió nada</b> en el trabajo sale con sugerida <b>0</b> (✋ No aportó); los que sí aportaron llevan la del equipo. Puedes corregirla a mano si alguien trabajó desde el celular de un compañero.</p>
     <div class="quiz-actions" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;"><button type="button" class="btn btn-ghost-dark btn-small" id="td-usar">Usar sugeridas en las vacías</button><button type="button" class="btn btn-ghost-dark btn-small" id="td-zip">⬇ Word de todos (.zip)</button><button type="button" class="btn btn-ghost-dark btn-small" id="td-cerrar">Cerrar</button><span class="field-hint" id="td-zip-msg"></span></div>
     <div class="taller-tabla-wrap"><table class="taller-tabla td-tabla"><thead><tr><th>Alumno</th><th>Trabajo</th><th>Entrega</th><th>Sugerida</th><th>Calificación</th><th title="Falta justificada: la tarea no le cuenta en el promedio">Exento</th><th>Word</th></tr></thead><tbody>
     ${filas.map(x => `<tr data-id="${x.al.id}"><td><b>${escaparHTML(x.al.nombre)}</b>${x.eq ? `<br><small>👥 ${escaparHTML(x.eq.nombre)}</small>` : ''}</td>

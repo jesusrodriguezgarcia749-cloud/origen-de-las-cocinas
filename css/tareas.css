@@ -384,3 +384,6 @@ html[data-theme="dark"] .cu-ej b { color: #E9C46A; }
 .tq-cielo { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 0 0 14px; padding: 10px 14px; border-radius: 12px; background: linear-gradient(90deg, #1E1B4B, #3B2A6B); color: #fff; text-decoration: none; font-size: .92rem; }
 .tq-cielo em { margin-left: auto; font-style: normal; font-weight: 700; color: #F3C969; }
 .cl-mision { border-color: #2E6F7A; }
+.cu-versalles > span { color: #2E4A8C; } .cu-topkapi > span { color: #A63D2F; }
+.cu-versalles textarea { border-top: 3px solid #2E4A8C; } .cu-topkapi textarea { border-top: 3px solid #A63D2F; }
+.cu-fila > .cu-ej { margin: 0 0 10px; }

@@ -41,3 +41,39 @@ export const QUE_FUNCION = [
   { q: 'La ofrenda de Día de Muertos con la comida favorita del difunto', e: '🕯️', c: 'vinculo', x: 'La comida mantiene el lazo con quienes ya no están.', niv: 2 },
   { q: 'Comer alrededor de la hoguera hace miles de años', e: '🏕️', c: 'vinculo', x: 'Alrededor del fuego se compartía y se contaban historias: la cocina nace como hecho social.', niv: 2 },
 ];
+
+// ¿Qué corte es? (4.3): la mesa como instrumento de poder en cortes que nunca se conocieron.
+export const CORTES = [
+  ['medieval', 'Banquete medieval', '#6B3E75'],
+  ['versalles', 'Versalles', '#2E4A8C'],
+  ['topkapi', 'Topkapi (otomana)', '#A63D2F'],
+  ['china', 'Ciudad Prohibida', '#C98A2C'],
+  ['mogol', 'Corte mogol', '#3F7A4F'],
+  ['mexico', 'Moctezuma o Maximiliano', '#5E4429'],
+];
+export const QUE_CORTE = [
+  { q: 'Aves asadas y vueltas a vestir con sus plumas para impresionar a los invitados', e: '🦚', c: 'medieval', x: 'Los entremeses espectaculares de la Baja Edad Media: el banquete era un espectáculo político.', niv: 1 },
+  { q: 'Un plato con pimienta, canela, clavo, jengibre y azafrán al mismo tiempo', e: '🧂', c: 'medieval', x: 'Las especias de Oriente eran carísimas: usar muchas a la vez era presumir riqueza.', niv: 1 },
+  { q: 'Le Viandier, el recetario atribuido a Taillevent (siglo XIV)', e: '📜', c: 'medieval', x: 'Taillevent cocinaba para los reyes de Francia en el siglo XIV: es la cocina medieval de corte.', niv: 2 },
+  { q: 'Salsas doradas con azafrán y verdes con perejil: el color también se servía', e: '🎨', c: 'medieval', x: 'En la Edad Media el color del plato era parte del lujo.', niv: 2 },
+  { q: 'El rey come en público y la corte lo mira de pie: el grand couvert', e: '👑', c: 'versalles', x: 'Luis XIV convirtió su comida en un espectáculo de jerarquía.', niv: 1 },
+  { q: 'Sentarse o acercarse a la mesa del rey es un privilegio que marca tu rango', e: '🪑', c: 'versalles', x: 'En Versalles, la distancia a la mesa real decía quién eras.', niv: 1 },
+  { q: 'Vatel, 1671: el pescado no llega a tiempo para la fiesta del rey', e: '🐟', c: 'versalles', x: 'La fiesta de Chantilly para Luis XIV muestra la presión de la mesa del poder.', niv: 2 },
+  { q: 'Le Cuisinier françois (1651), la técnica de La Varenne', e: '📗', c: 'versalles', x: 'La Varenne sostuvo la cocina de la época de Luis XIV.', niv: 2 },
+  { q: 'Los platos llegan en desfile ceremonial desde cocinas lejanas', e: '🎺', c: 'versalles', x: 'En Versalles la comida recorría un largo camino, como una procesión.', niv: 2 },
+  { q: 'Una hilera de cocinas con chimeneas y cientos de cocineros especializados', e: '🏭', c: 'topkapi', x: 'Las cocinas del palacio de Estambul: panaderos, reposteros, especialistas en halva, encurtidos o yogur.', niv: 1 },
+  { q: 'La palabra «ocak», fogón, también nombra a los jenízaros', e: '🔥', c: 'topkapi', x: 'La élite militar otomana tenía rangos con nombres de cocina; la olla del regimiento era su símbolo.', niv: 1 },
+  { q: 'Una organización por estaciones siglos antes de la brigada de Escoffier', e: '📋', c: 'topkapi', x: 'Codificar no es inventar: el Topkapi ya organizaba su cocina por especialidades.', niv: 2 },
+  { q: 'Especialistas en halva, el dulce de palacio', e: '🍬', c: 'topkapi', x: 'La halva tenía sus propios cocineros en las cocinas del Topkapi.', niv: 2 },
+  { q: 'El banquete manchú-han: más de cien platos a lo largo de varios días', e: '🥢', c: 'china', x: 'Se atribuye a la corte Qing; su forma exacta se conoce más por la leyenda que por los documentos.', niv: 1 },
+  { q: 'Catadores para que nadie envenenara al emperador', e: '🧪', c: 'china', x: 'En la Ciudad Prohibida se servían numerosos platos y había catadores contra el veneno.', niv: 1 },
+  { q: 'Un banquete para unir a la dinastía manchú con la élite han', e: '🤝', c: 'china', x: 'La mesa como instrumento de unidad política entre dos pueblos.', niv: 2 },
+  { q: 'Muchos platos servidos, pero el emperador solo prueba algunos', e: '🍲', c: 'china', x: 'Las comidas del emperador Ming o Qing eran muy protocolarias.', niv: 2 },
+  { q: 'Arroz perfumado con azafrán, carne marinada en yogur y especias del subcontinente', e: '🍛', c: 'mogol', x: 'El biryani se asocia con la fusión de la técnica persa y los ingredientes indios.', niv: 1 },
+  { q: 'Una dinastía de cultura persa que gobernó la India desde 1526', e: '🕌', c: 'mogol', x: 'Los mogoles unieron la cocina persa con las especias de la India.', niv: 1 },
+  { q: 'La base de la «comida india» de restaurante en todo el mundo', e: '🌍', c: 'mogol', x: 'Kormas y biryanis de la cocina mogola viajaron a los restaurantes del mundo.', niv: 2 },
+  { q: 'Más de trescientos platillos al día, de los que elige algunos', e: '🌽', c: 'mexico', x: 'Bernal Díaz del Castillo describió así la mesa de Moctezuma.', niv: 1 },
+  { q: 'Comer detrás de un biombo dorado para que nadie lo vea', e: '🪭', c: 'mexico', x: 'Moctezuma se ocultaba; Luis XIV se exhibía. Las dos formas comunican poder.', niv: 1 },
+  { q: 'Cacao espumoso en copas de oro y pescado fresco del Golfo traído por corredores', e: '🍫', c: 'mexico', x: 'El tributo de todo el imperio llegaba a la mesa del tlatoani.', niv: 2 },
+  { q: 'Menús escritos en francés en el Castillo de Chapultepec (1864-1867)', e: '🏰', c: 'mexico', x: 'Maximiliano y Carlota trajeron a México el protocolo de las cortes europeas.', niv: 1 },
+];

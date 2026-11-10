@@ -2,8 +2,11 @@
 
 // ---------- 1. Cuadro comparativo mexica vs. maya
 export const CUADRO_MM = {
-  id: 'act-cuadro-mm', clave: 'cuadroMM',
-  titulo: 'Cuadro comparativo: cocina mexica vs. cocina maya',
+  id: 'act-cuadro-mm', clave: 'cuadroMM', tarea: 'cuadro-mm', ind: 'tarea-cuadro-mm',
+  titulo: 'Cuadro comparativo: cocina mexica vs. cocina maya', corto: 'Cuadro mexica–maya',
+  kicker: 'Tema 3.2 · México prehispánico y mestizo', wordTitulo: 'Cocina mexica y cocina maya', wordIntro: 'Dos tradiciones del mismo tronco mesoamericano: maíz, frijol y chile.', archivo: 'Cuadro_mexica_maya',
+  ayuda: 'Escriban con sus palabras lo que aprendieron en clase y en el compendio (subtema 3.2).',
+  colores: ['#A63D2F', '#2E6FA8', '#3F7A4F'], cortos: ['Mexica', 'Maya', 'Se parecen'],
   columnas: [['mexica', 'Mexica'], ['maya', 'Maya'], ['parecido', '¿En qué se parecen?']],
   filas: [
     ['territorio', 'Territorio y clima', '¿Dónde vivían? ¿Cómo era el suelo, el agua, el clima?'],
@@ -80,6 +83,70 @@ export const CUADRO_MM = {
   },
 };
 
+// ---------- 1b. Cuadro comparativo Versalles vs. Topkapi (4.3, en equipo)
+// Mismo motor que el mexica–maya. Las filas con true son «🔎 Investiga»: el compendio no lo trae.
+export const CUADRO_CORTES = {
+  id: 'act-cortes', clave: 'cuadroCortes', tarea: 'cortes', ind: 'tarea-cortes',
+  titulo: 'Cuadro comparativo: la mesa de Versalles vs. la del Topkapi', corto: 'Versalles–Topkapi',
+  kicker: 'Tema 4.3 · La comida en la realeza', wordTitulo: 'Versalles y el Topkapi', wordIntro: 'Dos cortes que nunca se sentaron a la misma mesa y, sin embargo, usaron la comida con la misma lógica: el poder.', archivo: 'Cuadro_Versalles_Topkapi',
+  ayuda: 'Escriban con sus palabras lo que vimos en clase y en el compendio (subtema 4.3).',
+  colores: ['#2E4A8C', '#A63D2F', '#3F7A4F'], cortos: ['Versalles', 'Topkapi', 'Se parecen'],
+  columnas: [['versalles', 'Versalles (Luis XIV)'], ['topkapi', 'Topkapi (sultán otomano)'], ['parecido', '¿En qué se parecen?']],
+  filas: [
+    ['comen', '¿Quién come y quién mira?', '¿El soberano come en público o a solas? ¿Quién puede verlo, acercarse o sentarse?'],
+    ['cocina', 'La cocina por dentro', '¿Dónde está la cocina, quién trabaja ahí y cómo se organiza?'],
+    ['protocolo', '¿Qué comunica el protocolo?', 'El orden, los objetos y los gestos: ¿qué dicen de la jerarquía?'],
+    ['vajilla', 'La vajilla y los objetos de la mesa', '¿Con qué se servía? ¿Qué objetos famosos había y qué valor tenían?', true],
+    ['politica', 'Cuando la comida se vuelve política', 'Un gesto, un ritual o una crisis donde la comida sirvió para obedecer, presumir o rebelarse.', true],
+    ['legado', '¿Qué nos dejó?', '¿Qué sigue vivo hoy en la cocina profesional o en los banquetes de Estado?'],
+  ],
+  respuestas: {
+    comen: [
+      'En el grand couvert, Luis XIV comía en público: cortesanos y visitantes lo miraban de pie, y sentarse o acercarse a la mesa era un privilegio que marcaba el rango.',
+      'El sultán, por lo general, comía solo y en privado, lejos de las miradas; el palacio entero (miles de personas) comía de sus cocinas según su rango.',
+      'En los dos, quién come, con quién y a la vista de quién comunica la jerarquía, con la misma claridad que una corona.',
+    ],
+    cocina: [
+      'Las cocinas estaban alejadas de los salones y los platos llegaban en un desfile ceremonial; la técnica de La Varenne (Le Cuisinier françois, 1651) sostenía esa cocina.',
+      'Una larga hilera de cocinas con chimeneas y cientos de cocineros especializados: panaderos, reposteros, especialistas en halva, encurtidos o yogur.',
+      'Ambas dividían el trabajo entre muchos especialistas: es el antecedente de la brigada que Escoffier formalizaría en el siglo XIX.',
+    ],
+    protocolo: [
+      'El orden de los platos, la vajilla y el derecho a acercarse o a sentarse decían quién era quién en la corte.',
+      'Quién recibía qué preparación y en qué cantidad, y que el sultán no se dejara ver comiendo; la cocina llegó a nombrar a los jenízaros (ocak, «fogón»).',
+      'La mesa es un instrumento político tan importante como un tratado: cada gesto ordena a las personas.',
+    ],
+    vajilla: [
+      'Vajilla de plata y oro, cristal y candelabros; la «nef», una pieza en forma de barco junto al rey, era objeto de reverencia.',
+      'Una colección enorme de porcelana china, de las más grandes del mundo fuera de China, que llegaba por las rutas comerciales de Asia.',
+      'En las dos cortes los objetos de la mesa eran lujo y mensaje: mostraban riqueza y alcance comercial.',
+    ],
+    politica: [
+      'Los cortesanos se descubrían y se inclinaban al paso de la comida del rey; en 1671 Vatel se quitó la vida cuando no llegó a tiempo el pescado para la fiesta de Chantilly.',
+      'Los jenízaros recibían su paga con una comida en palacio: si rechazaban el arroz o volteaban sus calderos, era señal de protesta o de rebelión; la olla del regimiento era su símbolo.',
+      'La comida servía para obedecer y también para desafiar: el poder se mostraba y se discutía en la mesa.',
+    ],
+    legado: [
+      'La cocina francesa codificada, el protocolo de los banquetes de Estado y, tras la Revolución, cocineros de las casas nobles que abrieron restaurantes (4.4).',
+      'La organización por estaciones que anticipa la brigada de cocina, y dulces y platos de corte que hoy son parte de la cocina turca.',
+      'Ambas dejaron la idea de una cocina profesional, organizada y con jerarquías, que hoy funciona en cualquier restaurante.',
+    ],
+  },
+};
+// Ejemplo guía: otra pareja de cortes (no se puede copiar en las columnas de Versalles y el Topkapi).
+CUADRO_CORTES.ejemplo = {
+  caso: 'Moctezuma vs. el emperador chino de la Ciudad Prohibida',
+  celdas: {
+    comen: 'Moctezuma comía detrás de un biombo dorado para que nadie lo viera; el emperador chino comía rodeado de sirvientes y catadores. Se parecen en que a ninguno de los dos lo veía comer cualquiera.',
+    cocina: 'A Moctezuma le preparaban más de trescientos platillos al día con productos del tributo; la cocina de la Ciudad Prohibida era una institución con cientos de cocineros. En los dos casos, una cocina enorme para una sola mesa.',
+    protocolo: 'Moctezuma elegía unos cuantos platillos de entre cientos; el emperador probaba solo algunos de los muchos que le servían. El mensaje es el mismo: tener de sobra es poder.',
+    vajilla: 'Moctezuma bebía cacao espumoso en copas de oro; en la corte china se usaba porcelana imperial. En los dos, el objeto de la mesa ya era un lujo que muy pocos podían tener.',
+    politica: 'El pescado fresco del Golfo llegaba a Tenochtitlan por corredores, como prueba del dominio sobre el territorio; el banquete manchú-han servía para unir a manchúes y chinos han.',
+    legado: 'De la mesa de Moctezuma nos queda el cacao como bebida de prestigio; de la corte china, la idea de un banquete de muchos platos para compartir. Los dos sobreviven en la cocina de hoy.',
+  },
+};
+export const CUADROS = { 'cuadro-mm': CUADRO_MM, cortes: CUADRO_CORTES };
+
 // ---------- 2. ¿Aportó o llegó?
 
 // ---------- 3. Desarma el platillo (n = nativo de América, l = llegó después de 1521)
@@ -149,6 +216,11 @@ export const TEMAS_TAREAS = [
     { id: 'que-funcion', tipo: 'practica', icono: '🎯', nombre: '¿Qué función cumple?', modo: 'Juego de práctica · 5 min', desc: 'Una comida, una costumbre o una escena romana: ¿es necesidad biológica, identidad, religión, economía, poder o vínculo social?' },
     { id: 'mas-que-comida', tipo: 'ficha', icono: '🍞', nombre: 'Una comida que es más que comida', modo: 'Individual', desc: 'Tu reflexión de 4.1: una comida de tu familia o tu comunidad, la función que cumple además de alimentar y de dónde viene. Con ejemplo guía en cada espacio.' },
   ] },
+  { tema: '4.3', titulo: 'La comida en la realeza', fecha: '2026-11-19', fechaTexto: 'Jue 19 de noviembre', acts: [
+    { id: 'que-corte', tipo: 'practica', icono: '👑', nombre: '¿Qué corte es?', modo: 'Juego de práctica · 5 min', desc: 'Grand couvert, ocak, banquete manchú-han, biryani, biombo dorado… ¿de qué corte es? Versalles, el Topkapi, la Ciudad Prohibida, la corte mogol, Moctezuma o el banquete medieval.' },
+    { id: 'cortes', tipo: 'cuadro', icono: '🏰', nombre: 'Cuadro comparativo: Versalles vs. Topkapi', modo: 'En equipo · en vivo', desc: 'Llenen juntos, cada quien desde su celular, el cuadro que compara la mesa de Luis XIV con la del sultán otomano. Dos filas son de investigación.' },
+    { id: 'banquete-estado', tipo: 'ficha', icono: '🥂', nombre: 'Investigación: un banquete de Estado de hoy', modo: 'Individual', desc: 'Un banquete de Estado contemporáneo: qué protocolo histórico conserva y qué mensaje político manda. Con ejemplo guía en cada espacio.' },
+  ] },
 ];
 export const TAREAS_DIG = Object.fromEntries(TEMAS_TAREAS.flatMap(t => t.acts.map(a => [a.id, { ...a, tema: t.tema, titulo: t.titulo, fecha: t.fecha, fechaTexto: t.fechaTexto }])));
 export const califica = a => a && ['atlas', 'cuadro', 'desarma', 'influencias', 'especias', 'recado', 'fusion', 'ficha'].includes(a.tipo);
@@ -171,12 +243,12 @@ export function sugerirAtlas(c, totalPaises) {
 // fuentes de las filas de investigación (medio punto por cada una).
 export const MIN_PALABRAS_CELDA = 5;
 const palabrasDe = t => (String(t || '').trim().match(/\S+/g) || []).length;
-export function sugerirCuadro(celdas) {
+export function sugerirCuadro(celdas, A = CUADRO_MM) {
   celdas = celdas || {};
-  const total = CUADRO_MM.filas.length * CUADRO_MM.columnas.length;
-  const textos = CUADRO_MM.filas.flatMap(([f]) => CUADRO_MM.columnas.map(([c]) => celdas[`${f}_${c}`]));
+  const total = A.filas.length * A.columnas.length;
+  const textos = A.filas.flatMap(([f]) => A.columnas.map(([c]) => celdas[`${f}_${c}`]));
   const llenas = textos.filter(v => palabrasDe(v) >= MIN_PALABRAS_CELDA).length, cortas = textos.filter(v => palabrasDe(v) > 0 && palabrasDe(v) < MIN_PALABRAS_CELDA).length;
-  const inv = CUADRO_MM.filas.filter(x => x[3]), fu = inv.filter(([f]) => (celdas[`${f}_fuente`] || '').trim()).length;
+  const inv = A.filas.filter(x => x[3]), fu = inv.filter(([f]) => (celdas[`${f}_fuente`] || '').trim()).length;
   const nota = r1(8 * llenas / total + 2 * fu / (inv.length || 1));
   return { nota, detalle: `${llenas}/${total} celdas llenas${cortas ? ` (+${cortas} con menos de ${MIN_PALABRAS_CELDA} palabras, no cuentan)` : ''} · ${fu}/${inv.length} fuentes de investigación` };
 }

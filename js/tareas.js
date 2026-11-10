@@ -9,7 +9,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, FieldPath, collection, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
-import { CUADRO_MM, PLATILLOS, TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, sugerirCuadro, MIN_PALABRAS_CELDA, INFLUENCIAS, sugerirInfluencias, ESPECIAS, subregionDe, sugerirEspecias, FUSION, sugerirFusion } from "./clase-datos.js";
+import { CUADRO_MM, CUADROS, PLATILLOS, TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, sugerirCuadro, MIN_PALABRAS_CELDA, INFLUENCIAS, sugerirInfluencias, ESPECIAS, subregionDe, sugerirEspecias, FUSION, sugerirFusion } from "./clase-datos.js";
 import { DocITES } from "./docx-ites.js";
 import { INGREDIENTES, CONTINENTES } from "./aporto-datos.js";
 import { BALUARTES, CAMPECHE, QUE_INFLUENCIA, PAISES_AM, PLATILLOS_AM } from "./america-datos.js";
@@ -19,9 +19,9 @@ import { VUELTA_MUNDO, CONTINENTES_T3 } from "./oceania-datos.js";
 import { RECADOS, ORIGENES, LLEGADAS, INGS, CLAVE_RECADO, HISTORIA, LINEA_TIEMPO, recadoDe, reconocer, ingsDe, sugerirRecado, infoRecado, recadosDe, nombreRecados } from "./recado-datos.js";
 import { comprimir, idFoto, MAX_FOTOS, fotosAlWord } from "./fotos.js";
 import { actArmaHangi } from "./arma-hangi.js?v=2026111001";
-import { FICHAS, sugerirFicha, palabrasF } from "./fichas-datos.js?v=2026111001";
-import { FUNCIONES, QUE_FUNCION } from "./tema4-datos.js?v=2026111001";
-import { wordTarea } from "./tarea-word.js?v=2026111001";
+import { FICHAS, sugerirFicha, palabrasF } from "./fichas-datos.js?v=2026111701";
+import { FUNCIONES, QUE_FUNCION, CORTES, QUE_CORTE } from "./tema4-datos.js?v=2026111701";
+import { wordTarea } from "./tarea-word.js?v=2026111701";
 import { formacionDe, formaciones, formacionDeTarea, abiertas as inscAbiertas, equipoDe, equiposDe, tareasDeFormacion, enEquipo } from "./equipos.js";
 
 const db = getFirestore(initializeApp(firebaseConfig));
@@ -131,8 +131,9 @@ async function estadoDe(a) {
       else { const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al, 'atlas', 'mi-atlas')); if (s.exists()) { const d = s.data(), k = ((d.datos || {}).conts || {})[a.cont]; if (k) c = { asign: k.asign || {}, regiones: k.regiones || [] }; const en = ((d.datos || {}).entregas || {})[a.cont]; if (en) out.entregado = { t: en }; } }
       if (c) out.avance = `${Object.keys(c.asign).length}/${await totalPaises(a.cont)} países · ${c.regiones.length} regiones`;
     } else if (a.tipo === 'cuadro') {
-      const s = await getDoc(eq ? doc(db, 'grupos', g, 'equipos', eq.id, 'atlas', CUADRO_MM.id) : doc(db, 'grupos', g, 'alumnos', al, 'atlas', 'tarea-cuadro-mm'));
-      if (s.exists()) { out.avance = sugerirCuadro(s.data().celdas).detalle; out.entregado = s.data().entregado || null; }
+      const A = CUADROS[a.id] || CUADRO_MM;
+      const s = await getDoc(eq ? doc(db, 'grupos', g, 'equipos', eq.id, 'atlas', A.id) : doc(db, 'grupos', g, 'alumnos', al, 'atlas', A.ind));
+      if (s.exists()) { out.avance = sugerirCuadro(s.data().celdas, A).detalle; out.entregado = s.data().entregado || null; }
     } else if (a.tipo === 'influencias') {
       const s = await getDoc(eq ? doc(db, 'grupos', g, 'equipos', eq.id, 'atlas', INFLUENCIAS.id) : doc(db, 'grupos', g, 'alumnos', al, 'atlas', 'tarea-influencias'));
       if (s.exists()) { out.avance = sugerirInfluencias(s.data()).detalle; out.entregado = s.data().entregado || null; }
@@ -213,7 +214,7 @@ function ruta() {
   const c = $('#cl-actividad');
   c.innerHTML = `<a class="cl-volver" href="#">← Todas las tareas</a><p class="cl-fecha">Tema ${esc(a.tema)} · ${esc(a.titulo)} · ${esc(a.fechaTexto)}</p><h2 class="cl-h2">${a.icono} ${esc(a.nombre)}</h2>
     ${califica(a) ? '<p class="cl-vale">📌 Cuenta como una tarea del Parcial 2.</p>' : '<p class="cl-vale cl-vale-p">🎯 Práctica para repasar: no lleva calificación.</p>'}<div id="cl-cuerpo"></div>`;
-  (a.tipo === 'practica' ? { aporto: actAporto, campeche: actCampeche, 'que-influencia': actQueInfluencia, 'platillos-america': actPlatillosAmerica, 'que-asia': actQueAsia, 'que-europa': actQueEuropa, 'vuelta-mundo': actVueltaMundo, 'arma-hangi': c => actArmaHangi(c, sesion && sesion.nombre), 'que-funcion': actQueFuncion }[a.id] : { cuadro: actCuadro, desarma: actDesarma, influencias: actInfluencias, especias: actEspecias, recado: actRecado, fusion: actFusion, ficha: c => actFicha(c, a) }[a.tipo])($('#cl-cuerpo'));
+  (a.tipo === 'practica' ? { aporto: actAporto, campeche: actCampeche, 'que-influencia': actQueInfluencia, 'platillos-america': actPlatillosAmerica, 'que-asia': actQueAsia, 'que-europa': actQueEuropa, 'vuelta-mundo': actVueltaMundo, 'arma-hangi': c => actArmaHangi(c, sesion && sesion.nombre), 'que-funcion': actQueFuncion, 'que-corte': actQueCorte }[a.id] : { cuadro: c => actCuadro(c, a), desarma: actDesarma, influencias: actInfluencias, especias: actEspecias, recado: actRecado, fusion: actFusion, ficha: c => actFicha(c, a) }[a.tipo])($('#cl-cuerpo'));
   window.scrollTo({ top: 0 });
 }
 // El QR de un equipo abre tareas.html#unir-CODIGO (vía unir.html): entra, se une y va a su tarea.
@@ -262,31 +263,34 @@ function barraEntrega(cont, a, { entregado, alEntregar }) {
 }
 
 // ======================================================= 1. CUADRO COMPARATIVO (en equipo o individual, en vivo)
-function actCuadro(cont) {
+function actCuadro(cont, a0) {
+  const A = CUADROS[a0 && a0.id] || CUADRO_MM;
   const entrar = async () => {
     escucharGrupo();
     cont.innerHTML = '<p class="atlas-ayuda">Buscando a tu equipo…</p>';
-    const eq = await equipo('cuadro-mm');
-    if (eq) return cuadro(cont, eq);
+    const eq = await equipo(A.tarea);
+    if (eq) return cuadro(cont, eq, A);
     cont.innerHTML = `<div class="cl-sin-eq"><p><b>Todavía no estás en un equipo.</b> Escribe el código de 4 letras de tu equipo (o escanea el QR que proyecta tu maestro).</p>
       <form id="cl-unir" class="ma-unir"><div><input id="cl-cod" maxlength="4" autocomplete="off" placeholder="ABCD" aria-label="Código del equipo"><button class="btn-at" type="submit">Unirme</button></div></form>
       <p class="ma-msg mal" id="cl-unir-msg" hidden></p><p class="cl-o">o</p><button type="button" class="btn-ruta" id="cl-solo">Hacerla solo (se guarda en tu cuenta)</button></div>`;
-    $('#cl-unir').addEventListener('submit', async e => { e.preventDefault(); try { cuadro(cont, await unirseCodigo($('#cl-cod').value, 'cuadro-mm')); } catch (er) { const m = $('#cl-unir-msg'); m.textContent = er.message || er; m.hidden = false; } });
-    $('#cl-solo').addEventListener('click', () => cuadro(cont, null));
+    $('#cl-unir').addEventListener('submit', async e => { e.preventDefault(); try { cuadro(cont, await unirseCodigo($('#cl-cod').value, A.tarea), A); } catch (er) { const m = $('#cl-unir-msg'); m.textContent = er.message || er; m.hidden = false; } });
+    $('#cl-solo').addEventListener('click', () => cuadro(cont, null, A));
   };
   if (sesion) entrar(); else formAcceso(cont, entrar, 'Entra con tu nombre y PIN para trabajar en esta tarea');
 }
-function cuadro(cont, eq) {
-  const A = CUADRO_MM, a = TAREAS_DIG['cuadro-mm'], claves = A.filas.flatMap(([f]) => A.columnas.map(([c]) => `${f}_${c}`));
+function cuadro(cont, eq, A = CUADRO_MM) {
+  const a = TAREAS_DIG[A.tarea], claves = A.filas.flatMap(([f]) => A.columnas.map(([c]) => `${f}_${c}`));
   let S = { celdas: {}, por: {}, entregado: null }, clave = false, pend = new Map(), vuelo = new Map(), pendT = null, existe = false, ultima = '';
-  const ref = eq ? doc(db, 'grupos', sesion.grupoId, 'equipos', eq.id, 'atlas', A.id) : doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'atlas', 'tarea-cuadro-mm');
+  const ref = eq ? doc(db, 'grupos', sesion.grupoId, 'equipos', eq.id, 'atlas', A.id) : doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'atlas', A.ind);
+  const nInv = A.filas.filter(x => x[3]).length;
   cont.innerHTML = `<div class="ma-barra"><span>${eq ? `👥 <b>${esc(eq.nombre)}</b>: ${esc((eq.nombres || []).join(', '))}` : `👤 <b>${esc(sesion.nombre)}</b> (individual)`}</span><span class="ma-estado" id="cu-estado"></span>
       <button type="button" class="btn-ruta" id="cu-word">⬇ Descargar en Word</button></div>
     <div data-entrega></div>
-    <p class="atlas-ayuda">Escriban con sus palabras lo que aprendieron en clase y en el compendio (subtema 3.2). Las filas marcadas <b>🔎 Investiga</b> no vienen en el compendio: búsquenlas en internet${eq ? ', repártanselas entre el equipo' : ''} y anoten de dónde sacaron la información. Se guarda solo${eq ? ' y todos ven al instante lo que escriben los demás' : ''}.</p>
+    <p class="atlas-ayuda">${A.ayuda} Las filas marcadas <b>🔎 Investiga</b> no vienen en el compendio: búsquenlas en internet${eq ? ', repártanselas entre el equipo' : ''} y anoten de dónde sacaron la información. Se guarda solo${eq ? ' y todos ven al instante lo que escriben los demás' : ''}.</p>
+    ${A.ejemplo ? `<div class="cu-ej-aviso"><b>💡 Debajo de cada fila hay un ejemplo</b> resuelto con otro caso: <i>${esc(A.ejemplo.caso)}</i>. Úsenlo para ver qué se pide y cuánto escribir, pero <b>no lo copien</b>: escriban sobre su propia comparación.</div>` : ''}
     <p class="cu-progreso" id="cu-progreso"></p>
     <div class="cu-clave" id="cu-clave" hidden><b>🔑 Su maestro liberó la clave.</b> <button type="button" class="btn-at" id="cu-ver-clave" aria-pressed="false">Comparar con la clave</button></div>
-    <div class="cu-tabla">${A.filas.map(([f, t, ayuda, inv]) => `<section class="cu-fila ${inv ? 'cu-inv' : ''}"><h3>${inv ? '<span class="cu-tag">🔎 Investiga</span>' : ''}${esc(t)}<small>${esc(ayuda)}</small></h3>
+    <div class="cu-tabla">${A.filas.map(([f, t, ayuda, inv]) => `<section class="cu-fila ${inv ? 'cu-inv' : ''}"><h3>${inv ? '<span class="cu-tag">🔎 Investiga</span>' : ''}${esc(t)}<small>${esc(ayuda)}</small></h3>${A.ejemplo && A.ejemplo.celdas[f] ? `<p class="cu-ej"><b>Ejemplo guía</b>${esc(A.ejemplo.celdas[f])}</p>` : ''}
       <div class="cu-celdas">${A.columnas.map(([c, nc], ci) => `<label class="cu-celda cu-${c}"><span>${esc(nc)} <small class="ma-autor" data-autor="${f}_${c}"></small></span><textarea data-k="${f}_${c}" rows="3"></textarea>
         <p class="cu-resp" data-resp="${f}_${c}" hidden><b>${inv ? 'Respuesta de referencia' : 'Según el compendio'}:</b> ${esc(A.respuestas[f][ci])}</p></label>`).join('')}</div>
       ${inv ? `<label class="cu-fuente"><span>📚 Fuente: ¿de dónde lo sacaron? <small class="ma-autor" data-autor="${f}_fuente"></small></span><input data-k="${f}_fuente" type="text" placeholder="Autor o sitio, título y enlace (URL)"></label>` : ''}</section>`).join('')}</div>`;
@@ -298,7 +302,7 @@ function cuadro(cont, eq) {
     const pal = k => ((S.celdas[k] || '').trim().match(/\S+/g) || []).length;
     const n = claves.filter(k => pal(k) >= MIN_PALABRAS_CELDA).length, inv = A.filas.filter(x => x[3]), fu = inv.filter(([f]) => (S.celdas[`${f}_fuente`] || '').trim()).length;
     $$('[data-k]', cont).forEach(t => { const k = t.dataset.k; if (!k.endsWith('_fuente')) t.classList.toggle('cu-corta', pal(k) > 0 && pal(k) < MIN_PALABRAS_CELDA); });
-    $('#cu-progreso').innerHTML = `<b>${n} de ${claves.length}</b> celdas llenas · <b>${fu} de ${inv.length}</b> fuentes <span class="ma-barra-p"><i style="width:${Math.round(100 * n / claves.length)}%"></i></span><small class="cu-regla">Una celda cuenta cuando tiene al menos ${MIN_PALABRAS_CELDA} palabras. Las celdas valen 8 puntos y las 4 fuentes de investigación, 2.</small>`;
+    $('#cu-progreso').innerHTML = `<b>${n} de ${claves.length}</b> celdas llenas · <b>${fu} de ${inv.length}</b> fuentes <span class="ma-barra-p"><i style="width:${Math.round(100 * n / claves.length)}%"></i></span><small class="cu-regla">Una celda cuenta cuando tiene al menos ${MIN_PALABRAS_CELDA} palabras. Las celdas valen 8 puntos y las ${nInv} fuentes de investigación, 2.</small>`;
   };
   const aplicar = d => { const c = { celdas: { ...(d.celdas || {}) }, por: { ...(d.por || {}) }, entregado: d.entregado || null }; [...vuelo.values(), ...pend.values()].forEach(([r, v]) => { c[r[0]][r[1]] = v; }); return c; };
   const firma = () => eq ? { ultimoAutor: sesion.alumnoId, ultimoPin: sesion.pin, ultimoNombre: sesion.nombre } : { pinVerificado: sesion.pin, nombre: sesion.nombre };
@@ -349,8 +353,8 @@ function cuadro(cont, eq) {
   $('#cu-word').addEventListener('click', async () => {
     await flush();
     const D = new DocITES(); await D.cargarLogo();
-    D.portada({ kicker: 'Tema 3.2 · México prehispánico y mestizo', titulo: 'Cocina mexica y cocina maya', subtitulo: 'Cuadro comparativo', etiqueta: eq ? `Equipo «${eq.nombre}»` : 'Alumno', personas: eq ? eq.nombres || [] : [sesion.nombre] });
-    D.h1('Cuadro comparativo', 'Dos tradiciones del mismo tronco mesoamericano: maíz, frijol y chile.');
+    D.portada({ kicker: A.kicker, titulo: A.wordTitulo, subtitulo: 'Cuadro comparativo', etiqueta: eq ? `Equipo «${eq.nombre}»` : 'Alumno', personas: eq ? eq.nombres || [] : [sesion.nombre] });
+    D.h1('Cuadro comparativo', A.wordIntro);
     const celda = k => { const t = (S.celdas[k] || '').trim(), au = eq && S.por[k]; return { runs: [[t || '(sin escribir)', t ? {} : { i: true, color: '9A9389' }], ...(au ? [[`\n✍ ${au}`, { color: '3F7A4F', tam: 8 }]] : [])] }; };
     const cab = (f, t, inv) => { const fu = (S.celdas[`${f}_fuente`] || '').trim(); return inv ? { runs: [[t, { b: true }], [`\n🔎 Investigación${fu ? ' · Fuente: ' + fu : ' · sin fuente'}`, { color: '6B6358', tam: 8, i: !fu }]], fondo: 'F4EFE4' } : { t, b: true, fondo: 'F4EFE4' }; };
     D.tabla([['Apartado', ...A.columnas.map(c => c[1])], ...A.filas.map(([f, t, , inv]) => [cab(f, t, inv), ...A.columnas.map(([c]) => celda(`${f}_${c}`))])], { anchos: [1700, 2560, 2560, 2540] });
@@ -358,7 +362,7 @@ function cuadro(cont, eq) {
       D.h1('Comparación con la clave', 'La clave que liberó el maestro (del compendio y, en las filas de investigación, respuestas de referencia), para revisar lo que escribimos.');
       D.tabla([['Apartado', ...A.columnas.map(c => c[1])], ...A.filas.map(([f, t]) => [{ t, b: true, fondo: 'F4EFE4' }, ...A.respuestas[f]])], { anchos: [1700, 2560, 2560, 2540] });
     }
-    D.descargar(`Cuadro_mexica_maya_${slug(eq ? 'equipo ' + eq.nombre : sesion.nombre)}`);
+    D.descargar(`${A.archivo}_${slug(eq ? 'equipo ' + eq.nombre : sesion.nombre)}`);
   });
   pintar();
   const salir = () => flush();
@@ -1069,6 +1073,15 @@ function actQueFuncion(cont) {
     intro: 'Comer empezó como <b>necesidad biológica</b>, pero se volvió cultura: <b>identidad, religión, economía, poder y vínculo social</b>. Aparece una comida, una costumbre o una escena romana: <b>¿qué función cumple?</b>',
     niveles: [{ id: 'basico', n: 'Básico', ico: '🌱', preg: 12, desc: 'Los casos más claros de cada función.', filtro: x => x.niv === 1 }, { id: 'experto', n: 'Experto', ico: '🏆', preg: 20, desc: 'Todos, con Roma y casos que hay que pensar dos veces.', filtro: () => true }],
     estudiarBoton: 'Estudiar las funciones de la comida', estudiarIntro: 'Cada función de la comida con sus ejemplos del juego.',
+  });
+}
+
+function actQueCorte(cont) {
+  juegoOpciones(cont, {
+    clave: 'quecorte', items: QUE_CORTE, opciones: CORTES, que: '',
+    intro: 'La mesa fue un instrumento de poder en cortes que <b>nunca se conocieron</b>. Aparece una costumbre, un platillo o una escena: <b>¿de qué corte es?</b>',
+    niveles: [{ id: 'basico', n: 'Básico', ico: '🌱', preg: 12, desc: 'Los casos más claros de cada corte.', filtro: x => x.niv === 1 }, { id: 'experto', n: 'Experto', ico: '🏆', preg: 20, desc: 'Todos, con los detalles finos.', filtro: () => true }],
+    estudiarBoton: 'Estudiar las cortes', estudiarIntro: 'Cada corte con sus pistas del juego.',
   });
 }
 

@@ -8,7 +8,11 @@
 <body>
 <!-- =====================================================================
      SESIÓN: Jueves 19 de noviembre · 4.3 La comida en la realeza · 3 horas
+     Formato paso a paso: juego «¿Qué corte es?», lupas de Versalles y del Topkapi, el recorrido
+     de un plato en Versalles, la línea del tiempo de las mesas del poder, el cuadro comparativo
+     Versalles–Topkapi en equipo (plataforma) y la investigación del banquete de Estado (individual).
      Fuente: libro de texto Origen de las Cocinas, Tema 4.3
+     Lo que va en "minutos", "evaluacion" y "notas" solo lo ve el docente (tecla S o ?docente).
      ===================================================================== -->
 <script>
 const PRESENTACION = {
@@ -21,291 +25,359 @@ const PRESENTACION = {
       titulo: "4.3 La comida en la realeza",
       subtitulo: "La mesa como instrumento político",
       duracion: "3 horas",
-      imagen: "img/versalles_banquete.jpg" },
+      imagen: "img/versalles_banquete.jpg",
+      minutos: "0-1",
+      notas: "Sesión de 3 horas. El trabajo fuerte es el cuadro Versalles–Topkapi en equipo (plataforma). Antes de la clase: Panel → Tareas → Tareas digitales → 👥 de «Cuadro comparativo: Versalles vs. Topkapi» para formar los equipos y tener listos los QR." },
 
     { tipo: "objetivos",
       intro: "Hoy vas a comprobar que una mesa puede funcionar como un tratado o un matrimonio de Estado.",
       puntos: [
-        "Vas a entender por qué el banquete fue un instrumento político.",
-        "Vas a conocer el grand couvert de Versalles.",
-        "Vas a comparar en equipos el protocolo francés con el otomano.",
-        "Vas a descubrir que la brigada de cocina existía en Estambul antes que en Francia."
-      ] },
+        "Calentar con el juego **¿Qué corte es?**",
+        "Entender por qué el banquete fue un **instrumento político**.",
+        "Leer con lupa el **grand couvert** de Versalles y las **cocinas del Topkapi**.",
+        "Comparar en equipo **Versalles y el Topkapi** en la plataforma.",
+        "Descubrir que la **brigada de cocina** ya existía en Estambul antes que en Francia."
+      ],
+      pasoAPaso: true,
+      minutos: "1-3" },
+
+    { tipo: "plataforma",
+      etiqueta: "Calentamiento", tipoAct: "Individual · juego de 5 minutos",
+      titulo: "¿Qué corte es?",
+      enlace: "../tareas.html#que-corte", textoEnlace: "Tareas → ¿Qué corte es?",
+      minutos: "3-9", evaluacion: "Formativo",
+      notas: "Que jueguen en «Básico» sin haber visto el tema: al responder leen por qué. Es el mapa de la clase: banquete medieval, Versalles, Topkapi, Ciudad Prohibida, corte mogol y Moctezuma o Maximiliano. Pregunta al final: ¿cuál fue la más difícil de reconocer?",
+      pasos: [
+        "Escanea el QR: **Tareas → ¿Qué corte es?**",
+        "Aparece una costumbre, un platillo o una escena: **¿de qué corte es?**",
+        "Elige **Básico**. Al responder, lee por qué."
+      ],
+      pasoAPaso: true },
 
     { tipo: "tema",
       titulo: "La mesa como escaparate del poder",
-      minutos: "0-15", evaluacion: "Formativo",
+      minutos: "9-11", evaluacion: "Formativo",
       notas: "Encuadre. Retoma la clase pasada: Roma ya había hecho del comer una disciplina con jerarquías. Hoy vemos a qué extremo llegó.",
       puntos: [
         "A lo largo de la historia, la mesa de la realeza funcionó como un **escaparate del poder político**.",
-        "Ya vimos en el Tema 1 que los banquetes medievales eran, ante todo, **instrumentos políticos**.",
-        "Servían para **exhibir riqueza**, **sellar alianzas** mediante regalos y gestos de generosidad, y **proyectar opulencia** frente a otros señores y frente al propio pueblo.",
-        "**El hilo de hoy:** cambia el continente, pero la lógica es la misma."
+        "Lo que comía un rey, **cómo se le servía**, **quién podía verlo comer** y **con quién compartía la mesa** comunicaban jerarquía como una corona.",
+        "Servía para **exhibir riqueza**, **sellar alianzas** y **proyectar opulencia** frente a otros señores y frente al pueblo.",
+        "**El hilo de hoy:** cambia el continente, pero la lógica es la misma, **aunque esas cortes nunca se conocieron**."
       ],
       pasoAPaso: true },
 
     { tipo: "tema",
       titulo: "Las especias: comer dinero",
+      minutos: "11-14",
       puntos: [
-        "El consumo ostentoso de **especias importadas de Oriente** es el ejemplo más claro de esa lógica.",
-        "Los recetarios de la **Baja Edad Media** combinan con frecuencia **varias especias** en un mismo plato.",
-        "**No se trataba de sabor:** se trataba de **estatus**.",
-        "Recuerda la clase de Asia: la pimienta, la canela y el clavo valían casi como el oro. Servirlos era mostrar que podías pagarlos."
+        "Las **especias de Oriente** (pimienta, canela, clavo, nuez moscada, jengibre, azafrán) eran carísimas.",
+        "Los recetarios de la **Baja Edad Media** combinan con frecuencia **varias en un mismo plato**.",
+        "**No se trataba solo de sabor:** se trataba de **estatus**.",
+        "Se valoraba también el **color** y los **entremeses**: aves vueltas a vestir con sus plumas, castillos de azúcar.",
+        "*Le Viandier*, atribuido a **Taillevent**, cocinero de los reyes de Francia (siglo XIV), documenta esa cocina."
       ],
       pasoAPaso: true,
       subtemas: [
         { tipo: "observa",
           titulo: "Las especias a la vista",
           imagen: "img/banquete_medieval_especias.jpg",
-          notas: "Pregunta: ¿por qué las especias están en la mesa y no en la cocina? Deja que respondan antes del último punto.",
+          notas: "Pregunta: ¿por qué las especias están en la mesa y no en la cocina? Deja que respondan antes del último punto. La imagen es una recreación artística.",
           puntos: [
             "**Pimienta, canela, clavo, azafrán y nuez moscada** en cuencos abiertos, a la vista de todos los invitados.",
             "**Se sazona frente a los comensales:** el gesto es parte del espectáculo.",
             "**Aves asadas enteras:** el asado era la técnica de prestigio.",
-            "**Tapices y antorchas:** el salón también comunica poder.",
             "**Por qué no están en la cocina:** porque **el punto era que las vieran**. Era como poner el dinero sobre la mesa."
           ] }
       ] },
 
-    { tipo: "tema",
-      titulo: "Color y espectáculo: Le Viandier",
-      puntos: [
-        "Las especias caras (pimienta, canela, clavo, nuez moscada, jengibre, azafrán) eran una forma de **presumir**.",
-        "Se valoraba el **color**: salsas doradas con azafrán, verdes con perejil.",
-        "**Entremeses:** aves cocinadas y vueltas a vestir con sus plumas, castillos de azúcar, pasteles de los que salían animales vivos.",
-        "*Le Viandier*, atribuido a **Taillevent**, cocinero de los reyes de Francia (siglo XIV), documenta esa cocina."
-      ],
-      pasoAPaso: true },
-
     { tipo: "pregunta",
       pregunta: "Si las especias eran tan caras, ¿por qué no guardarlas?",
-      respuesta: "Porque **gastarlas delante de todos era el mensaje**. Hoy pasa algo parecido con un vino caro que se abre frente a los invitados: el valor está tanto en el gesto como en el sabor." },
+      respuesta: "Porque **gastarlas delante de todos era el mensaje**. Hoy pasa algo parecido con un vino caro que se abre frente a los invitados: el valor está tanto en el gesto como en el sabor.",
+      minutos: "14-15" },
 
     { tipo: "tema",
-      titulo: "El Renacimiento: el banquete como obra de arte",
-      minutos: "16-35", evaluacion: "Formativo",
-      puntos: [
-        "El Renacimiento italiano, documentado por **Bartolomeo Scappi**, llevó esa lógica a un nuevo nivel.",
-        "La llegada de **Catalina de Médici** a la corte francesa en **1533** se asocia con esa influencia, aunque buena parte del relato (el tenedor, los helados) es **leyenda posterior**.",
-        "Los banquetes se volvieron **auténticos espectáculos artísticos**, con la colaboración de pintores y artesanos.",
-        "La corte empezó a entender la comida no solo como alimento, sino como **puesta en escena de la identidad nacional**."
-      ],
-      pasoAPaso: true,
-      subtemas: [
-        { tipo: "observa",
-          titulo: "La cocina detrás del banquete",
-          imagen: "img/cocina_medieval.jpg",
-          notas: "Pregunta: cuenten cuántas tareas distintas alcanzan a ver. Es el antecedente directo de la brigada de cocina.",
-          puntos: [
-            "**Cada quien en una tarea:** uno corta carne, otro limpia pescado, otro amasa, otro vigila los asadores.",
-            "**Los asadores frente al fuego** giran durante horas; había personas dedicadas solo a eso.",
-            "**Cazos y ollas de cobre** colgados: eran caros y se heredaban.",
-            "**Todo se hace a mano y sin frío:** por eso hay tanta gente y tanta preparación en el momento.",
-            "**El dato que importa:** un banquete que se ve como lujo es, detrás, **organización de decenas de personas**."
-          ] }
-      ] },
-
-    { tipo: "tema",
-      titulo: "Scappi y la leyenda de Catalina de Médici",
-      notas: "Buena ocasión para practicar pensamiento crítico: ¿cómo distinguimos un dato de una leyenda repetida?",
+      titulo: "El Renacimiento: Scappi y una leyenda",
+      minutos: "15-18",
+      notas: "Buena ocasión para practicar pensamiento crítico: ¿cómo distinguimos un dato de una leyenda repetida? Pregunta: ¿quién ha oído que Catalina de Médici llevó el tenedor a Francia?",
       puntos: [
         "**Bartolomeo Scappi**, cocinero de los papas, publicó *Opera* en **1570**: más de mil recetas, grabados de utensilios y menús de banquetes.",
         "**Catalina de Médici** llegó a Francia en **1533** para casarse con el futuro Enrique II.",
         "Los historiadores consideran que buena parte del relato (el tenedor, los helados, los cocineros florentinos) es **leyenda posterior**.",
-        "La **influencia italiana** del Renacimiento sobre Francia **sí fue real**."
+        "Pero la **influencia italiana** del Renacimiento sobre Francia **sí fue real**."
       ],
       pasoAPaso: true },
 
     { tipo: "tema",
       titulo: "Versalles: la mesa como teatro absolutista",
-      minutos: "36-60", evaluacion: "Formativo",
+      minutos: "18-20",
       puntos: [
-        "En la Francia de **Luis XIV**, la cocina cortesana alcanzó su **máxima codificación técnica y protocolaria**.",
-        "El **grand couvert** era la comida pública del rey: cada comida se convertía en un **espectáculo observado** por cortesanos y visitantes.",
-        "**Tres cosas comunicaban jerarquía:** la secuencia exacta de los platos, la vajilla empleada y el protocolo de **quién podía acercarse** a la mesa real.",
-        "Lo decían con la misma claridad que un **título nobiliario**."
+        "En la Francia de **Luis XIV** (reinó de 1643 a 1715), la cocina cortesana alcanzó su **máxima codificación técnica y protocolaria**.",
+        "El **grand couvert** era la comida pública del rey: **cortesanos y visitantes lo observaban de pie**.",
+        "El **orden de los platos**, la **vajilla** y el derecho a **acercarse o sentarse** comunicaban jerarquía.",
+        "La técnica la sostenía **La Varenne**, autor de *Le Cuisinier françois* (**1651**)."
       ],
-      pasoAPaso: true,
-      subtemas: [
-        { tipo: "observa",
-          titulo: "El grand couvert",
-          imagen: "img/versalles_banquete.jpg",
-          notas: "Pregunta clave: ¿cuántas personas están comiendo? Solo una. Deja que lo descubran antes de avanzar.",
-          puntos: [
-            "**Solo el rey come.** Todos los demás están de pie, mirando. Comer era un acto público de soberanía.",
-            "**Una sola silla** frente a la mesa: nadie más se sienta.",
-            "**La distancia marca el rango:** acercarse a la mesa real era un privilegio que se concedía, no un derecho.",
-            "**Vajilla de plata, cristal y candelabros:** cada objeto comunicaba posición.",
-            "**Montañas de fruta y aves enteras:** se servía mucho más de lo que una persona podía comer. **El exceso era el mensaje.**"
-          ] }
+      pasoAPaso: true },
+
+    { tipo: "lupa",
+      titulo: "El grand couvert, con lupa",
+      imagen: "img/versalles_banquete.jpg",
+      intro: "Una comida que es, sobre todo, **un espectáculo**. Avanza (→) y mira los detalles.",
+      minutos: "20-24",
+      notas: "La imagen es una recreación artística. En el primer detalle, pregunta antes de revelar: ¿cuántas personas están comiendo? Deja que cuenten.",
+      puntos: [
+        { x: 50, y: 52, zoom: 2.6, titulo: "¿Cuántos comen?", color: "#2E4A8C", texto: "Cuenta a las personas de la escena.",
+          pregunta: "¿Cuántas personas están comiendo en este banquete?", respuesta: "**Una sola: el rey.** Todos los demás están de pie, mirando. Comer era un **acto público de soberanía**." },
+        { x: 50, y: 38, zoom: 2.4, titulo: "El dosel", color: "#C98A2C", texto: "Detrás del rey, un **dosel** convierte su silla en un trono: la mesa también es un lugar de gobierno." },
+        { x: 14, y: 58, zoom: 2.2, titulo: "La corte, de pie", color: "#6B3E75", texto: "**Mirar comer al rey era un honor.** Sentarse o acercarse a la mesa era un privilegio que se concedía, no un derecho: la **distancia marcaba el rango**." },
+        { x: 37, y: 74, zoom: 2.4, titulo: "Plata, cristal y velas", color: "#4F5868", texto: "Cada objeto de la mesa comunicaba posición: candelabros, copas de cristal y vajilla de plata." },
+        { x: 54, y: 76, zoom: 2.4, titulo: "El ave vestida", color: "#3F7A4F", texto: "Un ave vuelta a vestir con sus plumas: la herencia de los **entremeses medievales**, hechos para impresionar." },
+        { x: 60, y: 66, zoom: 2.4, titulo: "Montañas de fruta", color: "#A63D2F", texto: "Mucho más de lo que una persona podía comer. **El exceso era el mensaje.**" }
+      ],
+      final: { titulo: "Comer como acto de poder", color: "#2E4A8C", texto: "En el grand couvert, la comida del rey **se mira**: el orden, los objetos y la distancia dicen quién es quién." } },
+
+    { tipo: "diagramaPasos",
+      titulo: "El viaje de un plato en Versalles",
+      minutos: "24-27",
+      intro: "De la cocina a la boca del rey había un largo camino… y un ritual. Avanza (→).",
+      notas: "Las cocinas de la corte estaban lejos de los salones, en el edificio del Grand Commun. Los platos llegaban en un desfile ceremonial, escoltados, y los cortesanos debían descubrirse e inclinarse al paso de «la comida del rey». Antes de la última respuesta, deja que adivinen.",
+      svg: `<svg viewBox="0 0 640 440" role="img" aria-label="El recorrido de un plato desde las cocinas hasta la mesa del rey en Versalles"><path d="M170,285 C250,395 390,395 470,285" fill="none" stroke="#D3D9E3" stroke-width="12" stroke-linecap="round" stroke-dasharray="2 18"/><g data-paso="0" data-anim="resaltar"><rect x="40" y="70" width="18" height="70" fill="#5E4429"/><rect x="90" y="60" width="18" height="80" fill="#5E4429"/><rect x="140" y="70" width="18" height="70" fill="#5E4429"/><path d="M49,62 q-10,-14 0,-26 q10,-12 0,-24 M99,52 q-10,-14 0,-26 q10,-12 0,-24 M149,62 q-10,-14 0,-26" fill="none" stroke="#9AA3B2" stroke-width="5" stroke-linecap="round"/><rect x="20" y="140" width="170" height="160" rx="6" fill="#C9A86A" stroke="#8C6A2E" stroke-width="4"/><path d="M45,300 V250 a20,20 0 0 1 40,0 V300 M125,300 V250 a20,20 0 0 1 40,0 V300" fill="#8C6A2E"/><circle cx="65" cy="205" r="14" fill="#F2C14E"/><circle cx="145" cy="205" r="14" fill="#F2C14E"/><text x="105" y="332" text-anchor="middle" font-family="Public Sans,sans-serif" font-weight="700" font-size="17" fill="#5E4429">Las cocinas</text><text x="105" y="354" text-anchor="middle" font-family="Public Sans,sans-serif" font-size="14" fill="#4F5868">(el Grand Commun)</text></g><path data-paso="1" data-anim="trazo" pathLength="1" d="M170,285 C250,395 390,395 470,285" fill="none" stroke="#C98A2C" stroke-width="8" stroke-linecap="round"/><g data-paso="1" data-anim="fade"><g fill="#2E4A8C"><circle cx="220" cy="345" r="11"/><circle cx="270" cy="368" r="11"/><circle cx="370" cy="368" r="11"/><circle cx="420" cy="345" r="11"/></g><g fill="#fff" stroke="#C98A2C" stroke-width="3"><ellipse cx="270" cy="352" rx="16" ry="6"/><ellipse cx="370" cy="352" rx="16" ry="6"/></g><path d="M220,334 v-30 M420,334 v-30" stroke="#4F5868" stroke-width="3"/><path d="M212,306 l8,-10 l8,10 M412,306 l8,-10 l8,10" fill="#4F5868"/><text x="320" y="424" text-anchor="middle" font-family="Public Sans,sans-serif" font-weight="700" font-size="16" fill="#C98A2C">un desfile, escoltado por guardias</text></g><g data-paso="2" data-anim="zoom"><circle cx="320" cy="250" r="13" fill="#6B3E75"/><path d="M320,263 C320,280 312,292 300,300 M318,272 L296,262 M318,272 L338,284 M304,300 L296,330 M304,300 L318,330" stroke="#6B3E75" stroke-width="6" stroke-linecap="round" fill="none"/><path d="M286,258 h22 l-4,-12 h-14 z" fill="#16213A" transform="rotate(-25 297 252)"/><text x="320" y="200" text-anchor="middle" font-family="Public Sans,sans-serif" font-weight="700" font-size="16" fill="#6B3E75">«¡La comida del rey!»</text><text x="320" y="222" text-anchor="middle" font-family="Public Sans,sans-serif" font-size="14" fill="#4F5868">la corte se descubre y se inclina</text></g><g data-paso="3" data-anim="resaltar"><path d="M460,130 L545,82 L630,130 Z" fill="#2E4A8C"/><rect x="470" y="130" width="150" height="170" fill="#E8DCC0" stroke="#2E4A8C" stroke-width="4"/><path d="M495,300 V170 M545,300 V170 M595,300 V170" stroke="#2E4A8C" stroke-width="6" stroke-opacity=".35"/><rect x="495" y="245" width="100" height="14" rx="4" fill="#fff" stroke="#2E4A8C" stroke-width="3"/><path d="M528,226 l6,-14 l11,10 l11,-10 l6,14 z" fill="#E9C46A" stroke="#C98A2C" stroke-width="2"/><rect x="536" y="226" width="18" height="18" rx="3" fill="#A63D2F"/><text x="545" y="332" text-anchor="middle" font-family="Public Sans,sans-serif" font-weight="700" font-size="17" fill="#2E4A8C">La mesa del rey</text><text x="545" y="354" text-anchor="middle" font-family="Public Sans,sans-serif" font-size="14" fill="#4F5868">(el grand couvert)</text></g><g data-paso="4" data-anim="zoom"><rect x="180" y="14" width="300" height="54" rx="14" fill="#16213A"/><text x="330" y="37" text-anchor="middle" font-family="Public Sans,sans-serif" font-weight="700" font-size="16" fill="#E9C46A">🌡️ muchas veces llegaba tibia:</text><text x="330" y="58" text-anchor="middle" font-family="Public Sans,sans-serif" font-weight="700" font-size="14" fill="#fff">el ritual importaba más que la temperatura</text></g></svg>`,
+      pasos: [
+        { num: "Paso 1", titulo: "Una cocina lejos", color: "#8C6A2E", texto: "Las cocinas estaban **lejos de los salones**, en otro edificio: el humo, el calor y el ruido no debían llegar al rey." },
+        { num: "Paso 2", titulo: "El desfile", color: "#C98A2C", texto: "Los platos viajaban en un **desfile ceremonial**, escoltados por guardias." },
+        { num: "Paso 3", titulo: "«¡La comida del rey!»", color: "#6B3E75", texto: "Al paso de la comida, los cortesanos **se quitaban el sombrero y se inclinaban**: se saludaba al plato como al rey." },
+        { num: "Paso 4", titulo: "La mesa", color: "#2E4A8C", texto: "El rey come **a la vista de todos**: el grand couvert." },
+        { num: "La pregunta", titulo: "¿Cómo llegaba?", color: "#16213A",
+          pregunta: "Después de tanto camino y tanto ritual, ¿cómo crees que llegaba la comida a la mesa?",
+          respuesta: "**Muchas veces tibia o fría.** En la mesa del poder, el **ritual** importaba más que la temperatura.",
+          encenderAlResponder: true }
       ] },
 
     { tipo: "tema",
       titulo: "Vatel, 1671: la presión de la mesa del poder",
+      minutos: "27-29",
       notas: "Trátalo con sobriedad: el punto es la presión política del banquete, no el detalle trágico.",
       puntos: [
-        "**Luis XIV** reinó de 1643 a 1715; **La Varenne** (*Le Cuisinier françois*, 1651) sostuvo la técnica de su época.",
-        "**François Vatel**, mayordomo del príncipe de Condé, organizó en **Chantilly** una fiesta de tres días para el rey.",
-        "Al ver que **no llegaba el pescado** para el banquete, se quitó la vida; Madame de Sévigné lo narró en sus cartas.",
+        "**François Vatel**, mayordomo del príncipe de Condé, organizó en **Chantilly** una fiesta de tres días para Luis XIV.",
+        "Al ver que **no llegaba a tiempo el pescado** para el banquete, se quitó la vida; **Madame de Sévigné** lo narró en sus cartas.",
         "El caso muestra que el **prestigio de una casa noble** dependía de su mesa."
       ],
       pasoAPaso: true },
 
     { tipo: "cita",
-      texto: "La mesa de la realeza nunca fue solo un lugar para comer: fue, durante siglos, un instrumento político tan importante como un tratado o un matrimonio de Estado.",
+      texto: "La mesa de la realeza nunca fue solo un lugar para comer: fue un instrumento político tan importante como un tratado o un matrimonio de Estado.",
       autor: "Origen de las Cocinas, Tema 4.3",
+      minutos: "29-30",
       notas: "Es la idea central de toda la sesión. Léela antes del video." },
 
     { tipo: "video",
       titulo: "Versalles y Luis XIV",
       youtube: "https://www.youtube.com/watch?v=dfz5QWl-MVg",
       pie: "Documental en español sobre la vida en la corte de Luis XIV.",
-      notas: "Antes de ponerlo, pide que busquen tres cosas: 1) cómo el protocolo controlaba a la nobleza, 2) qué rituales diarios tenía el rey además de comer, 3) para qué le servía a Luis XIV tener a los nobles viviendo en el palacio. Alternativa: “Versalles, el palacio absoluto”, https://www.youtube.com/watch?v=cjuxU0pGai8" },
+      minutos: "30-42",
+      notas: "Antes de ponerlo, pide que busquen tres cosas: 1) cómo el protocolo controlaba a la nobleza, 2) qué rituales diarios tenía el rey además de comer, 3) para qué le servía a Luis XIV tener a los nobles viviendo en el palacio. Alternativa: «Versalles, el palacio absoluto», https://www.youtube.com/watch?v=cjuxU0pGai8" },
 
     { tipo: "pausa",
       titulo: "¡Pausa activa!",
       duracion: "5 minutos",
-      minutos: "61-66",
+      minutos: "42-47",
       texto: "**La corte en orden.** Por equipos, formen una fila según un criterio que tú dictes: estatura, orden alfabético, mes de cumpleaños. Hazlo en 30 segundos. Después comenta: en una corte real, **tu lugar en la fila lo decidía alguien más**, y de ahí dependía qué tan cerca comías del rey." },
 
     { tipo: "tema",
-      titulo: "La corte otomana: Topkapi",
-      minutos: "67-85", evaluacion: "Formativo",
+      titulo: "El Imperio otomano: las cocinas del Topkapi",
+      minutos: "47-49",
       puntos: [
         "La lógica de la mesa como instrumento de poder **no fue exclusiva de Europa**.",
-        "La cocina de palacio del **Imperio otomano**, vista en la clase de Asia, alcanzó un altísimo grado de sofisticación en las cocinas del **Topkapi de Estambul**.",
-        "Ahí se llegaron a emplear **cientos de cocineros especializados** por tipo de preparación.",
-        "Una **organización por estaciones** que anticipa, **siglos antes**, la brigada de cocina que Escoffier formalizaría en Francia."
-      ],
-      pasoAPaso: true,
-      subtemas: [
-        { tipo: "observa",
-          titulo: "Las cocinas del Topkapi",
-          imagen: "img/corte_otomana.jpg",
-          notas: "Pregunta: ¿qué diferencia ven con la cocina europea de hace rato? Dato: las cocinas del Topkapi llegaron a alimentar a miles de personas al día dentro del palacio.",
-          puntos: [
-            "**Cúpulas con chimeneas:** construidas específicamente para sacar el humo de decenas de fogones. Hoy son el símbolo del Topkapi.",
-            "**Calderos de cobre enormes:** no se cocinaba para una mesa, sino para **todo el palacio**.",
-            "**Cada quien con su especialidad:** unos solo arroz, otros solo dulces, otros solo pan.",
-            "**Baclava y dolmas** en bandejas: los dulces tenían su propia área de trabajo.",
-            "**Siglos antes que Escoffier:** esta organización por estaciones es la misma idea de la brigada de cocina moderna."
-          ] }
-      ] },
-
-    { tipo: "tema",
-      titulo: "Ocak: la olla como símbolo militar",
-      puntos: [
-        "Las cocinas del Topkapi tenían **especialistas**: panaderos, reposteros, halva, encurtidos, yogur.",
-        "La palabra turca **ocak**, «fogón», designaba también al cuerpo de **jenízaros**, la élite militar.",
-        "Los rangos de esa tropa llevaban **nombres de cocina** y la **olla del regimiento** era su símbolo."
+        "Las cocinas del palacio de **Topkapi**, en Estambul, tenían **una larga hilera de chimeneas**.",
+        "Empleaban a **cientos de cocineros especializados** por tipo de preparación.",
+        "Una **organización por estaciones** que anticipa en siglos la **brigada** que Escoffier formalizaría en Francia (4.5)."
       ],
       pasoAPaso: true },
 
+    { tipo: "lupa",
+      titulo: "Las cocinas del Topkapi, con lupa",
+      imagen: "img/corte_otomana.jpg",
+      intro: "Una cocina que no cocina para una mesa, sino **para un palacio entero**. Avanza (→).",
+      minutos: "49-53",
+      notas: "La imagen es una recreación artística. En el detalle del fuego, pregunta antes de revelar: ¿qué otra cosa podría significar «fogón» en un imperio?",
+      puntos: [
+        { x: 30, y: 22, zoom: 2.2, titulo: "Campanas y chimeneas", color: "#4F5868", texto: "Construidas para sacar el humo de **decenas de fogones**. La hilera de chimeneas es hoy un símbolo del palacio." },
+        { x: 45, y: 78, zoom: 2.2, titulo: "Calderos gigantes", color: "#C98A2C", texto: "Calderos de cobre enormes: aquí no se cocina para una mesa, sino para **miles de personas** del palacio." },
+        { x: 44, y: 95, zoom: 2.8, titulo: "El fogón", color: "#A63D2F", texto: "Fíjate en el fuego bajo el caldero.",
+          pregunta: "En turco, fogón se dice «ocak». ¿Qué otra cosa crees que nombraba esa palabra?", respuesta: "Al cuerpo de **jenízaros**, la élite militar. Sus rangos llevaban **nombres de cocina** y la **olla del regimiento** era su símbolo." },
+        { x: 74, y: 66, zoom: 2.4, titulo: "Cada quien su especialidad", color: "#3F7A4F", texto: "Panaderos, reposteros, especialistas en **halva**, en **encurtidos** o en **yogur**: cada uno con su estación." },
+        { x: 88, y: 82, zoom: 2.2, titulo: "La despensa", color: "#8C6A2E", texto: "Costales de arroz, legumbres y especias: un palacio que funcionaba como una pequeña ciudad." }
+      ],
+      final: { titulo: "Siglos antes que Escoffier", color: "#A63D2F", texto: "Cocineros especializados y **estaciones de trabajo**: la misma idea de la **brigada de cocina** moderna." } },
+
     { tipo: "pregunta",
       pregunta: "¿Quién inventó entonces la brigada de cocina?",
-      respuesta: "**Escoffier la formalizó**, le puso nombres y jerarquía por escrito a finales del siglo XIX. Pero la idea de **organizar por estaciones** ya funcionaba en Topkapi siglos antes. Codificar no es lo mismo que inventar." },
+      respuesta: "**Escoffier la formalizó**, le puso nombres y jerarquía por escrito a finales del siglo XIX. Pero la idea de **organizar por estaciones** ya funcionaba en el Topkapi siglos antes. **Codificar no es lo mismo que inventar.**",
+      minutos: "53-54" },
 
     { tipo: "tema",
-      titulo: "China: la Ciudad Prohibida",
-      minutos: "86-105", evaluacion: "Formativo",
+      titulo: "China: la cocina de la Ciudad Prohibida",
+      minutos: "54-57",
       puntos: [
-        "En China, la cocina imperial de la **Ciudad Prohibida** en Pekín alcanzó un refinamiento **comparable al europeo**.",
-        "Se le atribuye el legendario **banquete manchú-han**: según la tradición, más de cien platos a lo largo de **varios días**.",
-        "Cada uno preparado por **cocineros especializados** en una técnica o ingrediente concreto.",
-        "Todo bajo un **protocolo estricto** que determinaba qué podía comer el emperador y **en qué orden**."
+        "En la **Ciudad Prohibida** de Pekín, la cocina imperial de las dinastías **Ming y Qing** era una gran institución con cientos de cocineros y sirvientes.",
+        "Se servían numerosos platos, aunque el emperador **probaba solo algunos**, y había **catadores** para prevenir envenenamientos.",
+        "Se atribuye a la corte Qing el legendario **banquete manchú-han**: más de cien platos a lo largo de varios días, **más leyenda que documento**.",
+        "Servía para **unir políticamente** a la dinastía manchú con la élite china han."
       ],
       pasoAPaso: true,
       subtemas: [
         { tipo: "observa",
           titulo: "Un banquete imperial chino",
           imagen: "img/ciudad_prohibida.jpg",
-          notas: "Pregunta: compárenlo con Versalles. ¿En qué se parecen y en qué cambian? En los dos casos el protocolo manda, pero aquí sí comen todos.",
+          notas: "Pregunta: compárenlo con Versalles. ¿En qué se parecen y en qué cambian? La imagen es una recreación artística.",
           puntos: [
-            "**Muchos platillos pequeños** al centro, no un plato grande por persona: se comparte, pero con reglas.",
+            "**Muchos platillos pequeños** al centro, no un plato grande por persona.",
             "**Porcelana azul y blanca:** la vajilla imperial era una industria entera al servicio del palacio.",
             "**El acomodo según el rango:** quién se sienta más cerca del emperador no es casualidad.",
-            "**Pato laqueado y vaporeras de bambú:** platillos que ya conocemos de la clase de Asia.",
-            "**La diferencia con Versalles:** aquí sí comen todos, pero el **orden de los platos** comunica la jerarquía."
+            "**La diferencia con Versalles:** el **orden de los platos** y el lugar de cada quien comunican la jerarquía."
           ] }
       ] },
 
     { tipo: "tema",
-      titulo: "El Imperio mogol y el biryani",
+      titulo: "El Imperio mogol: la fusión persa-india",
+      minutos: "57-60",
       puntos: [
-        "En el subcontinente indio, la corte del **Imperio mogol**, de origen persa y centroasiático, se estableció en el **siglo XVI**.",
-        "Su cocina se asocia con una de las **fusiones más influyentes** de Asia: el **biryani**, cuyo origen exacto se discute.",
-        "Es un plato de arroz especiado con carne que combina **técnicas persas** de cocción del arroz con **especias e ingredientes del subcontinente indio**.",
-        "Hoy, en sus múltiples variantes regionales, es uno de los platillos **más representativos de toda Asia del Sur**."
+        "La dinastía **mogol**, de origen centroasiático y cultura persa, gobernó gran parte de la India **desde 1526**.",
+        "Su cocina de corte unió **técnicas persas** (arroces perfumados, frutos secos, azafrán, carnes marinadas en yogur) con las **especias del subcontinente**.",
+        "De ella derivan los **kormas** y el **biryani**, cuyo origen exacto se discute.",
+        "Es la base de lo que en el mundo se conoce como **«comida india» de restaurante**."
       ],
       pasoAPaso: true,
       subtemas: [
         { tipo: "observa",
           titulo: "La corte mogol",
           imagen: "img/corte_mogol.jpg",
-          notas: "Pregunta: ¿qué nació aquí que hoy comen millones de personas? El biryani.",
+          notas: "Pregunta: ¿qué nació aquí que hoy comen millones de personas? El biryani. La imagen es una recreación artística.",
           puntos: [
             "**Se come sentado sobre alfombras**, alrededor de bandejas comunes: otra forma de protocolo, igual de estricta.",
-            "**Biryani al centro:** arroz especiado con carne, servido en bandejas de metal repujado.",
-            "**Panes planos, frutos secos y postres de leche** alrededor.",
+            "**Biryani al centro:** arroz especiado con carne, en bandejas de metal repujado.",
             "**Mármol blanco, arcos y celosías:** la arquitectura mogol que también dio el Taj Mahal.",
-            "**Lo importante:** este plato **nació en una corte** y terminó en la calle. Hoy es comida de todos los días en millones de hogares."
+            "**Lo importante:** este plato **nació en una corte** y terminó en la calle."
           ] }
       ] },
 
     { tipo: "tema",
       titulo: "Moctezuma: la mesa del tlatoani",
+      minutos: "60-62",
       notas: "Comparación inmediata: Versalles mostraba al rey comiendo; Moctezuma se ocultaba. Las dos formas comunican poder.",
       puntos: [
         "**Bernal Díaz del Castillo**, *Historia verdadera de la conquista de la Nueva España*.",
         "A **Moctezuma Xocoyotzin** le preparaban **más de trescientos platillos** cada día, de los que elegía algunos.",
         "Comía detrás de un **biombo dorado** para que nadie lo viera comer, servido por mujeres, y bebía **cacao espumoso en copas de oro**.",
-        "Los alimentos llegaban por **tributo** de todo el imperio: la mesa comunicaba poder sobre un territorio."
+        "Todo llegaba por **tributo**, incluido **pescado fresco del Golfo** traído por corredores: la mesa comunicaba poder sobre un territorio."
       ],
       pasoAPaso: true },
 
+    { tipo: "tablaPasos",
+      titulo: "Exhibirse u ocultarse",
+      columnas: ["Corte", "¿Se deja ver comiendo?", "Lo que comunica"],
+      filas: [
+        ["**Versalles**", "**Sí**: come en público y la corte lo mira de pie.", "El rey es un **espectáculo**: su comida es un acto de soberanía."],
+        ["**Moctezuma**", "**No**: come detrás de un biombo dorado.", "El poder es **inaccesible**: nadie puede verlo comer."],
+        ["**Sultán otomano**", "**Casi nunca**: suele comer solo, en privado.", "La **distancia** y el misterio también son poder."],
+        ["**Emperador chino**", "Rodeado de sirvientes y **catadores**; prueba solo algunos platos.", "**Abundancia** y seguridad: tener de sobra y cuidarse del veneno."]
+      ],
+      revelar: "fila",
+      pie: "Antes de cada clic: **¿se deja ver o se esconde?**",
+      minutos: "62-65",
+      notas: "Que voten con la mano antes de revelar cada fila. La conclusión: exhibirse u ocultarse son dos formas opuestas de decir lo mismo, que el soberano está por encima de todos." },
+
     { tipo: "tema",
       titulo: "Maximiliano y Carlota (1864-1867)",
+      minutos: "65-67",
       puntos: [
         "Trasladaron a México el **protocolo de las cortes europeas**.",
-        "Menús escritos en **francés**, banquetes en Chapultepec y Palacio Nacional, cocineros europeos y vinos importados.",
+        "Menús escritos en **francés**, banquetes en el **Castillo de Chapultepec** y en **Palacio Nacional**, cocineros europeos y vinos importados.",
         "La cocina francesa como **cocina del poder** continuará en el **Porfiriato** (4.4)."
       ],
       pasoAPaso: true },
 
-    { tipo: "tarea",
-      titulo: "Comparación por equipos: Versalles y Topkapi",
-      minutos: "106-140", evaluacion: "Sumativo · Rúbrica de Tarea",
-      notas: "La actividad central de la sesión. Divide los equipos y deja 20 minutos de trabajo antes de la puesta en común.",
-      puntos: [
-        "En equipos, comparen el **protocolo de Versalles** con el de la **corte otomana**.",
-        "Usen cuatro criterios: **quién come**, **cómo se organiza la cocina**, **qué comunica el protocolo** y **qué legado dejó**.",
-        "Construyan una tabla y prepárense para defender sus conclusiones ante el grupo.",
-        "Al final revisamos juntos."
+    { tipo: "lineaTiempo",
+      titulo: "Las mesas del poder",
+      intro: "Cinco siglos de cortes que nunca se conocieron. Avanza (→).",
+      minutos: "67-71",
+      notas: "Topkapi: Mehmed II mandó construir el palacio tras la conquista de Constantinopla (1453). Luis XIV instaló la corte en Versalles en 1682. En el último evento, pregunta antes de revelar.",
+      eventos: [
+        { fecha: "Siglo XIV", ico: "📜", color: "#6B3E75", titulo: "Le Viandier", texto: "El recetario atribuido a **Taillevent**, cocinero de los reyes de Francia: especias, color y entremeses." },
+        { fecha: "Siglo XV", ico: "🕌", color: "#A63D2F", titulo: "El palacio de Topkapi", texto: "Tras conquistar Constantinopla (1453), **Mehmed II** construye el palacio de Estambul con sus grandes cocinas." },
+        { fecha: "1519 – 1520", ico: "🍫", color: "#5E4429", titulo: "La mesa de Moctezuma", texto: "**Bernal Díaz del Castillo** ve los más de trescientos platillos del tlatoani en Tenochtitlan." },
+        { fecha: "1526", ico: "🍛", color: "#3F7A4F", titulo: "Los mogoles en la India", texto: "Una dinastía de cultura persa une su cocina con las especias del subcontinente: kormas y **biryani**." },
+        { fecha: "1570", ico: "📖", color: "#C98A2C", titulo: "Opera, de Scappi", texto: "El cocinero de los papas publica más de mil recetas y menús de banquetes." },
+        { fecha: "1644 – 1912", ico: "🥢", color: "#C98A2C", titulo: "La dinastía Qing", texto: "En la **Ciudad Prohibida**, catadores, platos sin fin y el legendario **banquete manchú-han**." },
+        { fecha: "1671", ico: "🐟", color: "#2E4A8C", titulo: "Vatel en Chantilly", texto: "El pescado no llega a tiempo para la fiesta de Luis XIV: el prestigio de una casa depende de su mesa." },
+        { fecha: "1682", ico: "👑", color: "#2E4A8C", titulo: "La corte en Versalles", texto: "**Luis XIV** instala la corte en Versalles: el **grand couvert** se vuelve teatro diario." },
+        { fecha: "1864 – 1867", ico: "🏰", color: "#5E4429", titulo: "Maximiliano y Carlota", texto: "Menús en francés en Chapultepec.",
+          pregunta: "¿Qué idea de esta corte seguirá viva en México después de Maximiliano?", respuesta: "La **cocina francesa como cocina del poder**: el **Porfiriato** escribirá sus menús oficiales en francés (4.4)." }
       ] },
 
-    { tipo: "tabla",
-      titulo: "Dos cortes, la misma lógica",
-      columnas: ["Criterio", "Versalles (Francia)", "Topkapi (Imperio otomano)"],
-      filas: [
-        ["Quién come", "Solo el rey, en público; la corte observa de pie", "El palacio entero, con jerarquías por rango"],
-        ["Organización de la cocina", "Brigada de cocina codificada después por Escoffier", "Cientos de cocineros por estaciones, siglos antes"],
-        ["Qué comunica el protocolo", "Quién puede acercarse a la mesa real", "Quién recibe qué preparación y en qué cantidad"],
-        ["Legado", "La cocina profesional moderna tras la Revolución", "La organización por estaciones de toda cocina actual"]
+    { tipo: "plataforma",
+      etiqueta: "Actividad en equipo", tipoAct: "En equipo · en vivo",
+      titulo: "Cuadro comparativo: Versalles vs. Topkapi",
+      enlace: "../tareas.html#cortes", textoEnlace: "Tareas → Cuadro comparativo: Versalles vs. Topkapi",
+      minutos: "71-111", evaluacion: "Sumativo · Rúbrica de Tarea",
+      notas: "La actividad central. Panel → Tareas → Tareas digitales → 👥 de «Cuadro comparativo: Versalles vs. Topkapi» y proyecta los QR. Son 6 filas × 3 columnas; las filas «La vajilla y los objetos» y «Cuando la comida se vuelve política» son 🔎 Investiga y piden fuente. Abajo de cada fila verán un ejemplo guía con otra pareja de cortes (Moctezuma y el emperador chino): que no lo copien. Sigue el avance en Monitor en vivo → 👑 Versalles–Topkapi. Quien no escriba nada sale con 0 (✋ No aportó).",
+      pasos: [
+        "Escanea el **QR de tu equipo** (o escribe su código de 4 letras).",
+        "Llenen **juntos**, cada quien desde su celular: Versalles, Topkapi y **en qué se parecen**.",
+        "🔎 Dos filas son de **investigación**: búsquenlas en internet y anoten su **fuente**.",
+        "Repártanse las filas. Debajo de cada una hay un **ejemplo guía** con otras cortes: úsenlo, no lo copien."
       ],
       pasoAPaso: true },
 
-    { tipo: "tarea",
+    { tipo: "plataforma",
+      etiqueta: "Puesta en común", tipoAct: "Todo el grupo",
+      titulo: "Dos cortes, la misma lógica",
+      minutos: "111-126", evaluacion: "Formativo",
+      notas: "Panel → Monitor en vivo → 👑 Versalles–Topkapi → toca la tarjeta de cada equipo (⛶ Pantalla completa). Pide a cada equipo una fila distinta. En las de investigación, pregunta de dónde lo sacaron. Al final, 🔑 Liberar clave para que comparen en su celular.",
+      pasos: [
+        "Cada equipo defiende **una fila** de su cuadro.",
+        "¿Qué encontraron en las filas de **investigación**? ¿De dónde lo sacaron?",
+        "¿En qué se **parecen** dos cortes que nunca se conocieron?",
+        "Al final se libera la **clave**: comparen en su celular."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "tablaPasos",
+      titulo: "Versalles y el Topkapi: lo esencial",
+      columnas: ["Criterio", "Versalles (Francia)", "Topkapi (Imperio otomano)"],
+      filas: [
+        ["Quién come", "El rey, **en público**; la corte observa de pie.", "El sultán, casi siempre **solo**; el palacio entero come por rangos."],
+        ["La cocina", "**Lejos** de los salones; los platos llegan en desfile.", "**Cientos** de cocineros especializados por estaciones."],
+        ["El protocolo", "**Quién puede acercarse o sentarse** a la mesa real.", "**Quién recibe qué** y en qué cantidad; la cocina nombra a los jenízaros."],
+        ["El legado", "Una cocina **codificada** y el protocolo de los banquetes de Estado.", "La **organización por estaciones** de toda cocina profesional."]
+      ],
+      densa: true,
+      pie: "Antes de cada clic: **¿qué escribió tu equipo?**",
+      minutos: "126-130",
+      notas: "Es el resumen para el examen. Si un equipo escribió algo distinto pero bien argumentado, dilo en voz alta." },
+
+    { tipo: "plataforma",
+      etiqueta: "Tarea individual", tipoAct: "Individual · para el viernes",
       titulo: "Investigación: un banquete de Estado de hoy",
-      evaluacion: "Sumativo · Rúbrica de Tarea",
-      puntos: [
-        "Investiga **un banquete de Estado contemporáneo**: una visita oficial, una cena de gala o una toma de posesión.",
-        "Identifica **qué elementos de protocolo histórico conserva**: el orden de los asientos, quién sirve primero, el menú, la vajilla, los brindis.",
-        "Explica **qué mensaje político** manda ese banquete.",
-        "Media cuartilla, citando tus fuentes."
-      ] },
+      enlace: "../tareas.html#banquete-estado", textoEnlace: "Tareas → Investigación: un banquete de Estado de hoy",
+      minutos: "130-140", evaluacion: "Sumativo · Rúbrica de Tarea",
+      notas: "Antes era media cuartilla en papel; ahora es una ficha en la plataforma con seis espacios y un ejemplo guía en cada uno (la cena de los Premios Nobel, que no es un banquete de Estado: así no la pueden copiar). Da 10 minutos para que elijan su banquete en clase y empiecen; buenas opciones: una visita de Estado a México, una cena de gala en el Palacio de Buckingham o en el Elíseo, una cena de Estado en la Casa Blanca.",
+      pasos: [
+        "Elige **un banquete de Estado contemporáneo**: una visita oficial, una cena de gala o una toma de posesión.",
+        "¿Qué **protocolo histórico** conserva? Asientos, entrada, brindis, vajilla, código de vestir.",
+        "¿Qué **mensaje político** manda? ¿Con qué **corte del Tema 4.3** lo relacionas?",
+        "Debajo de cada espacio hay un **ejemplo guía**. Cita **al menos dos fuentes**."
+      ],
+      pasoAPaso: true },
+
+    { tipo: "palabrasHoy",
+      titulo: "Palabras de hoy",
+      pasoAPaso: false,
+      minutos: "140-142",
+      terminos: ["Entremés", "Grand couvert", "Topkapi", "Mogol", "Biryani"] },
 
     { tipo: "repaso",
       notas: "Unos 5 minutos. Lanza cada pregunta al grupo y espera respuestas antes de mostrarla.",
+      minutos: "142-148",
       preguntas: [
         { pregunta: "¿Cómo se llamaba la comida pública del rey en Versalles?", respuesta: "El **grand couvert**." },
         { pregunta: "¿Por qué se usaban tantas especias en un plato medieval?", respuesta: "Por **estatus**, no solo por sabor: mostraban que podías pagarlas." },
@@ -315,16 +387,17 @@ const PRESENTACION = {
       ] },
 
     { tipo: "proyecto",
-      minutos: "141-172",
+      minutos: "148-175",
+      notas: "Tiempo de trabajo en clase para la pregunta 19 y para resolver dudas de la Entrega 2.",
       preguntas: [
         { numero: 19, texto: "¿Mi platillo tuvo relación con una corte real, o llegó a la mesa del pueblo desde el principio?" }
       ] },
 
     { tipo: "cierre",
-      minutos: "173-180",
-      evidencia: "La tabla comparativa de cada equipo identifica correctamente al menos tres diferencias entre el protocolo de Versalles y el otomano.",
-      materiales: "Libro de texto, Tema 4.3.",
-      proxima: "Leer el subtema 4.4, **El primer restaurante**. Entregar la investigación del banquete de Estado contemporáneo." }
+      minutos: "175-180",
+      evidencia: "El **cuadro Versalles–Topkapi** de cada equipo en la plataforma y la **investigación del banquete de Estado** de cada alumno.",
+      materiales: "Libro de texto, Tema 4.3, y **celular con internet**.",
+      proxima: "Terminar la **investigación del banquete de Estado** en la plataforma. Leer el subtema 4.4, **El primer restaurante**." }
   ]
 };
 </script>

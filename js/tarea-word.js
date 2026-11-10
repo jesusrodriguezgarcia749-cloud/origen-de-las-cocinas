@@ -3,8 +3,8 @@
 // datos guardados en Firestore. Lo usa admin.js.
 import { DocITES } from "./docx-ites.js?v=2026110501";
 import { mapaContinentePNG } from "./docx-ites.js?v=2026110501";
-import { CUADRO_MM, INFLUENCIAS, ESPECIAS, subregionDe, FUSION } from "./clase-datos.js";
-import { FICHAS } from "./fichas-datos.js?v=2026111001";
+import { CUADRO_MM, CUADROS, INFLUENCIAS, ESPECIAS, subregionDe, FUSION } from "./clase-datos.js";
+import { FICHAS } from "./fichas-datos.js?v=2026111701";
 import { RECADOS, ORIGENES, LLEGADAS, recadoDe, ingsDe, infoRecado, recadosDe } from "./recado-datos.js";
 import { fotosAlWord } from "./fotos.js";
 
@@ -13,14 +13,14 @@ const quien = (eq, nombre) => slugArchivo(eq ? 'equipo ' + eq.nombre : nombre);
 const portadaDe = (D, o, eq, nombre) => D.portada({ ...o, etiqueta: eq ? `Equipo «${eq.nombre}»` : 'Alumno', personas: eq ? eq.nombres || [] : [nombre] });
 
 // ---------- Cuadro comparativo mexica–maya
-async function cuadro(D, d, eq, nombre) {
-  const A = CUADRO_MM, cel = d.celdas || {}, por = d.por || {};
-  portadaDe(D, { kicker: 'Tema 3.2 · México prehispánico y mestizo', titulo: 'Cocina mexica y cocina maya', subtitulo: 'Cuadro comparativo' }, eq, nombre);
-  D.h1('Cuadro comparativo', 'Dos tradiciones del mismo tronco mesoamericano: maíz, frijol y chile.');
+async function cuadro(D, d, eq, nombre, A = CUADRO_MM) {
+  const cel = d.celdas || {}, por = d.por || {};
+  portadaDe(D, { kicker: A.kicker, titulo: A.wordTitulo, subtitulo: 'Cuadro comparativo' }, eq, nombre);
+  D.h1('Cuadro comparativo', A.wordIntro);
   const celda = k => { const t = (cel[k] || '').trim(), au = eq && por[k]; return { runs: [[t || '(sin escribir)', t ? {} : { i: true, color: '9A9389' }], ...(au ? [[`\n✍ ${au}`, { color: '3F7A4F', tam: 8 }]] : [])] }; };
   const cab = (f, t, inv) => { const fu = (cel[`${f}_fuente`] || '').trim(); return inv ? { runs: [[t, { b: true }], [`\n🔎 Investigación${fu ? ' · Fuente: ' + fu : ' · sin fuente'}`, { color: '6B6358', tam: 8, i: !fu }]], fondo: 'F4EFE4' } : { t, b: true, fondo: 'F4EFE4' }; };
   D.tabla([['Apartado', ...A.columnas.map(c => c[1])], ...A.filas.map(([f, t, , inv]) => [cab(f, t, inv), ...A.columnas.map(([c]) => celda(`${f}_${c}`))])], { anchos: [1700, 2560, 2560, 2540] });
-  return `Cuadro_mexica_maya_${quien(eq, nombre)}`;
+  return `${A.archivo}_${quien(eq, nombre)}`;
 }
 
 // ---------- Las siete influencias de la cocina campechana
@@ -133,7 +133,7 @@ async function atlas(D, c, eq, nombre, cont) {
 // a: tarea (TAREAS_DIG); datos: lo guardado (para atlas, ya normalizado como c); eq: equipo o null.
 export async function wordTarea(a, datos, { eq = null, nombre = '', alumnoId = '', fotos = null } = {}) {
   const D = new DocITES(); await D.cargarLogo();
-  const fn = a.tipo === 'ficha' ? (D, S, eq, nombre) => ficha(D, S, nombre, FICHAS[a.id]) : { cuadro, influencias, especias, desarma, atlas, recado, fusion }[a.tipo];
+  const fn = a.tipo === 'ficha' ? (D, S, eq, nombre) => ficha(D, S, nombre, FICHAS[a.id]) : a.tipo === 'cuadro' ? (D, S, eq, nombre) => cuadro(D, S, eq, nombre, CUADROS[a.id] || CUADRO_MM) : { cuadro, influencias, especias, desarma, atlas, recado, fusion }[a.tipo];
   if (!fn) throw new Error('Esta tarea no tiene Word.');
   const archivo = await fn(D, datos || {}, eq, nombre, a.tipo === 'atlas' ? a.cont : alumnoId);
   if (fotos && fotos.length) await fotosAlWord(D, fotos);
