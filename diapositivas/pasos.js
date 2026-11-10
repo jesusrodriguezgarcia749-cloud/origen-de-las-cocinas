@@ -297,7 +297,7 @@
         }).join("")}</tr>`;
       }).join("");
       return `<h2>${esc(d.titulo)}</h2>${ticks(k)}
-        <table class="tabla pz-tabla"><thead><tr>${cols.map(c => `<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>${cuerpo}</tbody></table>
+        <table class="tabla pz-tabla${d.densa ? " densa" : ""}"><thead><tr>${cols.map(c => `<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>${cuerpo}</tbody></table>
         ${d.pie ? `<p class="pista">${md(d.pie)}</p>` : ""}`;
     }
   };
