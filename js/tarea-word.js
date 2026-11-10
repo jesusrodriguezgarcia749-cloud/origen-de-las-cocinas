@@ -3,7 +3,7 @@
 // datos guardados en Firestore. Lo usa admin.js.
 import { DocITES } from "./docx-ites.js?v=2026110501";
 import { mapaContinentePNG } from "./docx-ites.js?v=2026110501";
-import { CUADRO_MM, CUADROS, INFLUENCIAS, ESPECIAS, subregionDe, FUSION } from "./clase-datos.js";
+import { CUADRO_MM, CUADROS, INFLUENCIAS, ESPECIAS, subregionDe, FUSION } from "./clase-datos.js?v=2026111703";
 import { FICHAS } from "./fichas-datos.js?v=2026111701";
 import { RECADOS, ORIGENES, LLEGADAS, recadoDe, ingsDe, infoRecado, recadosDe } from "./recado-datos.js";
 import { fotosAlWord } from "./fotos.js";

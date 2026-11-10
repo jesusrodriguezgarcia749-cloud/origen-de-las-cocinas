@@ -88,6 +88,13 @@
 <button id="bg-music-toggle" class="music-toggle" aria-label="Activar música de fondo" aria-pressed="false">🎵</button>
 
 <script src="js/app.js"></script>
-<script type="module" src="js/tareas.js?v=2026111702"></script>
+<script type="module" src="js/tareas.js?v=2026111703"></script>
+<script>
+  // Si las tareas no aparecen (p. ej., el navegador mezcló archivos viejos y nuevos), se ofrece recargar.
+  setTimeout(function () {
+    var s = document.getElementById('cl-sesiones');
+    if (s && !s.children.length && !location.hash) s.innerHTML = '<p class="atlas-ayuda">No se pudieron cargar las tareas. <button type="button" class="btn-at" onclick="location.reload()">Recargar la página</button></p>';
+  }, 8000);
+</script>
 </body>
 </html>
