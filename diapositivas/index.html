@@ -32,6 +32,13 @@
   .desc{color:var(--gris);line-height:1.45;font-size:.95rem}
   .bloque{color:var(--marino);font-weight:600}
   .vacia{border:3px dashed var(--gris);color:var(--gris);padding:24px;text-align:center}
+  /* La clase de hoy (o la próxima) resalta, como en el calendario */
+  .clase.hoy{background:#fff;border:3px solid var(--rojo);border-radius:12px;box-shadow:0 8px 22px rgba(0,0,0,.12);padding:16px 14px;margin:6px -8px;position:relative}
+  li:has(.clase.hoy)+li .clase{border-top:0}
+  .clase.hoy .fecha{color:var(--marino)}
+  .marca-hoy{display:inline-block;background:var(--rojo);color:#fff;font:700 .72rem "Public Sans",sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:999px;margin-bottom:6px}
+  .clase.proxima .marca-hoy{background:var(--marino)}
+  .clase.pasada .titulo{color:var(--gris)}
   @media (max-width:480px){.clase{grid-template-columns:1fr}.fecha{grid-row:auto}}
 </style>
 </head>
@@ -144,6 +151,12 @@ const SESIONES = [
   // Se ordena todo por fecha y se agrupa por mes, para que el alumno siga el curso en orden.
   const MESES = { "10": "Octubre", "11": "Noviembre", "12": "Diciembre" };
   const lista = SESIONES.slice().sort((a, b) => (a.orden || "").localeCompare(b.orden || ""));
+  // Hoy, con la fecha del dispositivo; si hoy no hay clase, se resalta la próxima
+  const d = new Date(), HOY = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const conFecha = lista.filter(s => (s.orden || "") >= "2026-01-01" && s.archivo);
+  const deHoy = conFecha.filter(s => s.orden === HOY);
+  const proxima = deHoy.length ? null : conFecha.find(s => s.orden > HOY);
+  const marca = s => deHoy.includes(s) ? "hoy" : s === proxima ? "proxima" : "";
   const grupos = [];
   lista.forEach(s => {
     const o = s.orden || "";
@@ -156,12 +169,14 @@ const SESIONES = [
     <h2>${esc(g.tema)}</h2>
     <ol>${g.items.map(s => `
       <li>${s.archivo
-        ? `<a class="clase${s.descarga ? " descarga" : ""}" href="${esc(s.archivo)}"${s.descarga ? " download" : ""}>`
+        ? `<a class="clase${s.descarga ? " descarga" : ""}${marca(s) ? " hoy " + marca(s) : (s.orden >= "2026-01-01" && s.orden < HOY ? " pasada" : "")}" href="${esc(s.archivo)}"${s.descarga ? " download" : ""}${marca(s) === "hoy" ? ' aria-current="date"' : ""}>`
         : `<div class="clase sin-enlace">`}
         <span class="fecha">${esc(s.fecha)}</span>
-        <span class="titulo">${esc(s.titulo)}</span>
+        <span class="titulo">${marca(s) ? `<span class="marca-hoy">${marca(s) === "hoy" ? "★ Hoy" : "Próxima clase"}</span><br>` : ""}${esc(s.titulo)}</span>
         <span class="desc">${s.tema && s.orden >= "2026-01-01" ? `<b class="bloque">${esc(s.tema)}</b> · ` : ""}${esc(s.descripcion)}</span>
       ${s.archivo ? "</a>" : "</div>"}</li>`).join("")}</ol>`).join("");
+  const destacada = cont.querySelector(".clase.hoy");
+  if (destacada) setTimeout(() => destacada.scrollIntoView({ block: "center", behavior: "smooth" }), 300);
 })();
 </script>
 </body>
