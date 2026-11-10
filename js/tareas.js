@@ -21,7 +21,7 @@ import { comprimir, idFoto, MAX_FOTOS, fotosAlWord } from "./fotos.js";
 import { actArmaHangi } from "./arma-hangi.js?v=2026111001";
 import { FICHAS, sugerirFicha, palabrasF } from "./fichas-datos.js?v=2026111701";
 import { FUNCIONES, QUE_FUNCION, CORTES, QUE_CORTE } from "./tema4-datos.js?v=2026111701";
-import { wordTarea } from "./tarea-word.js?v=2026111701";
+import { wordTarea } from "./tarea-word.js?v=2026111702";
 import { formacionDe, formaciones, formacionDeTarea, abiertas as inscAbiertas, equipoDe, equiposDe, tareasDeFormacion, enEquipo } from "./equipos.js";
 
 const db = getFirestore(initializeApp(firebaseConfig));
@@ -357,10 +357,10 @@ function cuadro(cont, eq, A = CUADRO_MM) {
     D.h1('Cuadro comparativo', A.wordIntro);
     const celda = k => { const t = (S.celdas[k] || '').trim(), au = eq && S.por[k]; return { runs: [[t || '(sin escribir)', t ? {} : { i: true, color: '9A9389' }], ...(au ? [[`\n✍ ${au}`, { color: '3F7A4F', tam: 8 }]] : [])] }; };
     const cab = (f, t, inv) => { const fu = (S.celdas[`${f}_fuente`] || '').trim(); return inv ? { runs: [[t, { b: true }], [`\n🔎 Investigación${fu ? ' · Fuente: ' + fu : ' · sin fuente'}`, { color: '6B6358', tam: 8, i: !fu }]], fondo: 'F4EFE4' } : { t, b: true, fondo: 'F4EFE4' }; };
-    D.tabla([['Apartado', ...A.columnas.map(c => c[1])], ...A.filas.map(([f, t, , inv]) => [cab(f, t, inv), ...A.columnas.map(([c]) => celda(`${f}_${c}`))])], { anchos: [1700, 2560, 2560, 2540] });
+    D.tabla([['Apartado', ...A.columnas.map(c => c[1])], ...A.filas.map(([f, t, , inv]) => [cab(f, t, inv), ...A.columnas.map(([c]) => celda(`${f}_${c}`))])], { anchos: [1700, ...A.columnas.map(() => Math.floor(7660 / A.columnas.length))] });
     if (clave) {
       D.h1('Comparación con la clave', 'La clave que liberó el maestro (del compendio y, en las filas de investigación, respuestas de referencia), para revisar lo que escribimos.');
-      D.tabla([['Apartado', ...A.columnas.map(c => c[1])], ...A.filas.map(([f, t]) => [{ t, b: true, fondo: 'F4EFE4' }, ...A.respuestas[f]])], { anchos: [1700, 2560, 2560, 2540] });
+      D.tabla([['Apartado', ...A.columnas.map(c => c[1])], ...A.filas.map(([f, t]) => [{ t, b: true, fondo: 'F4EFE4' }, ...A.respuestas[f]])], { anchos: [1700, ...A.columnas.map(() => Math.floor(7660 / A.columnas.length))] });
     }
     D.descargar(`${A.archivo}_${slug(eq ? 'equipo ' + eq.nombre : sesion.nombre)}`);
   });

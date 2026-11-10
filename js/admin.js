@@ -16,7 +16,7 @@ import { vistaRapida } from "./matriz.js?v=2026110501";
 import { BASE, enEquipo, formacionDe, formaciones, ordenFormaciones, formacionDeTarea, equiposDe, tareasDeFormacion, urlUnir, qrSvg } from "./equipos.js";
 import { wordMiPlato, numsDe as numsMiPlato, estadoEntrega as estadoMiPlato, slugArchivo, ORDEN as ORDEN_MP } from "./mi-plato-word.js?v=2026102901";
 import { zipDocx } from "./docx-ites.js?v=2026102901";
-import { wordTarea } from "./tarea-word.js?v=2026111701";
+import { wordTarea } from "./tarea-word.js?v=2026111702";
 import { FICHAS, sugerirFicha } from "./fichas-datos.js?v=2026111701";
 import { TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, nombreCatalogo, sugerirAtlas, sugerirCuadro, MIN_PALABRAS_CELDA, sugerirDesarma, CUADRO_MM, CUADROS, INFLUENCIAS, sugerirInfluencias, ESPECIAS, FUSION, sugerirFusion, subregionDe, sugerirEspecias } from "./clase-datos.js";
 import { RECADOS, ORIGENES, LLEGADAS, INGS, CLAVE_RECADO, recadoDe, ingsDe, sugerirRecado, infoRecado, recadosDe } from "./recado-datos.js";

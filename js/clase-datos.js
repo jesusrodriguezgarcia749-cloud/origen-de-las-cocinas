@@ -145,7 +145,47 @@ CUADRO_CORTES.ejemplo = {
     legado: 'De la mesa de Moctezuma nos queda el cacao como bebida de prestigio; de la corte china, la idea de un banquete de muchos platos para compartir. Los dos sobreviven en la cocina de hoy.',
   },
 };
-export const CUADROS = { 'cuadro-mm': CUADRO_MM, cortes: CUADRO_CORTES };
+// ---------- 1c. Diseñen un menú à la carte (4.4, en equipo). Una sola columna: el menú del equipo.
+export const CUADRO_MENU = {
+  id: 'act-menu', clave: 'cuadroMenu', tarea: 'menu', ind: 'tarea-menu',
+  titulo: 'Diseñen un menú à la carte', corto: 'Menú à la carte',
+  kicker: 'Tema 4.4 · El primer restaurante', wordTitulo: 'Nuestro menú à la carte', wordIntro: 'Un menú de época inspirado en Delmonico\'s o en un restaurante porfirista: elegir de una carta, con precios, fue el gran invento del restaurante.', archivo: 'Menu_a_la_carte',
+  ayuda: 'Elijan <b>Delmonico\'s</b> (Nueva York, siglo XIX) o <b>un restaurante porfirista</b> (Ciudad de México, 1876-1911) y diseñen su carta como se vería entonces (compendio, subtema 4.4).',
+  colores: ['#8C6A2E'], cortos: ['Menú'],
+  columnas: [['menu', 'Nuestro menú']],
+  filas: [
+    ['restaurante', 'El restaurante y su época', 'Nombre, ciudad, año y a quién atiende. ¿Es Delmonico\'s o un restaurante porfirista?'],
+    ['entradas', 'Entradas', 'Al menos tres, con su precio. Usen el nombre como se escribiría en la carta.'],
+    ['fuertes', 'Platos fuertes', 'Al menos tres, con su precio. ¿Cuál sería el plato estrella de la casa?'],
+    ['postres', 'Postres', 'Al menos dos, con su precio.'],
+    ['vinos', 'Carta de vinos y bebidas', '¿Qué se bebía en ese restaurante y en esa época? La carta de vinos iba aparte.', true],
+    ['idioma', 'Idioma, moneda y precios', '¿En qué idioma estaría escrita la carta? ¿En qué moneda se pagaba y qué era caro o barato?', true],
+    ['mensaje', '¿Qué mensaje manda a su clientela?', '¿Quién podía pagarlo? ¿Qué dice esta carta sobre el poder y el estatus (como la mesa de la realeza en 4.3)?'],
+  ],
+  // Clave: qué debe tener una buena respuesta (es una actividad creativa: no hay una sola respuesta).
+  respuestas: {
+    restaurante: ['Debe ubicarse con precisión: Delmonico\'s (Nueva York; café en 1827, gran edificio en 1837; chef Charles Ranhofer desde 1862) o un restaurante de moda del Porfiriato con nombre francés, como La Maison Dorée o Sylvain, para la élite.'],
+    entradas: ['Platillos verosímiles para la época, con nombre de carta (en francés en el Porfiriato) y precio de cada uno: la carta con precios era la gran novedad.'],
+    fuertes: ['En Delmonico\'s caben el corte Delmonico y la langosta Newberg; en el Porfiriato, platos de la cocina francesa. El plato estrella debe explicarse.'],
+    postres: ['En Delmonico\'s, el Baked Alaska que popularizó; en el Porfiriato, postres de pastelería francesa. Cada uno con precio.'],
+    vinos: ['La carta de vinos iba separada (Delmonico\'s la introdujo en Estados Unidos, con una cava enorme); en el Porfiriato dominaban los vinos y licores importados de Francia. Debe citar su fuente.'],
+    idioma: ['Delmonico\'s: carta impresa con nombres en francés; Porfiriato: menú en francés aunque los clientes fueran mexicanos, y precios en pesos. Debe citar su fuente.'],
+    mensaje: ['Comer à la carte en estos lugares era signo de estatus: la cocina francesa como cocina del poder (4.3 y 4.4), mientras la mayoría comía en fondas la comida corrida.'],
+  },
+  ejemplo: {
+    caso: 'Le Petit Bouillon, un restaurante inventado de París en 1830 (con precios inventados)',
+    celdas: {
+      restaurante: 'Le Petit Bouillon, en el Palais-Royal de París, hacia 1830. Atiende a diputados, comerciantes y viajeros que llegan a la capital y pueden pagar una comida fuera de casa.',
+      entradas: 'Potage à la reine (crema de pollo), 1 franco · Huîtres d\'Ostende (ostras), 2 francos · Pâté en croûte (paté en costra), 1.50 francos.',
+      fuertes: 'Bœuf à la mode (res estofada), 2.50 francos · Sole normande (lenguado en salsa de crema), 3 francos · Poulet rôti (pollo asado, el plato de la casa), 3.50 francos.',
+      postres: 'Crème caramel, 1 franco · Fruits de saison (fruta de temporada), 0.75 francos.',
+      vinos: 'Una carta aparte con vinos de Burdeos y de Borgoña por botella y media botella, y café al final de la comida (las casas de café ya eran costumbre en París).',
+      idioma: 'Todo en francés, en francos, escrito a mano y copiado para cada mesa. Lo caro es el pescado del mar y el pollo; la sopa es lo más barato.',
+      mensaje: 'Cualquiera que pague puede comer como antes comía un noble: después de la Revolución, el lujo de la mesa se compra, no se hereda.',
+    },
+  },
+};
+export const CUADROS = { 'cuadro-mm': CUADRO_MM, cortes: CUADRO_CORTES, menu: CUADRO_MENU };
 
 // ---------- 2. ¿Aportó o llegó?
 
@@ -220,6 +260,9 @@ export const TEMAS_TAREAS = [
     { id: 'que-corte', tipo: 'practica', icono: '👑', nombre: '¿Qué corte es?', modo: 'Juego de práctica · 5 min', desc: 'Grand couvert, ocak, banquete manchú-han, biryani, biombo dorado… ¿de qué corte es? Versalles, el Topkapi, la Ciudad Prohibida, la corte mogol, Moctezuma o el banquete medieval.' },
     { id: 'cortes', tipo: 'cuadro', icono: '🏰', nombre: 'Cuadro comparativo: Versalles vs. Topkapi', modo: 'En equipo · en vivo', desc: 'Llenen juntos, cada quien desde su celular, el cuadro que compara la mesa de Luis XIV con la del sultán otomano. Dos filas son de investigación.' },
     { id: 'banquete-estado', tipo: 'ficha', icono: '🥂', nombre: 'Investigación: un banquete de Estado de hoy', modo: 'Individual', desc: 'Un banquete de Estado contemporáneo: qué protocolo histórico conserva y qué mensaje político manda. Con ejemplo guía en cada espacio.' },
+  ] },
+  { tema: '4.4', titulo: 'El primer restaurante', fecha: '2026-11-20', fechaTexto: 'Vie 20 de noviembre', acts: [
+    { id: 'menu', tipo: 'cuadro', icono: '📜', nombre: 'Diseñen un menú à la carte', modo: 'En equipo · en vivo', desc: 'Una carta de época inspirada en Delmonico\'s o en un restaurante porfirista: entradas, fuertes y postres con precio, carta de vinos y el mensaje que manda a su clientela. Con ejemplo guía.' },
   ] },
 ];
 export const TAREAS_DIG = Object.fromEntries(TEMAS_TAREAS.flatMap(t => t.acts.map(a => [a.id, { ...a, tema: t.tema, titulo: t.titulo, fecha: t.fecha, fechaTexto: t.fechaTexto }])));
