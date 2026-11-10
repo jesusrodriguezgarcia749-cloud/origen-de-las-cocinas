@@ -140,13 +140,14 @@ export const TEMAS_TAREAS = [
     { id: 'recado', tipo: 'recado', icono: '🫙', nombre: 'El recado campechano: el mundo en una pasta', modo: 'En equipo · en vivo · con fotos', desc: 'A cada equipo le toca por sorteo un recado: rojo, negro, blanco, de escabeche, para bistec o verde. Investiguen sus ingredientes, los guisos donde se usa y de dónde viene cada ingrediente y cómo llegó a Campeche. Luego lo exponen.' },
   ] },
   { tema: '3.5', titulo: 'Cocinas de Oceanía', fecha: '2026-11-12', fechaTexto: 'Jue 12 de noviembre', acts: [
+    { id: 'fusion', tipo: 'fusion', icono: '🥧', nombre: 'Investigación: un platillo de fusión', modo: 'Individual', desc: 'Elige un platillo de fusión de Australia o Nueva Zelanda y encuentra sus tres capas: indígena, británica y migrante. Con ejemplo guía en cada espacio.' },
     { id: 'arma-hangi', tipo: 'practica', icono: '🔥', nombre: 'Arma el horno de tierra', modo: 'Juego de práctica · 5 min', desc: 'Acomoda las capas del horno de tierra (hangi, umu, lovo… o nuestro pib) en el dibujo y ordena sus pasos. Lo hacemos en clase.' },
     { id: 'vuelta-mundo', tipo: 'practica', icono: '🌍', nombre: 'Vuelta al mundo: gran repaso del Tema 3', modo: 'Juego de práctica', desc: 'Hangi, injera, chuño, kimchi, chucrut, pavlova… ¿de qué continente es? Las cinco regiones del Tema 3 en un solo juego, con las trampas que los conectan.' },
     { id: 'atlas-oceania', tipo: 'atlas', cont: 'oceania', icono: '🗺️', nombre: 'Mi atlas: Oceanía', modo: 'En equipo o individual', desc: 'Tus regiones culinarias de Oceanía y sus islas.' },
   ] },
 ];
 export const TAREAS_DIG = Object.fromEntries(TEMAS_TAREAS.flatMap(t => t.acts.map(a => [a.id, { ...a, tema: t.tema, titulo: t.titulo, fecha: t.fecha, fechaTexto: t.fechaTexto }])));
-export const califica = a => a && ['atlas', 'cuadro', 'desarma', 'influencias', 'especias', 'recado'].includes(a.tipo);
+export const califica = a => a && ['atlas', 'cuadro', 'desarma', 'influencias', 'especias', 'recado', 'fusion'].includes(a.tipo);
 export const catalogoId = id => 'dig-' + id;
 export const nombreCatalogo = a => `${a.tema} · ${a.nombre}`;
 
@@ -253,4 +254,34 @@ export function sugerirEspecias(d) {
   const cortos = ['especia', 'tecnica', 'platillo', 'mexico'].filter(k => pal(k) >= 8).length;
   const nota = 1.5 * cortos + 3 * Math.min(1, pal('porque') / 30) + (String(c.fuente || '').trim() ? 1 : 0);
   return { nota: r1(nota), detalle: `${cortos}/4 apartados completos · «por qué» de ${pal('porque')} palabras · ${String(c.fuente || '').trim() ? 'con' : 'sin'} fuente` };
+}
+
+// ---------- 🥧 Investigación: un platillo de fusión (3.5). Individual: grupos/{g}/alumnos/{a}/atlas/tarea-fusion
+// El ejemplo guía usa un platillo de Hawái para que no lo copien (ellos eligen Australia o Nueva Zelanda).
+export const FUSION = {
+  ind: 'tarea-fusion',
+  ejemploCaso: 'el plate lunch de Hawái, con cerdo kalua',
+  // [clave, título, ayuda, palabras mínimas, ejemplo]
+  campos: [
+    ['platillo', '🍽️ El platillo y su país', 'Nombre del platillo, si es de Australia o de Nueva Zelanda y qué es: qué lleva y cómo se come.', 10,
+      'Plate lunch con cerdo kalua (Hawái): un plato con dos bolas de arroz blanco, ensalada de macarrón y cerdo deshebrado cocido bajo tierra.'],
+    ['indigena', '🌿 Capa indígena (aborigen o maorí)', '¿Qué aportaron los pueblos originarios? Un ingrediente, una técnica o una forma de servir. Explica de dónde viene.', 15,
+      'El cerdo kalua se cuece en el imu, el horno de tierra polinesio, envuelto en hojas sobre piedras calientes: aporta la técnica y el sabor ahumado.'],
+    ['britanica', '🇬🇧 Capa británica (colonial)', '¿Qué llegó con la colonización británica (siglos XVIII y XIX)? Ingrediente, técnica o costumbre.', 15,
+      'En Hawái la capa colonial es estadounidense: la ensalada de macarrón con mayonesa, una guarnición típica de los picnics de Estados Unidos.'],
+    ['migrante', '✈️ Capa migrante (reciente)', '¿Qué aportaron los migrantes que llegaron después (asiáticos, mediterráneos…)? ¿Cuándo llegaron?', 15,
+      'El arroz blanco en bola, al estilo japonés, lo trajeron los trabajadores de las plantaciones de azúcar a partir de 1868; también los chinos, coreanos y filipinos.'],
+    ['conclusion', '🤔 ¿Qué cuenta este platillo de la historia de su país?', 'Une las tres capas: ¿por qué este platillo solo podía nacer ahí? Al menos 25 palabras.', 25,
+      'El plate lunch junta en un plato tres momentos de Hawái: lo polinesio, la llegada de Estados Unidos y la migración por trabajo. Por eso se considera comida «local», aunque nada en él tiene un solo origen.'],
+    ['fuentes', '📚 Fuentes (al menos dos)', 'Una por renglón: el compendio y al menos una página o libro (autor o sitio, título, año y enlace).', 1,
+      'Compendio Origen de las Cocinas, Tema 3.5. / Nombre del sitio, «Título del artículo», año, enlace.'],
+  ],
+};
+export function sugerirFusion(d) {
+  if (!d) return { nota: 0, detalle: 'Sin trabajo' };
+  const c = d.campos || {}, pal = k => palabras(c[k]);
+  const capas = ['indigena', 'britanica', 'migrante'].filter(k => pal(k) >= 15).length;
+  const nf = String(c.fuentes || '').split(/\n|\s\/\s|;/).map(x => x.trim()).filter(x => x.length > 4).length;
+  const nota = (pal('platillo') >= 10 ? 1 : pal('platillo') ? .5 : 0) + 2 * capas + 2 * Math.min(1, pal('conclusion') / 25) + (nf >= 2 ? 1 : nf ? .5 : 0);
+  return { nota: r1(nota), detalle: `${capas}/3 capas completas · conclusión de ${pal('conclusion')} palabras · ${nf} fuente${nf === 1 ? '' : 's'}` };
 }

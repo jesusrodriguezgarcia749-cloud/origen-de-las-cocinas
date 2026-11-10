@@ -9,7 +9,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, FieldPath, collection, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
-import { CUADRO_MM, PLATILLOS, TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, sugerirCuadro, MIN_PALABRAS_CELDA, INFLUENCIAS, sugerirInfluencias, ESPECIAS, subregionDe, sugerirEspecias } from "./clase-datos.js";
+import { CUADRO_MM, PLATILLOS, TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, sugerirCuadro, MIN_PALABRAS_CELDA, INFLUENCIAS, sugerirInfluencias, ESPECIAS, subregionDe, sugerirEspecias, FUSION, sugerirFusion } from "./clase-datos.js";
 import { DocITES } from "./docx-ites.js";
 import { INGREDIENTES, CONTINENTES } from "./aporto-datos.js";
 import { BALUARTES, CAMPECHE, QUE_INFLUENCIA, PAISES_AM, PLATILLOS_AM } from "./america-datos.js";
@@ -19,7 +19,7 @@ import { VUELTA_MUNDO, CONTINENTES_T3 } from "./oceania-datos.js";
 import { RECADOS, ORIGENES, LLEGADAS, INGS, CLAVE_RECADO, HISTORIA, LINEA_TIEMPO, recadoDe, reconocer, ingsDe, sugerirRecado, infoRecado, recadosDe, nombreRecados } from "./recado-datos.js";
 import { comprimir, idFoto, MAX_FOTOS, fotosAlWord } from "./fotos.js";
 import { actArmaHangi } from "./arma-hangi.js?v=2026111001";
-import { wordTarea } from "./tarea-word.js?v=2026110602";
+import { wordTarea } from "./tarea-word.js?v=2026111001";
 import { formacionDe, formaciones, formacionDeTarea, abiertas as inscAbiertas, equipoDe, equiposDe, tareasDeFormacion, enEquipo } from "./equipos.js";
 
 const db = getFirestore(initializeApp(firebaseConfig));
@@ -140,6 +140,9 @@ async function estadoDe(a) {
     } else if (a.tipo === 'recado') {
       const s = await getDoc(eq ? doc(db, 'grupos', g, 'equipos', eq.id, 'atlas', RECADOS.id) : doc(db, 'grupos', g, 'alumnos', al, 'atlas', 'tarea-recado'));
       if (s.exists()) { out.avance = sugerirRecado(s.data()).detalle; out.entregado = s.data().entregado || null; }
+    } else if (a.tipo === 'fusion') {
+      const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al, 'atlas', FUSION.ind));
+      if (s.exists()) { out.avance = sugerirFusion(s.data()).detalle; out.entregado = s.data().entregado || null; }
     } else if (a.tipo === 'desarma') {
       const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al, 'atlas', 'tarea-desarma'));
       if (s.exists()) { const m = (s.data().datos || {}).ficha || {}; out.avance = m.nombre ? `${m.nombre}: ${(m.ingredientes || []).length} ingredientes` : ''; out.entregado = s.data().entregado || null; }
@@ -203,7 +206,7 @@ function ruta() {
   const c = $('#cl-actividad');
   c.innerHTML = `<a class="cl-volver" href="#">← Todas las tareas</a><p class="cl-fecha">Tema ${esc(a.tema)} · ${esc(a.titulo)} · ${esc(a.fechaTexto)}</p><h2 class="cl-h2">${a.icono} ${esc(a.nombre)}</h2>
     ${califica(a) ? '<p class="cl-vale">📌 Cuenta como una tarea del Parcial 2.</p>' : '<p class="cl-vale cl-vale-p">🎯 Práctica para repasar: no lleva calificación.</p>'}<div id="cl-cuerpo"></div>`;
-  (a.tipo === 'practica' ? { aporto: actAporto, campeche: actCampeche, 'que-influencia': actQueInfluencia, 'platillos-america': actPlatillosAmerica, 'que-asia': actQueAsia, 'que-europa': actQueEuropa, 'vuelta-mundo': actVueltaMundo, 'arma-hangi': c => actArmaHangi(c, sesion && sesion.nombre) }[a.id] : { cuadro: actCuadro, desarma: actDesarma, influencias: actInfluencias, especias: actEspecias, recado: actRecado }[a.tipo])($('#cl-cuerpo'));
+  (a.tipo === 'practica' ? { aporto: actAporto, campeche: actCampeche, 'que-influencia': actQueInfluencia, 'platillos-america': actPlatillosAmerica, 'que-asia': actQueAsia, 'que-europa': actQueEuropa, 'vuelta-mundo': actVueltaMundo, 'arma-hangi': c => actArmaHangi(c, sesion && sesion.nombre) }[a.id] : { cuadro: actCuadro, desarma: actDesarma, influencias: actInfluencias, especias: actEspecias, recado: actRecado, fusion: actFusion }[a.tipo])($('#cl-cuerpo'));
   window.scrollTo({ top: 0 });
 }
 // El QR de un equipo abre tareas.html#unir-CODIGO (vía unir.html): entra, se une y va a su tarea.
@@ -1009,6 +1012,49 @@ function actQueAsia(cont) {
     estudiar: { boton: 'Estudiar las cinco subregiones', intro: 'Cada subregión de Asia con sus platillos, especias, técnicas y datos del juego.', filtros: [['todos', 'Todas', () => true], ...L.map(([k, n]) => [k, n, x => x.c === k])], uno: 'ejemplo', varios: 'ejemplos', texto: x => x.q + ' ' + nom(x.c) + ' ' + x.x,
       fila: x => { const S = L.find(y => y[0] === x.c); return `<div class="ap-fila" style="border-left-color:${S[2]}"><span class="ap-fe">${x.e}</span><div><b>${esc(x.q)}</b> <small class="ap-tag">${esc(S[1])}</small><p class="ap-dato">${esc(x.x)}</p></div></div>`; } },
   });
+}
+
+// ======================================================= 7. UN PLATILLO DE FUSIÓN (3.5 · individual)
+function actFusion(cont) {
+  const entrar = () => { escucharGrupo(); fusion(cont); };
+  if (sesion) entrar(); else formAcceso(cont, entrar, 'Entra con tu nombre y PIN para trabajar en esta tarea');
+}
+function fusion(cont) {
+  const a = TAREAS_DIG.fusion, E = FUSION, ref = doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'atlas', E.ind);
+  cont.innerHTML = `<div class="ma-barra"><span>👤 <b>${esc(sesion.nombre)}</b> (individual)</span><span class="ma-estado" id="fu-estado"></span>
+      <button type="button" class="btn-ruta" id="fu-word">⬇ Descargar en Word</button></div>
+    <div data-entrega></div>
+    <p class="atlas-ayuda">Elige <b>un platillo de fusión de Australia o de Nueva Zelanda</b> (por ejemplo, algo que se coma en una barbie, en un hangi moderno o en un café) e investiga sus <b>tres capas históricas</b>. Se guarda solo en tu cuenta.</p>
+    <div class="cu-ej-aviso"><b>💡 Debajo de cada espacio hay un ejemplo</b> resuelto con otro platillo: <i>${esc(E.ejemploCaso)}</i>. Úsalo para ver qué se pide y cuánto escribir, pero <b>no lo copies</b>: el tuyo debe ser de Australia o Nueva Zelanda.</div>
+    <div class="es-campos">${E.campos.map(([k, t, ayuda, min, ej]) => `<label class="es-campo" data-c="${k}"><span class="es-cab"><b>${t}</b></span><small class="es-ayuda">${esc(ayuda)}</small>
+      <textarea data-k="${k}" rows="${k === 'conclusion' ? 5 : k === 'fuentes' ? 3 : 4}"></textarea><small class="es-cuenta" data-cuenta="${k}"></small>
+      <p class="cu-ej"><b>💡 Ejemplo</b> ${esc(ej)}</p></label>`).join('')}</div>
+    <p class="es-sug" id="fu-sug"></p>`;
+  const estado = (t, c = '') => { const e = $('#fu-estado'); if (e) { e.textContent = t; e.className = 'ma-estado ' + c; } };
+  let repEntrega = () => {};
+  const pintar = S => {
+    const act = document.activeElement, c = S.campos || {};
+    E.campos.forEach(([k, , , min]) => {
+      const ta = $(`[data-k="${k}"]`, cont); if (ta !== act && ta.value !== (c[k] || '')) ta.value = c[k] || '';
+      const n = palabras(c[k]), el = $(`[data-cuenta="${k}"]`, cont);
+      el.textContent = k === 'fuentes' ? ((c[k] || '').trim() ? '✓ con fuentes' : 'faltan las fuentes') : `${n} palabra${n === 1 ? '' : 's'}${n >= min ? ' ✓' : ` · mínimo ${min}`}`;
+      el.className = 'es-cuenta ' + ((k === 'fuentes' ? (c[k] || '').trim() : n >= min) ? 'ok' : '');
+    });
+    $('#fu-sug').textContent = `Avance: ${sugerirFusion(S).detalle}.`;
+    repEntrega();
+  };
+  const V = docVivo(ref, null, (S, st) => { pintar(S); estado(st === 'ok' ? 'Guardado en tu cuenta ✓' : st === 'error' ? 'No se pudo guardar. Reintentando…' : 'Guardando…', st === 'ok' ? 'ok' : st === 'error' ? 'mal' : ''); });
+  $$('[data-k]', cont).forEach(ta => ta.addEventListener('input', () => { if (!abierta(a.id)) return; V.poner(['campos', ta.dataset.k], ta.value, 'escribe'); }));
+  repEntrega = barraEntrega(cont, a, { entregado: () => V.S.entregado, alEntregar: async () => { if (!E.campos.some(([k]) => ((V.S.campos || {})[k] || '').trim())) throw new Error('Primero llena tu investigación.'); await V.entregar(); } });
+  $('#fu-word').addEventListener('click', async () => {
+    await V.flush();
+    const { blob, archivo } = await wordTarea(a, V.S, { nombre: sesion.nombre, alumnoId: sesion.alumnoId });
+    const url = URL.createObjectURL(blob instanceof Blob ? blob : new Blob([blob], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }));
+    const l = document.createElement('a'); l.href = url; l.download = archivo; document.body.appendChild(l); l.click(); l.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000);
+  });
+  const salir = () => V.flush();
+  window.addEventListener('beforeunload', salir);
+  detener = () => { V.cerrar(); window.removeEventListener('estado-tareas', repEntrega); window.removeEventListener('beforeunload', salir); };
 }
 
 // ======================================================= 5. LAS ESPECIAS DE ASIA (en equipo o individual, en vivo)

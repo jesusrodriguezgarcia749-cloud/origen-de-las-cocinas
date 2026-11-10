@@ -3,7 +3,7 @@
 // datos guardados en Firestore. Lo usa admin.js.
 import { DocITES } from "./docx-ites.js?v=2026110501";
 import { mapaContinentePNG } from "./docx-ites.js?v=2026110501";
-import { CUADRO_MM, INFLUENCIAS, ESPECIAS, subregionDe } from "./clase-datos.js";
+import { CUADRO_MM, INFLUENCIAS, ESPECIAS, subregionDe, FUSION } from "./clase-datos.js";
 import { RECADOS, ORIGENES, LLEGADAS, recadoDe, ingsDe, infoRecado, recadosDe } from "./recado-datos.js";
 import { fotosAlWord } from "./fotos.js";
 
@@ -41,6 +41,15 @@ async function especias(D, S, eq, nombre, alumnoId) {
   D.h1(sn, spista);
   D.ficha(ESPECIAS.campos.map(([k, t]) => [t.replace(/^\S+\s/, ''), c[k], eq ? por[k] : '']));
   return `Especias_de_Asia_${quien(eq, nombre)}`;
+}
+
+// ---------- Un platillo de fusión (3.5)
+async function fusion(D, S, eq, nombre) {
+  const c = S.campos || {}, plat = String(c.platillo || '').split(/[.:(\n]/)[0].trim();
+  portadaDe(D, { kicker: 'Tema 3.5 · Cocinas de Oceanía', titulo: plat ? `Un platillo de fusión: ${plat}` : 'Un platillo de fusión', subtitulo: 'Sus tres capas históricas: indígena, británica y migrante' }, null, nombre);
+  D.h1('Investigación');
+  D.ficha(FUSION.campos.map(([k, t]) => [t.replace(/^\S+\s/, ''), c[k]]));
+  return `Platillo_de_fusion_${quien(null, nombre)}`;
 }
 
 // ---------- El recado campechano
@@ -114,7 +123,7 @@ async function atlas(D, c, eq, nombre, cont) {
 // a: tarea (TAREAS_DIG); datos: lo guardado (para atlas, ya normalizado como c); eq: equipo o null.
 export async function wordTarea(a, datos, { eq = null, nombre = '', alumnoId = '', fotos = null } = {}) {
   const D = new DocITES(); await D.cargarLogo();
-  const fn = { cuadro, influencias, especias, desarma, atlas, recado }[a.tipo];
+  const fn = { cuadro, influencias, especias, desarma, atlas, recado, fusion }[a.tipo];
   if (!fn) throw new Error('Esta tarea no tiene Word.');
   const archivo = await fn(D, datos || {}, eq, nombre, a.tipo === 'atlas' ? a.cont : alumnoId);
   if (fotos && fotos.length) await fotosAlWord(D, fotos);
