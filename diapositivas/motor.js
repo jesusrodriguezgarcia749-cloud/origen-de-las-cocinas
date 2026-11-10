@@ -406,6 +406,11 @@
           plugins: window.RevealNotes ? [RevealNotes] : []
         });
         if (window.PASOS) window.PASOS.activar(Reveal);
+        // Glosario: subraya las palabras del glosario en cada diapositiva y llena las «Palabras de hoy»
+        if (P.glosario !== false) script(new URL("../js/glosario.js?v=2026111001", AQUI).href).then(() => window.GLOSARIO.listo).then(() => {
+          document.querySelectorAll(".reveal .slides section").forEach(sec => { if (!sec.querySelector("section")) window.GLOSARIO.marcar(sec); });
+          window.GLOSARIO.fichas(document);
+        }).catch(() => {});
         if (DOCENTE) modoDocente();
       })
       .catch(() => {

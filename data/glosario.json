@@ -1,0 +1,2132 @@
+{
+ "publicado": false,
+ "revision": "Definiciones breves escritas para estudiar. En revisión por el docente.",
+ "categorias": {
+  "platillo": "🍽️ Platillo",
+  "ingrediente": "🌿 Ingrediente",
+  "técnica": "🔥 Técnica",
+  "bebida": "🥤 Bebida",
+  "utensilio": "🍳 Utensilio",
+  "concepto": "💡 Concepto",
+  "lugar": "🗺️ Lugar o pueblo"
+ },
+ "temas": {
+  "1": "Tema 1 · Introducción",
+  "2": "Tema 2 · Tipología de la cocina",
+  "3": "Tema 3 · Cocinas en el mundo",
+  "4": "Tema 4 · Necesidades e influencias"
+ },
+ "terminos": [
+  {
+   "id": "abeja-melipona",
+   "t": "Abeja melipona",
+   "c": "ingrediente",
+   "tema": "3.2",
+   "d": "Abeja sin aguijón que los mayas cultivan desde hace siglos en troncos huecos (jobones). Su miel se usa también como medicina.",
+   "o": "Península de Yucatán",
+   "v": [
+    "melipona",
+    "xunán kab"
+   ]
+  },
+  {
+   "id": "aceite-de-palma-rojo",
+   "t": "Aceite de palma rojo",
+   "c": "ingrediente",
+   "tema": "3.1",
+   "d": "Aceite rojizo del fruto de la palma africana; da color y sabor a muchos guisos de África Occidental y al dendê de Brasil.",
+   "o": "África Occidental",
+   "v": [
+    "aceite de palma"
+   ]
+  },
+  {
+   "id": "achiote",
+   "t": "Achiote",
+   "c": "ingrediente",
+   "tema": "3.2",
+   "d": "Semilla roja de un arbusto americano; molida con especias forma el recado rojo de la cochinita pibil.",
+   "o": "Mesoamérica"
+  },
+  {
+   "id": "adobo-filipino",
+   "t": "Adobo filipino",
+   "c": "platillo",
+   "tema": "3.3",
+   "d": "Carne guisada en vinagre, soya, ajo y laurel, de Filipinas.",
+   "o": "Filipinas"
+  },
+  {
+   "id": "agridulce",
+   "t": "Agridulce",
+   "c": "concepto",
+   "tema": "1.2.2",
+   "d": "Combinación de sabor dulce y ácido o salado en un mismo platillo, por ejemplo carne con miel y vinagre. Era muy común en la Edad Media."
+  },
+  {
+   "id": "ahimsa",
+   "t": "Ahimsa",
+   "c": "concepto",
+   "tema": "2.3",
+   "d": "Principio de no hacer daño a ningún ser vivo, base del vegetarianismo en el hinduismo, el budismo y el jainismo.",
+   "o": "India"
+  },
+  {
+   "id": "al-andalus",
+   "t": "al-Ándalus",
+   "c": "lugar",
+   "tema": "3.4",
+   "d": "Nombre de la parte de la península ibérica que estuvo bajo dominio musulmán (711-1492). Dejó arroz, azafrán, almendras, cítricos y muchas palabras de cocina.",
+   "o": "España"
+  },
+  {
+   "id": "alambique",
+   "t": "Alambique",
+   "c": "utensilio",
+   "tema": "3.4",
+   "d": "Aparato para destilar; su nombre es de origen árabe.",
+   "o": "Mundo árabe"
+  },
+  {
+   "id": "amazigh",
+   "t": "Amazigh",
+   "c": "lugar",
+   "tema": "3.1",
+   "d": "Pueblos originarios del norte de África (antes llamados bereberes). El cuscús y el tajín son de su tradición.",
+   "o": "Norte de África",
+   "v": [
+    "bereber"
+   ]
+  },
+  {
+   "id": "annona",
+   "t": "Annona",
+   "c": "concepto",
+   "tema": "4.2",
+   "d": "Reparto de trigo (y después pan) gratis o barato al pueblo de Roma: de ahí lo de «pan y circo».",
+   "o": "Antigua Roma",
+   "v": [
+    "pan y circo"
+   ]
+  },
+  {
+   "id": "arbol-del-pan",
+   "t": "Árbol del pan",
+   "c": "ingrediente",
+   "tema": "3.5",
+   "d": "Árbol del Pacífico de frutos grandes y almidonosos que se asan o cuecen como pan. El Bounty lo iba a llevar al Caribe.",
+   "o": "Pacífico"
+  },
+  {
+   "id": "asado",
+   "t": "Asado",
+   "c": "técnica",
+   "tema": "3.2",
+   "d": "Carne a las brasas de Argentina y Uruguay, con ritual social alrededor del fuego.",
+   "o": "Cono Sur",
+   "marcar": [
+    "el asado",
+    "asado argentino"
+   ]
+  },
+  {
+   "id": "asquenazi",
+   "t": "Asquenazí",
+   "c": "concepto",
+   "tema": "3.4",
+   "d": "Judíos de Europa Central y del Este; de su cocina vienen el bagel y el pastrami.",
+   "o": "Europa Central",
+   "v": [
+    "asquenazíes"
+   ]
+  },
+  {
+   "id": "atole",
+   "t": "Atole",
+   "c": "bebida",
+   "tema": "3.2",
+   "d": "Bebida caliente y espesa de masa de maíz con agua o leche.",
+   "o": "Mesoamérica"
+  },
+  {
+   "id": "ayuno",
+   "t": "Ayuno",
+   "c": "concepto",
+   "tema": "2.3",
+   "d": "No comer, o comer muy poco, durante un tiempo por motivos religiosos, como en Cuaresma o en Ramadán.",
+   "noMarcar": true
+  },
+  {
+   "id": "azafran",
+   "t": "Azafrán",
+   "c": "ingrediente",
+   "tema": "3.3",
+   "d": "Estigmas secos de una flor; dan color amarillo y aroma. Es la especia más cara del mundo porque se recoge a mano.",
+   "o": "Persia"
+  },
+  {
+   "id": "baguette",
+   "t": "Baguette",
+   "c": "platillo",
+   "tema": "3.4",
+   "d": "Pan francés largo y delgado de corteza crujiente.",
+   "o": "Francia"
+  },
+  {
+   "id": "balche",
+   "t": "Balché",
+   "c": "bebida",
+   "tema": "3.2",
+   "d": "Bebida ceremonial maya fermentada, hecha con la corteza del árbol de balché y miel.",
+   "o": "Mayas"
+  },
+  {
+   "id": "banchan",
+   "t": "Banchan",
+   "c": "platillo",
+   "tema": "3.3",
+   "d": "Platitos de acompañamiento que se sirven junto al arroz en la comida coreana.",
+   "o": "Corea"
+  },
+  {
+   "id": "banh-mi",
+   "t": "Bánh mì",
+   "c": "platillo",
+   "tema": "3.3",
+   "d": "Baguette vietnamita rellena de carne, verduras encurtidas y cilantro: herencia de la colonia francesa.",
+   "o": "Vietnam"
+  },
+  {
+   "id": "barbie",
+   "t": "Barbie",
+   "c": "técnica",
+   "tema": "3.5",
+   "d": "Así le dicen en Australia a la parrillada (barbecue).",
+   "o": "Australia"
+  },
+  {
+   "id": "berbere",
+   "t": "Berbere",
+   "c": "ingrediente",
+   "tema": "3.1",
+   "d": "Mezcla etíope de chile seco y muchas especias que da color y picor al wat.",
+   "o": "Etiopía"
+  },
+  {
+   "id": "bibimbap",
+   "t": "Bibimbap",
+   "c": "platillo",
+   "tema": "3.3",
+   "d": "Tazón de arroz con verduras, carne, huevo y gochujang que se mezcla antes de comer.",
+   "o": "Corea"
+  },
+  {
+   "id": "biltong",
+   "t": "Biltong",
+   "c": "platillo",
+   "tema": "3.1",
+   "d": "Carne curada con sal, vinagre y especias, secada al aire.",
+   "o": "Sudáfrica"
+  },
+  {
+   "id": "biryani",
+   "t": "Biryani",
+   "c": "platillo",
+   "tema": "4.3",
+   "d": "Arroz con especias, carne y azafrán en capas, de la corte mogol de la India.",
+   "o": "India"
+  },
+  {
+   "id": "bobotie",
+   "t": "Bobotie",
+   "c": "platillo",
+   "tema": "3.1",
+   "d": "Carne molida especiada con curry y una capa de huevo horneada; herencia de los esclavos traídos de Asia (cabo Malayo).",
+   "o": "Sudáfrica"
+  },
+  {
+   "id": "borsch",
+   "t": "Borsch",
+   "c": "platillo",
+   "tema": "3.4",
+   "d": "Sopa de betabel de Ucrania y Europa del Este.",
+   "o": "Europa del Este",
+   "v": [
+    "borscht"
+   ]
+  },
+  {
+   "id": "braai",
+   "t": "Braai",
+   "c": "técnica",
+   "tema": "3.1",
+   "d": "La parrillada sudafricana: reunirse alrededor del fuego es tan importante como la carne.",
+   "o": "Sudáfrica"
+  },
+  {
+   "id": "brigada-de-cocina",
+   "t": "Brigada de cocina",
+   "c": "concepto",
+   "tema": "2.4",
+   "d": "Organización del personal de cocina por puestos y jerarquías (chef, sous-chef, partidas), ordenada por Escoffier.",
+   "o": "Francia, siglo XIX",
+   "v": [
+    "brigada"
+   ]
+  },
+  {
+   "id": "bushfood",
+   "t": "Bushfood",
+   "c": "concepto",
+   "tema": "3.5",
+   "d": "La comida tradicional de los pueblos aborígenes de Australia, con ingredientes silvestres nativos.",
+   "o": "Australia",
+   "v": [
+    "bush tucker"
+   ]
+  },
+  {
+   "id": "cacao",
+   "t": "Cacao",
+   "c": "ingrediente",
+   "tema": "3.2",
+   "d": "Semilla con la que se prepara el chocolate. Entre mexicas y mayas también se usaba como moneda.",
+   "o": "Mesoamérica"
+  },
+  {
+   "id": "cajun",
+   "t": "Cajún",
+   "c": "concepto",
+   "tema": "3.2",
+   "d": "Cocina rural de Luisiana de los descendientes de franceses de Acadia; el gumbo y el jambalaya son suyos.",
+   "o": "Estados Unidos",
+   "v": [
+    "criolla de Luisiana"
+   ]
+  },
+  {
+   "id": "carta",
+   "t": "Carta",
+   "c": "concepto",
+   "tema": "4.4",
+   "d": "Lista de platillos con sus precios para que cada comensal elija: invento del restaurante moderno.",
+   "o": "Francia",
+   "v": [
+    "menú"
+   ],
+   "noMarcar": true
+  },
+  {
+   "id": "casabe",
+   "t": "Casabe",
+   "c": "platillo",
+   "tema": "3.2",
+   "d": "Pan plano y crujiente de yuca, de los pueblos taínos del Caribe.",
+   "o": "Caribe"
+  },
+  {
+   "id": "caviar",
+   "t": "Caviar",
+   "c": "ingrediente",
+   "tema": "3.4",
+   "d": "Huevas saladas de esturión, uno de los productos más caros del mundo.",
+   "o": "Mar Caspio"
+  },
+  {
+   "id": "cazon",
+   "t": "Cazón",
+   "c": "ingrediente",
+   "tema": "3.2",
+   "d": "Tiburón pequeño del Golfo de México, base de varios platillos campechanos.",
+   "o": "Golfo de México"
+  },
+  {
+   "id": "cena-romana",
+   "t": "Cena (romana)",
+   "c": "concepto",
+   "tema": "4.2",
+   "d": "La comida principal de los romanos, por la tarde, que en las casas ricas se volvía banquete.",
+   "o": "Antigua Roma",
+   "noMarcar": true
+  },
+  {
+   "id": "ceremonia-del-cafe",
+   "t": "Ceremonia del café",
+   "c": "concepto",
+   "tema": "3.1",
+   "d": "Ritual etíope de tostar, moler y servir el café en tres rondas, como señal de hospitalidad. El café es originario de Etiopía.",
+   "o": "Etiopía"
+  },
+  {
+   "id": "ceviche",
+   "t": "Ceviche",
+   "c": "platillo",
+   "tema": "3.2",
+   "d": "Pescado crudo «cocido» en jugo de limón, con cebolla y chile. Es de raíz peruana.",
+   "o": "Perú",
+   "v": [
+    "cebiche"
+   ]
+  },
+  {
+   "id": "charqui",
+   "t": "Charqui",
+   "c": "platillo",
+   "tema": "3.2",
+   "d": "Carne seca salada de los Andes; de esta palabra viene «jerky».",
+   "o": "Andes"
+  },
+  {
+   "id": "chifa",
+   "t": "Chifa",
+   "c": "concepto",
+   "tema": "3.2",
+   "d": "Cocina chino-peruana nacida de los migrantes chinos en Perú; el lomo saltado es su hijo más famoso.",
+   "o": "Perú"
+  },
+  {
+   "id": "chiles-en-nogada",
+   "t": "Chiles en nogada",
+   "c": "platillo",
+   "tema": "3.2",
+   "d": "Chile poblano relleno de picadillo, con salsa de nuez y granada, en los colores de la bandera.",
+   "o": "Puebla"
+  },
+  {
+   "id": "chinampa",
+   "t": "Chinampa",
+   "c": "técnica",
+   "tema": "3.2",
+   "d": "Isla de cultivo hecha con lodo y plantas sobre un lago, típica de Xochimilco. Producía varias cosechas al año.",
+   "o": "Valle de México",
+   "v": [
+    "chinampas"
+   ]
+  },
+  {
+   "id": "chucrut",
+   "t": "Chucrut",
+   "c": "platillo",
+   "tema": "3.4",
+   "d": "Col fermentada en tiras, típica de Alemania y Alsacia.",
+   "o": "Alemania",
+   "v": [
+    "sauerkraut"
+   ]
+  },
+  {
+   "id": "chuno",
+   "t": "Chuño",
+   "c": "técnica",
+   "tema": "3.2",
+   "d": "Papa deshidratada por congelación nocturna y sol del día en el altiplano; puede guardarse años.",
+   "o": "Andes"
+  },
+  {
+   "id": "clavo",
+   "t": "Clavo",
+   "c": "ingrediente",
+   "tema": "3.3",
+   "d": "Botón de flor seco de un árbol de las Molucas, de aroma intenso.",
+   "o": "Indonesia",
+   "v": [
+    "clavo de olor"
+   ],
+   "marcar": [
+    "clavo de olor",
+    "clavos de olor"
+   ]
+  },
+  {
+   "id": "cocina-cotidiana",
+   "t": "Cocina cotidiana",
+   "c": "concepto",
+   "tema": "2.1",
+   "d": "La comida de todos los días: busca ahorrar tiempo, dinero y esfuerzo.",
+   "noMarcar": true
+  },
+  {
+   "id": "cocina-de-autor",
+   "t": "Cocina de autor",
+   "c": "concepto",
+   "tema": "1.5",
+   "d": "Cocina que expresa el estilo personal de un chef: sus platillos son reconocibles como «suyos»."
+  },
+  {
+   "id": "cocina-de-festejo",
+   "t": "Cocina de festejo",
+   "c": "concepto",
+   "tema": "2.1",
+   "d": "La comida de las celebraciones: más cara, más elaborada y con significado; marca que ese día es especial.",
+   "v": [
+    "cocina de celebración"
+   ],
+   "noMarcar": true
+  },
+  {
+   "id": "cocina-de-fusion",
+   "t": "Cocina de fusión",
+   "c": "concepto",
+   "tema": "2.4",
+   "d": "Cocina que mezcla técnicas e ingredientes de tradiciones distintas en un mismo platillo.",
+   "v": [
+    "fusión"
+   ]
+  },
+  {
+   "id": "cocina-de-mercado",
+   "t": "Cocina de mercado",
+   "c": "concepto",
+   "tema": "1.5",
+   "d": "Cocina que cambia su menú según lo que hay en cada temporada del año. También se llama cocina de temporada.",
+   "v": [
+    "cocina de temporada"
+   ]
+  },
+  {
+   "id": "cocina-economica",
+   "t": "Cocina económica",
+   "c": "utensilio",
+   "tema": "1.3",
+   "d": "Tiene dos sentidos: el fogón de leña con plancha y horno que precedió a la estufa, y el comedor popular de comida sencilla y barata.",
+   "o": "Siglos XVII al XX"
+  },
+  {
+   "id": "cocina-molecular",
+   "t": "Cocina molecular",
+   "c": "concepto",
+   "tema": "2.4",
+   "d": "Corriente que aplica la física y la química para crear texturas nuevas: espumas, esferas, geles.",
+   "o": "Siglos XX y XXI",
+   "v": [
+    "cocina de vanguardia"
+   ]
+  },
+  {
+   "id": "coctel-campechano",
+   "t": "Coctel campechano",
+   "c": "platillo",
+   "tema": "3.2",
+   "d": "Coctel de mariscos variados en salsa de jitomate.",
+   "o": "Campeche"
+  },
+  {
+   "id": "codice-florentino",
+   "t": "Códice Florentino",
+   "c": "concepto",
+   "tema": "3.2",
+   "d": "Obra de fray Bernardino de Sahagún (siglo XVI), escrita con informantes nahuas, con muchísima información sobre la comida mexica.",
+   "o": "Nueva España"
+  },
+  {
+   "id": "creciente-fertil",
+   "t": "Creciente Fértil",
+   "c": "lugar",
+   "tema": "3.3",
+   "d": "Región en forma de media luna entre Mesopotamia y el Levante donde se domesticaron el trigo y la cebada hace unos 10,000 años.",
+   "o": "Medio Oriente"
+  },
+  {
+   "id": "crudo-y-cocido",
+   "t": "Crudo y cocido",
+   "c": "concepto",
+   "tema": "4.1",
+   "d": "Libro de Claude Lévi-Strauss (1964): cocinar es lo que convierte lo «natural» en «cultural».",
+   "o": "Francia",
+   "v": [
+    "lo crudo y lo cocido"
+   ]
+  },
+  {
+   "id": "cuaresma",
+   "t": "Cuaresma",
+   "c": "concepto",
+   "tema": "2.3",
+   "d": "Los 40 días antes de la Semana Santa católica, con abstinencia de carne los viernes. Por eso en México hay tantos platillos de pescado y vigilia.",
+   "o": "Cristianismo",
+   "v": [
+    "vigilia"
+   ]
+  },
+  {
+   "id": "cultura-lapita",
+   "t": "Cultura lapita",
+   "c": "concepto",
+   "tema": "3.5",
+   "d": "Pueblo navegante que hace unos 3,000 años empezó a poblar las islas del Pacífico en canoas dobles; se reconoce por su cerámica decorada.",
+   "o": "Pacífico",
+   "v": [
+    "lapita"
+   ]
+  },
+  {
+   "id": "curanto",
+   "t": "Curanto",
+   "c": "técnica",
+   "tema": "3.5",
+   "d": "Horno de tierra de Chiloé (Chile): mariscos, carne y papas sobre piedras calientes, tapados con hojas de nalca.",
+   "o": "Chile"
+  },
+  {
+   "id": "curry",
+   "t": "Curry",
+   "c": "platillo",
+   "tema": "3.3",
+   "d": "Nombre que dieron los ingleses a muchos guisos especiados de la India. No es una sola especia.",
+   "o": "India"
+  },
+  {
+   "id": "cuscus",
+   "t": "Cuscús",
+   "c": "platillo",
+   "tema": "3.1",
+   "d": "Granitos de sémola de trigo cocidos al vapor, acompañados de verduras, carne o pescado.",
+   "o": "Norte de África (amazigh)",
+   "v": [
+    "couscous"
+   ]
+  },
+  {
+   "id": "dashi",
+   "t": "Dashi",
+   "c": "ingrediente",
+   "tema": "3.3",
+   "d": "Caldo japonés de alga kombu y hojuelas de bonito seco: la base del umami.",
+   "o": "Japón"
+  },
+  {
+   "id": "de-re-coquinaria",
+   "t": "De re coquinaria",
+   "c": "concepto",
+   "tema": "1.2.1",
+   "d": "El libro de cocina más antiguo de Occidente que se conserva casi completo. Se atribuye a Apicio (siglo I), aunque se compiló siglos después.",
+   "o": "Antigua Roma",
+   "v": [
+    "Apicio"
+   ]
+  },
+  {
+   "id": "dende",
+   "t": "Dendê",
+   "c": "ingrediente",
+   "tema": "3.2",
+   "d": "Nombre brasileño del aceite de palma, base de la cocina afrobrasileña de Bahía.",
+   "o": "Brasil (raíz africana)"
+  },
+  {
+   "id": "dieta-mediterranea",
+   "t": "Dieta mediterránea",
+   "c": "concepto",
+   "tema": "3.4",
+   "d": "Forma de comer basada en aceite de oliva, cereales, legumbres, verduras, pescado y vino con moderación; Patrimonio de la UNESCO.",
+   "o": "Mediterráneo"
+  },
+  {
+   "id": "doenjang",
+   "t": "Doenjang",
+   "c": "ingrediente",
+   "tema": "3.3",
+   "d": "Pasta coreana de soya fermentada, parecida al miso.",
+   "o": "Corea"
+  },
+  {
+   "id": "egusi",
+   "t": "Egusi",
+   "c": "ingrediente",
+   "tema": "3.1",
+   "d": "Semillas de un tipo de calabaza que se muelen para espesar sopas.",
+   "o": "África Occidental"
+  },
+  {
+   "id": "entremes",
+   "t": "Entremés",
+   "c": "concepto",
+   "tema": "4.3",
+   "d": "En la Edad Media, espectáculo o platillo entre los servicios del banquete; hoy, un plato ligero de entrada.",
+   "o": "Europa",
+   "v": [
+    "entremeses"
+   ]
+  },
+  {
+   "id": "escabeche",
+   "t": "Escabeche",
+   "c": "técnica",
+   "tema": "3.4",
+   "d": "Conserva en vinagre, aceite y especias. Llegó a España con los árabes y de ahí a México.",
+   "o": "Mundo árabe → España → México"
+  },
+  {
+   "id": "falafel",
+   "t": "Falafel",
+   "c": "platillo",
+   "tema": "3.3",
+   "d": "Croquetas fritas de garbanzo o haba con hierbas.",
+   "o": "Medio Oriente"
+  },
+  {
+   "id": "farina",
+   "t": "Fariña",
+   "c": "ingrediente",
+   "tema": "3.2",
+   "d": "Harina gruesa y tostada de yuca, de la Amazonía y Brasil.",
+   "o": "Amazonía"
+  },
+  {
+   "id": "feijoada",
+   "t": "Feijoada",
+   "c": "platillo",
+   "tema": "3.2",
+   "d": "Guiso brasileño de frijol negro con carnes de cerdo.",
+   "o": "Brasil"
+  },
+  {
+   "id": "fish-and-chips",
+   "t": "Fish and chips",
+   "c": "platillo",
+   "tema": "3.4",
+   "d": "Pescado capeado y papas fritas: la comida rápida clásica británica.",
+   "o": "Reino Unido"
+  },
+  {
+   "id": "fisiologia-del-gusto",
+   "t": "Fisiología del gusto",
+   "c": "concepto",
+   "tema": "1.1",
+   "d": "Libro de Jean Anthelme Brillat-Savarin (1825) que convirtió el acto de comer en tema de reflexión. De ahí viene la frase «Dime lo que comes y te diré lo que eres».",
+   "o": "Francia"
+  },
+  {
+   "id": "fonda",
+   "t": "Fonda",
+   "c": "concepto",
+   "tema": "4.4",
+   "d": "Establecimiento mexicano de comida casera y económica.",
+   "o": "México",
+   "v": [
+    "fondas"
+   ]
+  },
+  {
+   "id": "foraging",
+   "t": "Foraging",
+   "c": "técnica",
+   "tema": "2.2",
+   "d": "Recolectar plantas, hongos o frutos silvestres en el campo para cocinarlos. Lo popularizó la cocina nórdica.",
+   "v": [
+    "recolección silvestre"
+   ]
+  },
+  {
+   "id": "fufu",
+   "t": "Fufu",
+   "c": "platillo",
+   "tema": "3.1",
+   "d": "Masa suave y elástica hecha de yuca, ñame o plátano machacados; se come con la mano para tomar los guisos.",
+   "o": "África Occidental y Central"
+  },
+  {
+   "id": "ful-medames",
+   "t": "Ful medames",
+   "c": "platillo",
+   "tema": "3.1",
+   "d": "Habas cocidas a fuego lento con aceite, ajo y limón: desayuno tradicional de Egipto.",
+   "o": "Egipto"
+  },
+  {
+   "id": "galeon-de-manila",
+   "t": "Galeón de Manila",
+   "c": "concepto",
+   "tema": "3.3",
+   "d": "Barco que unió Manila (Filipinas) con Acapulco entre 1565 y 1815. Trajo a México especias, mango y arroz, y llevó a Asia chile, maíz y cacao.",
+   "o": "Filipinas y Nueva España",
+   "v": [
+    "Nao de China"
+   ]
+  },
+  {
+   "id": "gallo-pinto",
+   "t": "Gallo pinto",
+   "c": "platillo",
+   "tema": "3.2",
+   "d": "Arroz con frijoles fritos juntos: desayuno típico de Costa Rica y Nicaragua.",
+   "o": "Centroamérica"
+  },
+  {
+   "id": "garum",
+   "t": "Garum",
+   "c": "ingrediente",
+   "tema": "1.2.1",
+   "d": "Salsa de pescado fermentado con sal que los romanos usaban como hoy usamos la salsa de soya o el nam pla: para dar sabor salado y profundo.",
+   "o": "Antigua Roma"
+  },
+  {
+   "id": "gastronomia",
+   "t": "Gastronomía",
+   "c": "concepto",
+   "tema": "1.1",
+   "d": "Conocimiento de todo lo que rodea a la comida: cómo se produce, se cocina, se sirve y qué significa para una cultura. Va más allá de la receta.",
+   "o": "Del griego gastér (estómago) y nomos (ley)",
+   "noMarcar": true
+  },
+  {
+   "id": "gochujang",
+   "t": "Gochujang",
+   "c": "ingrediente",
+   "tema": "3.3",
+   "d": "Pasta coreana fermentada de chile, arroz y soya.",
+   "o": "Corea"
+  },
+  {
+   "id": "grand-couvert",
+   "t": "Grand couvert",
+   "c": "concepto",
+   "tema": "4.3",
+   "d": "Comida pública de Luis XIV en Versalles: el rey comía y la corte lo miraba.",
+   "o": "Francia"
+  },
+  {
+   "id": "gravlax",
+   "t": "Gravlax",
+   "c": "platillo",
+   "tema": "3.4",
+   "d": "Salmón curado con sal, azúcar y eneldo, de Escandinavia.",
+   "o": "Escandinavia"
+  },
+  {
+   "id": "guajolote",
+   "t": "Guajolote",
+   "c": "ingrediente",
+   "tema": "3.2",
+   "d": "Pavo doméstico, domesticado en Mesoamérica. En náhuatl, huexólotl.",
+   "o": "México"
+  },
+  {
+   "id": "gulash",
+   "t": "Gulash",
+   "c": "platillo",
+   "tema": "3.4",
+   "d": "Guiso húngaro de res con mucha paprika.",
+   "o": "Hungría",
+   "v": [
+    "goulash"
+   ]
+  },
+  {
+   "id": "gustatio",
+   "t": "Gustatio",
+   "c": "concepto",
+   "tema": "1.2.1",
+   "d": "Primer tiempo del banquete romano: entrada ligera con huevos, aceitunas, hongos y ostras, acompañada de vino dulce.",
+   "o": "Antigua Roma"
+  },
+  {
+   "id": "halal",
+   "t": "Halal",
+   "c": "concepto",
+   "tema": "2.3",
+   "d": "En el islam, lo permitido para comer. Lo prohibido (como el cerdo y la sangre) se llama haram.",
+   "o": "Islam",
+   "v": [
+    "haram"
+   ]
+  },
+  {
+   "id": "hangi",
+   "t": "Hāngī",
+   "c": "técnica",
+   "tema": "3.5",
+   "d": "Horno de tierra maorí de Nueva Zelanda: hoyo, piedras volcánicas calientes, comida envuelta y tierra encima, de 3 a 4 horas.",
+   "o": "Nueva Zelanda",
+   "v": [
+    "hangi",
+    "horno de tierra"
+   ]
+  },
+  {
+   "id": "harissa",
+   "t": "Harissa",
+   "c": "ingrediente",
+   "tema": "3.1",
+   "d": "Pasta picante de chiles secos, ajo y especias.",
+   "o": "Túnez"
+  },
+  {
+   "id": "himno-a-ninkasi",
+   "t": "Himno a Ninkasi",
+   "c": "concepto",
+   "tema": "3.3",
+   "d": "Poema sumerio (c. 1800 a. C.) dedicado a la diosa de la cerveza, que funciona también como receta.",
+   "o": "Mesopotamia"
+  },
+  {
+   "id": "hipocras",
+   "t": "Hipocrás",
+   "c": "bebida",
+   "tema": "1.2.2",
+   "d": "Vino endulzado con miel y especias (canela, jengibre, clavo) que se bebía en los banquetes medievales.",
+   "o": "Europa medieval"
+  },
+  {
+   "id": "huauhtli",
+   "t": "Huauhtli",
+   "c": "ingrediente",
+   "tema": "3.2",
+   "d": "Amaranto en náhuatl: semilla prehispánica con la que hoy se hacen las alegrías.",
+   "o": "México",
+   "v": [
+    "amaranto"
+   ]
+  },
+  {
+   "id": "hummus",
+   "t": "Hummus",
+   "c": "platillo",
+   "tema": "3.3",
+   "d": "Puré de garbanzo con tahini (pasta de ajonjolí), limón y ajo.",
+   "o": "Levante",
+   "v": [
+    "tahini"
+   ]
+  },
+  {
+   "id": "ichiju-sansai",
+   "t": "Ichijū sansai",
+   "c": "concepto",
+   "tema": "3.3",
+   "d": "Estructura de la comida japonesa: «una sopa, tres guarniciones», más arroz.",
+   "o": "Japón"
+  },
+  {
+   "id": "ika-mata",
+   "t": "Ika mata",
+   "c": "platillo",
+   "tema": "3.5",
+   "d": "Pescado crudo marinado en limón y leche de coco, de las islas Cook (en Tahití, poisson cru).",
+   "o": "Polinesia",
+   "v": [
+    "poisson cru",
+    "kokoda"
+   ]
+  },
+  {
+   "id": "imu",
+   "t": "Imu",
+   "c": "técnica",
+   "tema": "3.5",
+   "d": "Horno de tierra de Hawái, donde se cuece el cerdo kalua del lūʻau.",
+   "o": "Hawái"
+  },
+  {
+   "id": "induccion",
+   "t": "Inducción",
+   "c": "técnica",
+   "tema": "1.4",
+   "d": "Forma de cocinar en la que el calor se produce directamente en la olla por magnetismo; la superficie de la parrilla casi no se calienta.",
+   "o": "Siglo XX",
+   "marcar": [
+    "cocina de inducción",
+    "inducción"
+   ]
+  },
+  {
+   "id": "injera",
+   "t": "Injera",
+   "c": "platillo",
+   "tema": "3.1",
+   "d": "Pan plano, esponjoso y algo agrio de teff fermentado. Sirve de plato y de cubierto: se arrancan trozos para tomar los guisos.",
+   "o": "Etiopía"
+  },
+  {
+   "id": "intercambio-colombino",
+   "t": "Intercambio colombino",
+   "c": "concepto",
+   "tema": "1.2.4",
+   "d": "Paso de plantas, animales y alimentos entre América y el resto del mundo a partir de 1492: de aquí salieron el maíz, el chile y el cacao; llegaron el trigo, la caña y el ganado.",
+   "o": "1492 en adelante"
+  },
+  {
+   "id": "jerk",
+   "t": "Jerk",
+   "c": "técnica",
+   "tema": "3.2",
+   "d": "Forma jamaiquina de adobar la carne con chile, pimienta de Jamaica y tomillo, y asarla a fuego lento.",
+   "o": "Jamaica"
+  },
+  {
+   "id": "jollof",
+   "t": "Jollof",
+   "c": "platillo",
+   "tema": "3.1",
+   "d": "Arroz cocido en salsa de jitomate, cebolla y chile. Nigeria y Ghana se disputan cuál es el mejor.",
+   "o": "África Occidental",
+   "v": [
+    "arroz jollof"
+   ]
+  },
+  {
+   "id": "kashrut",
+   "t": "Kashrut",
+   "c": "concepto",
+   "tema": "2.3",
+   "d": "Leyes alimentarias del judaísmo: qué animales se pueden comer, cómo se sacrifican y que no se mezclan carne y lácteos. Lo permitido se llama kosher.",
+   "o": "Judaísmo",
+   "v": [
+    "kosher"
+   ]
+  },
+  {
+   "id": "kava",
+   "t": "Kava",
+   "c": "bebida",
+   "tema": "3.5",
+   "d": "Bebida de la raíz de una pimienta del Pacífico que se toma en ceremonias para recibir y reconciliar.",
+   "o": "Pacífico"
+  },
+  {
+   "id": "kebab",
+   "t": "Kebab",
+   "c": "platillo",
+   "tema": "3.3",
+   "d": "Carne asada en brochetas o en trompo; del döner turco y el shawarma árabe viene el taco al pastor.",
+   "o": "Turquía y Medio Oriente",
+   "v": [
+    "shawarma",
+    "döner"
+   ]
+  },
+  {
+   "id": "kilometro-cero",
+   "t": "Kilómetro cero",
+   "c": "concepto",
+   "tema": "2.4",
+   "d": "Idea de cocinar con productos de la región, para reducir transporte y apoyar a los productores locales."
+  },
+  {
+   "id": "kimchi",
+   "t": "Kimchi",
+   "c": "platillo",
+   "tema": "3.3",
+   "d": "Col fermentada con chile, ajo y jengibre. Base de la mesa coreana; el chile llegó de América.",
+   "o": "Corea"
+  },
+  {
+   "id": "kimjang",
+   "t": "Kimjang",
+   "c": "concepto",
+   "tema": "3.3",
+   "d": "Tradición coreana de preparar kimchi en comunidad antes del invierno; es Patrimonio de la UNESCO.",
+   "o": "Corea"
+  },
+  {
+   "id": "koshari",
+   "t": "Koshari",
+   "c": "platillo",
+   "tema": "3.1",
+   "d": "Platillo callejero egipcio de arroz, lentejas y pasta con salsa de jitomate y cebolla frita.",
+   "o": "Egipto"
+  },
+  {
+   "id": "kumara",
+   "t": "Kumara",
+   "c": "ingrediente",
+   "tema": "3.5",
+   "d": "Nombre polinesio del camote. Es americano, pero llegó a la Polinesia antes que Colón.",
+   "o": "América (llegó a Polinesia)",
+   "v": [
+    "camote"
+   ]
+  },
+  {
+   "id": "kumis",
+   "t": "Kumis",
+   "c": "bebida",
+   "tema": "3.3",
+   "d": "Leche de yegua fermentada, bebida de los pueblos nómadas de Asia Central.",
+   "o": "Asia Central"
+  },
+  {
+   "id": "le-cuisinier-francois",
+   "t": "Le Cuisinier François",
+   "c": "concepto",
+   "tema": "1.2.4",
+   "d": "Libro de François Pierre de La Varenne (1651), considerado el inicio de la cocina francesa moderna: menos especias y más sabor propio de los ingredientes.",
+   "o": "Francia",
+   "v": [
+    "La Varenne"
+   ]
+  },
+  {
+   "id": "le-viandier",
+   "t": "Le Viandier",
+   "c": "concepto",
+   "tema": "1.2.2",
+   "d": "Recetario medieval en francés atribuido a Taillevent, cocinero de los reyes de Francia. Tiene más de 130 recetas con muchas especias y sabores agridulces.",
+   "o": "Francia, Edad Media",
+   "v": [
+    "Taillevent"
+   ]
+  },
+  {
+   "id": "levante",
+   "t": "Levante",
+   "c": "lugar",
+   "tema": "3.3",
+   "d": "Región del Mediterráneo oriental: Líbano, Siria, Israel, Palestina y Jordania.",
+   "o": "Medio Oriente",
+   "v": [
+    "El Levante"
+   ],
+   "marcar": [
+    "el Levante"
+   ]
+  },
+  {
+   "id": "leyes-suntuarias",
+   "t": "Leyes suntuarias",
+   "c": "concepto",
+   "tema": "4.2",
+   "d": "Leyes que limitaban el lujo y el gasto en banquetes y ropa.",
+   "o": "Antigua Roma"
+  },
+  {
+   "id": "lovo",
+   "t": "Lovo",
+   "c": "técnica",
+   "tema": "3.5",
+   "d": "Nombre del horno de tierra en Fiyi, para bodas y fiestas.",
+   "o": "Fiyi"
+  },
+  {
+   "id": "luau",
+   "t": "Lūʻau",
+   "c": "concepto",
+   "tema": "3.5",
+   "d": "Banquete festivo hawaiano con cerdo cocido en el horno de tierra (imu).",
+   "o": "Hawái",
+   "v": [
+    "luau"
+   ]
+  },
+  {
+   "id": "macadamia",
+   "t": "Macadamia",
+   "c": "ingrediente",
+   "tema": "3.5",
+   "d": "Nuez originaria de Australia, hoy cultivada en todo el mundo.",
+   "o": "Australia",
+   "v": [
+    "nuez de macadamia"
+   ]
+  },
+  {
+   "id": "mafe",
+   "t": "Mafé",
+   "c": "platillo",
+   "tema": "3.1",
+   "d": "Guiso de carne en salsa de cacahuate.",
+   "o": "África Occidental"
+  },
+  {
+   "id": "magnetron",
+   "t": "Magnetrón",
+   "c": "utensilio",
+   "tema": "1.4",
+   "d": "Pieza que produce las microondas. Percy Spencer descubrió en 1945 que calentaba comida cuando se le derritió un chocolate en el bolsillo.",
+   "o": "Estados Unidos",
+   "v": [
+    "microondas"
+   ]
+  },
+  {
+   "id": "maguey",
+   "t": "Maguey",
+   "c": "ingrediente",
+   "tema": "3.2",
+   "d": "Agave del que se obtienen aguamiel, pulque, fibras y hojas para la barbacoa.",
+   "o": "México",
+   "v": [
+    "agave"
+   ]
+  },
+  {
+   "id": "mango-de-manila",
+   "t": "Mango de Manila",
+   "c": "ingrediente",
+   "tema": "3.3",
+   "d": "Variedad de mango que llegó a México desde Filipinas en el Galeón de Manila.",
+   "o": "Filipinas"
+  },
+  {
+   "id": "manteca-de-karite",
+   "t": "Manteca de karité",
+   "c": "ingrediente",
+   "tema": "3.1",
+   "d": "Grasa vegetal de la nuez del árbol de karité, usada para cocinar en el Sahel.",
+   "o": "África Occidental",
+   "v": [
+    "karité"
+   ]
+  },
+  {
+   "id": "masala",
+   "t": "Masala",
+   "c": "ingrediente",
+   "tema": "3.3",
+   "d": "Mezcla de especias de la India; cada familia y región tiene la suya (garam masala, por ejemplo).",
+   "o": "India",
+   "v": [
+    "masalas",
+    "garam masala"
+   ]
+  },
+  {
+   "id": "mate",
+   "t": "Mate",
+   "c": "bebida",
+   "tema": "3.2",
+   "d": "Infusión de yerba mate que se comparte en una calabacita con bombilla.",
+   "o": "Argentina, Uruguay, Paraguay",
+   "v": [
+    "yerba mate"
+   ],
+   "marcar": [
+    "yerba mate",
+    "el mate"
+   ]
+  },
+  {
+   "id": "matoke",
+   "t": "Matoke",
+   "c": "platillo",
+   "tema": "3.1",
+   "d": "Plátanos verdes cocidos y machacados, de Uganda.",
+   "o": "Uganda"
+  },
+  {
+   "id": "mazapan-de-pepita",
+   "t": "Mazapán de pepita",
+   "c": "platillo",
+   "tema": "3.2",
+   "d": "Dulce campechano de semilla de calabaza molida con azúcar.",
+   "o": "Campeche"
+  },
+  {
+   "id": "meat-pie",
+   "t": "Meat pie",
+   "c": "platillo",
+   "tema": "3.5",
+   "d": "Pastel de carne individual, herencia británica muy popular en Australia y Nueva Zelanda.",
+   "o": "Australia",
+   "v": [
+    "pastel de carne"
+   ]
+  },
+  {
+   "id": "melanesia",
+   "t": "Melanesia",
+   "c": "lugar",
+   "tema": "3.5",
+   "d": "«Islas negras»: Papúa Nueva Guinea, islas Salomón, Vanuatu, Nueva Caledonia y Fiyi.",
+   "o": "Oceanía"
+  },
+  {
+   "id": "mesoamerica",
+   "t": "Mesoamérica",
+   "c": "lugar",
+   "tema": "3.2",
+   "d": "Región cultural del centro y sur de México y parte de Centroamérica, donde vivieron mexicas, mayas, olmecas y zapotecos.",
+   "o": "América"
+  },
+  {
+   "id": "mezze",
+   "t": "Mezze",
+   "c": "platillo",
+   "tema": "3.3",
+   "d": "Muchos platitos pequeños para compartir (hummus, tabule, aceitunas…), típicos del Levante, Turquía y Grecia.",
+   "o": "Medio Oriente",
+   "v": [
+    "meze"
+   ]
+  },
+  {
+   "id": "micronesia",
+   "t": "Micronesia",
+   "c": "lugar",
+   "tema": "3.5",
+   "d": "«Islas pequeñas»: Guam, Marianas, Carolinas, Marshall, Kiribati, Palaos y Nauru.",
+   "o": "Oceanía"
+  },
+  {
+   "id": "milpa",
+   "t": "Milpa",
+   "c": "técnica",
+   "tema": "3.2",
+   "d": "Sistema de cultivo de maíz, frijol y calabaza juntos: el frijol aporta nitrógeno, el maíz le da soporte y la calabaza guarda la humedad del suelo.",
+   "o": "Mesoamérica",
+   "v": [
+    "la milpa"
+   ]
+  },
+  {
+   "id": "mise-en-place",
+   "t": "Mise en place",
+   "c": "técnica",
+   "tema": "4.5",
+   "d": "«Todo en su lugar»: tener los ingredientes y utensilios listos y ordenados antes de empezar a cocinar.",
+   "o": "Francia"
+  },
+  {
+   "id": "moambe",
+   "t": "Moambe",
+   "c": "platillo",
+   "tema": "3.1",
+   "d": "Pollo guisado en salsa de nuez de palma: platillo nacional del Congo.",
+   "o": "África Central",
+   "v": [
+    "pollo moambe"
+   ]
+  },
+  {
+   "id": "mofongo",
+   "t": "Mofongo",
+   "c": "platillo",
+   "tema": "3.2",
+   "d": "Plátano verde frito y machacado con ajo y chicharrón, de raíz africana.",
+   "o": "Puerto Rico"
+  },
+  {
+   "id": "mogol",
+   "t": "Mogol",
+   "c": "lugar",
+   "tema": "4.3",
+   "d": "Imperio musulmán que gobernó la India (siglos XVI-XIX) y creó una cocina de corte refinada.",
+   "o": "India",
+   "v": [
+    "mogoles"
+   ]
+  },
+  {
+   "id": "mole-poblano",
+   "t": "Mole poblano",
+   "c": "platillo",
+   "tema": "3.2",
+   "d": "Salsa espesa de chiles, especias, semillas y chocolate, ligada a las cocinas de los conventos de Puebla.",
+   "o": "Puebla",
+   "v": [
+    "mole"
+   ]
+  },
+  {
+   "id": "molokhia",
+   "t": "Molokhia",
+   "c": "platillo",
+   "tema": "3.1",
+   "d": "Sopa espesa de hojas de una planta del mismo nombre, típica de Egipto.",
+   "o": "Egipto"
+  },
+  {
+   "id": "molucas",
+   "t": "Molucas",
+   "c": "lugar",
+   "tema": "3.3",
+   "d": "Las «islas de las especias» de Indonesia, únicas productoras de clavo y nuez moscada durante siglos.",
+   "o": "Indonesia",
+   "v": [
+    "islas Molucas"
+   ]
+  },
+  {
+   "id": "monzon",
+   "t": "Monzón",
+   "c": "concepto",
+   "tema": "3.3",
+   "d": "Vientos que cambian de dirección según la estación y traen lluvias intensas al sur y sureste de Asia; marcan los ciclos del arroz.",
+   "o": "Asia",
+   "v": [
+    "monzones"
+   ]
+  },
+  {
+   "id": "name",
+   "t": "Ñame",
+   "c": "ingrediente",
+   "tema": "3.5",
+   "d": "Tubérculo grande y almidonoso, básico en Oceanía y África Occidental.",
+   "o": "Asia y África"
+  },
+  {
+   "id": "new-nordic",
+   "t": "New Nordic",
+   "c": "concepto",
+   "tema": "1.6",
+   "d": "Manifiesto de 2004 (René Redzepi, restaurante Noma) que propone cocinar con ingredientes propios del norte de Europa, de temporada y con ética.",
+   "o": "Escandinavia",
+   "v": [
+    "Nueva Cocina Nórdica",
+    "Noma"
+   ]
+  },
+  {
+   "id": "nikkei",
+   "t": "Nikkei",
+   "c": "concepto",
+   "tema": "3.2",
+   "d": "Cocina de los japoneses y sus descendientes en Perú: mezcla técnica japonesa e ingredientes peruanos.",
+   "o": "Perú"
+  },
+  {
+   "id": "nixtamalizacion",
+   "t": "Nixtamalización",
+   "c": "técnica",
+   "tema": "3.2",
+   "d": "Cocer el maíz con cal (o ceniza) y dejarlo reposar. Ablanda el grano, permite hacer masa y libera la niacina, que evita la pelagra.",
+   "o": "Mesoamérica",
+   "v": [
+    "nixtamal",
+    "nixtamalizar"
+   ]
+  },
+  {
+   "id": "nouvelle-cuisine",
+   "t": "Nouvelle cuisine",
+   "c": "concepto",
+   "tema": "1.6",
+   "d": "Movimiento francés de los años setenta (Gault y Millau, Paul Bocuse) que aligeró las salsas, redujo los tiempos de cocción y cuidó la presentación.",
+   "o": "Francia, 1973"
+  },
+  {
+   "id": "nuez-moscada",
+   "t": "Nuez moscada",
+   "c": "ingrediente",
+   "tema": "3.3",
+   "d": "Semilla aromática de un árbol de las islas Banda (Molucas).",
+   "o": "Indonesia"
+  },
+  {
+   "id": "nyama-choma",
+   "t": "Nyama choma",
+   "c": "platillo",
+   "tema": "3.1",
+   "d": "Carne asada a las brasas, muy popular en Kenia.",
+   "o": "Kenia"
+  },
+  {
+   "id": "pachamanca",
+   "t": "Pachamanca",
+   "c": "técnica",
+   "tema": "3.5",
+   "d": "Horno de tierra andino: carnes, papas y habas cocidas bajo tierra con piedras calientes. Significa «olla de tierra» en quechua.",
+   "o": "Andes"
+  },
+  {
+   "id": "paella",
+   "t": "Paella",
+   "c": "platillo",
+   "tema": "3.4",
+   "d": "Arroz con azafrán cocinado en una sartén ancha y plana; nació en Valencia.",
+   "o": "España"
+  },
+  {
+   "id": "palo-de-tinte",
+   "t": "Palo de tinte",
+   "c": "ingrediente",
+   "tema": "3.2",
+   "d": "Árbol de Campeche del que se sacaba un tinte muy valioso en Europa. Hizo rico al puerto y atrajo a los piratas.",
+   "o": "Campeche"
+  },
+  {
+   "id": "pan-de-cazon",
+   "t": "Pan de cazón",
+   "c": "platillo",
+   "tema": "3.2",
+   "d": "Tortillas apiladas con frijol y cazón guisado, bañadas en salsa de jitomate: el emblema de la cocina campechana.",
+   "o": "Campeche"
+  },
+  {
+   "id": "pap",
+   "t": "Pap",
+   "c": "platillo",
+   "tema": "3.1",
+   "d": "Gacha espesa de harina de maíz, base de la comida sudafricana.",
+   "o": "Sudáfrica"
+  },
+  {
+   "id": "paprika",
+   "t": "Paprika",
+   "c": "ingrediente",
+   "tema": "3.4",
+   "d": "Pimentón en polvo de chiles secos; símbolo de Hungría, aunque el chile es americano.",
+   "o": "Hungría",
+   "v": [
+    "pimentón"
+   ]
+  },
+  {
+   "id": "pato-laqueado",
+   "t": "Pato laqueado",
+   "c": "platillo",
+   "tema": "3.3",
+   "d": "Pato asado de piel brillante y crujiente, emblema de la cocina de Pekín.",
+   "o": "China",
+   "v": [
+    "pato pekinés"
+   ]
+  },
+  {
+   "id": "pavlova",
+   "t": "Pavlova",
+   "c": "platillo",
+   "tema": "3.5",
+   "d": "Postre de merengue crujiente por fuera y suave por dentro, con crema y fruta. Australia y Nueva Zelanda se pelean su origen.",
+   "o": "Australia y Nueva Zelanda"
+  },
+  {
+   "id": "pelagra",
+   "t": "Pelagra",
+   "c": "concepto",
+   "tema": "3.2",
+   "d": "Enfermedad por falta de niacina (vitamina B3). Atacó a pueblos que comían maíz sin nixtamalizar."
+  },
+  {
+   "id": "pepian",
+   "t": "Pepián",
+   "c": "platillo",
+   "tema": "3.2",
+   "d": "Guiso espeso de semillas tostadas y chiles, uno de los platillos nacionales de Guatemala.",
+   "o": "Guatemala"
+  },
+  {
+   "id": "pho",
+   "t": "Pho",
+   "c": "platillo",
+   "tema": "3.3",
+   "d": "Sopa vietnamita de caldo aromático con fideos de arroz y carne.",
+   "o": "Vietnam"
+  },
+  {
+   "id": "pib",
+   "t": "Pib",
+   "c": "técnica",
+   "tema": "3.2",
+   "d": "Horno de tierra maya: un hoyo con piedras calientes donde se cuecen la cochinita y los mucbipollos envueltos en hojas.",
+   "o": "Península de Yucatán",
+   "v": [
+    "pibil"
+   ]
+  },
+  {
+   "id": "pierogi",
+   "t": "Pierogi",
+   "c": "platillo",
+   "tema": "3.4",
+   "d": "Empanaditas hervidas rellenas de papa, queso o carne, de Polonia.",
+   "o": "Polonia"
+  },
+  {
+   "id": "pilau",
+   "t": "Pilau",
+   "c": "platillo",
+   "tema": "3.1",
+   "d": "Arroz cocido con especias de la costa swahili, emparentado con el pilaf y el biryani.",
+   "o": "África Oriental"
+  },
+  {
+   "id": "pimienta-de-sichuan",
+   "t": "Pimienta de Sichuan",
+   "c": "ingrediente",
+   "tema": "3.3",
+   "d": "Cáscara de un fruto chino que produce un hormigueo en la boca; no es pariente de la pimienta negra.",
+   "o": "China"
+  },
+  {
+   "id": "pimienta-negra",
+   "t": "Pimienta negra",
+   "c": "ingrediente",
+   "tema": "3.3",
+   "d": "Fruto seco de una enredadera de la India; fue tan valiosa que se usó como moneda en Europa.",
+   "o": "India"
+  },
+  {
+   "id": "piri-piri",
+   "t": "Piri-piri",
+   "c": "ingrediente",
+   "tema": "3.1",
+   "d": "Chile pequeño y muy picante y la salsa que se hace con él; nombre que le dieron en Mozambique y Angola.",
+   "o": "África (chile de origen americano)",
+   "v": [
+    "peri-peri"
+   ]
+  },
+  {
+   "id": "pizzaiuolo",
+   "t": "Pizzaiuolo",
+   "c": "concepto",
+   "tema": "3.4",
+   "d": "El oficio del pizzero napolitano, Patrimonio de la UNESCO.",
+   "o": "Nápoles",
+   "v": [
+    "pizzaiuolo napolitano"
+   ]
+  },
+  {
+   "id": "plantas-de-canoa",
+   "t": "Plantas de canoa",
+   "c": "concepto",
+   "tema": "3.5",
+   "d": "Las plantas que los navegantes polinesios llevaban en sus canoas para sembrar en cada isla nueva: taro, ñame, árbol del pan, plátano, coco, caña y kava.",
+   "o": "Pacífico"
+  },
+  {
+   "id": "plate-lunch",
+   "t": "Plate lunch",
+   "c": "platillo",
+   "tema": "3.5",
+   "d": "Plato combinado hawaiano: arroz al estilo japonés, ensalada de macarrón y carne adobada. Nació de los migrantes de las plantaciones.",
+   "o": "Hawái"
+  },
+  {
+   "id": "plov",
+   "t": "Plov",
+   "c": "platillo",
+   "tema": "3.3",
+   "d": "Arroz con carne, zanahoria y cebolla cocinado en un gran caldero (kazán), de Asia Central.",
+   "o": "Uzbekistán"
+  },
+  {
+   "id": "poi",
+   "t": "Poi",
+   "c": "platillo",
+   "tema": "3.5",
+   "d": "Pasta de taro cocido y fermentado, base de la cocina tradicional de Hawái.",
+   "o": "Hawái"
+  },
+  {
+   "id": "poke",
+   "t": "Poke",
+   "c": "platillo",
+   "tema": "3.5",
+   "d": "Pescado crudo en cubos marinado con soya, ajonjolí y cebolla, de Hawái.",
+   "o": "Hawái"
+  },
+  {
+   "id": "polinesia",
+   "t": "Polinesia",
+   "c": "lugar",
+   "tema": "3.5",
+   "d": "«Muchas islas»: el triángulo con puntas en Hawái, Nueva Zelanda y Rapa Nui; incluye Samoa, Tonga, Tahití y las islas Cook.",
+   "o": "Oceanía"
+  },
+  {
+   "id": "pondu",
+   "t": "Pondu",
+   "c": "platillo",
+   "tema": "3.1",
+   "d": "Hojas de yuca machacadas y guisadas, de la República Democrática del Congo.",
+   "o": "África Central"
+  },
+  {
+   "id": "pulque",
+   "t": "Pulque",
+   "c": "bebida",
+   "tema": "3.2",
+   "d": "Bebida fermentada del aguamiel del maguey.",
+   "o": "Centro de México"
+  },
+  {
+   "id": "puls",
+   "t": "Puls",
+   "c": "platillo",
+   "tema": "4.2",
+   "d": "Gacha espesa de cereal (trigo o espelta) con agua: la comida diaria de los romanos pobres.",
+   "o": "Antigua Roma"
+  },
+  {
+   "id": "pupusa",
+   "t": "Pupusa",
+   "c": "platillo",
+   "tema": "3.2",
+   "d": "Tortilla gruesa rellena de queso, frijol o chicharrón.",
+   "o": "El Salvador"
+  },
+  {
+   "id": "quelites",
+   "t": "Quelites",
+   "c": "ingrediente",
+   "tema": "3.2",
+   "d": "Hierbas tiernas comestibles que nacen en la milpa: quintoniles, verdolagas, chepiles.",
+   "o": "México",
+   "v": [
+    "quelite"
+   ]
+  },
+  {
+   "id": "queso-relleno",
+   "t": "Queso relleno",
+   "c": "platillo",
+   "tema": "3.2",
+   "d": "Queso de bola holandés vaciado y relleno de picadillo, con salsa blanca y de jitomate. Platillo emblemático de Campeche y Yucatán.",
+   "o": "Campeche y Yucatán"
+  },
+  {
+   "id": "quinua",
+   "t": "Quinua",
+   "c": "ingrediente",
+   "tema": "3.2",
+   "d": "Semilla andina muy nutritiva, básica para los pueblos de los Andes.",
+   "o": "Andes",
+   "v": [
+    "quinoa"
+   ]
+  },
+  {
+   "id": "ras-el-hanout",
+   "t": "Ras el hanout",
+   "c": "ingrediente",
+   "tema": "3.1",
+   "d": "Mezcla marroquí de muchas especias; su nombre significa «lo mejor de la tienda».",
+   "o": "Marruecos"
+  },
+  {
+   "id": "recado",
+   "t": "Recado",
+   "c": "ingrediente",
+   "tema": "3.4",
+   "d": "Pasta de especias, chiles y condimentos molidos de la cocina yucateca y campechana: rojo, negro, blanco, de escabeche, para bistec o verde.",
+   "o": "Península de Yucatán",
+   "v": [
+    "recados"
+   ]
+  },
+  {
+   "id": "relacion-de-las-cosas-de-yucatan",
+   "t": "Relación de las cosas de Yucatán",
+   "c": "concepto",
+   "tema": "3.2",
+   "d": "Texto de fray Diego de Landa (c. 1566) que describe la vida y la comida de los mayas. Es valioso, aunque lo escribió quien quemó códices mayas.",
+   "o": "Yucatán",
+   "v": [
+    "Diego de Landa"
+   ]
+  },
+  {
+   "id": "restaurant",
+   "t": "Restaurant",
+   "c": "concepto",
+   "tema": "4.4",
+   "d": "Primero fue un caldo «restaurador»; después, el lugar donde se servía, con mesa individual, carta y precios.",
+   "o": "París, siglo XVIII",
+   "v": [
+    "restaurante"
+   ],
+   "noMarcar": true
+  },
+  {
+   "id": "rompope",
+   "t": "Rompope",
+   "c": "bebida",
+   "tema": "3.2",
+   "d": "Bebida de leche, huevo, azúcar y licor, nacida en los conventos.",
+   "o": "Nueva España"
+  },
+  {
+   "id": "ruta-de-la-seda",
+   "t": "Ruta de la Seda",
+   "c": "concepto",
+   "tema": "3.3",
+   "d": "Red de caminos comerciales entre China y el Mediterráneo por Asia Central: por ella viajaban seda, especias e ideas.",
+   "o": "Asia Central"
+  },
+  {
+   "id": "sahel",
+   "t": "Sahel",
+   "c": "lugar",
+   "tema": "3.1",
+   "d": "Franja semiárida al sur del Sahara, entre el desierto y la sabana.",
+   "o": "África",
+   "v": [
+    "El Sahel"
+   ]
+  },
+  {
+   "id": "salsas-madre",
+   "t": "Salsas madre",
+   "c": "concepto",
+   "tema": "2.2",
+   "d": "Las cinco salsas base de la cocina clásica francesa de las que salen muchas otras: bechamel, velouté, española, holandesa y de tomate.",
+   "o": "Francia"
+  },
+  {
+   "id": "samovar",
+   "t": "Samovar",
+   "c": "utensilio",
+   "tema": "3.4",
+   "d": "Recipiente metálico ruso para tener agua caliente todo el día y servir té.",
+   "o": "Rusia"
+  },
+  {
+   "id": "sefardi",
+   "t": "Sefardí",
+   "c": "concepto",
+   "tema": "3.4",
+   "d": "Judíos de origen español y portugués, expulsados en 1492; su cocina lleva la huella mediterránea.",
+   "o": "España",
+   "v": [
+    "sefardíes"
+   ]
+  },
+  {
+   "id": "silfio",
+   "t": "Silfio",
+   "c": "ingrediente",
+   "tema": "1.2.1",
+   "d": "Planta muy valorada en Roma cuya resina (el laser) se usaba como condimento de lujo. Hoy está extinta.",
+   "o": "Norte de África (Cirene)",
+   "v": [
+    "laser"
+   ]
+  },
+  {
+   "id": "slow-food",
+   "t": "Slow Food",
+   "c": "concepto",
+   "tema": "2.4",
+   "d": "Movimiento fundado en Italia en 1989 por Carlo Petrini contra la comida rápida: defiende el origen, el tiempo y la tradición de los alimentos.",
+   "o": "Italia"
+  },
+  {
+   "id": "soul-food",
+   "t": "Soul food",
+   "c": "concepto",
+   "tema": "3.2",
+   "d": "Cocina afroamericana del sur de Estados Unidos: pollo frito, verduras guisadas, pan de maíz.",
+   "o": "Estados Unidos"
+  },
+  {
+   "id": "speedee-service-system",
+   "t": "Speedee Service System",
+   "c": "concepto",
+   "tema": "4.4",
+   "d": "Sistema de los hermanos McDonald (1948): menú corto y cocina en línea como fábrica. Es el origen de la comida rápida.",
+   "o": "Estados Unidos"
+  },
+  {
+   "id": "sumac",
+   "t": "Sumac",
+   "c": "ingrediente",
+   "tema": "3.3",
+   "d": "Especia roja y ácida de un fruto molido, usada en el Medio Oriente.",
+   "o": "Medio Oriente",
+   "v": [
+    "zumaque"
+   ]
+  },
+  {
+   "id": "sushi",
+   "t": "Sushi",
+   "c": "platillo",
+   "tema": "3.3",
+   "d": "Arroz avinagrado con pescado u otros ingredientes. Nació del narezushi, pescado conservado en arroz fermentado.",
+   "o": "Japón",
+   "v": [
+    "narezushi"
+   ]
+  },
+  {
+   "id": "suya",
+   "t": "Suya",
+   "c": "platillo",
+   "tema": "3.1",
+   "d": "Brochetas de carne asada con una mezcla picante de cacahuate y especias.",
+   "o": "Nigeria"
+  },
+  {
+   "id": "swahili",
+   "t": "Swahili",
+   "c": "lugar",
+   "tema": "3.1",
+   "d": "Cultura de la costa de África Oriental, mezcla de lo africano, lo árabe y lo indio por el comercio del océano Índico.",
+   "o": "Kenia y Tanzania",
+   "v": [
+    "costa swahili"
+   ]
+  },
+  {
+   "id": "taamiya",
+   "t": "Taamiya",
+   "c": "platillo",
+   "tema": "3.1",
+   "d": "Croquetas fritas de haba: el «falafel» egipcio.",
+   "o": "Egipto"
+  },
+  {
+   "id": "table-d-hote",
+   "t": "Table d'hôte",
+   "c": "concepto",
+   "tema": "4.4",
+   "d": "La «mesa del anfitrión»: comida a hora fija, con un solo menú, para todos los huéspedes de una posada. Lo contrario del restaurante.",
+   "o": "Francia"
+  },
+  {
+   "id": "tacos-al-pastor",
+   "t": "Tacos al pastor",
+   "c": "platillo",
+   "tema": "3.3",
+   "d": "Carne de cerdo adobada y asada en trompo vertical. Viene del shawarma que trajeron los migrantes libaneses a Puebla.",
+   "o": "México (raíz libanesa)",
+   "v": [
+    "al pastor"
+   ]
+  },
+  {
+   "id": "tajin",
+   "t": "Tajín",
+   "c": "utensilio",
+   "tema": "3.1",
+   "d": "Olla de barro con tapa en forma de cono y el guiso que se cocina en ella, a fuego lento. No confundir con el chile en polvo de la marca mexicana.",
+   "o": "Marruecos",
+   "v": [
+    "tajine"
+   ]
+  },
+  {
+   "id": "tandoor",
+   "t": "Tandoor",
+   "c": "utensilio",
+   "tema": "3.3",
+   "d": "Horno de barro cilíndrico muy caliente donde se hacen el pollo tandoori y el pan naan.",
+   "o": "India y Asia Central"
+  },
+  {
+   "id": "taro",
+   "t": "Taro",
+   "c": "ingrediente",
+   "tema": "3.5",
+   "d": "Tubérculo de pulpa blanca o morada, básico en las islas del Pacífico. En Hawái con él se hace el poi.",
+   "o": "Sudeste de Asia y Pacífico"
+  },
+  {
+   "id": "teff",
+   "t": "Teff",
+   "c": "ingrediente",
+   "tema": "3.1",
+   "d": "Cereal de grano diminuto domesticado en Etiopía; con él se hace la injera.",
+   "o": "Etiopía"
+  },
+  {
+   "id": "tempura",
+   "t": "Tempura",
+   "c": "técnica",
+   "tema": "3.3",
+   "d": "Verduras o mariscos fritos en un rebozado muy ligero. La llevaron los portugueses a Japón en el siglo XVI.",
+   "o": "Japón (raíz portuguesa)"
+  },
+  {
+   "id": "tercera-raiz",
+   "t": "Tercera raíz",
+   "c": "concepto",
+   "tema": "3.1",
+   "d": "Reconocimiento de la herencia africana en México, junto a la indígena y la española.",
+   "o": "México"
+  },
+  {
+   "id": "terroir",
+   "t": "Terroir",
+   "c": "concepto",
+   "tema": "3.4",
+   "d": "Palabra francesa: todo lo que un lugar (suelo, clima, tradición) le da a un producto, como al vino o al queso.",
+   "o": "Francia"
+  },
+  {
+   "id": "tex-mex",
+   "t": "Tex-mex",
+   "c": "concepto",
+   "tema": "3.2",
+   "d": "Cocina de los mexicanos en Texas: chili con carne, fajitas y nachos.",
+   "o": "Estados Unidos"
+  },
+  {
+   "id": "thali",
+   "t": "Thali",
+   "c": "platillo",
+   "tema": "3.3",
+   "d": "Charola con muchas porciones pequeñas (arroz, panes, legumbres, verduras) servida de una vez.",
+   "o": "India"
+  },
+  {
+   "id": "thermopolium",
+   "t": "Thermopolium",
+   "c": "concepto",
+   "tema": "1.5",
+   "d": "Puesto de comida caliente para llevar en las calles romanas: el antepasado del puesto de tacos y del food truck.",
+   "o": "Antigua Roma",
+   "v": [
+    "thermopolia"
+   ]
+  },
+  {
+   "id": "thieboudienne",
+   "t": "Thieboudienne",
+   "c": "platillo",
+   "tema": "3.1",
+   "d": "Platillo nacional de Senegal: arroz con pescado y verduras.",
+   "o": "Senegal"
+  },
+  {
+   "id": "topkapi",
+   "t": "Topkapi",
+   "c": "lugar",
+   "tema": "4.3",
+   "d": "Palacio de los sultanes otomanos en Estambul, con cocinas enormes para miles de personas.",
+   "o": "Turquía"
+  },
+  {
+   "id": "traiteur",
+   "t": "Traiteur",
+   "c": "concepto",
+   "tema": "4.4",
+   "d": "Cocinero que vendía guisos preparados en el París del siglo XVIII.",
+   "o": "Francia",
+   "v": [
+    "traiteurs"
+   ]
+  },
+  {
+   "id": "triclinio",
+   "t": "Triclinio",
+   "c": "utensilio",
+   "tema": "4.2",
+   "d": "Comedor romano con tres lechos alrededor de una mesa: los comensales comían recostados.",
+   "o": "Antigua Roma",
+   "v": [
+    "triclinium"
+   ]
+  },
+  {
+   "id": "trilogia-mediterranea",
+   "t": "Trilogía mediterránea",
+   "c": "concepto",
+   "tema": "3.4",
+   "d": "Trigo, vid y olivo: pan, vino y aceite, la base de la cocina mediterránea desde la Antigüedad.",
+   "o": "Mediterráneo"
+  },
+  {
+   "id": "tuba",
+   "t": "Tuba",
+   "c": "bebida",
+   "tema": "3.3",
+   "d": "Bebida de savia de palma de coco que trajeron los filipinos a Colima y Guerrero.",
+   "o": "Filipinas"
+  },
+  {
+   "id": "tucupi",
+   "t": "Tucupí",
+   "c": "ingrediente",
+   "tema": "3.2",
+   "d": "Jugo amarillo extraído de la yuca brava y fermentado, de la cocina amazónica de Brasil.",
+   "o": "Amazonía"
+  },
+  {
+   "id": "ugali",
+   "t": "Ugali",
+   "c": "platillo",
+   "tema": "3.1",
+   "d": "Masa firme de harina de maíz cocida en agua: la base diaria en Kenia y Tanzania.",
+   "o": "África Oriental"
+  },
+  {
+   "id": "umami",
+   "t": "Umami",
+   "c": "concepto",
+   "tema": "3.3",
+   "d": "El quinto sabor básico, «sabroso», descrito por Kikunae Ikeda en 1908 a partir del caldo dashi.",
+   "o": "Japón"
+  },
+  {
+   "id": "umu",
+   "t": "Umu",
+   "c": "técnica",
+   "tema": "3.5",
+   "d": "Nombre del horno de tierra en Samoa y Tonga.",
+   "o": "Samoa y Tonga"
+  },
+  {
+   "id": "vainilla",
+   "t": "Vainilla",
+   "c": "ingrediente",
+   "tema": "3.1",
+   "d": "Vaina de una orquídea americana. Edmond Albius, un niño esclavizado, descubrió en 1841 cómo polinizarla a mano; hoy Madagascar es el mayor productor.",
+   "o": "México (cultivada en Madagascar)"
+  },
+  {
+   "id": "vegemite",
+   "t": "Vegemite",
+   "c": "ingrediente",
+   "tema": "3.5",
+   "d": "Pasta oscura y salada de extracto de levadura que los australianos untan en pan tostado.",
+   "o": "Australia"
+  },
+  {
+   "id": "vindaloo",
+   "t": "Vindaloo",
+   "c": "platillo",
+   "tema": "3.3",
+   "d": "Guiso picante de Goa con vinagre y ajo; su nombre viene del portugués vinha d'alhos.",
+   "o": "Goa, India (raíz portuguesa)"
+  },
+  {
+   "id": "washoku",
+   "t": "Washoku",
+   "c": "concepto",
+   "tema": "3.3",
+   "d": "La cocina tradicional japonesa, Patrimonio de la UNESCO desde 2013: estacional, equilibrada y respetuosa del ingrediente.",
+   "o": "Japón"
+  },
+  {
+   "id": "wat",
+   "t": "Wat",
+   "c": "platillo",
+   "tema": "3.1",
+   "d": "Guiso etíope espeso y picante que se come sobre la injera.",
+   "o": "Etiopía"
+  },
+  {
+   "id": "wok",
+   "t": "Wok",
+   "c": "utensilio",
+   "tema": "3.3",
+   "d": "Sartén honda de fondo redondo para saltear muy rápido a fuego alto.",
+   "o": "China"
+  },
+  {
+   "id": "yassa",
+   "t": "Yassa",
+   "c": "platillo",
+   "tema": "3.1",
+   "d": "Pollo o pescado marinado en limón y cebolla, de Senegal.",
+   "o": "Senegal"
+  },
+  {
+   "id": "yuca",
+   "t": "Yuca",
+   "c": "ingrediente",
+   "tema": "3.1",
+   "d": "Raíz americana rica en almidón (también llamada mandioca). Llegó a África en el siglo XVI y hoy es básica allá.",
+   "o": "América (llevada a África)",
+   "v": [
+    "mandioca"
+   ]
+  },
+  {
+   "id": "zaatar",
+   "t": "Zaatar",
+   "c": "ingrediente",
+   "tema": "3.3",
+   "d": "Mezcla de tomillo silvestre, zumaque y ajonjolí, del Levante.",
+   "o": "Medio Oriente",
+   "v": [
+    "za'atar"
+   ]
+  }
+ ]
+}

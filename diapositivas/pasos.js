@@ -87,6 +87,11 @@
   .pz-tabla td{position:relative}
   .pz-tabla td .ph{position:absolute;inset:0;display:grid;place-items:center;font:700 1.1em "Fraunces",serif;color:var(--rojo);opacity:0;transition:opacity .3s}
   .pz-tabla td .ph.pz-on{opacity:1}
+  .pz-ph{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:.4em;margin-top:.3em;text-align:left}
+  .pz-ph-c{background:#fff;border:2px solid var(--arena);border-left:8px solid var(--rojo);padding:.35em .55em}
+  .pz-ph-c b{display:block;font:700 .62em "Fraunces",serif;color:var(--marino)}
+  .pz-ph-c small{display:block;font:600 .36em "Public Sans",sans-serif;color:var(--gris);text-transform:uppercase;letter-spacing:.06em}
+  .pz-ph-c p{font-size:.42em;line-height:1.35;margin:.2em 0 0}
   @media (prefers-reduced-motion:reduce){.reveal .slides section .pz,.pz-lienzo,.pz-lt-lleno{transition:opacity .2s!important;transform:none!important;animation:none!important}}`;
   const st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
 
@@ -232,6 +237,14 @@
       const anillos = pts.map((p, i) => `<span class="pz-anillo" data-desde="${T.inicios[i]}" data-hasta="${T.fines[i]}" style="left:${p.x}%;top:${p.y}%"><b>${i + 1}</b></span>`).join("");
       return `<h2>${esc(d.titulo)}</h2>${ticks(T.total)}
         <div class="pz-lupa"><div class="pz-marco" style="--ar:${esc(d.proporcion || "16/9")}"><div class="pz-lienzo" data-lupa='${datos}'><img data-src="${esc(d.imagen)}" alt="${esc(d.titulo)}" data-ruta="${esc(d.imagen)}">${anillos}</div></div>${T.html}</div>`;
+    },
+
+    // Palabras nuevas de la clase: las definiciones salen del glosario del curso (data/glosario.json)
+    palabrasHoy: d => {
+      const L = d.terminos || [];
+      return `<span class="etiqueta">${esc(d.etiqueta || "Glosario")}</span><h2>${esc(d.titulo || "Palabras de hoy")}</h2>
+        <div class="pz-ph">${L.map(t => `<div class="pz-ph-c gl-ficha${d.pasoAPaso === false ? "" : " fragment"}" data-glf="${esc(t)}"><b class="gl-t">${esc(t)}</b><small class="gl-c"></small><p class="gl-d">…</p></div>`).join("")}</div>
+        <p class="pista">${md(d.pie || "Todas están en el **Glosario** del Aula Virtual.")}</p>`;
     },
 
     tablaPasos: d => {
