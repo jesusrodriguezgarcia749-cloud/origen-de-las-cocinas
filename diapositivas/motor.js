@@ -4,6 +4,7 @@
    ===================================================================== */
 (function () {
   const REVEAL = "https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/";
+  const AQUI = (document.currentScript && document.currentScript.src) || location.href;   // para cargar pasos.js junto a este archivo
 
   /* ---------- 1. Estilos ---------- */
   function link(href) {
@@ -276,7 +277,7 @@
 
   function crear(d) {
     const sec = document.createElement("section");
-    const fn = plantillas[d.tipo];
+    const fn = plantillas[d.tipo] || (window.PASOS && window.PASOS.plantillas[d.tipo]);
     sec.className = "d-" + (fn ? d.tipo : "tema");
     sec.innerHTML = fn ? fn(d) : `<div class="vacio">Tipo de diapositiva desconocido: “${esc(d.tipo)}”.</div>`;
     if (COLOR[d.tipo]) sec.setAttribute("data-background-color", COLOR[d.tipo]);
@@ -395,8 +396,8 @@
   }
 
   function iniciar() {
-    construir();
-    script(REVEAL + "dist/reveal.js")
+    script(new URL("pasos.js?v=2026111001", AQUI).href).catch(() => console.warn("No se pudo cargar pasos.js"))
+      .then(() => { construir(); return script(REVEAL + "dist/reveal.js"); })
       .then(() => script(REVEAL + "plugin/notes/notes.js").catch(() => {}))
       .then(() => {
         Reveal.initialize({
@@ -404,6 +405,7 @@
           width: 1280, height: 720, margin: 0.04, preloadIframes: false,
           plugins: window.RevealNotes ? [RevealNotes] : []
         });
+        if (window.PASOS) window.PASOS.activar(Reveal);
         if (DOCENTE) modoDocente();
       })
       .catch(() => {

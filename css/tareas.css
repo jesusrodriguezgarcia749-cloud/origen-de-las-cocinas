@@ -335,3 +335,39 @@ body.cp-sin-scroll { overflow: hidden; }
 .re-cual small { font-size: .76rem; color: var(--ink-soft); font-weight: 700; }
 .re-cual select { font: inherit; font-size: .88rem; padding: 7px 8px; border-radius: 9px; border: 1.5px solid var(--line); background: var(--parchment); color: var(--ink); }
 .re-sub-clave { margin: 10px 0 2px; }
+
+/* ---------- 🔥 Arma el horno de tierra ---------- */
+.ah-mejor { font-size: .9rem; color: var(--ink-soft); margin: 0 0 8px; }
+.ah-h3 { font-size: 1.15rem; margin: 6px 0 10px; }
+.ah-fig { position: relative; max-width: 620px; margin: 0 auto 12px; border-radius: 12px; overflow: hidden; border: 2px solid var(--line); }
+.ah-fig svg { display: block; width: 100%; height: auto; }
+.ah-zona { position: absolute; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 4px; padding: 0; border: 0; background: none; cursor: pointer; font: inherit; }
+.ah-zona b { flex: none; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: #252734; border: 3px solid #AA2F2F; font-size: .95rem; box-shadow: 0 2px 8px rgba(0,0,0,.35); }
+.ah-zona span { position: absolute; left: 50%; top: 100%; transform: translateX(-50%); margin-top: 2px; white-space: nowrap; font-size: .72rem; font-weight: 700; background: rgba(255,255,255,.95); color: #252734; padding: 1px 6px; border-radius: 6px; }
+.ah-zona span:empty { display: none; }
+.ah-zona.llena b { background: #252734; color: #fff; border-color: #fff; }
+.ah-zona.bien b { background: #3F7A4F; border-color: #fff; color: #fff; } .ah-zona.mal b { background: #AA2F2F; border-color: #fff; color: #fff; }
+.ah-zona.mal span s { color: #AA2F2F; }
+.ah-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.ah-chip, .ah-paso { font: inherit; font-size: .92rem; padding: 8px 12px; border-radius: 999px; border: 2px solid var(--line); background: var(--cream); color: var(--ink); cursor: pointer; }
+.ah-chip.sel { border-color: #AA2F2F; background: rgba(170,47,47,.12); font-weight: 700; }
+.ah-chip.usada { opacity: .45; text-decoration: line-through; }
+.ah-acc { display: flex; gap: 10px; align-items: center; justify-content: center; margin: 12px 0; flex-wrap: wrap; } .ah-acc #ah-msg { font-size: .9rem; color: var(--ink-soft); }
+.ah-por { font-size: .9rem; padding-left: 1.2rem; } .ah-por li { margin: 4px 0; list-style: none; }
+.ah-orden { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.ah-orden h4 { margin: 0 0 6px; font-size: .95rem; }
+.ah-orden > div { display: flex; flex-direction: column; gap: 6px; }
+.ah-orden ol { margin: 0; padding-left: 1.4rem; display: flex; flex-direction: column; gap: 6px; }
+.ah-paso { border-radius: 12px; text-align: left; width: 100%; }
+.ah-paso.puesto { background: #fff; border-color: #252734; }
+.ah-paso.bien { border-color: #3F7A4F; background: rgba(63,122,79,.14); } .ah-paso.mal { border-color: #AA2F2F; background: rgba(170,47,47,.1); }
+.ah-paso small { display: block; color: #AA2F2F; font-weight: 700; }
+.ah-vacio { color: var(--ink-soft); font-size: .9rem; }
+.ah-tarjeta { display: flex; gap: 14px; align-items: center; background: linear-gradient(135deg, #252734, #3a3d52); color: #fff; border-radius: 16px; padding: 16px 18px; margin: 8px 0; }
+.ah-estrella { font-size: 2.6rem; }
+.ah-tarjeta div { display: flex; flex-direction: column; } .ah-tarjeta b { font-size: 1.2rem; } .ah-tarjeta em { font-style: normal; font-size: 1.9rem; font-weight: 800; color: #F3C969; line-height: 1.1; } .ah-tarjeta small { opacity: .85; font-size: .8rem; }
+@media (max-width: 560px) { .ah-orden { grid-template-columns: 1fr; } .ah-zona b { width: 28px; height: 28px; font-size: .85rem; } }
+.ah-leyenda { max-width: 620px; margin: 0 auto 12px; padding-left: 1.8rem; font-size: .92rem; }
+.ah-leyenda li { padding: 3px 0; font-weight: 600; } .ah-leyenda li i { font-weight: 400; color: var(--ink-soft); font-size: .85rem; }
+.ah-leyenda li.bien { color: #3F7A4F; } .ah-leyenda li.mal s { color: #AA2F2F; }
+@media (max-width: 700px) { .ah-zona span { display: none; } }

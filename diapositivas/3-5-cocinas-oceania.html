@@ -51,73 +51,116 @@ const PRESENTACION = {
       pie: "Australia, Melanesia, Micronesia y el triángulo de la Polinesia (Hawái, Nueva Zelanda y Rapa Nui).",
       notas: "14 países, unos 45 millones de habitantes y más de 10,000 km de océano entre Papúa Nueva Guinea y Rapa Nui. Melanesia: «islas negras»; Micronesia: «islas pequeñas»; Polinesia: «muchas islas»." },
 
-    { tipo: "tema",
-      titulo: "Los navegantes del Pacífico",
-      puntos: [
-        "Hace unos **3,000 años**, la **cultura lapita**, de origen austronesio, empezó a navegar hacia el este en **canoas dobles**.",
-        "Se guiaban por **las estrellas, el oleaje y el vuelo de las aves**. Hawái se pobló hacia el año 1000 y Nueva Zelanda hacia 1250.",
-        "Llevaban las **plantas de canoa**: taro, ñame, árbol del pan, plátano, coco, caña y kava, además de cerdos, perros y gallinas.",
-        "Son parientes de los navegantes que poblaron **Madagascar** (3.1)."
-      ],
-      pasoAPaso: true },
-
-    { tipo: "tema",
-      titulo: "El kumara: un camote americano en la Polinesia",
-      notas: "Pregunta detonadora: si Colón llegó en 1492, ¿cómo llegó un camote americano a la Polinesia antes? Deja que formulen hipótesis.",
-      puntos: [
-        "El camote es **americano**, pero ya se cultivaba en las islas Cook **hacia el año 1000**.",
-        "Su nombre polinesio, *kumara*, se parece al de algunas **lenguas andinas**.",
-        "Un estudio genético publicado en *Nature* (**2020**) encontró huellas de **contacto con Sudamérica hacia el año 1200**.",
-        "Un intercambio prehispánico entre dos mundos que la historia ignoró durante siglos."
-      ],
-      pasoAPaso: true },
-
-    { tipo: "dato",
-      cifra: "Hacia el año 1200",
-      texto: "hubo contacto entre navegantes polinesios y pueblos de Sudamérica, según un estudio genético de 2020.",
-      fuente: "Compendio, Tema 3.5" },
-
-    { tipo: "tema",
-      titulo: "El horno de tierra",
-      minutos: "11-40", evaluacion: "Formativo",
-      puntos: [
-        "Es la técnica **más representativa de toda la región**.",
-        "Se llama **hangi** entre los maoríes de Nueva Zelanda, **umu** en Samoa y **lovo** en Fiyi.",
-        "Se cava un hoyo, se calientan **piedras volcánicas** al fuego y sobre ellas se cocinan carnes, pescados y tubérculos envueltos en hojas.",
-        "**Varias horas** de cocción dan una textura melosa y un característico sabor ahumado."
-      ],
-      pasoAPaso: true,
-      subtemas: [
-        { tipo: "observa",
-          titulo: "Levantar el hangi",
-          imagen: "img/hangi_maori.jpg",
-          notas: "Pregunta: ¿qué técnica mexicana se parece a esta? (El pib maya y la barbacoa). Dato: las canastas de alambre se empezaron a usar en el siglo XIX; antes todo iba envuelto en hojas y cortezas.",
-          puntos: [
-            "**Las piedras volcánicas** del fondo se calientan con leña hasta quedar al rojo vivo.",
-            "**Las canastas** con carne, kumara y verduras se bajan sobre las piedras.",
-            "**Se cubre con hojas, telas húmedas y tierra**, y se deja cocer de 3 a 4 horas.",
-            "**Es comunitario:** se necesita gente para cavar, cargar y destapar; por eso se hace en ocasiones especiales.",
-            "**Un pariente lejano:** el **pib maya** que vimos en la clase del 23 de octubre usa exactamente el mismo principio, a 12,000 km de distancia."
-          ] }
+    { tipo: "mapaRuta",
+      titulo: "La gran navegación del Pacífico",
+      intro: "Sin brújula, sin mapas y sin metal… y aun así poblaron el océano más grande del planeta. Avanza (→) y sigue la ruta.",
+      notas: "Ve paso a paso: cada clic dibuja un tramo de la ruta y cae una tarjeta. En el paso 4, lanza la pregunta del camote y deja que formulen hipótesis antes de mostrar la respuesta. Las fechas son aproximadas: así las da la arqueología.",
+      pasos: [
+        { fecha: "Hace unos 5,000 años", num: "1 · El punto de partida", titulo: "Salen de Taiwán", color: "#8C6A2E",
+          rutas: [["taiwan", "filipinas"]],
+          texto: "Los pueblos **austronesios** salen de Taiwán hacia Filipinas e Indonesia. Sus parientes llegarán, por el otro lado, hasta **Madagascar**, en África (3.1)." },
+        { fecha: "Hace unos 3,000 años", num: "2 · La cultura lapita", titulo: "Canoas dobles hacia el este", color: "#AA2F2F",
+          rutas: [["filipinas", "bismarck"], ["bismarck", "vanuatu", "fiyi"], ["vanuatu", "caledonia"], ["fiyi", "tonga"], ["fiyi", "samoa"]],
+          texto: ["Navegan en **canoas dobles** guiándose por **las estrellas, el oleaje y el vuelo de las aves**.", "Llevan las **plantas de canoa**: taro, ñame, árbol del pan, plátano, coco, caña y kava, además de cerdos, perros y gallinas."] },
+        { fecha: "Hacia el año 1000", num: "3 · El gran salto", titulo: "Miles de kilómetros de mar abierto", color: "#252734",
+          rutas: [["samoa", "tahiti"], ["tahiti", "cook"], ["tahiti", "marquesas"], ["tahiti", "hawai"]],
+          texto: "Después de una larga pausa, cruzan el Pacífico oriental: islas de la Sociedad (**Tahití**), **Cook**, **Marquesas** y **Hawái**." },
+        { fecha: "Hacia el año 1200", num: "4 · El misterio del camote", titulo: "Un camote americano en la Polinesia", color: "#2E6FA8",
+          pregunta: "Hacia el año 1000 ya se cultivaba **camote** en las islas Cook. Pero el camote es **americano**… ¿cómo llegó antes que Colón?",
+          respuesta: "Hubo **contacto entre polinesios y pueblos de Sudamérica hacia el año 1200**: lo mostró un estudio genético publicado en *Nature* en **2020**.",
+          alResponder: true, punteado: true, arco: .1,
+          rutas: [["marquesas", "sudamerica"]],
+          ejemplo: "Hasta su nombre lo delata: en polinesio se llama **kumara**, parecido a como se dice en algunas **lenguas andinas**." },
+        { fecha: "Hacia 1200 – 1250", num: "5 · Los últimos rincones", titulo: "Se cierra el triángulo polinesio", color: "#3F7A4F",
+          rutas: [["marquesas", "rapanui"], ["cook", "nz"]],
+          poligono: ["hawai", "nz", "rapanui"],
+          texto: ["Llegan a **Rapa Nui** (Isla de Pascua) y, hacia 1250, a **Nueva Zelanda**: los maoríes llevan el **kumara**, que se conserva bien durante el invierno.", "**Hawái, Nueva Zelanda y Rapa Nui** son las tres puntas del **triángulo polinesio**: más de 10,000 km de un lado a otro."] }
       ] },
 
-    { tipo: "tabla",
-      titulo: "Un horno, muchos nombres",
-      columnas: ["Nombre", "Dónde"],
-      filas: [
-        ["Hāngī", "Maoríes de Nueva Zelanda"],
-        ["Umu", "Samoa y Tonga"],
-        ["Lovo", "Fiyi"],
-        ["Imu", "Hawái"],
-        ["**Pib**", "Mayas de Campeche y Yucatán (3.2)"],
-        ["Pachamanca", "Andes"],
-        ["Curanto", "Chiloé, Chile"]
+    { tipo: "diagramaPasos",
+      titulo: "Así funciona el horno de tierra",
+      minutos: "11-40", evaluacion: "Formativo",
+      intro: "Es la técnica **más representativa de toda la región**: hangi en Nueva Zelanda, umu en Samoa, lovo en Fiyi. Avanza (→) y lo construimos juntos.",
+      notas: "Arma el horno paso a paso. Antes de cada clic pregunta: ¿qué sigue? En el último paso lanza la pregunta y deja que respondan antes de mostrar el pib. Abajo (↓) está la foto real para recorrerla con la lupa.",
+      svg: `<svg viewBox="0 0 620 470" role="img" aria-label="Corte de un horno de tierra: hoyo, fuego, piedras volcánicas, comida envuelta, hojas, telas húmedas y tierra"><defs><radialGradient id="hgBrasa" cx="50%" cy="60%" r="60%"><stop offset="0" stop-color="#FFB347" stop-opacity=".95"/><stop offset=".6" stop-color="#E4572E" stop-opacity=".55"/><stop offset="1" stop-color="#E4572E" stop-opacity="0"/></radialGradient><linearGradient id="hgSuelo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8A6A45"/><stop offset="1" stop-color="#5E4429"/></linearGradient></defs><rect x="0" y="0" width="620" height="170" fill="#E8F1F5"/><rect x="0" y="170" width="620" height="300" fill="url(#hgSuelo)"/><path d="M0,170 H620" stroke="#5B8C3A" stroke-width="8"/><g data-paso="0" data-anim="tenue"><path d="M140,170 L185,400 L415,400 L460,170 Z" fill="#3E2A17" stroke="#2A1B0D" stroke-width="3"/><text x="300" y="440" text-anchor="middle" font-family="Public Sans,sans-serif" font-weight="700" font-size="18" fill="#F4E9D8">el hoyo</text></g><g data-paso="1" data-anim="subir"><ellipse cx="300" cy="384" rx="118" ry="34" fill="url(#hgBrasa)"/><g fill="#3B3B3B" stroke="#1E1E1E" stroke-width="2"><circle cx="205" cy="384" r="15"/><circle cx="236" cy="389" r="16"/><circle cx="268" cy="386" r="15"/><circle cx="300" cy="390" r="16"/><circle cx="332" cy="386" r="15"/><circle cx="364" cy="389" r="16"/><circle cx="395" cy="384" r="15"/><circle cx="222" cy="361" r="13"/><circle cx="252" cy="364" r="14"/><circle cx="284" cy="362" r="13"/><circle cx="316" cy="364" r="14"/><circle cx="348" cy="362" r="13"/><circle cx="378" cy="361" r="13"/></g><g fill="#FF7A2F" opacity=".75"><circle cx="236" cy="389" r="6"/><circle cx="300" cy="390" r="6"/><circle cx="364" cy="389" r="6"/><circle cx="284" cy="362" r="5"/><circle cx="348" cy="362" r="5"/></g></g><g class="pz pz-zoom" data-desde="2" data-hasta="2"><path d="M262,352 C255,330 275,322 270,300 C290,318 296,332 290,352 Z M296,352 C292,322 316,312 308,284 C334,306 336,330 326,352 Z M330,352 C326,334 344,326 340,308 C358,324 360,340 352,352 Z" fill="#F3A33A" stroke="#D9542B" stroke-width="3"/></g><g data-paso="2" data-anim="caer"><g stroke="#2F5A22" stroke-width="2.5"><rect x="200" y="314" width="62" height="34" rx="12" fill="#5C8F3A"/><rect x="268" y="316" width="62" height="34" rx="12" fill="#6A9B45"/><rect x="336" y="314" width="62" height="34" rx="12" fill="#5C8F3A"/><rect x="232" y="280" width="62" height="34" rx="12" fill="#6A9B45"/><rect x="300" y="280" width="62" height="34" rx="12" fill="#5C8F3A"/></g><g font-family="Public Sans,sans-serif" font-size="13" font-weight="700" fill="#fff" text-anchor="middle"><text x="231" y="336">carne</text><text x="299" y="338">kumara</text><text x="367" y="336">pescado</text><text x="263" y="302">taro</text><text x="331" y="302">verdura</text></g></g><g data-paso="3" data-anim="caer"><path d="M168,272 Q192,258 214,272 T260,272 T306,272 T352,272 T398,272 T436,270 L434,262 Q412,248 390,262 T344,262 T298,262 T252,262 T206,262 T170,262 Z" fill="#3F7A2E" stroke="#27501B" stroke-width="2"/><path d="M164,250 L438,250 L436,236 L166,236 Z" fill="#D8CDB4" stroke="#A89A7C" stroke-width="2"/><path d="M140,170 L164,234 L438,234 L460,170 Z" fill="#7A5A38"/><path d="M128,172 Q300,96 472,172 Z" fill="#8A6A45" stroke="#5E4429" stroke-width="3"/></g><g data-paso="3" data-anim="fade" class="vapor"><path d="M230,278 q-8,-8 0,-14 q8,-6 0,-12" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".9"/><path d="M300,278 q-8,-8 0,-14 q8,-6 0,-12" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".9"/><path d="M370,278 q-8,-8 0,-14 q8,-6 0,-12" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".9"/></g><g data-paso="4" data-anim="zoom"><circle cx="545" cy="78" r="40" fill="#fff" stroke="#252734" stroke-width="5"/><path d="M545,78 V50 M545,78 L566,90" stroke="#AA2F2F" stroke-width="5" stroke-linecap="round"/><text x="545" y="148" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-weight="700" font-size="22" fill="#252734">3 a 4 horas</text></g><g data-paso="4" data-anim="fade"><path d="M262,112 q-10,-14 0,-26 q10,-12 0,-26 M300,104 q-10,-14 0,-26 q10,-12 0,-26 M338,112 q-10,-14 0,-26 q10,-12 0,-26" fill="none" stroke="#9AA3AD" stroke-width="4" stroke-linecap="round"/></g><g font-family="Public Sans,sans-serif" font-size="16" font-weight="700"><g data-paso="1" data-anim="derecha"><path d="M412,382 H478" stroke="#252734" stroke-width="2"/><text x="484" y="380" fill="#F4E9D8">Piedras</text><text x="484" y="398" fill="#F4E9D8">volcánicas</text></g><g data-paso="2" data-anim="derecha"><path d="M400,320 H478" stroke="#F4E9D8" stroke-width="2"/><text x="484" y="318" fill="#F4E9D8">Comida</text><text x="484" y="336" fill="#F4E9D8">envuelta</text></g><g data-paso="3" data-anim="derecha"><path d="M437,267 H478" stroke="#F4E9D8" stroke-width="2"/><text x="484" y="272" fill="#F4E9D8">Hojas</text><path d="M439,243 H478" stroke="#F4E9D8" stroke-width="2"/><text x="484" y="248" fill="#F4E9D8">Telas húmedas</text><path d="M455,190 H478" stroke="#F4E9D8" stroke-width="2"/><text x="484" y="195" fill="#F4E9D8">Tierra</text></g></g><g data-paso="5" data-anim="zoom"><rect x="20" y="20" width="200" height="74" rx="10" fill="#AA2F2F"/><text x="120" y="52" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-weight="700" font-size="24" fill="#fff">= el pib maya</text><text x="120" y="78" text-anchor="middle" font-family="Public Sans,sans-serif" font-size="15" font-weight="600" fill="#fff">Campeche y Yucatán</text></g></svg>`,
+      pasos: [
+        { num: "Paso 1", titulo: "Se cava un hoyo", color: "#5E4429",
+          texto: "La tierra misma será el horno: guarda el calor y lo suelta poco a poco. El hoyo se hace del tamaño de la comida… de toda la comunidad." },
+        { num: "Paso 2", titulo: "Fuego y piedras volcánicas", color: "#D9542B",
+          texto: ["Se prende leña y encima se calientan **piedras volcánicas** durante horas, hasta quedar **al rojo vivo**.", "¿Por qué volcánicas? Aguantan el calor sin romperse; una piedra de río, con agua adentro, puede **estallar**."],
+          ejemplo: "Nueva Zelanda, Hawái y Samoa son islas volcánicas: las piedras estaban a la mano." },
+        { num: "Paso 3", titulo: "La comida, envuelta", color: "#3F7A2E",
+          texto: "Se retiran las brasas y, sobre las piedras, se acomodan **carne, pescado, kumara y taro** envueltos en hojas (desde el siglo XIX, también en canastas de alambre).",
+          ejemplo: "Las hojas protegen la comida y le dan humedad y aroma, igual que las hojas de plátano." },
+        { num: "Paso 4", titulo: "Se tapa todo", color: "#8C6A2E",
+          texto: ["Encima van **más hojas**, luego **telas o sacos húmedos** y al final **tierra**.", "El vapor queda atrapado: la comida se cuece **al vapor y con calor seco** al mismo tiempo."] },
+        { num: "Paso 5", titulo: "A esperar… y a destapar", color: "#252734",
+          texto: ["Sin fuego a la vista, todo se cuece lentamente **de 3 a 4 horas**: queda **meloso**, con sabor **ahumado y terroso**.", "Destaparlo es una fiesta: se necesita a **toda la comunidad** para cavar, cargar y destapar."] },
+        { num: "Paso 6 · Pregunta", titulo: "Un pariente muy cercano", color: "#AA2F2F",
+          pregunta: "¿Qué técnica de nuestra península funciona **exactamente igual**?",
+          respuesta: "El **pib** maya de Campeche y Yucatán: hoyo, piedras calientes, hojas de plátano y tierra. Es la misma idea que la **barbacoa** en hoyo.",
+          encenderAlResponder: true,
+          ejemplo: "A **12,000 km** de distancia, y nadie copió a nadie." }
       ],
-      notas: "Ninguno copió a los otros: es invención independiente. Cocinar con piedras calientes bajo tierra ahorra combustible y alimenta a toda la comunidad." },
+      subtemas: [
+        { tipo: "lupa",
+          titulo: "Levantar el hangi",
+          imagen: "img/hangi_maori.jpg",
+          intro: "Una foto, cinco detalles. Avanza (→) y la cámara se acerca a cada uno.",
+          notas: "Antes de cada acercamiento pregunta: ¿qué creen que vamos a ver? Las canastas de alambre se empezaron a usar en el siglo XIX; antes todo iba envuelto en hojas y cortezas.",
+          puntos: [
+            { x: 51, y: 84, zoom: 2.6, titulo: "Las piedras al rojo vivo", color: "#D9542B", texto: "Piedras volcánicas calentadas con leña. Ya casi no hay brasas: ahora el calor sale de las piedras." },
+            { x: 51, y: 64, zoom: 2.1, titulo: "Las canastas", color: "#3F7A2E", texto: "Carne, kumara, calabaza y verduras. Antes del siglo XIX todo iba envuelto en hojas y cortezas." },
+            { x: 50, y: 30, zoom: 1.8, titulo: "El vapor", color: "#5C5A55", texto: "Sale en cuanto bajan las canastas. Bajo tierra, ese vapor es el que cocerá todo." },
+            { x: 86, y: 84, zoom: 2.2, titulo: "Sacos y hojas para tapar", color: "#8C6A2E", texto: "Con ellos, mojados, y luego con tierra, se cubrirá el hoyo para atrapar el calor." },
+            { x: 84, y: 42, zoom: 1.9, titulo: "Toda la comunidad", color: "#252734", texto: "Cargar, bajar, tapar y destapar requiere a muchos: por eso el hangi se hace en **ocasiones especiales** y se come en grupo." }
+          ],
+          final: { titulo: "Un pariente lejano", color: "#AA2F2F", texto: "El **pib maya** que vimos el 23 de octubre usa exactamente el mismo principio, a 12,000 km de distancia." } }
+      ] },
+
+    { tipo: "mapaRuta",
+      titulo: "Un horno, muchos nombres",
+      intro: "El mismo horno de tierra aparece en todo el Pacífico… y de este lado también. Avanza (→).",
+      notas: "Cada clic enciende un lugar. En el último, pregunta antes de mostrar: ¿y en nuestra península? Remata: nadie copió a nadie, es invención independiente.",
+      lugares: {
+        nz: { n: "Hāngī · Nueva Zelanda", lon: 174.8, lat: -40, lado: "r", r: 7 },
+        samoa: { n: "Umu · Samoa y Tonga", lon: 188, lat: -13.8, lado: "r", r: 7 },
+        hawai: { n: "Imu · Hawái", lon: 203, lat: 20.5, lado: "r", r: 7 },
+        fiyi: { n: "Lovo · Fiyi", lon: 178.5, lat: -17.8, lado: "b", r: 7 },
+        andes: { n: "Pachamanca · Andes", lon: 284, lat: -12, lado: "l", r: 7, color: "#2E6FA8" },
+        chiloe: { n: "Curanto · Chiloé (Chile)", lon: 286, lat: -42.6, lado: "l", r: 7, color: "#2E6FA8" },
+        yucatan: { n: "Pib · Campeche y Yucatán", lon: 270.4, lat: 20.3, lado: "t", r: 9, color: "#3F7A4F" }
+      },
+      pasos: [
+        { num: "Polinesia", titulo: "Hāngī, umu, imu", color: "#AA2F2F", lugares: ["nz", "samoa", "hawai"],
+          texto: "Los maoríes de **Nueva Zelanda** le dicen **hāngī**; en **Samoa y Tonga**, **umu**; en **Hawái**, **imu**: ahí se cuece el cerdo del luau." },
+        { num: "Melanesia", titulo: "Lovo", color: "#AA2F2F", lugares: ["fiyi"],
+          texto: "En **Fiyi** se llama **lovo** y se prepara para bodas, funerales y fiestas de la comunidad." },
+        { num: "Sudamérica", titulo: "Pachamanca y curanto", color: "#2E6FA8", lugares: ["andes", "chiloe"],
+          texto: ["En los **Andes**, la **pachamanca**: «olla de tierra» en quechua.", "En **Chiloé**, el **curanto**: mariscos, carne y papas sobre piedras calientes, tapados con hojas de nalca."] },
+        { num: "¿Y aquí?", titulo: "En nuestra península", color: "#3F7A4F", lugares: ["yucatan"], alResponder: true,
+          pregunta: "¿Cómo se llama el horno de tierra de **Campeche y Yucatán**?",
+          respuesta: "El **pib**: cochinita y mucbipollos se cuecen bajo tierra.",
+          ejemplo: "**Nadie copió a nadie:** es invención independiente. Sin ollas de metal, las piedras calientes bajo tierra son la mejor solución." }
+      ] },
 
     { tipo: "pregunta",
       pregunta: "¿Por qué culturas tan lejanas inventaron la misma técnica?",
       respuesta: "Porque responde a las mismas condiciones: **sin ollas de metal ni hornos**, la tierra y las piedras calientes son el recurso disponible. El **pib** maya, el **hangi** maorí, el **curanto** chileno y la **barbacoa** mexicana son respuestas paralelas al mismo problema." },
+
+    { tipo: "plataforma",
+      etiqueta: "En la plataforma", tipoAct: "Individual · 5 minutos",
+      titulo: "Arma el horno de tierra",
+      enlace: "../tareas.html#arma-hangi", textoEnlace: "Tareas → Arma el horno de tierra",
+      evaluacion: "Participación",
+      notas: "Cinco minutos en clase, desde el celular. Primero acomodan las capas del horno y luego ordenan los pasos. Al final les sale una tarjeta con su nombre y su puntaje: pídeles que te la muestren para su participación.",
+      pasos: [
+        "Entra a **Tareas → Arma el horno de tierra** (escanea el QR).",
+        "**Parte 1:** toca una etiqueta y luego el número del horno donde va.",
+        "**Parte 2:** ordena los pasos, del primero al último.",
+        "Al terminar, **muéstrale tu tarjeta** a tu maestro."
+      ],
+      pasoAPaso: true },
 
     { tipo: "tema",
       titulo: "Nueva Zelanda: tres capas",
@@ -191,17 +234,22 @@ const PRESENTACION = {
       ],
       pasoAPaso: true,
       subtemas: [
-        { tipo: "observa",
+        { tipo: "lupa",
           titulo: "Una mesa del Pacífico",
           imagen: "img/islas_pacifico.jpg",
-          notas: "Pregunta: ¿qué platillo mexicano se parece al pescado marinado en limón? (El ceviche, aunque el ceviche es de raíz peruana).",
+          intro: "Seis detalles de una mesa de las islas. Avanza (→) y la cámara se acerca a cada uno.",
+          notas: "En el detalle 1 pregunta antes de revelar: ¿a qué platillo se parece? Al final, la canoa del fondo lo explica todo.",
           puntos: [
-            "**Pescado crudo marinado** en limón y **leche de coco**: se llama ika mata o poisson cru según la isla.",
-            "**Taro morado y kumara:** los tubérculos que sostuvieron a estas islas durante siglos.",
-            "**El coco entero:** agua para beber, pulpa para comer, leche para cocinar y cáscara como tazón.",
-            "**Hojas de plátano como mantel y plato:** igual que en el pib maya y en la injera etíope, el envoltorio es parte de la comida.",
-            "**La canoa al fondo** explica todo: estas islas se poblaron navegando miles de kilómetros de océano abierto."
-          ] }
+            { x: 49, y: 62, zoom: 2.6, titulo: "Pescado crudo marinado", color: "#2E6FA8", texto: "En **limón y leche de coco**: ika mata en las islas Cook, poisson cru en Tahití.",
+              pregunta: "¿A qué platillo que conocemos se parece?", respuesta: "Al **ceviche**, aunque el ceviche es de raíz peruana." },
+            { x: 20, y: 84, zoom: 2.6, titulo: "Taro morado", color: "#6B3E75", texto: "El tubérculo que sostuvo a estas islas durante siglos. En Hawái se fermenta y se hace **poi**." },
+            { x: 41, y: 87, zoom: 2.8, titulo: "Kumara (camote)", color: "#D9542B", texto: "El camote **americano** que llegó a la Polinesia **antes que Colón**." },
+            { x: 17, y: 70, zoom: 2.2, titulo: "El coco entero", color: "#8C6A2E", texto: "Agua para beber, pulpa para comer, leche para cocinar y cáscara como tazón: **nada se desperdicia**." },
+            { x: 62, y: 82, zoom: 1.7, titulo: "Hojas de plátano", color: "#3F7A2E", texto: "Mantel y plato a la vez, igual que en el **pib maya** y la **injera** etíope: el envoltorio es parte de la comida." },
+            { x: 40, y: 31, zoom: 3, titulo: "La canoa", color: "#252734", texto: "Lo explica todo: estas islas se poblaron **navegando miles de kilómetros** de océano abierto." }
+          ],
+          final: { titulo: "Una isla en una mesa", color: "#AA2F2F", texto: "Mar, tubérculos, coco y hojas: con **recursos limitados**, nada se desperdicia." } }
+
       ] },
 
     { tipo: "tema",
@@ -223,6 +271,23 @@ const PRESENTACION = {
         "En un mismo plato: **arroz al estilo japonés**, **ensalada de macarrón** de raíz estadounidense y **carnes adobadas** al estilo filipino o coreano."
       ],
       pasoAPaso: true },
+
+    { tipo: "lineaTiempo",
+      titulo: "Oceanía en el tiempo: tres capas en cada plato",
+      intro: "Lo indígena, lo colonial y lo migrante llegaron en momentos distintos. Avanza (→) y mira cómo se fueron apilando.",
+      notas: "Síntesis de Nueva Zelanda, Australia, Fiyi y Hawái. En 1852–1906 pregunta antes de revelar: ¿qué platillo nació de esa mezcla?",
+      eventos: [
+        { fecha: "Hacia 1250", ico: "🛶", color: "#3F7A4F", titulo: "Llegan los maoríes a Nueva Zelanda", texto: "Traen el **kumara** y el **hangi**: la **capa indígena**, que en Australia ya llevaba **más de 60,000 años** con el bushfood aborigen." },
+        { fecha: "1788", ico: "⛵", color: "#AA2F2F", titulo: "La Primera Flota llega a Sídney", texto: "Colonos **británicos e irlandeses** en Australia: pastel de carne (meat pie), pan y té. Empieza la **capa colonial**." },
+        { fecha: "1793", ico: "🌳", color: "#8C6A2E", titulo: "El árbol del pan cruza el mundo", texto: "Tras el motín del **Bounty** (1789), William Bligh lleva por fin árboles del pan de **Tahití** al Caribe. Hoy es comida de **Jamaica**." },
+        { fecha: "1840", ico: "📜", color: "#AA2F2F", titulo: "Tratado de Waitangi", texto: "**Nueva Zelanda** queda bajo la Corona británica: llegan el **cordero asado**, el **fish and chips** y las tartas de carne." },
+        { fecha: "1852 – 1906", ico: "🍍", color: "#2E6FA8", titulo: "Las plantaciones de Hawái", texto: "Para el azúcar y la piña llegan trabajadores **chinos, japoneses, portugueses, coreanos y filipinos**: la **capa migrante**.",
+          pregunta: "¿Qué platillo nació de esta mezcla?",
+          respuesta: "El **plate lunch**: arroz al estilo japonés, ensalada de macarrón y carne adobada al estilo filipino o coreano, **en un mismo plato**." },
+        { fecha: "1879 – 1916", ico: "🍛", color: "#D9542B", titulo: "De la India a Fiyi", texto: "Trabajadores de la **India** llegan a los cañaverales. Hoy casi un tercio de Fiyi desciende de ellos y el **curry** es cotidiano." },
+        { fecha: "Después de 1945", ico: "🍝", color: "#2E6FA8", titulo: "Migrantes a Australia", texto: "Primero **italianos y griegos**; desde los años setenta, también **asiáticos**. Llegan el espresso, el mezze y el wok." },
+        { fecha: "Hoy", ico: "🌏", color: "#252734", titulo: "Cocina de «borde pacífico»", texto: "Se revaloran el **bushfood** y el **hangi** junto a todo lo que llegó después: **indígena, colonial y migrante** en un mismo plato." }
+      ] },
 
     { tipo: "pregunta",
       pregunta: "¿Qué cocina que ya vimos tiene exactamente la misma lógica que el plate lunch?",
@@ -269,8 +334,10 @@ const PRESENTACION = {
       ],
       pasoAPaso: true },
 
-    { tipo: "tabla",
+    { tipo: "tablaPasos",
       titulo: "El mundo en una tabla",
+      pie: "Antes de cada clic, pregunta al grupo: ¿qué va aquí?",
+      notas: "Cada clic destapa una casilla. Pregunta primero y deja que el grupo la llene en voz alta antes de mostrarla.",
       columnas: ["Región", "Técnica o rasgo", "Lo que no hay que olvidar"],
       filas: [
         ["África", "Cuscús al vapor, injera fermentada, braai", "El comercio transahariano y la diáspora hacia América"],
@@ -278,8 +345,7 @@ const PRESENTACION = {
         ["Asia", "Fermentación, mezclas de especias, equilibrio de sabores", "El Galeón de Manila y la ruta de las especias"],
         ["Europa", "Aceite de oliva frente a manteca; conservas y horneados", "Ninguna cocina europea se hizo en aislamiento"],
         ["Oceanía", "Horno de tierra: hangi, umu, lovo", "Capas históricas: indígena, colonial y migrante"]
-      ],
-      pasoAPaso: true },
+      ] },
 
     { tipo: "tema",
       titulo: "Lo que aprendimos en todo el Tema 3",

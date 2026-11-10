@@ -18,6 +18,7 @@ import { QUE_EUROPA, BLOQUES_EU } from "./europa-datos.js";
 import { VUELTA_MUNDO, CONTINENTES_T3 } from "./oceania-datos.js";
 import { RECADOS, ORIGENES, LLEGADAS, INGS, CLAVE_RECADO, HISTORIA, LINEA_TIEMPO, recadoDe, reconocer, ingsDe, sugerirRecado, infoRecado, recadosDe, nombreRecados } from "./recado-datos.js";
 import { comprimir, idFoto, MAX_FOTOS, fotosAlWord } from "./fotos.js";
+import { actArmaHangi } from "./arma-hangi.js?v=2026111001";
 import { wordTarea } from "./tarea-word.js?v=2026110602";
 import { formacionDe, formaciones, formacionDeTarea, abiertas as inscAbiertas, equipoDe, equiposDe, tareasDeFormacion, enEquipo } from "./equipos.js";
 
@@ -202,7 +203,7 @@ function ruta() {
   const c = $('#cl-actividad');
   c.innerHTML = `<a class="cl-volver" href="#">← Todas las tareas</a><p class="cl-fecha">Tema ${esc(a.tema)} · ${esc(a.titulo)} · ${esc(a.fechaTexto)}</p><h2 class="cl-h2">${a.icono} ${esc(a.nombre)}</h2>
     ${califica(a) ? '<p class="cl-vale">📌 Cuenta como una tarea del Parcial 2.</p>' : '<p class="cl-vale cl-vale-p">🎯 Práctica para repasar: no lleva calificación.</p>'}<div id="cl-cuerpo"></div>`;
-  (a.tipo === 'practica' ? { aporto: actAporto, campeche: actCampeche, 'que-influencia': actQueInfluencia, 'platillos-america': actPlatillosAmerica, 'que-asia': actQueAsia, 'que-europa': actQueEuropa, 'vuelta-mundo': actVueltaMundo }[a.id] : { cuadro: actCuadro, desarma: actDesarma, influencias: actInfluencias, especias: actEspecias, recado: actRecado }[a.tipo])($('#cl-cuerpo'));
+  (a.tipo === 'practica' ? { aporto: actAporto, campeche: actCampeche, 'que-influencia': actQueInfluencia, 'platillos-america': actPlatillosAmerica, 'que-asia': actQueAsia, 'que-europa': actQueEuropa, 'vuelta-mundo': actVueltaMundo, 'arma-hangi': c => actArmaHangi(c, sesion && sesion.nombre) }[a.id] : { cuadro: actCuadro, desarma: actDesarma, influencias: actInfluencias, especias: actEspecias, recado: actRecado }[a.tipo])($('#cl-cuerpo'));
   window.scrollTo({ top: 0 });
 }
 // El QR de un equipo abre tareas.html#unir-CODIGO (vía unir.html): entra, se une y va a su tarea.

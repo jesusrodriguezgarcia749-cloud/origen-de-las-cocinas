@@ -140,6 +140,7 @@ export const TEMAS_TAREAS = [
     { id: 'recado', tipo: 'recado', icono: '🫙', nombre: 'El recado campechano: el mundo en una pasta', modo: 'En equipo · en vivo · con fotos', desc: 'A cada equipo le toca por sorteo un recado: rojo, negro, blanco, de escabeche, para bistec o verde. Investiguen sus ingredientes, los guisos donde se usa y de dónde viene cada ingrediente y cómo llegó a Campeche. Luego lo exponen.' },
   ] },
   { tema: '3.5', titulo: 'Cocinas de Oceanía', fecha: '2026-11-12', fechaTexto: 'Jue 12 de noviembre', acts: [
+    { id: 'arma-hangi', tipo: 'practica', icono: '🔥', nombre: 'Arma el horno de tierra', modo: 'Juego de práctica · 5 min', desc: 'Acomoda las capas del horno de tierra (hangi, umu, lovo… o nuestro pib) en el dibujo y ordena sus pasos. Lo hacemos en clase.' },
     { id: 'vuelta-mundo', tipo: 'practica', icono: '🌍', nombre: 'Vuelta al mundo: gran repaso del Tema 3', modo: 'Juego de práctica', desc: 'Hangi, injera, chuño, kimchi, chucrut, pavlova… ¿de qué continente es? Las cinco regiones del Tema 3 en un solo juego, con las trampas que los conectan.' },
     { id: 'atlas-oceania', tipo: 'atlas', cont: 'oceania', icono: '🗺️', nombre: 'Mi atlas: Oceanía', modo: 'En equipo o individual', desc: 'Tus regiones culinarias de Oceanía y sus islas.' },
   ] },
