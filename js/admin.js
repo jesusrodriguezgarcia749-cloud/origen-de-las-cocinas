@@ -2535,21 +2535,32 @@ on('btn-publicar-aviso', 'click', publicarAviso);
 async function cargarAvisos() {
   const cont = document.getElementById('avisos-lista');
   const empty = document.getElementById('avisos-empty');
+  { const h = document.getElementById('aviso-hasta'); if (h && !h.value) h.value = new Date(Date.now() + 7 * 864e5).toLocaleDateString('en-CA'); }
   cont.innerHTML = '';
   if (!grupoActivo) { empty.hidden = false; empty.textContent = 'Elige un grupo primero.'; return; }
   const snap = await getDocs(query(collection(db, 'grupos', grupoActivo, 'avisos'), orderBy('creado', 'desc')));
   empty.hidden = !snap.empty;
   if (snap.empty) { empty.textContent = 'Aún no has publicado avisos en este grupo.'; return; }
+  let dest = null; try { const g = await getDoc(doc(db, 'grupos', grupoActivo)); dest = g.exists() ? g.data().avisoDestacado || null : null; } catch { /* */ }
+  const hoyISO = new Date().toLocaleDateString('en-CA');
   snap.forEach(d => {
-    const a = d.data();
+    const a = d.data(), esDest = dest && a.aid && dest.id === a.aid, vigente = esDest && (!dest.hasta || dest.hasta >= hoyISO);
     const div = document.createElement('div');
-    div.className = 'aviso-card';
-    div.innerHTML = `<div class="aviso-card-top"><span class="aviso-card-titulo">${escaparHTML(a.titulo || 'Sin título')}</span><button type="button" class="btn-delete-student" data-id="${d.id}">Eliminar</button></div><div class="aviso-card-texto">${escaparHTML(a.texto || '')}</div>`;
+    div.className = 'aviso-card' + (vigente ? ' aviso-card-dest' : '');
+    div.innerHTML = `<div class="aviso-card-top"><span class="aviso-card-titulo">${vigente ? '📣 ' : ''}${escaparHTML(a.titulo || 'Sin título')}</span><span>${esDest ? `<button type="button" class="btn btn-small btn-ghost-dark" data-quitar>Quitar franja</button> ` : ''}<button type="button" class="btn-delete-student" data-id="${d.id}">Eliminar</button></span></div><div class="aviso-card-texto">${escaparHTML(a.texto || '')}</div>${esDest ? `<p class="field-hint aviso-vistos">${vigente ? `Destacado hasta el ${dest.hasta ? new Date(dest.hasta + 'T12:00').toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long' }) : '—'}` : 'La franja ya venció'} · <span>contando quién le dio «Enterado»…</span></p>` : ''}`;
     div.querySelector('.btn-delete-student').addEventListener('click', async () => {
       if (!confirm('¿Eliminar este aviso?')) return;
       await deleteDoc(doc(db, 'grupos', grupoActivo, 'avisos', d.id));
+      if (esDest) await setDoc(doc(db, 'grupos', grupoActivo), { avisoDestacado: deleteField() }, { merge: true }).catch(() => {});
       cargarAvisos();
     });
+    const q = div.querySelector('[data-quitar]');
+    if (q) q.addEventListener('click', async () => { await setDoc(doc(db, 'grupos', grupoActivo), { avisoDestacado: deleteField() }, { merge: true }); cargarAvisos(); });
+    if (esDest) (async () => {
+      const vis = await Promise.all(alumnosCache.map(async al => { try { const s = await getDoc(doc(db, 'grupos', grupoActivo, 'alumnos', al.id, 'atlas', 'tarea-aviso-' + a.aid)); return s.exists() ? al : null; } catch { return null; } }));
+      const si = vis.filter(Boolean), no = alumnosCache.filter(al => !si.includes(al));
+      const sp = div.querySelector('.aviso-vistos span'); if (sp) sp.innerHTML = `<b>${si.length} de ${alumnosCache.length}</b> dieron «Enterado» con su sesión iniciada${no.length ? `<details><summary>Ver quién falta</summary>${no.map(al => escaparHTML(al.nombre)).join(', ')}</details>` : ''}`;
+    })();
     cont.appendChild(div);
   });
 }
@@ -2559,7 +2570,13 @@ async function publicarAviso() {
   const titulo = document.getElementById('aviso-titulo').value.trim();
   const texto = document.getElementById('aviso-texto').value.trim();
   if (!titulo && !texto) { alert('Escribe al menos un título o contenido.'); return; }
-  try { await addDoc(collection(db, 'grupos', grupoActivo, 'avisos'), { titulo, texto, creado: serverTimestamp() }); }
+  const destacar = document.getElementById('aviso-destacar').checked, hasta = document.getElementById('aviso-hasta').value;
+  if (destacar && !hasta) { alert('Elige hasta qué fecha se muestra la franja.'); return; }
+  const aid = Date.now().toString(36);
+  try {
+    await addDoc(collection(db, 'grupos', grupoActivo, 'avisos'), { titulo, texto, aid, creado: serverTimestamp() });
+    if (destacar) await setDoc(doc(db, 'grupos', grupoActivo), { avisoDestacado: { id: aid, titulo, texto, hasta } }, { merge: true });
+  }
   catch (err) { marcarResultado('btn-publicar-aviso', 'aviso-msg', false, '', 'No se pudo publicar: ' + (err.message || err)); return; }
   document.getElementById('aviso-titulo').value = ''; document.getElementById('aviso-texto').value = '';
   marcarResultado('btn-publicar-aviso', 'aviso-msg', true, '✓ Aviso publicado.', '');

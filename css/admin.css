@@ -800,3 +800,8 @@ body.mon-completo .mon-grid { grid-template-columns: repeat(auto-fill, minmax(21
 .ct-arch-ya { flex:1 1 100%; margin:0; font-size:.88rem; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
 .ct-arch-sel input { position:absolute; width:1px; height:1px; opacity:0; } .ct-arch-sel { cursor:pointer; }
 .ct-arch input[type=text] { flex:1 1 260px; padding:8px 10px; border-radius:10px; border:1.5px solid var(--line); font:inherit; font-size:.88rem; background:var(--cream); color:var(--ink); }
+
+.aviso-dest-opc { margin:10px 0 14px; padding:10px 12px; border-radius:12px; background:rgba(201,138,44,.12); display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; font-size:.92rem; }
+.aviso-dest-opc input[type=date] { padding:6px 8px; border-radius:8px; border:1.5px solid var(--line); font:inherit; }
+.aviso-card-dest { border-left:5px solid #C98A2C; }
+.aviso-vistos details { display:inline; margin-left:6px; } .aviso-vistos summary { display:inline; cursor:pointer; text-decoration:underline; }

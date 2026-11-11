@@ -23,10 +23,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css?v=2026102305">
-<link rel="stylesheet" href="css/admin.css?v=2026111102">
+<link rel="stylesheet" href="css/admin.css?v=2026111103">
 <link rel="stylesheet" href="css/progreso.css?v=2026102305">
 <link rel="stylesheet" href="css/index.css?v=2026102305">
-<link rel="stylesheet" href="css/extra.css?v=2026102305">
+<link rel="stylesheet" href="css/extra.css?v=2026111103">
 </head>
 <body>
 
@@ -377,11 +377,13 @@
 
   <!-- ===== AVISOS ===== -->
   <div id="tab-avisos" class="tab-panel">
-    <p class="field-hint">Indicaciones y recordatorios para el grupo. Los alumnos los ven en "Mi progreso".</p>
+    <p class="field-hint">Indicaciones y recordatorios para el grupo. Todos se ven en «Mi progreso»; el <b>destacado</b> además aparece arriba de todas las páginas hasta la fecha que elijas (solo uno a la vez: el más reciente).</p>
     <label for="aviso-titulo" class="field-label">Título</label>
     <input id="aviso-titulo" type="text" placeholder="Ej. Fecha del Examen Parcial 1">
     <label for="aviso-texto" class="field-label">Contenido</label>
     <textarea id="aviso-texto" rows="5" placeholder="Escribe aquí el aviso…"></textarea>
+    <div class="aviso-dest-opc"><label><input type="checkbox" id="aviso-destacar" checked> 📣 <b>Destacar</b>: mostrarlo en una franja arriba de <b>todas las páginas</b> de la plataforma, con botón «Enterado ✓»</label>
+      <label class="aviso-hasta">hasta el <input type="date" id="aviso-hasta"></label></div>
     <button id="btn-publicar-aviso" class="btn btn-primary btn-block">Publicar aviso</button>
     <p id="aviso-msg" class="save-msg" hidden></p>
     <h3 class="section-title">Avisos publicados</h3>
@@ -400,7 +402,7 @@
 </audio>
 <button id="bg-music-toggle" class="music-toggle" aria-label="Activar música de fondo" aria-pressed="false">🎵</button>
 
-<script src="js/app.js"></script>
+<script src="js/app.js?v=2026111103"></script>
 <div id="mon-detalle" class="mon-detalle" hidden role="dialog" aria-modal="true" aria-labelledby="mon-det-titulo">
   <div class="mon-det-caja">
     <div class="mon-det-cab"><div><h2 id="mon-det-titulo"></h2><p id="mon-det-sub"></p></div><button type="button" class="btn" id="mon-det-cerrar">Cerrar ✕</button></div>
@@ -420,6 +422,6 @@
   <div class="qr-grid" id="qr-grid"></div>
 </div>
 <script src="js/vendor/qrcode.js"></script>
-<script type="module" src="js/admin.js?v=2026111102"></script>
+<script type="module" src="js/admin.js?v=2026111103"></script>
 </body>
 </html>

@@ -107,3 +107,6 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
     navigator.serviceWorker.register(base + 'sw.js', { scope: base }).catch(() => { /* sin soporte */ });
   });
 }
+
+// Aviso destacado del docente (franja arriba de cada página).
+(() => { const s = document.createElement('script'); s.type = 'module'; s.src = 'js/aviso-destacado.js?v=2026111103'; document.head.appendChild(s); })();
