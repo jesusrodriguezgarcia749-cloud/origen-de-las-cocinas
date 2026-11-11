@@ -89,7 +89,7 @@ async function cargarAvisos() {
 
 async function cargarDatos() {
   const base = ['grupos', sesion.grupoId, 'alumnos', sesion.alumnoId];
-  const [alumnoSnap, catalogoSnap, tareasSnap, partSnap, asisSnap, unifP1, unifP2, exaP1, exaP2, exaFinal, practicoP2, proyE1, proyE2, proyEF, actSnap] = await Promise.all([
+  const [alumnoSnap, catalogoSnap, tareasSnap, partSnap, asisSnap, unifP1, unifP2, exaP1, exaP2, exaFinal, practicoP2, proyE1, proyE2, proyEF, actSnap, archSnap] = await Promise.all([
     // Documento del alumno: ahí están las decisiones de redondeo del docente.
     getDoc(doc(db, ...base)).catch(() => null),
     // Catálogo de tareas del grupo: define cuántas tareas existen en cada
@@ -109,9 +109,11 @@ async function cargarDatos() {
     getDoc(doc(db, ...base, 'proyecto', 'entrega2')).catch(() => null),
     getDoc(doc(db, ...base, 'proyecto', 'entregaFinal')).catch(() => null),
     getDocs(collection(db, ...base, 'actividades')).catch(() => null),
+    getDocs(collection(db, ...base, 'archivos')).catch(() => null),
   ]);
 
   datosCache = {
+    archivos: archSnap ? archSnap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => ((b.t && b.t.seconds) || 0) - ((a.t && a.t.seconds) || 0)) : [],
     actividades: actSnap ? actSnap.docs.map(d => d.data()) : [],
     redondeos: alumnoSnap && alumnoSnap.exists() ? (alumnoSnap.data().redondeos || {}) : {},
     catalogoTareas: catalogoSnap ? catalogoSnap.docs.map(d => ({ id: d.id, ...d.data() })) : [],
@@ -232,7 +234,28 @@ function renderParciales() {
       </div>`;
   });
 
-  cont.innerHTML = renderRetroalimentacion() + html;
+  cont.innerHTML = renderArchivos() + renderRetroalimentacion() + html;
+  cont.querySelectorAll('[data-arch]').forEach(b => b.addEventListener('click', () => bajarArchivoDocente(b)));
+}
+
+// Archivos que el docente le comparte al alumno (p. ej., su trabajo corregido en Word).
+// La lista solo trae nombre y fecha; el contenido se descarga al tocar el botón.
+function renderArchivos() {
+  const L = datosCache.archivos || [];
+  if (!L.length) return '';
+  const f = t => t && t.seconds ? new Date(t.seconds * 1000).toLocaleDateString('es-MX', { day: 'numeric', month: 'long' }) : '';
+  return `<div class="res-card retro-card" id="archivos-docente"><h4>📎 Archivos de tu maestro</h4>${L.map(a => `<div class="retro-item"><p class="retro-titulo">${esc(a.trabajo || 'Archivo')}${a.t ? ` · ${f(a.t)}` : ''}</p><p class="retro-texto">${esc(a.nota || 'Tu maestro te compartió este archivo.')}</p><button type="button" class="btn btn-small" data-arch="${esc(a.id)}">⬇ Descargar ${esc(a.nombre || 'archivo')}</button></div>`).join('')}</div>`;
+}
+async function bajarArchivoDocente(b) {
+  const a = (datosCache.archivos || []).find(x => x.id === b.dataset.arch); if (!a) return;
+  b.disabled = true; const txt = b.textContent; b.textContent = 'Descargando…';
+  try {
+    const s = await getDoc(doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'archivosContenido', a.id));
+    if (!s.exists()) throw new Error('El archivo ya no está disponible.');
+    const bin = atob(s.data().b64), u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+    const url = URL.createObjectURL(new Blob([u], { type: a.tipo || 'application/octet-stream' })), el = document.createElement('a');
+    el.href = url; el.download = a.nombre || 'archivo'; document.body.appendChild(el); el.click(); el.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000);
+  } catch (e) { alert('No se pudo descargar: ' + (e.message || e)); } finally { b.disabled = false; b.textContent = txt; }
 }
 
 // Comentarios del docente en cada entrega del proyecto (solo los ve el alumno

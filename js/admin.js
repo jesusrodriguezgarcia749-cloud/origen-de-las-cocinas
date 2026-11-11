@@ -1558,6 +1558,38 @@ async function ctZip(c, b) {
   catch (e) { msg.textContent = 'No se pudo armar el .zip: ' + (e.message || e); } finally { b.disabled = false; }
 }
 
+// ---- Archivo para el alumno (p. ej., su Word corregido): se guarda en Firestore (la lista en «archivos»
+// y el contenido en «archivosContenido») y el alumno lo descarga desde Mi progreso.
+const CT_MAX_ARCH = 700 * 1024;
+const ctClaveArch = c => c.tipo === 'proyecto' ? 'proyecto-' + c.ent : 'tarea-' + c.id;
+async function ctPintarArchivo(c, x) {
+  const box = document.getElementById('ct-arch'); if (!box) return;
+  const k = ctClaveArch(c), base = ['grupos', grupoActivo, 'alumnos', x.al.id];
+  let a = null; try { const s = await getDoc(doc(db, ...base, 'archivos', k)); a = s.exists() ? s.data() : null; } catch { /* */ }
+  if (!document.getElementById('ct-arch') || document.getElementById('ct-dlg-tit').textContent !== x.al.nombre) return;
+  box.innerHTML = `<p class="ct-arch-t">📎 Archivo para el alumno <small>(lo descarga en Mi progreso)</small></p>
+    ${a ? `<p class="ct-arch-ya">✓ <b>${escaparHTML(a.nombre)}</b> · ${Math.max(1, Math.round((a.tam || 0) / 1024))} KB <button type="button" class="btn btn-small btn-ghost-dark" id="ct-arch-quitar">Quitar</button></p>` : ''}
+    <label class="ct-arch-sel"><input type="file" id="ct-arch-in" accept=".docx,.doc,.pdf,.xlsx,.pptx,.jpg,.jpeg,.png"> <span class="btn btn-small">${a ? 'Reemplazar archivo' : '⬆ Adjuntar archivo (Word corregido, PDF…)'}</span></label>
+    <input type="text" id="ct-arch-nota" maxlength="200" placeholder="Nota opcional para el alumno (p. ej., «Tu trabajo con las citas corregidas»)" value="${escaparHTML((a && a.nota) || '')}">
+    <span class="field-hint" id="ct-arch-msg"></span>`;
+  const msg = document.getElementById('ct-arch-msg');
+  document.getElementById('ct-arch-in').addEventListener('change', async ev => {
+    const f = ev.target.files[0]; if (!f) return;
+    if (f.size > CT_MAX_ARCH) { msg.textContent = `El archivo pesa ${Math.round(f.size / 1024)} KB; el máximo es 700 KB. Quítale imágenes o guárdalo como PDF.`; ev.target.value = ''; return; }
+    msg.textContent = 'Subiendo…';
+    try {
+      const buf = new Uint8Array(await f.arrayBuffer()); let bin = ''; for (let i = 0; i < buf.length; i += 0x8000) bin += String.fromCharCode.apply(null, buf.subarray(i, i + 0x8000));
+      const nota = (document.getElementById('ct-arch-nota').value || '').trim();
+      await setDoc(doc(db, ...base, 'archivosContenido', k), { b64: btoa(bin) });
+      await setDoc(doc(db, ...base, 'archivos', k), { nombre: f.name, tipo: f.type || '', tam: f.size, trabajo: c.nombre, nota, t: serverTimestamp() });
+      ctPintarArchivo(c, x); 
+    } catch (e) { msg.textContent = 'No se pudo subir: ' + (e.message || e); }
+  });
+  document.getElementById('ct-arch-nota').addEventListener('change', async ev => { if (!a) return; try { await setDoc(doc(db, ...base, 'archivos', k), { nota: ev.target.value.trim() }, { merge: true }); msg.textContent = '✓ Nota guardada'; } catch { /* */ } });
+  const q = document.getElementById('ct-arch-quitar');
+  if (q) q.addEventListener('click', async () => { if (!confirm('¿Quitar el archivo? El alumno ya no podrá descargarlo.')) return; try { await deleteDoc(doc(db, ...base, 'archivos', k)); await deleteDoc(doc(db, ...base, 'archivosContenido', k)); ctPintarArchivo(c, x); } catch (e) { msg.textContent = 'No se pudo quitar: ' + (e.message || e); } });
+}
+
 // ---- Ventana de calificar: ver, calificar, «Guardar y siguiente»
 function ctVisibles() { return [...document.querySelectorAll('#ct-tabla tbody tr')].filter(tr => !tr.hidden).map(tr => tr.dataset.al); }
 function ctAbrir(c, alId) {
@@ -1586,6 +1618,7 @@ function ctAbrir(c, alId) {
       ${c.tipo === 'tarea' ? `<button type="button" class="btn btn-small btn-ghost-dark" id="ct-usar">Usar sugerida (${e(String(x.sug.nota))})</button><label class="ct-ex"><input type="checkbox" id="ct-ex" ${x.exento ? 'checked' : ''}> Exento (falta justificada)</label>` : ''}
       ${c.tipo === 'proyecto' ? `<textarea id="ct-com" rows="3" placeholder="Comentarios para el alumno: qué salió bien y qué debe corregir (lo verá en Mi progreso)">${e(x.comentario || '')}</textarea>` : ''}
     </div>
+    <div class="ct-arch" id="ct-arch"><span class="field-hint">Buscando archivos compartidos…</span></div>
     <p class="save-msg" id="ct-msg" hidden></p>
     <div class="ct-dlg-acc">
       <button type="button" class="btn btn-small btn-ghost-dark" id="ct-ant" ${ant ? '' : 'disabled'}>← Anterior</button>
@@ -1621,6 +1654,7 @@ function ctAbrir(c, alId) {
   $d('ct-guardar').addEventListener('click', guardar);
   $d('ct-sig').addEventListener('click', async () => { if (!(await guardar())) return; if (sig) ctAbrir(c, sig); else dlg.close(); });
   $d('ct-ant').addEventListener('click', () => { if (ant) ctAbrir(c, ant); });
+  ctPintarArchivo(c, x);
   if (!dlg.open) dlg.showModal();
   setTimeout(() => { const i = $d('ct-cal'); if (i && !i.disabled) i.focus(); }, 30);
 }

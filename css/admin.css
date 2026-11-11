@@ -794,3 +794,9 @@ body.mon-completo .mon-grid { grid-template-columns: repeat(auto-fill, minmax(21
 .ct-dlg-acc #ct-ant { margin-right:auto; }
 #tab-concentrado .ct-wrap, #tab-concentrado .ct-barra { width:min(1280px, calc(100vw - 32px)); position:relative; left:50%; transform:translateX(-50%); }
 .ct-dlg #ct-cal { width:96px; font-size:1.05rem; }
+
+.ct-arch { margin:12px 0 4px; padding:10px 12px; border:1.5px dashed var(--line); border-radius:12px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.ct-arch-t { flex:1 1 100%; margin:0; font-weight:600; font-size:.9rem; } .ct-arch-t small { font-weight:400; color:var(--ink-soft); }
+.ct-arch-ya { flex:1 1 100%; margin:0; font-size:.88rem; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.ct-arch-sel input { position:absolute; width:1px; height:1px; opacity:0; } .ct-arch-sel { cursor:pointer; }
+.ct-arch input[type=text] { flex:1 1 260px; padding:8px 10px; border-radius:10px; border:1.5px solid var(--line); font:inherit; font-size:.88rem; background:var(--cream); color:var(--ink); }
