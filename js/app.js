@@ -110,3 +110,6 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
 
 // Aviso destacado del docente (franja arriba de cada página).
 (() => { const s = document.createElement('script'); s.type = 'module'; s.src = 'js/aviso-destacado.js?v=2026111103'; document.head.appendChild(s); })();
+
+// Siglos: subraya «siglo XVI», etc. y al tocarlos muestra qué años son (no en el panel docente ni en el examen).
+if (!/(admin|examen)\.html$/.test(location.pathname)) { const s = document.createElement('script'); s.src = 'js/siglos.js?v=2026111201'; document.head.appendChild(s); }

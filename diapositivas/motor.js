@@ -397,7 +397,7 @@
 
   function iniciar() {
     script(new URL("pasos.js?v=2026111003", AQUI).href).catch(() => console.warn("No se pudo cargar pasos.js"))
-      .then(() => { construir(); return script(REVEAL + "dist/reveal.js"); })
+      .then(() => { construir(); script(new URL("../js/siglos.js?v=2026111201", AQUI).href).catch(() => {}); return script(REVEAL + "dist/reveal.js"); })
       .then(() => script(REVEAL + "plugin/notes/notes.js").catch(() => {}))
       .then(() => {
         Reveal.initialize({
@@ -407,7 +407,7 @@
         });
         if (window.PASOS) window.PASOS.activar(Reveal);
         // Glosario: subraya las palabras del glosario en cada diapositiva y llena las «Palabras de hoy»
-        if (P.glosario !== false) script(new URL("../js/glosario.js?v=2026111001", AQUI).href).then(() => window.GLOSARIO.listo).then(() => {
+        if (P.glosario !== false) script(new URL("../js/glosario.js?v=2026111201", AQUI).href).then(() => window.GLOSARIO.listo).then(() => {
           document.querySelectorAll(".reveal .slides section").forEach(sec => { if (!sec.querySelector("section")) window.GLOSARIO.marcar(sec); });
           window.GLOSARIO.fichas(document);
         }).catch(() => {});

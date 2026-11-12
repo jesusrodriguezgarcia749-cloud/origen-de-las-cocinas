@@ -41,7 +41,7 @@
     return d;
   }).catch(() => null);
 
-  const SALTAR = "svg,a,button,script,style,textarea,input,select,code,h1,.gl,.gl-pop,.no-gl,aside.notes,.pz-tick,mark";
+  const SALTAR = "svg,a,button,script,style,textarea,input,select,code,h1,.gl,.gl-pop,.sg,.sg-pop,.no-gl,aside.notes,.pz-tick,mark";
   function marcar(raiz, { una = true } = {}) {
     if (!RE || !raiz) return 0;
     const vistos = new Set(); let n = 0;
