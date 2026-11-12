@@ -10,7 +10,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, FieldPath, collection, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
 import { CUADRO_MM, CUADROS, PLATILLOS, TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, sugerirCuadro, MIN_PALABRAS_CELDA, INFLUENCIAS, sugerirInfluencias, ESPECIAS, subregionDe, sugerirEspecias, FUSION, sugerirFusion } from "./clase-datos.js?v=2026111703";
-import { DocITES } from "./docx-ites.js";
+import { DocITES } from "./docx-ites.js?v=2026111202";
 import { INGREDIENTES, CONTINENTES } from "./aporto-datos.js";
 import { BALUARTES, CAMPECHE, QUE_INFLUENCIA, PAISES_AM, PLATILLOS_AM } from "./america-datos.js";
 import { QUE_ASIA } from "./asia-datos.js";
@@ -21,7 +21,7 @@ import { comprimir, idFoto, MAX_FOTOS, fotosAlWord } from "./fotos.js";
 import { actArmaHangi } from "./arma-hangi.js?v=2026111001";
 import { FICHAS, sugerirFicha, palabrasF } from "./fichas-datos.js?v=2026111701";
 import { FUNCIONES, QUE_FUNCION, CORTES, QUE_CORTE } from "./tema4-datos.js?v=2026111701";
-import { wordTarea } from "./tarea-word.js?v=2026111703";
+import { wordTarea } from "./tarea-word.js?v=2026111202";
 import { formacionDe, formaciones, formacionDeTarea, abiertas as inscAbiertas, equipoDe, equiposDe, tareasDeFormacion, enEquipo } from "./equipos.js";
 
 const db = getFirestore(initializeApp(firebaseConfig));

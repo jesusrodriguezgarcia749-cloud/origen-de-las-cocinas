@@ -5,7 +5,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, deleteField, FieldPath, collection, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
-import { DocITES, mapaContinentePNG, ABREV } from "./docx-ites.js";
+import { DocITES, mapaContinentePNG, ABREV } from "./docx-ites.js?v=2026111202";
 import { TAREAS_DIG } from "./clase-datos.js?v=2026111703";
 import { formacionDe, formaciones, formacionDeTarea, abiertas as inscAbiertas, equipoDe, tareasDeFormacion } from "./equipos.js";
 

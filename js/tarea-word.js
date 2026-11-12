@@ -1,8 +1,8 @@
 // tarea-word.js — Word de las tareas digitales para el PANEL DOCENTE (descargar el trabajo de un
 // alumno o equipo, o todos en .zip). Arma el mismo documento que descarga el alumno, a partir de los
 // datos guardados en Firestore. Lo usa admin.js.
-import { DocITES } from "./docx-ites.js?v=2026110501";
-import { mapaContinentePNG } from "./docx-ites.js?v=2026110501";
+import { DocITES } from "./docx-ites.js?v=2026111202";
+import { mapaContinentePNG } from "./docx-ites.js?v=2026111202";
 import { CUADRO_MM, CUADROS, INFLUENCIAS, ESPECIAS, subregionDe, FUSION } from "./clase-datos.js?v=2026111703";
 import { FICHAS } from "./fichas-datos.js?v=2026111701";
 import { RECADOS, ORIGENES, LLEGADAS, recadoDe, ingsDe, infoRecado, recadosDe } from "./recado-datos.js";

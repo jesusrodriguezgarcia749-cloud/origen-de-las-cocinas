@@ -1,7 +1,7 @@
 // apa-word.js — Trabajo escrito en formato APA 7 (versión de estudiante), en Word (.docx), armado en el navegador.
 // Portada oficial del ITES (fondo con logo y franjas, datos en Questrial) o, si no carga, portada con el escudo; número de página arriba a la derecha, Times New Roman 12, doble espacio,
 // sangría de primera línea, títulos de nivel 1 centrados en negritas y referencias con sangría francesa.
-import { zipDocx } from './docx-ites.js?v=2026102901';
+import { zipDocx } from './docx-ites.js?v=2026111202';
 
 const xe = s => String(s ?? '').replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 // *texto* → cursivas (títulos de libros en las referencias)

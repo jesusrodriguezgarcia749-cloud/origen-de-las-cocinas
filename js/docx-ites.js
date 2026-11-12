@@ -38,16 +38,21 @@ function run(r) {
 function par(contenido, o = {}) {
   const runs = typeof contenido === 'string' ? run([contenido, o.r || {}]) : contenido.map(run).join('');
   const bordes = o.bordeAbajo || o.bordeIzq ? `<w:pBdr>${o.bordeIzq ? `<w:left w:val="single" w:sz="${o.bordeIzq[1] || 36}" w:space="8" w:color="${hex(o.bordeIzq[0])}"/>` : ''}${o.bordeAbajo ? `<w:bottom w:val="single" w:sz="${o.bordeAbajo[1] || 12}" w:space="4" w:color="${hex(o.bordeAbajo[0])}"/>` : ''}</w:pBdr>` : '';
-  const pPr = `${o.estilo ? `<w:pStyle w:val="${o.estilo}"/>` : ''}${o.keep ? '<w:keepNext/>' : ''}${bordes}${o.fondo ? `<w:shd w:val="clear" w:color="auto" w:fill="${hex(o.fondo)}"/>` : ''}<w:spacing w:before="${o.antes ?? 0}" w:after="${o.despues ?? 100}"${o.interlineado ? ` w:line="${o.interlineado}" w:lineRule="auto"` : ''}/>${o.sangria ? `<w:ind w:left="${o.sangria}"/>` : ''}${o.centro ? '<w:jc w:val="center"/>' : o.derecha ? '<w:jc w:val="right"/>' : ''}`;
+  const pPr = `${o.estilo ? `<w:pStyle w:val="${o.estilo}"/>` : ''}${o.keep ? '<w:keepNext/>' : ''}${bordes}${o.fondo ? `<w:shd w:val="clear" w:color="auto" w:fill="${hex(o.fondo)}"/>` : ''}<w:spacing w:before="${o.antes ?? 0}" w:after="${o.despues ?? 100}"${o.interlineado ? ` w:line="${o.interlineado}" w:lineRule="auto"` : ''}/>${o.margenes ? `<w:ind w:left="${o.margenes[0]}" w:right="${o.margenes[1]}"/>` : o.sangria ? `<w:ind w:left="${o.sangria}"/>` : ''}${o.centro ? '<w:jc w:val="center"/>' : o.derecha ? '<w:jc w:val="right"/>' : ''}`;
   return `<w:p><w:pPr>${pPr}</w:pPr>${runs}</w:p>`;
 }
 
+// Encabezado de la portada oficial: la imagen de fondo a página completa, detrás del texto.
+export const encabezadoPortada = W => `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:hdr ${W}><w:p><w:pPr><w:spacing w:after="0" w:line="240" w:lineRule="auto"/></w:pPr><w:r><w:drawing><wp:anchor distT="0" distB="0" distL="0" distR="0" simplePos="0" relativeHeight="0" behindDoc="1" locked="1" layoutInCell="1" allowOverlap="1"><wp:simplePos x="0" y="0"/><wp:positionH relativeFrom="page"><wp:posOffset>0</wp:posOffset></wp:positionH><wp:positionV relativeFrom="page"><wp:posOffset>0</wp:posOffset></wp:positionV><wp:extent cx="7772400" cy="10058400"/><wp:effectExtent l="0" t="0" r="0" b="0"/><wp:wrapNone/><wp:docPr id="900" name="Portada ITES"/><a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="900" name="portada-ites.png"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="rFondo"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="7772400" cy="10058400"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:anchor></w:drawing></w:r></w:p></w:hdr>`;
+
 export class DocITES {
-  constructor({ materia = 'Origen de las Cocinas', escuela = 'ITES René Descartes' } = {}) {
-    this.materia = materia; this.escuela = escuela; this.cuerpo = []; this.imgs = []; this.logo = null;
+  constructor({ materia = 'Origen de las Cocinas', escuela = 'ITES René Descartes', carrera = 'Licenciatura en Artes Culinarias y Negocios Gastronómicos', docente = 'Mtro. Jesús Rodríguez García' } = {}) {
+    this.materia = materia; this.escuela = escuela; this.carrera = carrera; this.docente = docente; this.cuerpo = []; this.imgs = []; this.logo = null; this.fondo = null;
   }
-  async cargarLogo(url = 'assets/escudo.png') {
-    try { const r = await fetch(url); if (r.ok) this.logo = new Uint8Array(await r.arrayBuffer()); } catch { this.logo = null; }
+  // Carga el escudo y la portada oficial del ITES (fondo con logo y franjas). Si la portada no carga, se usa la del escudo.
+  async cargarLogo(url = 'assets/escudo.png', portada = 'assets/portada-ites.png') {
+    const leer = async u => { try { const r = await fetch(u); return r.ok ? new Uint8Array(await r.arrayBuffer()) : null; } catch { return null; } };
+    [this.logo, this.fondo] = await Promise.all([leer(url), portada ? leer(portada) : null]);
   }
   _imagen(bytes, wPx, hPx, anchoCm) {
     const n = this.imgs.length + 1; this.imgs.push(bytes);
@@ -57,6 +62,26 @@ export class DocITES {
   // Portada: escudo, tema, título, subtítulo, autores y fecha.
   portada({ kicker = '', titulo, subtitulo = '', etiqueta = '', personas = [], fecha = new Date() }) {
     const c = this.cuerpo;
+    if (this.fondo) {
+      // Portada oficial del ITES: el fondo va en el encabezado de la primera página (detrás del texto).
+      const Q = (t, tam, o = {}) => par([[t, { fuente: 'Questrial', b: true, color: '000000', tam, ...o }]], { centro: true, despues: 0, interlineado: 240, antes: o.antes || 0, margenes: [284, -943] });
+      c.push(par('', { despues: 1500 }));
+      if (kicker) c.push(Q(kicker, 11, { color: '5C5C5C', caps: true }));
+      c.push(Q(titulo, 18, { antes: 80 }));
+      if (subtitulo) c.push(Q(subtitulo, 13, { color: '5C5C5C' }));
+      const campo = (k, ...v) => { c.push(Q(k, 20, { antes: 300 })); v.filter(Boolean).forEach(x => c.push(Q(x, 18))); };
+      campo('Carrera:', this.carrera);
+      campo('Docente:', this.docente);
+      campo('Materia:', this.materia);
+      const gente = personas.filter(Boolean);
+      const eq = /^equipo/i.test(etiqueta) ? etiqueta : '';
+      c.push(Q('Alumno(s):', 20, { antes: 300 }));
+      if (eq) c.push(Q(eq, 15, { color: '5C5C5C' }));
+      (gente.length ? gente : ['…']).forEach(n => c.push(Q(n, gente.length > 3 ? 14 : 18)));
+      campo('Fecha:', fecha.toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' }));
+      this.saltoPagina();
+      return;
+    }
     c.push(par('', { despues: 600 }));
     if (this.logo) c.push(`<w:p><w:pPr><w:jc w:val="center"/><w:spacing w:after="240"/></w:pPr>${this._imagen(this.logo, 320, 320, 4)}</w:p>`);
     c.push(par([[this.escuela, { caps: true, b: true, color: C.suave, tam: 10, espaciado: 40 }]], { centro: true, despues: 480 }));
@@ -117,15 +142,15 @@ export class DocITES {
   }
   _xml() {
     const W = 'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"';
-    const sect = `<w:sectPr><w:headerReference w:type="default" r:id="rHdr"/><w:footerReference w:type="default" r:id="rFtr"/><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1300" w:left="1440" w:header="600" w:footer="600" w:gutter="0"/><w:titlePg/></w:sectPr>`;
+    const sect = `<w:sectPr><w:headerReference w:type="default" r:id="rHdr"/>${this.fondo ? '<w:headerReference w:type="first" r:id="rHdrP"/>' : ''}<w:footerReference w:type="default" r:id="rFtr"/><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1300" w:left="1440" w:header="600" w:footer="600" w:gutter="0"/><w:titlePg/></w:sectPr>`;
     const documento = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document ${W}><w:body>${this.cuerpo.join('')}${sect}</w:body></w:document>`;
     const encabezado = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:hdr ${W}>${par([[`${this.materia}  ·  `, { b: true, color: C.azafranOsc, tam: 9 }], [this.escuela, { color: C.suave, tam: 9 }]], { derecha: true, bordeAbajo: [C.azafran, 6], despues: 0 })}</w:hdr>`;
     const pie = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:ftr ${W}><w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:color w:val="${C.suave}"/><w:sz w:val="18"/></w:rPr><w:t xml:space="preserve">Página </w:t></w:r><w:fldSimple w:instr=" PAGE "><w:r><w:rPr><w:color w:val="${C.suave}"/><w:sz w:val="18"/></w:rPr><w:t>1</w:t></w:r></w:fldSimple><w:r><w:rPr><w:color w:val="${C.suave}"/><w:sz w:val="18"/></w:rPr><w:t xml:space="preserve"> de </w:t></w:r><w:fldSimple w:instr=" NUMPAGES "><w:r><w:rPr><w:color w:val="${C.suave}"/><w:sz w:val="18"/></w:rPr><w:t>1</w:t></w:r></w:fldSimple></w:p></w:ftr>`;
     const estilo = (id, nombre, tam, nivel) => `<w:style w:type="paragraph" w:styleId="${id}"><w:name w:val="${nombre}"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/><w:pPr><w:keepNext/><w:outlineLvl w:val="${nivel}"/></w:pPr><w:rPr><w:rFonts w:ascii="Georgia" w:hAnsi="Georgia"/><w:b/><w:sz w:val="${tam}"/><w:szCs w:val="${tam}"/></w:rPr></w:style>`;
     const estilos = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:eastAsia="Calibri" w:cs="Calibri"/><w:color w:val="${C.tinta}"/><w:sz w:val="22"/><w:szCs w:val="22"/><w:lang w:val="es-MX"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="100" w:line="276" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style>${estilo('Titulo1', 'heading 1', 40, 0)}${estilo('Titulo2', 'heading 2', 30, 1)}</w:styles>`;
-    const rels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/><Relationship Id="rHdr" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/header" Target="header1.xml"/><Relationship Id="rFtr" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/>${this.imgs.map((_, i) => `<Relationship Id="rImg${i + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/img${i + 1}.png"/>`).join('')}</Relationships>`;
+    const rels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/><Relationship Id="rHdr" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/header" Target="header1.xml"/><Relationship Id="rFtr" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/>${this.fondo ? '<Relationship Id="rHdrP" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/header" Target="header2.xml"/>' : ''}${this.imgs.map((_, i) => `<Relationship Id="rImg${i + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/img${i + 1}.png"/>`).join('')}</Relationships>`;
     return zip([
-      ['[Content_Types].xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="png" ContentType="image/png"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/><Override PartName="/word/header1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml"/><Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/></Types>'],
+      ['[Content_Types].xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="png" ContentType="image/png"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/><Override PartName="/word/header1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml"/><Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/>' + (this.fondo ? '<Override PartName="/word/header2.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml"/>' : '') + '</Types>'],
       ['_rels/.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'],
       ['word/_rels/document.xml.rels', rels],
       ['word/document.xml', documento],
@@ -133,8 +158,10 @@ export class DocITES {
       ['word/header1.xml', encabezado],
       ['word/footer1.xml', pie],
       ...this.imgs.map((b, i) => [`word/media/img${i + 1}.png`, b]),
+      ...(this.fondo ? [['word/header2.xml', encabezadoPortada(W)], ['word/_rels/header2.xml.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rFondo" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/portada-ites.png"/></Relationships>'], ['word/media/portada-ites.png', this.fondo]] : []),
     ]);
   }
+  blob() { return this._xml(); }
   descargar(nombre) {
     const a = document.createElement('a'); a.href = URL.createObjectURL(this._xml());
     a.download = nombre.endsWith('.docx') ? nombre : nombre + '.docx'; document.body.appendChild(a); a.click(); a.remove();
