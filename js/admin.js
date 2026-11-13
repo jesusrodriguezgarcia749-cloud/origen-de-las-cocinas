@@ -936,6 +936,8 @@ async function iniciarMonitor() {
       document.getElementById('mon-clave').hidden = MON.act !== 'cuadro'; document.getElementById('mon-votar').hidden = MON.act !== 'influencias'; document.getElementById('mon-resultados').hidden = MON.act !== 'influencias'; document.getElementById('mon-conts').hidden = MON.act !== 'atlas'; document.getElementById('mon-ver').querySelectorAll('[data-v]').forEach(x => { x.hidden = MON.act !== 'atlas'; });
       Object.keys(MON.datos).filter(k => k.startsWith('e:')).forEach(k => delete MON.datos[k]); suscribirEquiposCont(); pintarMonitor(true);
     }));
+    document.getElementById('mon-juegos').addEventListener('click', jvEntrar);
+    document.querySelectorAll('#mon-act [data-a]').forEach(b => b.addEventListener('click', jvSalir));
     document.getElementById('mon-votar').addEventListener('click', async () => { const ab = MON.votacion === 'abierta'; if (ab && !confirm('¿Cerrar la votación? Los alumnos ya no podrán votar ni cambiar su voto.')) return; await setDoc(doc(db, 'grupos', grupoActivo), { votaciones: { [INFLUENCIAS.votacion]: ab ? 'cerrada' : 'abierta' } }, { merge: true }); });
     document.getElementById('mon-resultados').addEventListener('click', abrirResultados);
     document.getElementById('mon-expo').addEventListener('click', () => abrirExpo(0));
@@ -967,6 +969,7 @@ async function iniciarMonitor() {
   MON.subs.push(onSnapshot(doc(db, 'grupos', g), sn => { MON.g = sn.exists() ? sn.data() : {}; if (monFiltrar()) { Object.keys(MON.datos).filter(k => k.startsWith('e:')).forEach(k => delete MON.datos[k]); suscribirEquiposCont(); pintarMonitor(true); } MON.votacion = sn.exists() ? ((sn.data().votaciones || {})[INFLUENCIAS.votacion] || 'cerrada') : 'cerrada'; const bv = document.getElementById('mon-votar'); bv.setAttribute('aria-pressed', String(MON.votacion === 'abierta')); bv.textContent = MON.votacion === 'abierta' ? '🔒 Cerrar votación' : '🗳️ Abrir votación'; pintarClaveCu(); const cl = (MON.g.claves || {}), r1 = document.getElementById('mon-r1'), r2 = document.getElementById('mon-r2'); r1.setAttribute('aria-pressed', String(!!cl.recado1)); r1.textContent = cl.recado1 ? '🔒 Ocultar clave 1' : '🔑 Liberar clave 1 · ingredientes y guisos'; r2.setAttribute('aria-pressed', String(!!cl.recado2)); r2.textContent = cl.recado2 ? '🔒 Ocultar clave 2' : '🔑 Liberar clave 2 · rutas'; }, () => {}));
   MON.reloj = setInterval(() => pintarTiempos(), 10000);
   pintarMonitor(true);
+  if (JV.on) jvSuscribir();
 }
 // actividades de documento vivo (equipo o individual), a diferencia de Mi atlas
 const monVivo = () => ['cuadro', 'influencias', 'especias', 'recado'].includes(MON.act);
@@ -996,6 +999,7 @@ function suscribirEquiposCont() {
   }
 }
 function detenerMonitor() {
+  jvDetener();
   document.body.classList.remove('mon-completo'); const mf = document.getElementById('mon-full'); if (mf) { mf.setAttribute('aria-pressed', 'false'); mf.textContent = '⛶ Pantalla completa'; }
   MON.subs.forEach(u => u()); MON.subs = []; (MON.eqSubs || []).forEach(u => u()); MON.eqSubs = [];
   if (MON.eqSub) { MON.eqSub(); MON.eqSub = null; }
@@ -2582,3 +2586,89 @@ async function publicarAviso() {
   marcarResultado('btn-publicar-aviso', 'aviso-msg', true, '✓ Aviso publicado.', '');
   cargarAvisos();
 }
+
+// ---- Juegos de práctica en vivo: quién entró, en qué pregunta va y cómo terminó (no califica)
+// Cada alumno escribe grupos/{g}/alumnos/{a}/atlas/tarea-juego-{id} al entrar, al responder y al terminar.
+const JV = { on: false, juego: null, datos: {}, subs: [], reloj: null, t: null };
+const jvJuegos = () => TEMAS_TAREAS.flatMap(t => t.acts.filter(a => a.tipo === 'practica').map(a => ({ ...a, tema: t.tema, fecha: t.fecha })));
+function jvDeHoy() { const L = jvJuegos(), hoy = new Date().toLocaleDateString('en-CA'); return ([...L].reverse().find(a => a.fecha && a.fecha <= hoy) || L[0]).id; }
+const jvEsHoy = ms => ms && new Date(ms).toDateString() === new Date().toDateString();
+const jvHace = ms => { const s = Math.max(0, Math.round((Date.now() - ms) / 1000)); return s < 60 ? `hace ${s} s` : s < 3600 ? `hace ${Math.round(s / 60)} min` : new Date(ms).toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }); };
+function jvEstado(d) {
+  if (!d || !jvEsHoy(d.ultimoMs)) return 'sin';
+  if (d.estado === 'jugando' && Date.now() - d.ultimoMs > 180000) return 'quieto';
+  return { jugando: 'jugando', termino: 'termino', estudiando: 'estudiando' }[d.estado] || 'menu';
+}
+const JV_EST = { jugando: ['🟢', 'Jugando'], termino: ['✅', 'Terminó'], estudiando: ['📚', 'Estudiando'], menu: ['🕹️', 'Entró, eligiendo nivel'], quieto: ['⏸️', 'Sin actividad'], sin: ['⚪', 'No ha entrado hoy'] };
+const JV_ORDEN = ['jugando', 'termino', 'estudiando', 'menu', 'quieto', 'sin'];
+function jvEntrar() {
+  JV.on = true; if (!JV.juego) JV.juego = jvDeHoy();
+  document.querySelectorAll('#mon-act [data-a]').forEach(x => x.setAttribute('aria-pressed', 'false'));
+  document.getElementById('mon-juegos').setAttribute('aria-pressed', 'true');
+  ['mon-clave', 'mon-votar', 'mon-resultados', 'mon-expo', 'mon-r1', 'mon-r2', 'mon-qr'].forEach(id => { const e = document.getElementById(id); if (e) e.hidden = true; });
+  document.querySelector('#tab-monitor .mon-filtros').hidden = true;
+  ['mon-resumen', 'mon-grid', 'mon-sin'].forEach(id => { document.getElementById(id).hidden = true; });
+  document.getElementById('jv').hidden = false;
+  jvSuscribir();
+}
+function jvSalir() {
+  if (!JV.on) return; JV.on = false; jvDetener();
+  document.getElementById('mon-juegos').setAttribute('aria-pressed', 'false');
+  document.getElementById('mon-qr').hidden = false;
+  document.querySelector('#tab-monitor .mon-filtros').hidden = false;
+  ['mon-resumen', 'mon-grid', 'mon-sin'].forEach(id => { document.getElementById(id).hidden = false; });
+  document.getElementById('jv').hidden = true;
+}
+function jvDetener() { JV.subs.forEach(u => u()); JV.subs = []; clearInterval(JV.reloj); JV.reloj = null; }
+function jvSuscribir() {
+  jvDetener(); JV.datos = {};
+  if (!grupoActivo) { document.getElementById('jv').innerHTML = '<p class="empty-inline">Elige un grupo primero.</p>'; return; }
+  const g = grupoActivo, id = JV.juego;
+  alumnosCache.forEach(a => JV.subs.push(onSnapshot(doc(db, 'grupos', g, 'alumnos', a.id, 'atlas', 'tarea-juego-' + id), sn => {
+    JV.datos[a.id] = sn.exists() ? sn.data() : null; clearTimeout(JV.t); JV.t = setTimeout(jvPintar, 150);
+  }, () => {})));
+  JV.reloj = setInterval(jvPintar, 15000);
+  jvPintar();
+}
+function jvFilas() {
+  return alumnosCache.map(a => { const d = JV.datos[a.id]; return { a, d, e: jvEstado(d) }; })
+    .sort((x, y) => JV_ORDEN.indexOf(x.e) - JV_ORDEN.indexOf(y.e) || ((y.d && y.e !== 'sin' ? (y.d.bien || 0) : 0) - (x.d && x.e !== 'sin' ? (x.d.bien || 0) : 0)) || (x.a.nombre || '').localeCompare(y.a.nombre || '', 'es'));
+}
+function jvPintar() {
+  if (!JV.on) return;
+  const caja = document.getElementById('jv'), J = jvJuegos(), act = J.find(x => x.id === JV.juego) || J[0];
+  const filas = jvFilas(), cuenta = k => filas.filter(f => f.e === k).length;
+  const sel = document.activeElement && document.activeElement.id === 'jv-sel';
+  if (!caja.querySelector('#jv-grid') || !sel) caja.innerHTML = `
+    <div class="jv-cab"><label class="field-label" for="jv-sel">Juego</label>
+      <select id="jv-sel" class="jv-sel">${J.map(a => `<option value="${a.id}" ${a.id === JV.juego ? 'selected' : ''}>${escaparHTML(a.tema)} · ${a.icono} ${escaparHTML(a.nombre)}</option>`).join('')}</select>
+      <button type="button" class="chip-mon" id="jv-podio">📽️ Proyectar podio</button></div>
+    <p class="mon-resumen" id="jv-res"></p><div class="jv-grid" id="jv-grid"></div>
+    <p class="field-hint">Se actualiza solo. No cuenta para calificación: sirve para ver quién está participando. «Sin actividad» = lleva más de 3 minutos sin responder. Solo cuenta lo de hoy.</p>`;
+  document.getElementById('jv-res').innerHTML = `<b>${escaparHTML(act.nombre)}</b> · ${JV_ORDEN.filter(k => cuenta(k)).map(k => `${JV_EST[k][0]} ${cuenta(k)} ${JV_EST[k][1].toLowerCase()}`).join(' · ')}`;
+  document.getElementById('jv-grid').innerHTML = filas.map(({ a, d, e }) => {
+    const n = d && d.n, i = d ? d.i || 0 : 0, pct = n ? Math.round(100 * Math.min(i, n) / n) : 0;
+    let det = '';
+    if (e === 'jugando' || e === 'quieto') det = `${escaparHTML(d.nivel || '')} · pregunta ${Math.min(i + 1, n || i + 1)}${n ? ` de ${n}` : ''}<div class="jv-barra"><i style="width:${pct}%"></i></div>✅ ${d.bien || 0} · ❌ ${d.malos || 0}${d.reto ? ` · ⭐ ${d.pts || 0} pts` : ''}`;
+    else if (e === 'termino') det = `${escaparHTML(d.nivel || '')}: <b>${d.bien || 0} de ${d.n || 0}</b>${d.reto ? ` · ⭐ ${d.pts || 0} pts` : ''}<br><small>${typeof d.rondas === 'number' ? d.rondas : 1} ronda${(typeof d.rondas === 'number' ? d.rondas : 1) === 1 ? '' : 's'}${d['mejor_' + d.nivelId] ? ` · su mejor: ${escaparHTML(d['mejor_' + d.nivelId])}` : ''}</small>`;
+    else if (e === 'sin' && d && d.ultimoMs) det = `<small>Última vez: ${new Date(d.ultimoMs).toLocaleDateString('es-MX', { day: 'numeric', month: 'short' })}</small>`;
+    return `<div class="jv-card jv-${e}"><div class="jv-nom">${escaparHTML(a.nombre)}</div><div class="jv-est">${JV_EST[e][0]} ${JV_EST[e][1]}${e !== 'sin' && d ? ` <small>· ${jvHace(d.ultimoMs)}</small>` : ''}</div>${det ? `<div class="jv-det">${det}</div>` : ''}</div>`;
+  }).join('') || '<p class="empty-inline">Este grupo no tiene alumnos.</p>';
+  const s = document.getElementById('jv-sel'); if (!s.dataset.ok) { s.dataset.ok = '1'; s.addEventListener('change', () => { JV.juego = s.value; jvSuscribir(); }); }
+  const p = document.getElementById('jv-podio'); if (!p.dataset.ok) { p.dataset.ok = '1'; p.addEventListener('click', jvPodio); }
+}
+function jvPodio() {
+  const J = jvJuegos(), act = J.find(x => x.id === JV.juego) || J[0];
+  const fin = jvFilas().filter(f => f.e === 'termino' && f.d.n);
+  const marca = d => d.reto ? d.pts || 0 : (d.bien || 0) / d.n;
+  const top = [...fin].sort((x, y) => marca(y.d) - marca(x.d) || (y.d.bien || 0) - (x.d.bien || 0)).slice(0, 5);
+  const jugaron = jvFilas().filter(f => f.e !== 'sin').length;
+  const ov = document.getElementById('jv-proy');
+  ov.innerHTML = `<button type="button" class="btn" id="jv-cerrar" style="position:absolute;top:18px;right:18px">Cerrar ✕</button>
+    <p class="jv-p-kicker">${escaparHTML(act.tema)} · Juego de práctica</p><h2 class="jv-p-tit">${act.icono} ${escaparHTML(act.nombre)}</h2>
+    ${top.length ? `<ol class="jv-podio">${top.map((f, k) => `<li><span class="jv-med">${['🥇', '🥈', '🥉', '4.º', '5.º'][k]}</span><b>${escaparHTML(f.a.nombre)}</b><em>${f.d.reto ? `${f.d.pts || 0} pts` : `${f.d.bien} de ${f.d.n}`}</em></li>`).join('')}</ol>` : '<p class="jv-p-vacio">Todavía nadie termina una ronda.</p>'}
+    <p class="jv-p-pie">🎮 ${jugaron} ${jugaron === 1 ? 'alumno jugó' : 'alumnos jugaron'} hoy · ✅ ${fin.length} terminaron al menos una ronda</p>`;
+  ov.hidden = false;
+  document.getElementById('jv-cerrar').addEventListener('click', () => { ov.hidden = true; });
+}
+document.addEventListener('keydown', e => { const ov = document.getElementById('jv-proy'); if (e.key === 'Escape' && ov && !ov.hidden) ov.hidden = true; });

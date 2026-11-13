@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css?v=2026102305">
-<link rel="stylesheet" href="css/admin.css?v=2026111103">
+<link rel="stylesheet" href="css/admin.css?v=2026111301">
 <link rel="stylesheet" href="css/progreso.css?v=2026102305">
 <link rel="stylesheet" href="css/index.css?v=2026102305">
 <link rel="stylesheet" href="css/extra.css?v=2026111103">
@@ -260,6 +260,7 @@
       <button type="button" class="chip-mon" data-a="recado" aria-pressed="false">🫙 Recado campechano</button>
       <button type="button" class="chip-mon" data-a="cuadro" data-cu="cortes" aria-pressed="false">👑 Versalles–Topkapi</button>
       <button type="button" class="chip-mon" data-a="cuadro" data-cu="menu" aria-pressed="false">📜 Menú à la carte</button>
+      <button type="button" class="chip-mon" id="mon-juegos" aria-pressed="false">🎮 Juegos de práctica</button>
       <button type="button" class="chip-mon mon-clave" id="mon-clave" hidden aria-pressed="false">🔑 Liberar clave</button>
       <button type="button" class="chip-mon mon-clave" id="mon-votar" hidden aria-pressed="false">🗳️ Abrir votación</button>
       <button type="button" class="chip-mon" id="mon-resultados" hidden>📽️ Resultados</button>
@@ -280,6 +281,7 @@
     <p class="mon-resumen" id="mon-resumen"></p>
     <div class="mon-grid" id="mon-grid"></div>
     <p class="field-hint" id="mon-sin"></p>
+    <div id="jv" class="jv" hidden></div>
   </div>
 
   <div id="tab-asistencia" class="tab-panel">
@@ -413,6 +415,7 @@
   <div class="qr-cab"><div><b>¿Qué platillo representa mejor las siete influencias?</b><span id="voto-total"></span></div><button type="button" class="btn" id="voto-cerrar">Cerrar ✕</button></div>
   <div class="voto-barras" id="voto-barras"></div>
 </div>
+<div id="jv-proy" class="qr-proyeccion jv-proy" hidden role="dialog" aria-label="Podio del juego"></div>
 <div id="expo-proy" class="qr-proyeccion expo-proy" hidden>
   <div class="qr-cab"><div><b id="expo-tit">Las especias de Asia</b><span id="expo-sub"></span></div><div class="expo-nav"><button type="button" class="btn" id="expo-ant" aria-label="Equipo anterior">←</button><button type="button" class="btn" id="expo-sig" aria-label="Equipo siguiente">→</button><button type="button" class="btn" id="expo-cerrar">Cerrar ✕</button></div></div>
   <div id="expo-cuerpo"></div>
@@ -422,6 +425,6 @@
   <div class="qr-grid" id="qr-grid"></div>
 </div>
 <script src="js/vendor/qrcode.js"></script>
-<script type="module" src="js/admin.js?v=2026111202"></script>
+<script type="module" src="js/admin.js?v=2026111301"></script>
 </body>
 </html>

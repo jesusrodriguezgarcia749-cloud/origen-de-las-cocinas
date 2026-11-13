@@ -7,7 +7,7 @@
 // · ¿Aportó o llegó?: práctica sin calificación.
 // · Mi atlas de cada continente vive en el Atlas (atlas.html#miatlas=continente).
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, FieldPath, collection, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, FieldPath, collection, getDocs, query, orderBy, serverTimestamp, increment } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
 import { CUADRO_MM, CUADROS, PLATILLOS, TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, sugerirCuadro, MIN_PALABRAS_CELDA, INFLUENCIAS, sugerirInfluencias, ESPECIAS, subregionDe, sugerirEspecias, FUSION, sugerirFusion } from "./clase-datos.js?v=2026111703";
 import { DocITES } from "./docx-ites.js?v=2026111202";
@@ -37,6 +37,14 @@ const barajar = a => { const c = [...a]; for (let i = c.length - 1; i > 0; i--) 
 const punto = t => /\.$/.test(t) ? t : t + '.';
 const fechaHora = ts => { const d = ts && ts.toDate ? ts.toDate() : typeof ts === 'number' ? new Date(ts) : null; return d ? d.toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : ''; };
 let sesion = null; try { sesion = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null'); } catch { sesion = null; }
+// Juegos de práctica en vivo: el maestro ve en su Monitor quién entró, en qué pregunta va y cómo terminó.
+// No cuenta para calificación. Se guarda en grupos/{g}/alumnos/{a}/atlas/tarea-juego-{id}.
+let JUEGO = null;
+function reportarJuego(d) {
+  if (!sesion || !JUEGO) return;
+  setDoc(doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'atlas', 'tarea-juego-' + JUEGO),
+    { ...d, juego: JUEGO, nombre: sesion.nombre, pinVerificado: sesion.pin, ultimoMs: Date.now(), ultimo: serverTimestamp() }, { merge: true }).catch(() => {});
+}
 let EQS = null, GDATA = {}, ESTADO = {}, unsubGrupo = null, detener = null;
 // Una tarea está cerrada si el docente la cerró o si ya pasó su fecha límite (grupos/{g}.tareasDig.{id}.cierre).
 const vencida = id => { const c = ESTADO[id] && ESTADO[id].cierre; return !!c && Date.now() > Date.parse(c); };
@@ -214,6 +222,7 @@ function ruta() {
   const c = $('#cl-actividad');
   c.innerHTML = `<a class="cl-volver" href="#">← Todas las tareas</a><p class="cl-fecha">Tema ${esc(a.tema)} · ${esc(a.titulo)} · ${esc(a.fechaTexto)}</p><h2 class="cl-h2">${a.icono} ${esc(a.nombre)}</h2>
     ${califica(a) ? '<p class="cl-vale">📌 Cuenta como una tarea del Parcial 2.</p>' : '<p class="cl-vale cl-vale-p">🎯 Práctica para repasar: no lleva calificación.</p>'}<div id="cl-cuerpo"></div>`;
+  JUEGO = a.tipo === 'practica' ? a.id : null; if (JUEGO) reportarJuego({ estado: 'menu', entroMs: Date.now() });
   (a.tipo === 'practica' ? { aporto: actAporto, campeche: actCampeche, 'que-influencia': actQueInfluencia, 'platillos-america': actPlatillosAmerica, 'que-asia': actQueAsia, 'que-europa': actQueEuropa, 'vuelta-mundo': actVueltaMundo, 'arma-hangi': c => actArmaHangi(c, sesion && sesion.nombre), 'que-funcion': actQueFuncion, 'que-corte': actQueCorte }[a.id] : { cuadro: c => actCuadro(c, a), desarma: actDesarma, influencias: actInfluencias, especias: actEspecias, recado: actRecado, fusion: actFusion, ficha: c => actFicha(c, a) }[a.tipo])($('#cl-cuerpo'));
   window.scrollTo({ top: 0 });
 }
@@ -400,7 +409,8 @@ function actAporto(cont) {
     $$('.ap-nivel', cont).forEach(b => b.addEventListener('click', () => { N = NIVELES.find(x => x.id === b.dataset.n); nueva(); }));
     $('#ap-estudiar').addEventListener('click', estudiar);
   };
-  const nueva = () => { items = elegir(N); i = 0; bien = 0; contB = 0; contT = 0; pts = 0; racha = 0; mejorRacha = 0; fallos = []; pregunta(); };
+  const nueva = () => { items = elegir(N); i = 0; bien = 0; contB = 0; contT = 0; pts = 0; racha = 0; mejorRacha = 0; fallos = [];
+    reportarJuego({ estado: 'jugando', nivel: N.n, nivelId: N.id, i: 0, n: items.length, bien: 0, malos: 0, pts: 0, reto }); pregunta(); };
   const marcador = () => `<div class="ap-marcador"><span>${N.ico} ${N.n} · ${i + 1} de ${items.length}</span><span>✅ ${bien}${N.id === 'experto' ? ` · 🌍 ${contB}/${contT}` : ''}</span>${reto ? `<span>⭐ ${pts} pts · 🔥 racha ${racha}</span>` : ''}</div>`;
   const pregunta = () => {
     parar();
@@ -419,6 +429,7 @@ function actAporto(cont) {
     const x = items[i], ok = r === x.r;
     $$('.ap-bot', cont).forEach(b => { b.disabled = true; if (b.dataset.r === x.r) b.classList.add('ok'); else if (b.dataset.r === r) b.classList.add('mal'); });
     if (ok) { bien++; racha++; mejorRacha = Math.max(mejorRacha, racha); if (reto) pts += 100 + Math.round(10 * q); } else { racha = 0; fallos.push(x); }
+    reportarJuego({ estado: 'jugando', i: i + 1, bien, malos: i + 1 - bien, pts });
     const tit = r === null ? `⏱ Se acabó el tiempo: ${esc(x.n)} ${x.r === 'a' ? 'ya estaba en México' : 'llegó desde 1521'}.` : ok ? '¡Correcto!' : `No: ${esc(x.n)} ${x.r === 'a' ? 'ya estaba en México antes de 1521' : 'llegó a México desde 1521'}.`;
     // experto: si llegó y acertó, ¿de qué continente es originario?
     if (ok && x.r === 'l' && N.id === 'experto') {
@@ -442,6 +453,7 @@ function actAporto(cont) {
     parar();
     const marca = reto ? pts : bien, clave = 'clase_aporto_mejor_' + N.id, previa = Number((lsGet(clave) || '0').split(' ')[0]) || 0, record = marca > previa;
     if (record) lsSet(clave, reto ? `${pts} pts` : `${bien}/${items.length}`);
+    reportarJuego({ estado: 'termino', i: items.length, n: items.length, bien, malos: items.length - bien, pts, reto, nivel: N.n, nivelId: N.id, rondas: increment(1), [`mejor_${N.id}`]: lsGet(clave) || '' });
     cont.innerHTML = `<div class="resumen"><h3>${N.ico} ${N.n}: ${bien} de ${items.length}</h3>
       <p>${N.id === 'experto' ? `Continentes acertados: ${contB} de ${contT}. ` : ''}${reto ? `⭐ <b>${pts} puntos</b> · mejor racha: ${mejorRacha}. ` : ''}${record ? '🏅 ¡Nueva mejor marca!' : ''}</p>
       <p>${!fallos.length ? '¡Ronda perfecta! Ya dominas este nivel.' : 'Estudia los que fallaste:'}</p>
@@ -451,7 +463,7 @@ function actAporto(cont) {
   };
   // ---- tabla para estudiar, con filtros y buscador
   const estudiar = () => {
-    parar();
+    parar(); reportarJuego({ estado: 'estudiando' });
     const F = [['todos', 'Todos'], ['a', '🇲🇽 Ya estaban'], ...CONTINENTES.map(([k, n]) => ['c:' + k, `⛵ De ${n}`])];
     let f = 'todos', qq = '';
     cont.innerHTML = `<button type="button" class="ma-link" id="ap-volver">← Volver al juego</button>
@@ -654,8 +666,10 @@ function juegoPreguntas(cont, C) {
     $('#ap-reto').addEventListener('change', e => { reto = e.target.checked; lsSet('clase_' + C.clave + '_reto', reto ? '1' : '0'); });
     $$('.ap-nivel', cont).forEach(b => b.addEventListener('click', () => { N = C.niveles.find(x => x.id === b.dataset.n); nueva(); }));
     $('#ap-estudiar').addEventListener('click', estudiar);
+    reportarJuego({ estado: 'menu' });
   };
-  const nueva = () => { items = barajar(C.items.filter(N.filtro)).slice(0, N.preg); i = 0; bien = 0; pts = 0; racha = 0; mejorRacha = 0; fallos = []; malos = 0; pregunta(); };
+  const nueva = () => { items = barajar(C.items.filter(N.filtro)).slice(0, N.preg); i = 0; bien = 0; pts = 0; racha = 0; mejorRacha = 0; fallos = []; malos = 0;
+    reportarJuego({ estado: 'jugando', nivel: N.n, nivelId: N.id, i: 0, n: C.termina ? 0 : items.length, bien: 0, malos: 0, pts: 0, reto }); pregunta(); };
   const marcador = () => `${C.cabecera ? C.cabecera(bien, malos) : ''}<div class="ap-marcador"><span>${N.ico} ${N.n} · ${C.termina ? `pregunta ${i + 1}` : `${Math.min(i + 1, items.length)} de ${items.length}`}</span><span>✅ ${bien}</span>${reto ? `<span>⭐ ${pts} pts · 🔥 racha ${racha}</span>` : ''}</div>`;
   const terminado = () => i >= items.length || (C.termina && C.termina(bien, malos));
   const pregunta = () => {
@@ -674,6 +688,7 @@ function juegoPreguntas(cont, C) {
     const x = items[i], ok = v !== null && P.correctas.includes(v);
     $$('.jp-op', cont).forEach(b => { b.disabled = true; if (P.correctas.includes(b.dataset.v)) b.classList.add('ok'); else if (b.dataset.v === v) b.classList.add('mal'); });
     if (ok) { bien++; racha++; mejorRacha = Math.max(mejorRacha, racha); if (reto) pts += 100 + Math.round(10 * q); } else { malos++; racha = 0; fallos.push(x); }
+    reportarJuego({ estado: 'jugando', i: i + 1, bien, malos, pts });
     const tit = v === null ? '⏱ Se acabó el tiempo.' : ok ? (C.bien ? C.bien(x, bien) : '¡Correcto!') : (C.mal ? C.mal(x, malos) : 'No es esa.');
     $('#ap-fb').innerHTML = `<div class="aviso ${ok ? 'ok' : 'mal'}"><strong>${tit}</strong>${C.explicar(x, ok)}</div><div id="jp-extra"></div><button class="btn-at" id="ap-sig" type="button">${terminado() || i + 1 >= items.length ? 'Ver resultado' : 'Siguiente →'}</button>`;
     if (C.despues) C.despues(x, v, $('#jp-extra'));
@@ -686,6 +701,7 @@ function juegoPreguntas(cont, C) {
     if (C.escenaFinal) { const e = C.escenaFinal(bien, malos); if (e) { cont.innerHTML = ''; await e; } }
     const marca = reto ? pts : bien, clave = `clase_${C.clave}_mejor_${N.id}`, previa = Number((lsGet(clave) || '0').split(/[ /]/)[0]) || 0, record = marca > previa;
     if (record) lsSet(clave, reto ? `${pts} pts` : `${bien}/${Math.min(i, items.length)}`);
+    reportarJuego({ estado: 'termino', i: Math.min(i, items.length), n: Math.min(i, items.length), bien, malos, pts, reto, nivel: N.n, nivelId: N.id, rondas: increment(1), [`mejor_${N.id}`]: lsGet(clave) || '' });
     cont.innerHTML = `<div class="resumen">${C.final ? C.final(bien, malos) : ''}<h3>${N.ico} ${N.n}: ${bien} acierto${bien === 1 ? '' : 's'} de ${Math.min(i, items.length)}</h3>
       <p>${reto ? `⭐ <b>${pts} puntos</b> · mejor racha: ${mejorRacha}. ` : ''}${record ? '🏅 ¡Nueva mejor marca!' : ''}</p>
       <p>${!fallos.length ? '¡Sin errores! Ya dominas este nivel.' : 'Estudia los que fallaste:'}</p>
@@ -694,7 +710,7 @@ function juegoPreguntas(cont, C) {
     $('#ap-otra').addEventListener('click', nueva); const bn = $('#ap-niv'); if (bn) bn.addEventListener('click', inicio); $('#ap-est').addEventListener('click', estudiar);
   };
   const estudiar = () => {
-    parar();
+    parar(); reportarJuego({ estado: 'estudiando' });
     const E = C.estudiar; let f = E.filtros[0][0], qq = '';
     cont.innerHTML = `<button type="button" class="ma-link" id="ap-volver">← Volver al juego</button>
       <p class="atlas-ayuda">${E.intro}</p>
