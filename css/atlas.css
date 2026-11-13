@@ -270,6 +270,7 @@ html[data-theme="dark"] .ma-svg .ma-de-sel, html[data-theme="dark"] .ma-svg .ma-
 .ma-ficha-pie{display:flex; justify-content:space-between; align-items:center; margin-top:10px;}
 .ma-cuenta{font-size:.82rem; color:var(--ink-soft);}
 .ma-borrar{background:none; border:1px solid #A63D2F; color:#A63D2F; border-radius:999px; padding:5px 12px; font:600 .8rem var(--font-body); cursor:pointer;}
+#ma-svg{aspect-ratio:16/10;}
 @media (max-width:700px){ #ma-svg{aspect-ratio:1/1;} .ma-barra #ma-word{margin-left:0;} }
 .ma-equipo{display:grid; gap:4px; font:700 .86rem var(--font-body); margin:0 0 12px;}
 .ma-equipo small{font-weight:500; color:var(--ink-soft);}
