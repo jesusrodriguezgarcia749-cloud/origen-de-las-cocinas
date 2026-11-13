@@ -936,7 +936,8 @@ async function iniciarMonitor() {
       document.getElementById('mon-clave').hidden = MON.act !== 'cuadro'; document.getElementById('mon-votar').hidden = MON.act !== 'influencias'; document.getElementById('mon-resultados').hidden = MON.act !== 'influencias'; document.getElementById('mon-conts').hidden = MON.act !== 'atlas'; document.getElementById('mon-ver').querySelectorAll('[data-v]').forEach(x => { x.hidden = MON.act !== 'atlas'; });
       Object.keys(MON.datos).filter(k => k.startsWith('e:')).forEach(k => delete MON.datos[k]); suscribirEquiposCont(); pintarMonitor(true);
     }));
-    document.getElementById('mon-juegos').addEventListener('click', jvEntrar);
+    document.getElementById('mon-juegos').addEventListener('click', () => jvEntrar('juegos'));
+    document.getElementById('mon-tareas').addEventListener('click', () => jvEntrar('tareas'));
     document.querySelectorAll('#mon-act [data-a]').forEach(b => b.addEventListener('click', jvSalir));
     document.getElementById('mon-votar').addEventListener('click', async () => { const ab = MON.votacion === 'abierta'; if (ab && !confirm('¿Cerrar la votación? Los alumnos ya no podrán votar ni cambiar su voto.')) return; await setDoc(doc(db, 'grupos', grupoActivo), { votaciones: { [INFLUENCIAS.votacion]: ab ? 'cerrada' : 'abierta' } }, { merge: true }); });
     document.getElementById('mon-resultados').addEventListener('click', abrirResultados);
@@ -2589,7 +2590,7 @@ async function publicarAviso() {
 
 // ---- Juegos de práctica en vivo: quién entró, en qué pregunta va y cómo terminó (no califica)
 // Cada alumno escribe grupos/{g}/alumnos/{a}/atlas/tarea-juego-{id} al entrar, al responder y al terminar.
-const JV = { on: false, juego: null, datos: {}, subs: [], reloj: null, t: null };
+const JV = { on: false, modo: 'juegos', juego: null, tarea: null, datos: {}, subs: [], reloj: null, t: null };
 const jvJuegos = () => TEMAS_TAREAS.flatMap(t => t.acts.filter(a => a.tipo === 'practica').map(a => ({ ...a, tema: t.tema, fecha: t.fecha })));
 function jvDeHoy() { const L = jvJuegos(), hoy = new Date().toLocaleDateString('en-CA'); return ([...L].reverse().find(a => a.fecha && a.fecha <= hoy) || L[0]).id; }
 const jvEsHoy = ms => ms && new Date(ms).toDateString() === new Date().toDateString();
@@ -2601,10 +2602,12 @@ function jvEstado(d) {
 }
 const JV_EST = { jugando: ['🟢', 'Jugando'], termino: ['✅', 'Terminó'], estudiando: ['📚', 'Estudiando'], menu: ['🕹️', 'Entró, eligiendo nivel'], quieto: ['⏸️', 'Sin actividad'], sin: ['⚪', 'No ha entrado hoy'] };
 const JV_ORDEN = ['jugando', 'termino', 'estudiando', 'menu', 'quieto', 'sin'];
-function jvEntrar() {
-  JV.on = true; if (!JV.juego) JV.juego = jvDeHoy();
+function jvEntrar(modo) {
+  JV.on = true; JV.modo = modo === 'tareas' ? 'tareas' : 'juegos';
+  if (!JV.juego) JV.juego = jvDeHoy(); if (!JV.tarea) JV.tarea = tiDeHoy();
   document.querySelectorAll('#mon-act [data-a]').forEach(x => x.setAttribute('aria-pressed', 'false'));
-  document.getElementById('mon-juegos').setAttribute('aria-pressed', 'true');
+  document.getElementById('mon-juegos').setAttribute('aria-pressed', String(JV.modo === 'juegos'));
+  document.getElementById('mon-tareas').setAttribute('aria-pressed', String(JV.modo === 'tareas'));
   ['mon-clave', 'mon-votar', 'mon-resultados', 'mon-expo', 'mon-r1', 'mon-r2', 'mon-qr'].forEach(id => { const e = document.getElementById(id); if (e) e.hidden = true; });
   document.querySelector('#tab-monitor .mon-filtros').hidden = true;
   ['mon-resumen', 'mon-grid', 'mon-sin'].forEach(id => { document.getElementById(id).hidden = true; });
@@ -2613,7 +2616,7 @@ function jvEntrar() {
 }
 function jvSalir() {
   if (!JV.on) return; JV.on = false; jvDetener();
-  document.getElementById('mon-juegos').setAttribute('aria-pressed', 'false');
+  document.getElementById('mon-juegos').setAttribute('aria-pressed', 'false'); document.getElementById('mon-tareas').setAttribute('aria-pressed', 'false');
   document.getElementById('mon-qr').hidden = false;
   document.querySelector('#tab-monitor .mon-filtros').hidden = false;
   ['mon-resumen', 'mon-grid', 'mon-sin'].forEach(id => { document.getElementById(id).hidden = false; });
@@ -2623,19 +2626,20 @@ function jvDetener() { JV.subs.forEach(u => u()); JV.subs = []; clearInterval(JV
 function jvSuscribir() {
   jvDetener(); JV.datos = {};
   if (!grupoActivo) { document.getElementById('jv').innerHTML = '<p class="empty-inline">Elige un grupo primero.</p>'; return; }
-  const g = grupoActivo, id = JV.juego;
-  alumnosCache.forEach(a => JV.subs.push(onSnapshot(doc(db, 'grupos', g, 'alumnos', a.id, 'atlas', 'tarea-juego-' + id), sn => {
-    JV.datos[a.id] = sn.exists() ? sn.data() : null; clearTimeout(JV.t); JV.t = setTimeout(jvPintar, 150);
+  const g = grupoActivo, docId = JV.modo === 'tareas' ? tiInfo(JV.tarea).ind : 'tarea-juego-' + JV.juego, pintar = JV.modo === 'tareas' ? tiPintar : jvPintar;
+  document.getElementById('jv').innerHTML = '';
+  alumnosCache.forEach(a => JV.subs.push(onSnapshot(doc(db, 'grupos', g, 'alumnos', a.id, 'atlas', docId), sn => {
+    JV.datos[a.id] = sn.exists() ? sn.data() : null; clearTimeout(JV.t); JV.t = setTimeout(pintar, 150);
   }, () => {})));
-  JV.reloj = setInterval(jvPintar, 15000);
-  jvPintar();
+  JV.reloj = setInterval(pintar, 15000);
+  pintar();
 }
 function jvFilas() {
   return alumnosCache.map(a => { const d = JV.datos[a.id]; return { a, d, e: jvEstado(d) }; })
     .sort((x, y) => JV_ORDEN.indexOf(x.e) - JV_ORDEN.indexOf(y.e) || ((y.d && y.e !== 'sin' ? (y.d.bien || 0) : 0) - (x.d && x.e !== 'sin' ? (x.d.bien || 0) : 0)) || (x.a.nombre || '').localeCompare(y.a.nombre || '', 'es'));
 }
 function jvPintar() {
-  if (!JV.on) return;
+  if (!JV.on || JV.modo !== 'juegos') return;
   const caja = document.getElementById('jv'), J = jvJuegos(), act = J.find(x => x.id === JV.juego) || J[0];
   const filas = jvFilas(), cuenta = k => filas.filter(f => f.e === k).length;
   const sel = document.activeElement && document.activeElement.id === 'jv-sel';
@@ -2663,7 +2667,7 @@ function jvPodio() {
   const marca = d => d.reto ? d.pts || 0 : (d.bien || 0) / d.n;
   const top = [...fin].sort((x, y) => marca(y.d) - marca(x.d) || (y.d.bien || 0) - (x.d.bien || 0)).slice(0, 5);
   const jugaron = jvFilas().filter(f => f.e !== 'sin').length;
-  const ov = document.getElementById('jv-proy');
+  const ov = document.getElementById('jv-proy'); ov.classList.remove('jv-leer');
   ov.innerHTML = `<button type="button" class="btn" id="jv-cerrar" style="position:absolute;top:18px;right:18px">Cerrar ✕</button>
     <p class="jv-p-kicker">${escaparHTML(act.tema)} · Juego de práctica</p><h2 class="jv-p-tit">${act.icono} ${escaparHTML(act.nombre)}</h2>
     ${top.length ? `<ol class="jv-podio">${top.map((f, k) => `<li><span class="jv-med">${['🥇', '🥈', '🥉', '4.º', '5.º'][k]}</span><b>${escaparHTML(f.a.nombre)}</b><em>${f.d.reto ? `${f.d.pts || 0} pts` : `${f.d.bien} de ${f.d.n}`}</em></li>`).join('')}</ol>` : '<p class="jv-p-vacio">Todavía nadie termina una ronda.</p>'}
@@ -2672,3 +2676,45 @@ function jvPodio() {
   document.getElementById('jv-cerrar').addEventListener('click', () => { ov.hidden = true; });
 }
 document.addEventListener('keydown', e => { const ov = document.getElementById('jv-proy'); if (e.key === 'Escape' && ov && !ov.hidden) ov.hidden = true; });
+
+// ---- Tareas individuales en vivo (fichas y fusión): quién está escribiendo, cuánto lleva y quién ya entregó
+const tiTareas = () => TEMAS_TAREAS.flatMap(t => t.acts.filter(a => a.tipo === 'ficha' || a.tipo === 'fusion').map(a => ({ ...a, tema: t.tema, fecha: t.fecha })));
+function tiDeHoy() { const L = tiTareas(), hoy = new Date().toLocaleDateString('en-CA'); return ([...L].reverse().find(a => a.fecha && a.fecha <= hoy) || L[0]).id; }
+function tiInfo(id) { const a = TAREAS_DIG[id] || tiTareas().find(x => x.id === id), F = a.tipo === 'fusion' ? FUSION : FICHAS[id]; return { a, F, ind: F.ind }; }
+const tiPal = t => String(t || '').trim().split(/\s+/).filter(Boolean).length;
+const tiMs = v => v && v.toMillis ? v.toMillis() : typeof v === 'number' ? v : 0;
+function tiEstado(d, F) {
+  if (!d || !Object.values(d.campos || {}).some(x => String(x || '').trim())) return 'sin';
+  if (d.entregado) return 'entregada';
+  return Date.now() - tiMs(d.actualizado) < 180000 ? 'escribiendo' : 'pausa';
+}
+const TI_EST = { escribiendo: ['🟢', 'Escribiendo'], pausa: ['⏸️', 'Empezó, sin entregar'], entregada: ['✅', 'Entregada'], sin: ['⚪', 'Sin empezar'] };
+const TI_ORDEN = ['escribiendo', 'pausa', 'entregada', 'sin'];
+function tiPintar() {
+  if (!JV.on || JV.modo !== 'tareas') return;
+  const caja = document.getElementById('jv'), L = tiTareas(), { a: act, F } = tiInfo(JV.tarea);
+  const filas = alumnosCache.map(a => { const d = JV.datos[a.id], c = (d && d.campos) || {}; const listos = F.campos.filter(([k, , , min]) => k === 'fuentes' ? String(c[k] || '').trim() : tiPal(c[k]) >= min).length; return { a, d, e: tiEstado(d, F), listos, pal: F.campos.reduce((s, [k]) => s + (k === 'fuentes' ? 0 : tiPal(c[k])), 0) }; })
+    .sort((x, y) => TI_ORDEN.indexOf(x.e) - TI_ORDEN.indexOf(y.e) || y.listos - x.listos || (x.a.nombre || '').localeCompare(y.a.nombre || '', 'es'));
+  const cuenta = k => filas.filter(f => f.e === k).length, n = F.campos.length;
+  const sel = document.activeElement && document.activeElement.id === 'ti-sel';
+  if (!caja.querySelector('#ti-grid') || !sel) caja.innerHTML = `
+    <div class="jv-cab"><label class="field-label" for="ti-sel">Tarea</label>
+      <select id="ti-sel" class="jv-sel">${L.map(a => `<option value="${a.id}" ${a.id === JV.tarea ? 'selected' : ''}>${escaparHTML(a.tema)} · ${a.icono} ${escaparHTML(a.nombre)}</option>`).join('')}</select></div>
+    <p class="mon-resumen" id="ti-res"></p><div class="jv-grid" id="ti-grid"></div>
+    <p class="field-hint">Se actualiza solo mientras escriben. «Espacios listos» = los que ya llegan al mínimo de palabras. Toca una tarjeta para leer lo que lleva.</p>`;
+  document.getElementById('ti-res').innerHTML = `<b>${escaparHTML(act.nombre)}</b> · ${TI_ORDEN.filter(k => cuenta(k)).map(k => `${TI_EST[k][0]} ${cuenta(k)} ${TI_EST[k][1].toLowerCase()}`).join(' · ')}`;
+  document.getElementById('ti-grid').innerHTML = filas.map(({ a, d, e, listos, pal }) => `<button type="button" class="jv-card jv-${{ escribiendo: 'jugando', pausa: 'quieto', entregada: 'termino', sin: 'sin' }[e]}" data-ti="${a.id}" style="text-align:left;font:inherit;color:inherit;cursor:pointer">
+      <div class="jv-nom">${escaparHTML(a.nombre)}</div><div class="jv-est">${TI_EST[e][0]} ${TI_EST[e][1]}${e !== 'sin' && d && tiMs(d.actualizado) ? ` <small>· ${jvHace(tiMs(d.actualizado))}</small>` : ''}</div>
+      ${e !== 'sin' ? `<div class="jv-det">Espacios listos: <b>${listos} de ${n}</b><div class="jv-barra"><i style="width:${Math.round(100 * listos / n)}%"></i></div><small>${pal} palabras</small></div>` : ''}</button>`).join('') || '<p class="empty-inline">Este grupo no tiene alumnos.</p>';
+  document.querySelectorAll('#ti-grid [data-ti]').forEach(b => b.addEventListener('click', () => tiLeer(b.dataset.ti)));
+  const s = document.getElementById('ti-sel'); if (!s.dataset.ok) { s.dataset.ok = '1'; s.addEventListener('change', () => { JV.tarea = s.value; jvSuscribir(); }); }
+}
+function tiLeer(id) {
+  const a = alumnosCache.find(x => x.id === id), d = JV.datos[id] || {}, c = d.campos || {}, { a: act, F } = tiInfo(JV.tarea);
+  const ov = document.getElementById('jv-proy');
+  ov.innerHTML = `<div style="max-width:820px;width:100%;text-align:left;margin:auto"><button type="button" class="btn" id="jv-cerrar" style="float:right">Cerrar ✕</button>
+    <p class="jv-p-kicker">${escaparHTML(act.nombre)}</p><h2 style="font-family:Fraunces,Georgia,serif;margin:.2rem 0 1rem">${escaparHTML(a ? a.nombre : '')}</h2>
+    ${F.campos.map(([k, t, , min]) => { const v = String(c[k] || '').trim(), p = tiPal(v); return `<h3 style="margin:1rem 0 .3rem">${t} <small style="font-weight:400;color:#6B675F">· ${p} palabra${p === 1 ? '' : 's'}${k !== 'fuentes' ? ` de ${min} mínimo` : ''}</small></h3><p style="white-space:pre-wrap;margin:0;line-height:1.5">${v ? escaparHTML(v) : '<i style="color:#9A948A">(vacío)</i>'}</p>`; }).join('')}</div>`;
+  ov.classList.add('jv-leer'); ov.hidden = false;
+  document.getElementById('jv-cerrar').addEventListener('click', () => { ov.hidden = true; });
+}

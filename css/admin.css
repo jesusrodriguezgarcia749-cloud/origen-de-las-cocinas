@@ -827,3 +827,4 @@ body.mon-completo .mon-grid { grid-template-columns: repeat(auto-fill, minmax(21
 .jv-podio li:first-child { font-size: clamp(1.5rem, 3.2vw, 2.4rem); border-color: #C9A04A; background: #FFF8E6; }
 .jv-med { font-size: 1.5em; } .jv-podio b { text-align: left; } .jv-podio em { font-style: normal; font-weight: 700; color: #1F6F8B; }
 .jv-p-pie, .jv-p-vacio { font-size: 1.2rem; color: #5C5A55; }
+.jv-proy.jv-leer:not([hidden]) { display: block; }
