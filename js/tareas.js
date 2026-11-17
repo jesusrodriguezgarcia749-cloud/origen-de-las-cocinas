@@ -228,6 +228,11 @@ function ruta() {
   const c = $('#cl-actividad');
   c.innerHTML = `<a class="cl-volver" href="#">← Todas las tareas</a><p class="cl-fecha">Tema ${esc(a.tema)} · ${esc(a.titulo)} · ${esc(a.fechaTexto)}</p><h2 class="cl-h2">${a.icono} ${esc(a.nombre)}</h2>
     ${califica(a) ? '<p class="cl-vale">📌 Cuenta como una tarea del Parcial 2.</p>' : '<p class="cl-vale cl-vale-p">🎯 Práctica para repasar: no lleva calificación.</p>'}<div id="cl-cuerpo"></div>`;
+  if (a.tipo === 'practica' && !sesion) {   // para que el maestro lo vea en el Monitor y salga en el ranking
+    JUEGO = null; $('#cl-acceso').innerHTML = '';
+    formAcceso($('#cl-cuerpo'), () => ruta(), '🎮 Entra con tu nombre y PIN para jugar: así tu maestro ve tu avance y sales en el ranking');
+    window.scrollTo({ top: 0 }); return;
+  }
   JUEGO = a.tipo === 'practica' ? a.id : null; if (JUEGO) reportarJuego({ estado: 'menu', entroMs: Date.now() });
   (a.tipo === 'practica' ? { aporto: actAporto, campeche: actCampeche, 'que-influencia': actQueInfluencia, 'platillos-america': actPlatillosAmerica, 'que-asia': actQueAsia, 'que-europa': actQueEuropa, 'vuelta-mundo': actVueltaMundo, 'arma-hangi': c => actArmaHangi(c, sesion && sesion.nombre), 'que-funcion': actQueFuncion, 'que-corte': actQueCorte }[a.id] : { cuadro: c => actCuadro(c, a), desarma: actDesarma, influencias: actInfluencias, especias: actEspecias, recado: actRecado, fusion: actFusion, ficha: c => actFicha(c, a) }[a.tipo])($('#cl-cuerpo'));
   window.scrollTo({ top: 0 });
