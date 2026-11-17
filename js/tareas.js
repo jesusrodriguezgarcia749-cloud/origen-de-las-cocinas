@@ -45,6 +45,12 @@ function reportarJuego(d) {
   setDoc(doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'atlas', 'tarea-juego-' + JUEGO),
     { ...d, juego: JUEGO, nombre: sesion.nombre, pinVerificado: sesion.pin, ultimoMs: Date.now(), ultimo: serverTimestamp() }, { merge: true }).catch(() => {});
 }
+// La mejor ronda del día (para el ranking en vivo): 100 puntos por acierto, o los puntos del modo reto.
+function hoyDe(marca, info) {
+  const f = new Date().toLocaleDateString('en-CA'), k = `jv_hoy_${JUEGO}_${f}`, prev = Number(lsGet(k) || -1);
+  if (marca > prev) { lsSet(k, String(marca)); return { hoy: { fecha: f, marca, ...info } }; }
+  return {};
+}
 let EQS = null, GDATA = {}, ESTADO = {}, unsubGrupo = null, detener = null;
 // Una tarea está cerrada si el docente la cerró o si ya pasó su fecha límite (grupos/{g}.tareasDig.{id}.cierre).
 const vencida = id => { const c = ESTADO[id] && ESTADO[id].cierre; return !!c && Date.now() > Date.parse(c); };
@@ -453,7 +459,7 @@ function actAporto(cont) {
     parar();
     const marca = reto ? pts : bien, clave = 'clase_aporto_mejor_' + N.id, previa = Number((lsGet(clave) || '0').split(' ')[0]) || 0, record = marca > previa;
     if (record) lsSet(clave, reto ? `${pts} pts` : `${bien}/${items.length}`);
-    reportarJuego({ estado: 'termino', i: items.length, n: items.length, bien, malos: items.length - bien, pts, reto, nivel: N.n, nivelId: N.id, rondas: increment(1), [`mejor_${N.id}`]: lsGet(clave) || '' });
+    reportarJuego({ estado: 'termino', i: items.length, n: items.length, bien, malos: items.length - bien, pts, reto, nivel: N.n, nivelId: N.id, rondas: increment(1), [`mejor_${N.id}`]: lsGet(clave) || '', ...hoyDe(reto ? pts : bien * 100, { bien, n: items.length, nivel: N.n, reto }) });
     cont.innerHTML = `<div class="resumen"><h3>${N.ico} ${N.n}: ${bien} de ${items.length}</h3>
       <p>${N.id === 'experto' ? `Continentes acertados: ${contB} de ${contT}. ` : ''}${reto ? `⭐ <b>${pts} puntos</b> · mejor racha: ${mejorRacha}. ` : ''}${record ? '🏅 ¡Nueva mejor marca!' : ''}</p>
       <p>${!fallos.length ? '¡Ronda perfecta! Ya dominas este nivel.' : 'Estudia los que fallaste:'}</p>
@@ -701,7 +707,7 @@ function juegoPreguntas(cont, C) {
     if (C.escenaFinal) { const e = C.escenaFinal(bien, malos); if (e) { cont.innerHTML = ''; await e; } }
     const marca = reto ? pts : bien, clave = `clase_${C.clave}_mejor_${N.id}`, previa = Number((lsGet(clave) || '0').split(/[ /]/)[0]) || 0, record = marca > previa;
     if (record) lsSet(clave, reto ? `${pts} pts` : `${bien}/${Math.min(i, items.length)}`);
-    reportarJuego({ estado: 'termino', i: Math.min(i, items.length), n: Math.min(i, items.length), bien, malos, pts, reto, nivel: N.n, nivelId: N.id, rondas: increment(1), [`mejor_${N.id}`]: lsGet(clave) || '' });
+    reportarJuego({ estado: 'termino', i: Math.min(i, items.length), n: Math.min(i, items.length), bien, malos, pts, reto, nivel: N.n, nivelId: N.id, rondas: increment(1), [`mejor_${N.id}`]: lsGet(clave) || '', ...hoyDe(reto ? pts : bien * 100, { bien, n: Math.min(i, items.length), nivel: N.n, reto }) });
     cont.innerHTML = `<div class="resumen">${C.final ? C.final(bien, malos) : ''}<h3>${N.ico} ${N.n}: ${bien} acierto${bien === 1 ? '' : 's'} de ${Math.min(i, items.length)}</h3>
       <p>${reto ? `⭐ <b>${pts} puntos</b> · mejor racha: ${mejorRacha}. ` : ''}${record ? '🏅 ¡Nueva mejor marca!' : ''}</p>
       <p>${!fallos.length ? '¡Sin errores! Ya dominas este nivel.' : 'Estudia los que fallaste:'}</p>
