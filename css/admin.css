@@ -832,3 +832,10 @@ body.mon-completo .mon-grid { grid-template-columns: repeat(auto-fill, minmax(21
 .jv-podio b small { font-size: .5em; font-weight: 600; color: #2E8B57; margin-left: .4rem; }
 .jv-podio li.jv-vivo { border-color: #9FD3B4; }
 .jv-proy { overflow-y: auto; }
+
+/* ---- Pantallas de computadora y proyector: el panel aprovecha el ancho y las pestañas ocupan poco alto */
+@media (min-width:900px){
+  .admin-wrap{max-width:1200px; padding-top:18px;}
+  .admin-tabs{grid-template-columns:repeat(auto-fill, minmax(132px, 1fr)); gap:6px; margin-bottom:18px;}
+  .admin-tabs .tab-btn{min-height:40px; padding:6px 10px; font-size:.84rem;}
+}
