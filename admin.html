@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css?v=2026102305">
-<link rel="stylesheet" href="css/admin.css?v=2026111801">
+<link rel="stylesheet" href="css/admin.css?v=2026111802">
 <link rel="stylesheet" href="css/progreso.css?v=2026102305">
 <link rel="stylesheet" href="css/index.css?v=2026102305">
 <link rel="stylesheet" href="css/extra.css?v=2026111103">
@@ -347,6 +347,12 @@
 
   <!-- ===== HISTORIAL ===== -->
   <div id="tab-historial" class="tab-panel">
+    <div class="bloques-activos-card rs-card">
+      <h3 class="section-title" style="margin-top:0;">📊 Resumen general de tareas</h3>
+      <p class="field-hint">De todo el grupo: quién entregó, quién no, qué ya calificaste y qué te falta calificar, por tarea y por alumno. Tarda unos segundos porque revisa el trabajo de cada alumno.</p>
+      <button id="btn-resumen-general" class="btn btn-primary">Ver resumen general</button>
+      <div id="rs-cont"></div>
+    </div>
     <div class="bloques-activos-card">
       <h3 class="section-title" style="margin-top:0;">Generar reporte</h3>
       <label for="hist-modo" class="field-label">¿De quién?</label>
@@ -426,6 +432,6 @@
   <div class="qr-grid" id="qr-grid"></div>
 </div>
 <script src="js/vendor/qrcode.js"></script>
-<script type="module" src="js/admin.js?v=2026111601"></script>
+<script type="module" src="js/admin.js?v=2026111802"></script>
 </body>
 </html>

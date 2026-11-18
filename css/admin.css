@@ -839,3 +839,26 @@ body.mon-completo .mon-grid { grid-template-columns: repeat(auto-fill, minmax(21
   .admin-tabs{grid-template-columns:repeat(auto-fill, minmax(132px, 1fr)); gap:6px; margin-bottom:18px;}
   .admin-tabs .tab-btn{min-height:40px; padding:6px 10px; font-size:.84rem;}
 }
+
+/* ===== Resumen general de tareas (Historial) ===== */
+.rs-card #rs-cont{margin-top:12px;}
+.rs-cab{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;}
+.rs-cab select{width:auto;min-width:130px;margin-left:6px;}
+.rs-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin:6px 0 8px;}
+.rs-kpi{border-radius:12px;padding:10px 12px;background:#f4f1ea;display:flex;flex-direction:column;gap:2px;}
+.rs-kpi b{font-size:1.7rem;line-height:1.1;}
+.rs-kpi span{font-size:.85rem;opacity:.8;}
+.rs-k-cal{background:#e5f3e8;} .rs-k-por{background:#fff1d6;} .rs-k-no{background:#fde4e1;} .rs-k-al{background:#e8e6f6;}
+.rs-alerta{background:#fff4e0;border-left:4px solid #e0a020;padding:8px 10px;border-radius:8px;margin:8px 0;font-size:.92rem;}
+.rs-alerta.rs-suave{background:#f2f2f2;border-left-color:#999;}
+.rs-h{margin:16px 0 6px;font-size:1.05rem;}
+.rs-pend{list-style:none;padding:0;margin:0;display:grid;gap:6px;}
+.rs-pend li{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:#fff8e8;border-radius:8px;padding:6px 10px;}
+.rs-pend li > b{min-width:28px;text-align:center;background:#e0a020;color:#fff;border-radius:999px;padding:1px 8px;}
+.rs-tabla td,.rs-tabla th{white-space:nowrap;}
+.rs-tabla td:first-child{white-space:normal;min-width:180px;}
+.rs-tabla details p{margin:6px 0;font-size:.88rem;white-space:normal;}
+.rs-tabla summary{cursor:pointer;}
+.rs-rojo{color:#b3261e;font-weight:700;}
+.rs-riesgo{background:#fff3f1;}
+.rs-copia{width:100%;min-height:160px;font-family:monospace;font-size:.8rem;margin-bottom:8px;}
