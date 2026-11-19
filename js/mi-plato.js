@@ -356,6 +356,7 @@ function pintarFinal(ent, cuerpo, ir) {
   cuerpo.innerHTML = `<article class="t-preg e1">
     <p class="e1-n">Último paso</p><h3>Referencias y descarga de tu ficha</h3>
     <h4 class="e1-h">📚 Tus referencias en APA</h4>
+    <p class="lab-ayuda">¿Dudas con el formato? <a href="curso-apa.html" target="_blank" rel="noopener">Curso de APA 7 y generador de referencias</a>.</p>
     <p class="lab-ayuda">Cada fuente que citaste en tus respuestas va aquí. Pide <b>al menos ${E.minRefs}</b>. La plataforma te las escribe en formato APA: solo llena los datos.</p>
     <div class="e1-refs"><label><input type="checkbox" id="rf-libro" ${T.refs.libro !== false ? 'checked' : ''}> <span>${conCursivas(D.libro.apa)} <small class="mp-cita">En tu texto: ${esc(D.libro.cita)}</small></span></label>
       ${(T.refs.lista || []).map((r, i) => `<div class="mp-ref"><span>${conCursivas(r.apa)} <small class="mp-cita">En tu texto: ${esc(r.cita)}</small></span><button type="button" class="link-btn" data-borrar="${i}">Quitar</button></div>`).join('')}</div>

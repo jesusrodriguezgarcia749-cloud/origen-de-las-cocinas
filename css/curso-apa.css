@@ -1,0 +1,115 @@
+/* Curso de APA 7 (el mismo archivo en Epistemología y en Origen de las Cocinas) */
+#apa{max-width:860px;margin:0 auto;}
+.apa-kicker{text-transform:uppercase;letter-spacing:.08em;font-size:.78rem;font-weight:700;color:var(--saffron-dark);margin:0 0 4px;}
+.apa-portada{padding:6px 0 10px;}
+.apa-portada h1{font-family:var(--font-display);font-size:clamp(1.8rem,5vw,2.5rem);margin:.1em 0 .3em;}
+.apa-lead{font-size:1.05rem;color:var(--ink-soft);max-width:62ch;}
+.apa-portada-chica h1{font-size:clamp(1.6rem,4vw,2.1rem);}
+.apa-hola{margin:.2em 0 .8em;}
+.apa-link{background:none;border:0;padding:0;color:var(--paprika);font:inherit;font-weight:600;text-decoration:underline;cursor:pointer;}
+.apa-nota{font-size:.9rem;color:var(--ink-soft);margin-top:10px;}
+.apa-login{margin-top:12px;}
+.apa-barra{height:12px;border-radius:999px;background:var(--line);overflow:hidden;}
+.apa-barra span{display:block;height:100%;background:linear-gradient(90deg,var(--sage),var(--saffron));border-radius:999px;transition:width .4s;}
+.apa-barra-txt{font-size:.9rem;color:var(--ink-soft);margin:.4em 0 1em;}
+.apa-lecciones{display:grid;gap:10px;}
+.apa-lec{display:grid;grid-template-columns:40px 36px 1fr;gap:10px;align-items:center;text-align:left;background:var(--cream);border:2px solid var(--line);border-radius:var(--radius);padding:12px 14px;cursor:pointer;font:inherit;color:var(--ink);box-shadow:var(--shadow-card);}
+.apa-lec:hover{border-color:var(--saffron);}
+.apa-lec-num{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--line);font-weight:700;}
+.apa-lec.ok .apa-lec-num{background:var(--sage);color:#fff;}
+.apa-lec.curso .apa-lec-num{background:var(--saffron);color:#fff;}
+.apa-lec-ico{font-size:1.6rem;}
+.apa-lec-txt{display:grid;gap:2px;}
+.apa-lec-txt small{color:var(--ink-soft);}
+.apa-lec-est{font-weight:600;}
+.apa-lec.ok .apa-lec-est{color:var(--sage);}
+.apa-extras{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:16px 0 8px;}
+.apa-extra{display:grid;gap:4px;text-align:left;background:var(--charcoal);color:#fff;border:0;border-radius:var(--radius);padding:14px 16px;cursor:pointer;font:inherit;}
+.apa-extra span{font-size:1.6rem;}
+.apa-extra small{color:#D8DCE6;}
+.apa-extra.cerrado{opacity:.55;}
+.apa-nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:4px 0 12px;flex-wrap:wrap;}
+.apa-reloj{font-weight:700;font-variant-numeric:tabular-nums;background:var(--charcoal);color:#fff;border-radius:999px;padding:4px 12px;}
+.apa-lec-cab h2{font-family:var(--font-display);margin:.1em 0 .2em;}
+.apa-lec-cab p{color:var(--ink-soft);}
+.apa-sec{background:var(--cream);border:1px solid var(--line);border-radius:var(--radius);padding:14px 18px;margin:12px 0;}
+.apa-sec h3{margin:.1em 0 .5em;font-size:1.12rem;}
+.apa-sec ul{margin:0;padding-left:1.2em;display:grid;gap:6px;}
+.apa-check ul{list-style:none;padding-left:0;}
+.apa-check li::before{content:'☐ ';font-weight:700;color:var(--sage);}
+.apa-bm{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.apa-mal,.apa-bien{border-radius:10px;padding:10px 12px;}
+.apa-mal{background:rgba(168,50,62,.09);border-left:4px solid var(--paprika);}
+.apa-bien{background:rgba(78,125,106,.12);border-left:4px solid var(--sage);}
+.apa-mal h4,.apa-bien h4{margin:0 0 6px;font-size:.95rem;}
+.apa-tabla-wrap{overflow-x:auto;}
+.apa-tabla{width:100%;border-collapse:collapse;font-size:.95rem;}
+.apa-tabla th,.apa-tabla td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top;}
+.apa-tabla th{background:var(--parchment);}
+.apa-fmt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:6px 0;background:#fff;}
+[data-theme="dark"] .apa-fmt{background:transparent;}
+.apa-fmt summary{cursor:pointer;font-weight:700;}
+.apa-fmt-l{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin:8px 0 2px;font-weight:700;}
+.apa-ref{font-family:'Times New Roman',Times,serif;font-size:1.05rem;padding-left:1.27em;text-indent:-1.27em;margin:.3em 0;line-height:1.55;overflow-wrap:anywhere;}
+.apa-lista-ej{background:#fff;color:#111;border-radius:8px;padding:14px 18px;border:1px solid var(--line);}
+.apa-lista-tit{text-align:center;font-weight:700;font-family:'Times New Roman',Times,serif;margin:0 0 6px;}
+.apa-practica{background:var(--parchment);border-radius:var(--radius);padding:16px 18px;margin:18px 0 30px;border:2px solid var(--saffron);}
+.apa-practica h3{margin:.1em 0 .4em;}
+.apa-q{font-size:1.08rem;font-weight:600;}
+.apa-ops{display:grid;gap:8px;}
+.apa-ops.vf{grid-template-columns:1fr 1fr;}
+.apa-op,.apa-parte{font:inherit;text-align:left;background:var(--cream);color:var(--ink);border:2px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;}
+.apa-parte{display:inline-block;margin:3px 2px;padding:6px 10px;font-family:'Times New Roman',Times,serif;font-size:1.02rem;}
+.apa-op:hover:not(:disabled),.apa-parte:hover:not(:disabled){border-color:var(--saffron);}
+.apa-op.bien,.apa-parte.bien{border-color:var(--sage);background:rgba(78,125,106,.18);}
+.apa-op.mal,.apa-parte.mal{border-color:var(--paprika);background:rgba(168,50,62,.14);}
+.apa-op:disabled,.apa-parte:disabled{cursor:default;}
+.apa-ayuda-ord{font-size:.9rem;color:var(--ink-soft);margin:0 0 6px;}
+.apa-armado{min-height:46px;border:2px dashed var(--line);border-radius:10px;padding:8px 10px;margin:6px 0 10px;font-family:'Times New Roman',Times,serif;font-size:1.05rem;background:var(--cream);}
+.apa-armado.bien{border-style:solid;border-color:var(--sage);}
+.apa-armado.mal{border-style:solid;border-color:var(--paprika);}
+.apa-vacio{color:var(--ink-soft);font-family:var(--font-body);font-size:.9rem;}
+.apa-fb{margin-top:10px;padding:10px 12px;border-radius:10px;}
+.apa-fb.ok{background:rgba(78,125,106,.16);}
+.apa-fb.no{background:rgba(168,50,62,.12);}
+.apa-sig-wrap{margin-top:12px;text-align:right;}
+.apa-resultado{text-align:center;padding:10px;}
+.apa-res-num{font-size:1.1rem;margin:0;}
+.apa-res-pct{font-family:var(--font-display);font-size:2.6rem;font-weight:700;margin:.1em 0;}
+.apa-resultado.ok .apa-res-pct{color:var(--sage);}
+.apa-resultado.no .apa-res-pct{color:var(--paprika);}
+.apa-res-bot{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;align-items:center;margin-top:10px;}
+.btn-sec{background:transparent!important;color:var(--ink)!important;border:2px solid var(--ink)!important;}
+.apa-gen{display:grid;gap:12px;margin-bottom:30px;}
+.apa-tipos{display:flex;flex-wrap:wrap;gap:6px;}
+.apa-tipo{font:inherit;font-size:.92rem;background:var(--cream);border:2px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer;color:var(--ink);}
+.apa-tipo.on{background:var(--charcoal);color:#fff;border-color:var(--charcoal);}
+.apa-campos{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;}
+.apa-campo{display:grid;gap:4px;}
+.apa-campo span{display:grid;}
+.apa-campo small{color:var(--ink-soft);font-size:.8rem;}
+.apa-campo input,.apa-campo textarea{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:#111;}
+.apa-salida{background:#fff;color:#111;border:2px solid var(--saffron);border-radius:var(--radius);padding:12px 16px;}
+.apa-salida .apa-fmt-l{color:#555;}
+.apa-copiar{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 4px;}
+.apa-cita{margin:.2em 0;}
+.apa-cargando{padding:30px;text-align:center;color:var(--ink-soft);}
+/* Constancia (carta) */
+.apa-constancia{background:#fff;color:#16213A;border:10px double #C9A04A;border-radius:6px;padding:40px 48px;text-align:center;font-family:'Fraunces',Georgia,serif;max-width:720px;margin:0 auto 30px;}
+.apa-c-escudo{width:90px;height:auto;display:block;margin:0 auto;}
+.apa-c-inst{font-size:1.4rem;font-weight:700;margin:.3em 0 0;}
+.apa-c-materia{color:#4F5868;margin:.2em 0 1em;font-family:'Public Sans',sans-serif;}
+.apa-constancia h1{font-size:2.6rem;letter-spacing:.06em;margin:.2em 0;color:#9C7A2E;}
+.apa-c-nombre{font-size:1.9rem;font-weight:700;border-bottom:2px solid #C9A04A;display:inline-block;padding:0 20px 4px;margin:.3em 0 .6em;}
+.apa-c-fecha{margin-top:1.4em;color:#4F5868;}
+.apa-c-firma{margin:46px auto 0;width:280px;}
+.apa-c-firma span{display:block;border-top:1px solid #16213A;}
+.apa-c-firma p{margin:.4em 0 0;font-family:'Public Sans',sans-serif;font-size:.95rem;}
+@media (max-width:600px){.apa-bm{grid-template-columns:1fr;}.apa-lec{grid-template-columns:34px 1fr;}.apa-lec-ico{display:none;}.apa-constancia{padding:24px 18px;}}
+@media print{
+  @page{size:letter;margin:1.5cm;}
+  body *{visibility:hidden;}
+  .apa-constancia,.apa-constancia *{visibility:visible;}
+  .apa-constancia{position:absolute;left:0;top:0;width:100%;max-width:none;margin:0;}
+  .no-imprimir{display:none!important;}
+}

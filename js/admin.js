@@ -2809,3 +2809,38 @@ on('btn-resumen-general', 'click', () => resumenGeneral(document.getElementById(
   },
   irCalificar: a => { switchTab('tareas'); calificarTareaDig(TAREAS_DIG[a.id] || a, true); }
 }));
+
+// ---------- CURSO DE APA 7 (Historial) ----------
+// Lee grupos/{g}/alumnos/{a}/atlas/tarea-curso-apa de cada alumno (lo escribe curso-apa.js).
+const APA_N = 7;
+async function apaLeer() {
+  const g = grupoActivo;
+  return Promise.all(alumnosCache.map(async al => { let d = null; try { const s = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'tarea-curso-apa')); d = s.exists() ? s.data() : null; } catch { /* */ } return { al, d }; }));
+}
+on('btn-apa-avance', 'click', async () => {
+  const cont = document.getElementById('apa-cont');
+  if (!grupoActivo) { cont.innerHTML = '<p class="empty-inline">Elige un grupo primero.</p>'; return; }
+  cont.innerHTML = '<p class="empty-inline">Leyendo el avance de cada alumno…</p>';
+  const filas = (await apaLeer()).sort((a, b) => ((b.d && b.d.aprobadas) || 0) - ((a.d && a.d.aprobadas) || 0) || a.al.nombre.localeCompare(b.al.nombre));
+  const ini = filas.filter(f => f.d).length, todas = filas.filter(f => f.d && f.d.aprobadas >= APA_N).length, conReto = filas.filter(f => f.d && f.d.reto && f.d.reto.intentos).length, constancia = filas.filter(f => f.d && f.d.reto && f.d.reto.mejor >= 8).length;
+  cont.innerHTML = `<div class="rs-kpis"><div class="rs-kpi rs-k-al"><b>${ini}</b><span>empezaron el curso</span></div><div class="rs-kpi rs-k-cal"><b>${todas}</b><span>aprobaron las ${APA_N} lecciones</span></div><div class="rs-kpi rs-k-por"><b>${conReto}</b><span>hicieron el Reto final</span></div><div class="rs-kpi rs-k-cal"><b>${constancia}</b><span>tienen constancia (8 o más)</span></div></div>
+    <div class="taller-tabla-wrap"><table class="taller-tabla rs-tabla"><thead><tr><th>Alumno</th><th>Lecciones</th>${Array.from({ length: APA_N }, (_, i) => `<th>${i + 1}</th>`).join('')}<th>Reto final</th><th>Intentos</th></tr></thead><tbody>
+    ${filas.map(({ al, d }) => { const L = (d && d.lecciones) || {}, R = (d && d.reto) || {}; return `<tr><td><b>${escaparHTML(al.nombre)}</b></td><td>${d ? `${d.aprobadas || 0} / ${APA_N}` : '<small>Sin empezar</small>'}</td>
+      ${Array.from({ length: APA_N }, (_, i) => { const e = L['l' + (i + 1)]; return `<td title="${e ? `Mejor: ${e.mejor} % · ${e.intentos} intento(s)` : 'Sin intentos'}">${e ? (e.aprobada ? '✓' : `${e.mejor}%`) : '—'}</td>`; }).join('')}
+      <td class="${R.mejor >= 8 ? '' : R.intentos ? 'rs-rojo' : ''}">${R.intentos ? `<b>${R.mejor}</b>` : '—'}</td><td>${R.intentos || ''}</td></tr>`; }).join('')}
+    </tbody></table></div>`;
+});
+on('btn-apa-cat', 'click', async () => {
+  const msg = document.getElementById('apa-msg');
+  if (!grupoActivo) { msg.textContent = 'Elige un grupo primero.'; return; }
+  const hoy = new Date().toLocaleDateString('en-CA'), parcial = parcialDe(hoy);
+  if (!confirm(`Se agregará «Curso de APA 7 · Reto final» a las tareas del ${parcial === 'final' ? 'Examen Final' : 'Parcial 2'} y se registrará como calificación la mejor nota del Reto de cada alumno que ya lo hizo. Quien no lo ha hecho queda sin entregar. Puedes volver a pasarlo después para actualizar las notas. ¿Continuar?`)) return;
+  msg.textContent = 'Registrando…';
+  try {
+    const g = grupoActivo, filas = await apaLeer(), nombre = 'Curso de APA 7 · Reto final';
+    await setDoc(doc(db, 'grupos', g, 'tareas_catalogo', 'curso-apa'), { nombre, fecha: hoy, parcial, auto: true, creado: serverTimestamp() }, { merge: true });
+    const con = filas.filter(f => f.d && f.d.reto && f.d.reto.intentos);
+    await Promise.all(con.map(f => setDoc(doc(db, 'grupos', g, 'alumnos', f.al.id, 'tareas', 'curso-apa'), { parcial, nombre, fecha: hoy, calificacion: Math.max(0, Math.min(10, Number(f.d.reto.mejor) || 0)), actualizado: serverTimestamp() })));
+    msg.textContent = `✓ Listo: ${con.length} calificación(es) registradas en el catálogo.`;
+  } catch (e) { msg.textContent = 'No se pudo registrar: ' + (e.message || e); }
+});
