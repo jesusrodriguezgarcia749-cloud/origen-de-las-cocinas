@@ -75,6 +75,11 @@
   .d-pausa h2{color:#fff;font-size:1.7em}
   .d-pausa .dur{font-size:.7em;color:#F3CFCF;margin-bottom:1em}
   .d-pausa .caja{background:rgba(255,255,255,.12);padding:.9em 1.1em;line-height:1.45}
+  .d-pausa .pa-nombre{color:#fff;font-size:1.25em;margin:.1em 0 .45em}
+  .d-pausa .pa-pasos{text-align:left;margin:0 auto;padding:.8em 1.1em .8em 2.4em;max-width:30em}
+  .d-pausa .pa-pasos li{margin:.35em 0;font-size:.82em}
+  .d-pausa .pa-otra{margin-top:1em;font:inherit;font-size:.5em;color:#fff;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.45);border-radius:999px;padding:.4em 1.2em;cursor:pointer}
+  .d-pausa .pa-otra:hover{background:rgba(255,255,255,.28)}
   /* Imagen y video */
   .d-imagen figure{margin:0}
   .d-imagen img[data-ruta$=".svg"]{object-fit:contain;height:540px;max-height:540px;box-shadow:none}
@@ -153,6 +158,51 @@
   const lista = (items, paso) => `<ul class="puntos">${(items || []).map(p => `<li${paso ? ' class="fragment"' : ""}>${txt(p)}</li>`).join("")}</ul>`;
   const img = (ruta, alt) => `<img data-src="${esc(ruta)}" alt="${esc(alt || "")}" data-ruta="${esc(ruta)}">`;
 
+  /* ---------- Banco de pausas activas ----------
+     Ligeras, en el lugar (de pie junto a la silla o sentados), sin caminar por el salón y sin tocar al compañero.
+     No tienen que ver con el tema: solo despiertan. Cada presentación toma una distinta y el botón «Otra pausa»
+     cambia a la siguiente. */
+  const PAUSAS = [
+    { t: "Respiración 4-4-6", k: "Respira", min: 2, pasos: ["De pie, pies separados al ancho de la cadera y hombros sueltos.", "Inhala por la nariz contando **4**.", "Sostén el aire contando **4**.", "Suelta por la boca, despacio, contando **6**. Repite **5 veces**."] },
+    { t: "El globo", k: "Respira", min: 2, pasos: ["Pon las dos manos sobre el abdomen.", "Inhala lento por la nariz: siente cómo **se infla el globo** bajo tus manos.", "Exhala lento por la boca: el globo **se desinfla**.", "Cinco respiraciones, cada una más lenta que la anterior."] },
+    { t: "Respiración cuadrada", k: "Respira", min: 2, pasos: ["Dibuja un cuadrado en el aire con el dedo mientras respiras.", "Lado 1: inhala en **4** tiempos. Lado 2: sostén en **4**.", "Lado 3: exhala en **4**. Lado 4: sostén vacío en **4**.", "Dibuja **cuatro cuadrados** completos."] },
+    { t: "Estírate al cielo", k: "Estira", min: 2, pasos: ["De pie, entrelaza los dedos y sube los brazos con las palmas hacia el techo.", "Crece como si alguien te jalara de la cabeza: **10 segundos**.", "Sin bajar los brazos, inclínate a la derecha **10 segundos** y luego a la izquierda.", "Baja los brazos despacio, soltando el aire."] },
+    { t: "Cuello sin prisa", k: "Estira", min: 2, pasos: ["Lleva la oreja derecha hacia el hombro derecho, sin subir el hombro: **15 segundos**.", "Ahora la oreja izquierda hacia el hombro izquierdo.", "Barbilla al pecho y deja que la cabeza pese: **15 segundos**.", "Mira por encima del hombro derecho y luego del izquierdo, lento."] },
+    { t: "Hombros fuera", k: "Estira", min: 2, pasos: ["**10 círculos** de hombros hacia atrás, grandes y lentos.", "**10 círculos** hacia adelante.", "Sube los hombros hasta las orejas, apriétalos **5 segundos**… y suéltalos de golpe.", "Repite el apretón **tres veces**: nota la diferencia entre tensión y relajación."] },
+    { t: "Manos de escritor", k: "Estira", min: 1, pasos: ["Abre y cierra las manos con fuerza **10 veces**.", "Círculos de muñecas: **10** hacia un lado y **10** hacia el otro.", "Toca cada dedo con el pulgar, ida y vuelta, cada vez más rápido.", "Sacude las manos como si las tuvieras mojadas."] },
+    { t: "Torsión en la silla", k: "Estira", min: 2, pasos: ["Sentado, espalda recta y pies en el piso.", "Gira el tronco a la derecha y apóyate en el respaldo: **15 segundos**, respirando.", "Regresa al centro y gira a la izquierda.", "Termina con los brazos colgando hacia el piso, la cabeza relajada, **10 segundos**."] },
+    { t: "Piernas despiertas", k: "Estira", min: 2, pasos: ["De pie, apóyate en el respaldo de tu silla.", "Lleva el talón derecho hacia el glúteo y sostén el pie: **15 segundos**. Cambia de pierna.", "Ponte de puntitas y baja despacio: **10 veces**.", "Sacude cada pierna como si te quitaras una hormiga."] },
+    { t: "Ojos 20-20", k: "Estira", min: 1, pasos: ["Busca por la ventana o al fondo del salón **el punto más lejano** que veas.", "Míralo fijamente **20 segundos**, sin ver el celular ni la pantalla.", "Frota las palmas hasta calentarlas y cubre los ojos cerrados: **20 segundos** de oscuridad.", "Abre los ojos despacio y parpadea varias veces."] },
+    { t: "La sacudida 5-4-3-2-1", k: "Despierta", min: 2, pasos: ["Todos de pie. Sacude la **mano derecha** contando en voz alta del 5 al 1.", "Luego la **izquierda**, la **pierna derecha** y la **pierna izquierda**, del 5 al 1.", "Otra ronda contando del 4 al 1, luego del 3, del 2 y del 1… cada vez más rápido.", "Termina con un grito de grupo: «¡Despiertos!»."] },
+    { t: "Marcha en el lugar", k: "Despierta", min: 2, pasos: ["Sin moverte de tu lugar, marcha subiendo las rodillas **30 segundos**.", "Agrega los brazos como si corrieras.", "**10 segundos** a toda velocidad.", "Baja el ritmo poco a poco y termina con tres respiraciones profundas."] },
+    { t: "Sentadilla de silla", k: "Despierta", min: 1, pasos: ["De pie frente a tu silla.", "Baja como si te fueras a sentar, roza la silla sin sentarte y vuelve a subir.", "**10 veces**, al ritmo que marque el profesor.", "La última: quédate abajo **5 segundos** antes de subir."] },
+    { t: "Cruzados", k: "Coordina", min: 2, pasos: ["De pie: el **codo derecho** toca la **rodilla izquierda**.", "Ahora el **codo izquierdo** a la **rodilla derecha**.", "Alterna **20 veces**, al ritmo de palmadas del profesor.", "Ronda difícil: **mano derecha al talón izquierdo** por detrás. Al cruzar la línea del cuerpo trabajan los dos lados del cerebro."] },
+    { t: "Ocho acostado", k: "Coordina", min: 1, pasos: ["Estira el brazo derecho con el pulgar hacia arriba.", "Dibuja en el aire un **8 acostado** (∞) grande y lento; síguelo solo con los ojos, sin mover la cabeza.", "**Cinco veces** con la mano derecha, cinco con la izquierda.", "Y cinco con las dos manos juntas."] },
+    { t: "Nariz y oreja", k: "Coordina", min: 1, pasos: ["Mano derecha a la **nariz**; mano izquierda a la **oreja derecha**.", "Aplaude una vez y **cambia**: mano izquierda a la nariz, derecha a la oreja izquierda.", "Repite cada vez más rápido.", "Se vale reírse: es parte del ejercicio."] },
+    { t: "Pulgar y meñique", k: "Coordina", min: 1, pasos: ["Cierra los puños frente a ti.", "En una mano saca el **pulgar** y en la otra el **meñique**.", "A la señal, **cambia**: pulgar donde estaba el meñique y meñique donde estaba el pulgar.", "Diez cambios, cada vez más rápido."] },
+    { t: "Haz lo que digo, no lo que hago", k: "Juego", min: 2, pasos: ["El profesor da órdenes rápidas: «manos arriba», «tócate la cabeza», «aplaude», «siéntate».", "Pero **hace otra cosa** con su cuerpo para confundir.", "Ustedes obedecen **lo que dice**, no lo que hace.", "Quien se equivoca, se sienta… y la última persona de pie gana."] },
+    { t: "Simón dice", k: "Juego", min: 2, pasos: ["Solo se obedece si la orden empieza con **«Simón dice…»**.", "«Simón dice: estírense». «Simón dice: brinquen en su lugar». «¡Siéntense!» (esa no se vale).", "Órdenes cada vez más rápidas.", "Quien se equivoca, se sienta."] },
+    { t: "Ritmo en eco", k: "Juego", min: 2, pasos: ["El profesor marca un ritmo corto con palmadas, chasquidos o golpes en la mesa.", "El grupo lo **repite igualito**.", "Cada ronda, el ritmo es un poco más largo o más rápido.", "Al final, que un voluntario invente el ritmo."] },
+    { t: "Uno, dos, tres", k: "Juego", min: 3, pasos: ["En parejas, de pie, frente a frente. Cuentan del 1 al 3 por turnos: «uno», «dos», «tres», «uno»…", "Ronda 2: el **uno** se cambia por una **palmada**.", "Ronda 3: el **dos** se cambia por un **chasquido**.", "Ronda 4: el **tres** se cambia por un **brinco**. Casi nadie llega sin reírse."] },
+    { t: "Cuenta grupal", k: "Juego", min: 2, pasos: ["Todos de pie y con los ojos cerrados.", "El grupo cuenta del **1 al 20**, una persona a la vez, **sin orden** y sin ponerse de acuerdo.", "Si dos dicen el mismo número al mismo tiempo, **se empieza de nuevo** desde el 1.", "Exige escucharse: es una pausa para la atención."] },
+    { t: "Espejo", k: "Juego", min: 2, pasos: ["En parejas, frente a frente y sin tocarse.", "Uno mueve los brazos y la cara **muy despacio**; el otro es su espejo.", "A los **40 segundos**, cambien de papel.", "Reto: que el profesor no adivine quién guía y quién imita."] },
+    { t: "Piedra, papel o tijera de cuerpo entero", k: "Juego", min: 2, pasos: ["**Piedra**: agáchate hecho bolita. **Papel**: brazos y piernas abiertos como estrella. **Tijera**: brazos cruzados al frente.", "En parejas, a la cuenta de tres, cada quien hace su figura.", "Tres rondas: quien gana dos se queda de pie, quien pierde da cinco sentadillas suaves.", "Sin moverse de su lugar."] },
+    { t: "El árbol", k: "Equilibrio", min: 2, pasos: ["Párate en el pie derecho y apoya la planta del izquierdo en el tobillo o la pantorrilla.", "Junta las palmas frente al pecho: **20 segundos**.", "Cambia de pie.", "Reto: hazlo con los **ojos cerrados**. Se vale apoyarse en la silla."] },
+    { t: "Bostezo permitido", k: "Respira", min: 1, pasos: ["Hoy está permitido bostezar: **bosteza a propósito**, grande, con los brazos estirados.", "Otra vez, como gato que despierta: estírate de las puntas de los pies a las puntas de los dedos.", "Tres bostezos más (se contagian solos).", "Termina con una sonrisa forzada de **5 segundos**: la cara también se estira."] },
+    { t: "Cinco, cuatro, tres, dos, uno", k: "Respira", min: 2, pasos: ["Sentados, en silencio, nombra para ti **5 cosas que ves**.", "**4 cosas que puedes tocar** desde tu lugar.", "**3 sonidos** que escuchas ahora mismo.", "**2 olores** y **1 respiración** profunda. Sirve para regresar al salón cuando la cabeza anda en otro lado."] },
+    { t: "Tamborileo", k: "Despierta", min: 1, pasos: ["Con las yemas de los dedos, tamborilea sobre la mesa **lento**, como lluvia que empieza.", "Cada vez **más rápido**, hasta un aguacero.", "Agrega palmadas sobre los muslos: ¡tormenta!", "Y baja poco a poco hasta el silencio."] },
+    { t: "Masaje a uno mismo", k: "Estira", min: 2, pasos: ["Con las yemas, da golpecitos suaves en la cabeza, como lluvia.", "Masajea en círculos las sienes y la mandíbula: ahí se guarda mucha tensión.", "Aprieta suave tus propios hombros y la nuca.", "Termina frotándote las manos y pasándolas por la cara, como si te lavaras."] },
+    { t: "Contrarios", k: "Juego", min: 2, pasos: ["El profesor dice una orden y el grupo hace **lo contrario**.", "«Arriba»: se agachan. «Rápido»: se mueven lento. «Silencio»: hacen ruido.", "«Derecha»: miran a la izquierda. «Siéntense»: se ponen de pie.", "Órdenes cada vez más rápidas."] },
+  ];
+  const hashTxt = s => { let h = 0; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
+  const pausaHTML = i => { const p = PAUSAS[((i % PAUSAS.length) + PAUSAS.length) % PAUSAS.length];
+    return `<div class="dur">${esc(p.k)} · unos ${p.min} minuto${p.min === 1 ? "" : "s"} · en tu lugar</div>
+      <h3 class="pa-nombre">${esc(p.t)}</h3>
+      <ol class="caja pa-pasos">${p.pasos.map(x => `<li>${txt(x)}</li>`).join("")}</ol>
+      <button type="button" class="pa-otra" title="Cambiar por otra pausa">🔀 Otra pausa</button>`; };
+  let nPausa = 0;
+  document.addEventListener("click", e => { const b = e.target.closest && e.target.closest(".pa-otra"); if (!b) return; e.stopPropagation(); const c = b.closest(".pa-cuerpo"), i = +c.dataset.i + 1; c.dataset.i = i; c.innerHTML = pausaHTML(i); });
+
   /* ---------- 3. Plantillas ---------- */
   const P = (typeof PRESENTACION !== "undefined") ? PRESENTACION : { materia: "", diapositivas: [] };
   const COLOR = { portadaDia: "#252734", pausa: "#AA2F2F", proyecto: "#252734" };
@@ -205,10 +255,13 @@
       </table>
       ${d.subtemas && d.subtemas.length ? `<p class="pista-abajo">Baja con la flecha ↓ para ver cada región a detalle.</p>` : ""}`,
 
-    pausa: d => `
+    // Pausa activa: sale del banco (distinta en cada presentación); «fija: true» conserva el texto escrito en la diapositiva.
+    pausa: d => d.fija ? `
       <h2>${esc(d.titulo || "¡Pausa activa!")}</h2>
       ${d.duracion ? `<div class="dur">${esc(d.duracion)}</div>` : ""}
-      <div class="caja">${txt(d.texto)}</div>`,
+      <div class="caja">${txt(d.texto)}</div>` : (i => `
+      <h2>¡Pausa activa!</h2>
+      <div class="pa-cuerpo" data-i="${i}">${pausaHTML(i)}</div>`)(hashTxt((P.materia || "") + document.title) + 7 * nPausa++),
 
     imagen: d => `
       <h2>${esc(d.titulo)}</h2>
