@@ -586,17 +586,17 @@
   },
   {
    "tipo": "entrega",
-   "fecha": "2026-11-27",
+   "fecha": "2026-12-03",
    "titulo": "Entrega 2 del proyecto «Mi Plato, Mi Historia»",
-   "fechaTexto": "Viernes 27 de noviembre",
-   "detalle": "Ficha completa con las preguntas 1 a 20. Vale 15 de los 40 puntos del proyecto."
+   "fechaTexto": "Jueves 3 de diciembre",
+   "detalle": "Ficha completa con las preguntas 1 a 20, en la plataforma hasta las 23:59 (se recorrió una semana para que no coincida con los exámenes). Vale 15 de los 40 puntos del proyecto."
   },
   {
    "tipo": "entrega",
    "fecha": "2026-12-04",
    "titulo": "Exposición final del proyecto «Mi Plato, Mi Historia»",
    "fechaTexto": "Viernes 4 de diciembre",
-   "detalle": "Exposición individual de 2 a 3 minutos ante el grupo. Vale 10 de los 40 puntos del proyecto."
+   "detalle": "Exposición individual de 2 a 3 minutos ante el grupo. Las preguntas 21 a 23 se entregan por escrito en la plataforma hasta el jueves 10 de diciembre. Vale 10 de los 40 puntos del proyecto."
   },
   {
    "tipo": "aviso",
@@ -650,8 +650,8 @@
    {
     "clave": "entrega2",
     "nombre": "Entrega 2 · Ficha completa",
-    "fecha": "2026-11-27",
-    "fechaTexto": "Viernes 27 de noviembre",
+    "fecha": "2026-12-03",
+    "fechaTexto": "Jueves 3 de diciembre",
     "puntos": 15,
     "temas": "Temas 1 al 4",
     "requisito": "La ficha completa con las preguntas 1 a 20: las 12 primeras corregidas con la retroalimentación de la Entrega 1 y las 8 nuevas, con citas y referencias en APA.",
@@ -673,7 +673,7 @@
     "fechaTexto": "Viernes 4 de diciembre",
     "puntos": 10,
     "temas": "Curso completo",
-    "requisito": "Responde las preguntas 21 a 23 y expón ante el grupo, en 2 a 3 minutos, de dónde viene tu platillo, qué rutas lo explican y qué aprendiste investigándolo.",
+    "requisito": "Expón ante el grupo el viernes 4 de diciembre, en 2 a 3 minutos, de dónde viene tu platillo, qué rutas lo explican y qué aprendiste investigándolo. Las preguntas 21 a 23 se entregan por escrito hasta el jueves 10 de diciembre.",
     "preguntas": [
      "¿los ingredientes originales de mi platillo siguen siendo igual de accesibles o sustentables de producir hoy que hace 100+ años?",
      "si tuviera que servir este platillo hoy en un restaurante, ¿qué le cambiaría sin perder su esencia histórica?",

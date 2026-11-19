@@ -21,7 +21,7 @@
   "entrega2": {
    "nombre": "Entrega 2 · Preguntas 13 a 20",
    "corto": "Entrega 2",
-   "fecha": "Viernes 27 de noviembre",
+   "fecha": "Jueves 3 de diciembre, hasta las 23:59",
    "req": "La ficha completa con las preguntas 1 a 20: las 12 primeras corregidas y las 8 nuevas, con citas y referencias en APA.",
    "hasta": 20,
    "minRefs": 3,
@@ -31,8 +31,8 @@
   "entregaFinal": {
    "nombre": "Entrega final · Preguntas 21 a 23",
    "corto": "Entrega final",
-   "fecha": "Viernes 4 de diciembre",
-   "req": "Las preguntas 21 a 23. El Word sale con tu ficha completa (1 a 23) para que prepares tu exposición de 2 a 3 minutos.",
+   "fecha": "Jueves 10 de diciembre, hasta las 23:59 (la exposición es el viernes 4)",
+   "req": "Las preguntas 21 a 23. El Word sale con tu ficha completa (1 a 23). Tu exposición de 2 a 3 minutos es en clase el viernes 4 de diciembre.",
    "hasta": 23,
    "minRefs": 3,
    "entregar": true,

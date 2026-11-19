@@ -862,3 +862,15 @@ body.mon-completo .mon-grid { grid-template-columns: repeat(auto-fill, minmax(21
 .rs-rojo{color:#b3261e;font-weight:700;}
 .rs-riesgo{background:#fff3f1;}
 .rs-copia{width:100%;min-height:160px;font-family:monospace;font-size:.8rem;margin-bottom:8px;}
+
+/* ===== Juegos en vivo: las más falladas · Tareas: prórroga ===== */
+.jv-fallos{background:#fff4f2;border-left:4px solid #b3261e;border-radius:10px;padding:10px 14px;margin:8px 0 12px;}
+.jv-fallos h4{margin:0 0 6px;font-size:1rem;}
+.jv-fallos ol{margin:0;padding-left:1.4em;display:grid;gap:4px;}
+.jv-fallos li span{font-weight:600;}
+.td-auto{font-size:.72em;background:#e8e6f6;color:#3a3470;border-radius:999px;padding:1px 7px;margin-left:4px;}
+.td-pro.si{background:#fff1d6;border-color:#e0a020;}
+.td-probox{background:#fffaf0;border:1px solid #f0d9a8;border-radius:10px;padding:10px 12px;margin:4px 0 10px;}
+.td-pro-form{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+.td-pro-form select{width:auto;min-width:220px;}
+.td-pro-lista{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:4px;}

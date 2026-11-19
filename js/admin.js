@@ -20,6 +20,7 @@ import { zipDocx } from "./docx-ites.js?v=2026111202";
 import { wordTarea } from "./tarea-word.js?v=2026111901";
 import { FICHAS, sugerirFicha } from "./fichas-datos.js?v=2026111901";
 import { TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, nombreCatalogo, sugerirAtlas, sugerirCuadro, MIN_PALABRAS_CELDA, sugerirDesarma, CUADRO_MM, CUADROS, INFLUENCIAS, sugerirInfluencias, ESPECIAS, FUSION, sugerirFusion, subregionDe, sugerirEspecias } from "./clase-datos.js?v=2026111703";
+import { cierreDe, parcialDe, esAuto } from "./cierre-tareas.js?v=2026111901";
 import { RECADOS, ORIGENES, LLEGADAS, INGS, CLAVE_RECADO, recadoDe, ingsDe, sugerirRecado, infoRecado, recadosDe } from "./recado-datos.js";
 import { idFoto } from "./fotos.js";
 
@@ -233,6 +234,7 @@ async function cargarAlumnos() {
   // corrección de nombre), ese id VIEJO lo pisaba: el panel leía el
   // expediente del nombre anterior, ya vacío, y el alumno salía en ceros.
   alumnosCache = snap.docs.map(d => ({ ...d.data(), id: d.id }));
+  autoCatalogo();
   renderAlumnos(alumnosCache);
   // Limpieza: se borra ese campo "id" sobrante de los alumnos que lo traigan.
   snap.docs.filter(d => 'id' in d.data()).forEach(d => {
@@ -1272,6 +1274,37 @@ function pintarDetalle(nuevo) {
     }).join('') : '<p class="empty-inline">Todavía no crean regiones en este continente.</p>'}</div></div>`;
 }
 
+// Prórroga: abrirle una tarea a un solo alumno hasta la fecha que diga el docente (grupos/{g}.tareasDig.{id}.extra.{alumnoId}).
+function pintarProrroga(caja, id, est) {
+  const ex = (est[id] && est[id].extra) || {}, d = new Date(Date.now() + 86400000), pre = `${d.toLocaleDateString('en-CA')}T23:59`;
+  const fmt = v => new Date(v).toLocaleString('es-MX', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+  const vig = Object.entries(ex).filter(([, v]) => v && Date.parse(v) > Date.now());
+  caja.innerHTML = `<p class="field-hint">Ábrele <b>${escaparHTML(nombreCatalogo(TAREAS_DIG[id]))}</b> solo a un alumno: por ejemplo, si faltó con justificante. Los demás siguen con la tarea cerrada.</p>
+    <div class="td-pro-form"><select id="tp-al"><option value="">— Elige al alumno —</option>${alumnosCache.map(a => `<option value="${escaparHTML(a.id)}">${escaparHTML(a.nombre)}</option>`).join('')}</select>
+      <label>hasta <input type="datetime-local" id="tp-hasta" value="${pre}"></label><button type="button" class="btn btn-small btn-primary" id="tp-ok">Abrirle la tarea</button></div>
+    ${vig.length ? `<ul class="td-pro-lista">${vig.map(([al, v]) => `<li>👤 <b>${escaparHTML((alumnosCache.find(a => a.id === al) || {}).nombre || al)}</b> · abierta hasta ${escaparHTML(fmt(v))} <button type="button" class="btn btn-small" data-quitar="${escaparHTML(al)}">Quitar</button></li>`).join('')}</ul>` : '<p class="field-hint">Nadie tiene prórroga en esta tarea.</p>'}`;
+  const guardar = async (al, v) => { await setDoc(doc(db, 'grupos', grupoActivo), { tareasDig: { [id]: { extra: { [al]: v } } } }, { merge: true }); await cargarTareasDig(); const b = document.querySelector(`[data-pro="${id}"]`); if (b) b.click(); };
+  caja.querySelector('#tp-ok').addEventListener('click', () => {
+    const al = caja.querySelector('#tp-al').value, v = caja.querySelector('#tp-hasta').value;
+    if (!al) { alert('Elige al alumno.'); return; }
+    if (!v || Date.parse(v) <= Date.now()) { alert('La fecha límite debe ser posterior a este momento.'); return; }
+    guardar(al, v);
+  });
+  caja.querySelectorAll('[data-quitar]').forEach(x => x.addEventListener('click', () => guardar(x.dataset.quitar, '')));
+}
+// Las tareas digitales de las clases desde el 19 de noviembre entran solas al catálogo el día de su clase.
+let AUTO_CAT = '';
+async function autoCatalogo() {
+  const g = grupoActivo, hoy = new Date().toLocaleDateString('en-CA');
+  if (!g || AUTO_CAT === g + hoy) return;
+  try {
+    const sn = await getDocs(collection(db, 'grupos', g, 'tareas_catalogo')), ya = new Set(sn.docs.map(d => d.id));
+    const nuevas = Object.values(TAREAS_DIG).filter(a => califica(a) && esAuto(a) && a.fecha <= hoy && !ya.has(catalogoId(a.id)));
+    await Promise.all(nuevas.map(a => setDoc(doc(db, 'grupos', g, 'tareas_catalogo', catalogoId(a.id)), { nombre: nombreCatalogo(a), fecha: a.fecha, parcial: parcialDe(a.fecha), digital: a.id, auto: true, creado: serverTimestamp() })));
+    AUTO_CAT = g + hoy;
+    if (nuevas.length && g === grupoActivo) { try { cargarCatalogo('tareas'); } catch { /* */ } }
+  } catch (e) { console.warn('No se pudo agregar al catálogo:', e); }
+}
 // ---- Tareas digitales: catálogo, abrir/cerrar y calificar con sugerencia
 let TD_ATLAS = null;
 async function cargarTareasDig() {
@@ -1286,23 +1319,24 @@ async function cargarTareasDig() {
   const d0 = new Date(), HOY = `${d0.getFullYear()}-${String(d0.getMonth() + 1).padStart(2, '0')}-${String(d0.getDate()).padStart(2, '0')}`;
   const deHoy = TEMAS_TAREAS.find(t => t.fecha === HOY), prox = deHoy ? null : TEMAS_TAREAS.find(t => t.fecha > HOY), dest = deHoy || prox;
   cont.innerHTML = (dest ? `<button type="button" class="btn btn-small td-ir-hoy" id="td-ir-hoy">${deHoy ? '★ Ir a la clase de hoy' : '→ Ir a la próxima clase'} · ${escaparHTML(dest.fechaTexto)}</button>` : '') + TEMAS_TAREAS.map(t => `<div class="td-tema${t === dest ? ' td-destacada' : ''}"${t === dest ? ' id="td-hoy"' : ''}><p class="td-tit">${t === dest ? `<span class="td-marca-hoy">${deHoy ? '★ Hoy' : 'Próxima clase'}</span> ` : ''}<b>${escaparHTML(t.tema)} · ${escaparHTML(t.titulo)}</b> <small>${escaparHTML(t.fechaTexto)}</small></p>${t.acts.filter(califica).map(a => {
-    const cat = enCat.has(catalogoId(a.id)), cierre = (est[a.id] && est[a.id].cierre) || '', vencida = !!cierre && Date.now() > Date.parse(cierre), ab = !(est[a.id] && est[a.id].abierta === false) && !vencida;
+    const cat = enCat.has(catalogoId(a.id)), auto = esAuto(TAREAS_DIG[a.id]) && !(est[a.id] && 'cierre' in est[a.id]), cierre = cierreDe(est[a.id], TAREAS_DIG[a.id]), pro = Object.entries((est[a.id] && est[a.id].extra) || {}).filter(([, v]) => v && Date.parse(v) > Date.now()).length, vencida = !!cierre && Date.now() > Date.parse(cierre), ab = !(est[a.id] && est[a.id].abierta === false) && !vencida;
     return `<div class="td-fila"><span class="td-nom">${a.icono} ${escaparHTML(a.nombre)}${cat ? ` <span data-marca="${catalogoId(a.id)}">${marcaCalificada(cuenta[catalogoId(a.id)] || 0, alumnosCache.length)}</span>` : ''}</span>
-      <label class="td-cierre" title="Fecha y hora límite: la tarea se cierra sola. Déjala vacía para cerrarla tú."><span>⏰ Cierra</span><input type="datetime-local" data-cierre="${a.id}" value="${escaparHTML(cierre)}"></label>
+      <label class="td-cierre" title="${auto ? 'Automático: cierra a las 23:59 del día de la clase. Cámbiala si quieres otra fecha; vacía, la cierras tú.' : 'Fecha y hora límite: la tarea se cierra sola. Déjala vacía para cerrarla tú.'}"><span>⏰ Cierra${auto ? ' <small class="td-auto">auto</small>' : ''}</span><input type="datetime-local" data-cierre="${a.id}" value="${escaparHTML(cierre)}"></label>
       <button type="button" class="btn btn-small td-cat ${cat ? 'si' : ''}" data-cat="${a.id}" ${cat ? 'disabled' : ''}>${cat ? '✓ En el catálogo' : '+ Agregar al catálogo'}</button>
       <button type="button" class="btn btn-small td-ab ${ab ? 'si' : 'no'}" data-ab="${a.id}">${ab ? '🔓 Abierta' : vencida ? '🔒 Cerrada (venció)' : '🔒 Cerrada'}</button>
       ${enEquipo(a) ? `<button type="button" class="btn btn-small td-eq" data-eqt="${a.id}" aria-expanded="false">👥 Equipos</button>` : ''}
+      <button type="button" class="btn btn-small td-pro${pro ? ' si' : ''}" data-pro="${a.id}" aria-expanded="false" title="Abrir esta tarea solo a un alumno (falta justificada u otra razón)">👤 Prórroga${pro ? ` (${pro})` : ''}</button>
       <button type="button" class="btn btn-small btn-primary ${cat ? claseBotonCal(cuenta[catalogoId(a.id)] || 0, alumnosCache.length) : ''}" data-cal="${a.id}" ${cat ? `data-btncal="${catalogoId(a.id)}"` : ''}>${cat ? textoBotonCal(cuenta[catalogoId(a.id)] || 0, alumnosCache.length) : 'Calificar'}</button></div>`;
   }).join('')}</div>`).join('');
   const irHoy = document.getElementById('td-ir-hoy'); if (irHoy) irHoy.addEventListener('click', () => document.getElementById('td-hoy').scrollIntoView({ behavior: 'smooth', block: 'start' }));
   cont.querySelectorAll('[data-cat]').forEach(b => b.addEventListener('click', async () => {
     const a = TAREAS_DIG[b.dataset.cat];
-    if (!confirm(`¿Agregar «${nombreCatalogo(a)}» a las tareas del Parcial 2?\n\nDesde este momento cuenta para la calificación: a quien no la entregue le contará como cero en el promedio de tareas.`)) return;
-    await setDoc(doc(db, 'grupos', grupoActivo, 'tareas_catalogo', catalogoId(a.id)), { nombre: nombreCatalogo(a), fecha: a.fecha, parcial: 'p2', digital: a.id, creado: serverTimestamp() });
+    if (!confirm(`¿Agregar «${nombreCatalogo(a)}» a las tareas del ${parcialDe(a.fecha) === 'final' ? 'Examen Final' : 'Parcial 2'}?\n\nDesde este momento cuenta para la calificación: a quien no la entregue le contará como cero en el promedio de tareas.`)) return;
+    await setDoc(doc(db, 'grupos', grupoActivo, 'tareas_catalogo', catalogoId(a.id)), { nombre: nombreCatalogo(a), fecha: a.fecha, parcial: parcialDe(a.fecha), digital: a.id, creado: serverTimestamp() });
     cargarTareasDig(); cargarCatalogo('tareas');
   }));
   cont.querySelectorAll('[data-ab]').forEach(b => b.addEventListener('click', async () => {
-    const id = b.dataset.ab, c = (est[id] && est[id].cierre) || '', venc = !!c && Date.now() > Date.parse(c), ab = !(est[id] && est[id].abierta === false) && !venc;
+    const id = b.dataset.ab, c = cierreDe(est[id], TAREAS_DIG[id]), venc = !!c && Date.now() > Date.parse(c), ab = !(est[id] && est[id].abierta === false) && !venc;
     if (ab && !confirm('¿Cerrar la tarea? Los alumnos ya no podrán hacer cambios (lo que llevan se conserva).')) return;
     if (!ab && venc && !confirm('Esta tarea se cerró porque pasó su fecha límite. ¿Abrirla otra vez? Se quitará la fecha límite.')) return;
     await setDoc(doc(db, 'grupos', grupoActivo), { tareasDig: { [id]: { abierta: !ab, ...(venc ? { cierre: '' } : {}) } } }, { merge: true });
@@ -1319,6 +1353,13 @@ async function cargarTareasDig() {
     if (mismo) return;
     const caja = document.createElement('div'); caja.className = 'td-eqbox'; caja.dataset.t = b.dataset.eqt;
     b.closest('.td-fila').after(caja); b.setAttribute('aria-expanded', 'true'); pintarTdCaja(caja);
+  }));
+  cont.querySelectorAll('[data-pro]').forEach(b => b.addEventListener('click', () => {
+    const previa = cont.querySelector('.td-probox'), mismo = previa && previa.dataset.t === b.dataset.pro;
+    if (previa) previa.remove(); cont.querySelectorAll('[data-pro]').forEach(x => x.setAttribute('aria-expanded', 'false'));
+    if (mismo) return;
+    const id = b.dataset.pro, caja = document.createElement('div'); caja.className = 'td-probox'; caja.dataset.t = id;
+    b.closest('.td-fila').after(caja); b.setAttribute('aria-expanded', 'true'); pintarProrroga(caja, id, est);
   }));
   cont.querySelectorAll('[data-cal]').forEach(b => b.addEventListener('click', () => calificarTareaDig(TAREAS_DIG[b.dataset.cal], enCat.has(catalogoId(b.dataset.cal)))));
 }
@@ -1443,9 +1484,9 @@ async function calificarTareaDig(a, enCatalogo) {
     const msg = document.getElementById('td-msg'), escr = [];
     wrap.querySelectorAll('tr[data-id]').forEach(tr => {
       const i = tr.querySelector('.td-in'), ex = tr.querySelector('.td-ex'), ref = doc(db, 'grupos', g, 'alumnos', tr.dataset.id, 'tareas', catalogoId(a.id));
-      if (ex.checked) escr.push(setDoc(ref, { parcial: 'p2', nombre: nombreCatalogo(a), fecha: a.fecha, exento: true, actualizado: serverTimestamp() }));
+      if (ex.checked) escr.push(setDoc(ref, { parcial: parcialDe(a.fecha), nombre: nombreCatalogo(a), fecha: a.fecha, exento: true, actualizado: serverTimestamp() }));
       else if (i.value === '') escr.push(deleteDoc(ref).catch(() => {}));
-      else escr.push(setDoc(ref, { parcial: 'p2', nombre: nombreCatalogo(a), fecha: a.fecha, calificacion: Math.max(0, Math.min(10, parseFloat(i.value))), actualizado: serverTimestamp() }));
+      else escr.push(setDoc(ref, { parcial: parcialDe(a.fecha), nombre: nombreCatalogo(a), fecha: a.fecha, calificacion: Math.max(0, Math.min(10, parseFloat(i.value))), actualizado: serverTimestamp() }));
     });
     try { await Promise.all(escr); msg.textContent = '✓ Calificaciones guardadas. Ya se ven en Mi progreso.'; msg.hidden = false; refrescarMarcas(); }
     catch (e) { msg.textContent = 'No se pudo guardar: ' + (e.message || e); msg.hidden = false; }
@@ -1648,9 +1689,9 @@ function ctAbrir(c, alId) {
         const m = CT_MP && CT_MP.filas.find(y => y.al.id === x.al.id); if (m) m.cal[c.ent] = { calificacion, comentario };
       } else {
         const a = c.a, ref = doc(db, 'grupos', grupoActivo, 'alumnos', x.al.id, 'tareas', catalogoId(a.id));
-        if (ex) await setDoc(ref, { parcial: 'p2', nombre: nombreCatalogo(a), fecha: a.fecha, exento: true, actualizado: serverTimestamp() });
+        if (ex) await setDoc(ref, { parcial: parcialDe(a.fecha), nombre: nombreCatalogo(a), fecha: a.fecha, exento: true, actualizado: serverTimestamp() });
         else if (v === '') await deleteDoc(ref).catch(() => {});
-        else await setDoc(ref, { parcial: 'p2', nombre: nombreCatalogo(a), fecha: a.fecha, calificacion: Math.max(0, Math.min(10, parseFloat(v))), actualizado: serverTimestamp() });
+        else await setDoc(ref, { parcial: parcialDe(a.fecha), nombre: nombreCatalogo(a), fecha: a.fecha, calificacion: Math.max(0, Math.min(10, parseFloat(v))), actualizado: serverTimestamp() });
         x.exento = ex; x.cal = ex || v === '' ? '' : Math.max(0, Math.min(10, parseFloat(v)));
         refrescarMarcas();
       }
@@ -2640,6 +2681,17 @@ function jvFilas() {
   return alumnosCache.map(a => { const d = JV.datos[a.id]; return { a, d, e: jvEstado(d) }; })
     .sort((x, y) => JV_ORDEN.indexOf(x.e) - JV_ORDEN.indexOf(y.e) || ((y.d && y.e !== 'sin' ? (y.d.bien || 0) : 0) - (x.d && x.e !== 'sin' ? (x.d.bien || 0) : 0)) || (x.a.nombre || '').localeCompare(y.a.nombre || '', 'es'));
 }
+// Las preguntas más falladas hoy en el juego elegido: cuántos alumnos fallaron cada una (y cuántas veces en total).
+function jvFallos() {
+  const hoy = new Date().toLocaleDateString('en-CA'), M = new Map();
+  Object.values(JV.datos).forEach(d => {
+    const f = d && d.fallosHoy; if (!f || f.fecha !== hoy || !Array.isArray(f.l)) return;
+    f.l.forEach(({ t, n }) => { if (!t) return; const e = M.get(t) || { t, al: 0, n: 0 }; e.al++; e.n += n || 1; M.set(t, e); });
+  });
+  const top = [...M.values()].sort((a, b) => b.al - a.al || b.n - a.n).slice(0, 5);
+  if (!top.length) return '';
+  return `<div class="jv-fallos"><h4>❌ Las más falladas hoy</h4><ol>${top.map(e => `<li><span>${escaparHTML(e.t)}</span> <small>· la falló${e.al === 1 ? '' : 'ron'} ${e.al} alumno${e.al === 1 ? '' : 's'}${e.n > e.al ? ` (${e.n} veces)` : ''}</small></li>`).join('')}</ol><p class="field-hint">Detente en estas al explicar las diapositivas.</p></div>`;
+}
 function jvPintar() {
   if (!JV.on || JV.modo !== 'juegos') return;
   const caja = document.getElementById('jv'), J = jvJuegos(), act = J.find(x => x.id === JV.juego) || J[0];
@@ -2649,7 +2701,7 @@ function jvPintar() {
     <div class="jv-cab"><label class="field-label" for="jv-sel">Juego</label>
       <select id="jv-sel" class="jv-sel">${J.map(a => `<option value="${a.id}" ${a.id === JV.juego ? 'selected' : ''}>${escaparHTML(a.tema)} · ${a.icono} ${escaparHTML(a.nombre)}</option>`).join('')}</select>
       <button type="button" class="chip-mon" id="jv-podio">🏆 Proyectar ranking en vivo</button></div>
-    <p class="mon-resumen" id="jv-res"></p><div class="jv-grid" id="jv-grid"></div>
+    <p class="mon-resumen" id="jv-res"></p><div id="jv-fallos"></div><div class="jv-grid" id="jv-grid"></div>
     <p class="field-hint">Se actualiza solo. No cuenta para calificación: sirve para ver quién está participando. «Sin actividad» = lleva más de 3 minutos sin responder. Solo cuenta lo de hoy.</p>`;
   document.getElementById('jv-res').innerHTML = `<b>${escaparHTML(act.nombre)}</b> · ${JV_ORDEN.filter(k => cuenta(k)).map(k => `${JV_EST[k][0]} ${cuenta(k)} ${JV_EST[k][1].toLowerCase()}`).join(' · ')}`;
   document.getElementById('jv-grid').innerHTML = filas.map(({ a, d, e }) => {
@@ -2660,6 +2712,7 @@ function jvPintar() {
     else if (e === 'sin' && d && d.ultimoMs) det = `<small>Última vez: ${new Date(d.ultimoMs).toLocaleDateString('es-MX', { day: 'numeric', month: 'short' })}</small>`;
     return `<div class="jv-card jv-${e}"><div class="jv-nom">${escaparHTML(a.nombre)}</div><div class="jv-est">${JV_EST[e][0]} ${JV_EST[e][1]}${e !== 'sin' && d ? ` <small>· ${jvHace(d.ultimoMs)}</small>` : ''}</div>${det ? `<div class="jv-det">${det}</div>` : ''}</div>`;
   }).join('') || '<p class="empty-inline">Este grupo no tiene alumnos.</p>';
+  document.getElementById('jv-fallos').innerHTML = jvFallos();
   const s = document.getElementById('jv-sel'); if (!s.dataset.ok) { s.dataset.ok = '1'; s.addEventListener('change', () => { JV.juego = s.value; jvSuscribir(); }); }
   const p = document.getElementById('jv-podio'); if (!p.dataset.ok) { p.dataset.ok = '1'; p.addEventListener('click', jvPodio); }
   if (JV.proy) jvPintarProy();

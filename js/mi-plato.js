@@ -167,7 +167,7 @@ function pintarTodo() {
   pintarGuiada();
 }
 // ---- Las tres partes de la ficha, como pasos: cuál ya pasó, cuál está en curso y cuál viene después
-const LIMITE = { entrega1: '2026-10-15', entrega2: '2026-11-27', entregaFinal: '2026-12-04' };
+const LIMITE = { entrega1: '2026-10-15', entrega2: '2026-12-03', entregaFinal: '2026-12-10' };
 const entregaEnCurso = () => { const h = hoyISO(); return h <= LIMITE.entrega1 ? 'entrega1' : h <= LIMITE.entrega2 ? 'entrega2' : 'entregaFinal'; };
 function tarjetaEntrega(k, i) {
   const ns = numsDe(D, k), h = ns.filter(hecha).length, ab = ns.filter(abierta), cur = entregaEnCurso(), idx = ORDEN.indexOf(k), idxCur = ORDEN.indexOf(cur);
