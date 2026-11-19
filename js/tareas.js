@@ -19,9 +19,9 @@ import { VUELTA_MUNDO, CONTINENTES_T3 } from "./oceania-datos.js";
 import { RECADOS, ORIGENES, LLEGADAS, INGS, CLAVE_RECADO, HISTORIA, LINEA_TIEMPO, recadoDe, reconocer, ingsDe, sugerirRecado, infoRecado, recadosDe, nombreRecados } from "./recado-datos.js";
 import { comprimir, idFoto, MAX_FOTOS, fotosAlWord } from "./fotos.js";
 import { actArmaHangi } from "./arma-hangi.js?v=2026111001";
-import { FICHAS, sugerirFicha, palabrasF } from "./fichas-datos.js?v=2026111701";
+import { FICHAS, sugerirFicha, palabrasF } from "./fichas-datos.js?v=2026111901";
 import { FUNCIONES, QUE_FUNCION, CORTES, QUE_CORTE } from "./tema4-datos.js?v=2026111701";
-import { wordTarea } from "./tarea-word.js?v=2026111202";
+import { wordTarea } from "./tarea-word.js?v=2026111901";
 import { formacionDe, formaciones, formacionDeTarea, abiertas as inscAbiertas, equipoDe, equiposDe, tareasDeFormacion, enEquipo } from "./equipos.js";
 
 const db = getFirestore(initializeApp(firebaseConfig));
@@ -1064,6 +1064,13 @@ function ficha(cont, a) {
     <div data-entrega></div>
     <p class="atlas-ayuda">${F.intro} Se guarda solo en tu cuenta.</p>
     <div class="cu-ej-aviso"><b>💡 Debajo de cada espacio hay un ejemplo</b> resuelto con otro caso: <i>${esc(F.ejemploCaso)}</i>. Úsalo para ver qué se pide y cuánto escribir, pero <b>no lo copies</b>: escribe sobre tu propio caso.</div>
+    ${F.elegir ? `<section class="fi-elegir"><h3>${esc(F.elegir.titulo)}</h3><p class="es-ayuda">${esc(F.elegir.ayuda)}</p>
+      <div class="fi-opciones">${F.elegir.opciones.map(o => `<div class="fi-op" data-op="${o.id}" role="radio" tabindex="0"><input type="radio" name="fi-elegir" value="${o.id}" tabindex="-1">
+        <span class="fi-op-cab"><b>${esc(o.nombre)}</b><small>${esc(o.cuando)}</small></span>
+        <span class="fi-op-pista">${esc(o.pista)}</span>
+        <span class="fi-op-corte">Corte sugerida: ${esc(o.corte)}</span>
+        <span class="fi-op-fuentes">📖 ${o.fuentes.map(([t, u]) => `<a href="${u}" target="_blank" rel="noopener">${esc(t)}</a>`).join(' · ')}</span></div>`).join('')}</div></section>
+      <h3 class="fi-h2">2. Investiga y escribe</h3>` : ''}
     <div class="es-campos">${F.campos.map(([k, t, ayuda, min, ej]) => `<label class="es-campo"><span class="es-cab"><b>${t}</b></span><small class="es-ayuda">${esc(ayuda)}</small>
       <textarea data-k="${k}" rows="${k === 'fuentes' ? 3 : min >= 25 ? 5 : 4}"></textarea><small class="es-cuenta" data-cuenta="${k}"></small>
       <p class="cu-ej"><b>💡 Ejemplo</b> ${esc(ej)}</p></label>`).join('')}</div>
@@ -1078,11 +1085,17 @@ function ficha(cont, a) {
       el.textContent = k === 'fuentes' ? (ok ? '✓ con fuentes' : 'faltan las fuentes') : `${n} palabra${n === 1 ? '' : 's'}${ok ? ' ✓' : ` · mínimo ${min}`}`;
       el.className = 'es-cuenta ' + (ok ? 'ok' : '');
     });
+    if (F.elegir) { const v = c[F.elegir.clave] || ''; $$('.fi-op', cont).forEach(l => { const on = l.dataset.op === v; l.classList.toggle('on', on); l.setAttribute('aria-checked', on); $('input', l).checked = on; }); }
     $('#fi-sug').textContent = `Avance: ${sugerirFicha(F, S).detalle}.`;
     repEntrega();
   };
   const V = docVivo(ref, null, (S, st) => { pintar(S); estado(st === 'ok' ? 'Guardado en tu cuenta ✓' : st === 'error' ? 'No se pudo guardar. Reintentando…' : 'Guardando…', st === 'ok' ? 'ok' : st === 'error' ? 'mal' : ''); });
   $$('[data-k]', cont).forEach(ta => ta.addEventListener('input', () => { if (!abierta(a.id)) return; V.poner(['campos', ta.dataset.k], ta.value, 'escribe'); }));
+  if (F.elegir) $$('.fi-op', cont).forEach(op => {
+    const elegir = ev => { if (ev.target.closest('a')) return; ev.preventDefault(); if (abierta(a.id)) V.poner(['campos', F.elegir.clave], op.dataset.op); pintar(V.S); };
+    op.addEventListener('click', elegir);
+    op.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') elegir(ev); });
+  });
   repEntrega = barraEntrega(cont, a, { entregado: () => V.S.entregado, alEntregar: async () => { if (!F.campos.some(([k]) => ((V.S.campos || {})[k] || '').trim())) throw new Error('Primero llena tu tarea.'); await V.entregar(); } });
   $('#fi-word').addEventListener('click', async () => {
     await V.flush();

@@ -4,7 +4,7 @@
 import { DocITES } from "./docx-ites.js?v=2026111202";
 import { mapaContinentePNG } from "./docx-ites.js?v=2026111202";
 import { CUADRO_MM, CUADROS, INFLUENCIAS, ESPECIAS, subregionDe, FUSION } from "./clase-datos.js?v=2026111703";
-import { FICHAS } from "./fichas-datos.js?v=2026111701";
+import { FICHAS } from "./fichas-datos.js?v=2026111901";
 import { RECADOS, ORIGENES, LLEGADAS, recadoDe, ingsDe, infoRecado, recadosDe } from "./recado-datos.js";
 import { fotosAlWord } from "./fotos.js";
 

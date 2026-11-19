@@ -387,3 +387,18 @@ html[data-theme="dark"] .cu-ej b { color: #E9C46A; }
 .cu-versalles > span { color: #2E4A8C; } .cu-topkapi > span { color: #A63D2F; }
 .cu-versalles textarea { border-top: 3px solid #2E4A8C; } .cu-topkapi textarea { border-top: 3px solid #A63D2F; }
 .cu-fila > .cu-ej { margin: 0 0 10px; }
+
+/* ---- Ficha con lista cerrada para elegir (banquete de Estado, 4.3) ---- */
+.fi-elegir { margin: 14px 0 6px; }
+.fi-elegir h3, .fi-h2 { margin: 6px 0 4px; font-size: 1.1rem; }
+.fi-h2 { margin-top: 18px; }
+.fi-opciones { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; margin-top: 8px; }
+.fi-op { position: relative; display: grid; gap: 6px; align-content: start; background: var(--cream); border: 2px solid var(--line); border-radius: 12px; padding: 12px 14px 12px 40px; cursor: pointer; box-shadow: var(--shadow-card); transition: border-color .15s, background .15s; }
+.fi-op input { position: absolute; left: 13px; top: 15px; width: 18px; height: 18px; accent-color: #2E4A8C; }
+.fi-op.on { border-color: #2E4A8C; background: #eef2fb; }
+.fi-op-cab { display: grid; gap: 2px; }
+.fi-op-cab small { opacity: .75; }
+.fi-op-pista { font-size: .92rem; }
+.fi-op-corte { font-size: .85rem; font-style: italic; opacity: .85; }
+.fi-op-fuentes { font-size: .85rem; }
+.fi-op-fuentes a { color: #2E4A8C; font-weight: 600; }
