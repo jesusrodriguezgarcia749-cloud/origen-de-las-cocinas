@@ -304,12 +304,11 @@ html[data-theme="dark"] :is(#cl-form, #ma-form, #act-form-login, #form-login, #f
 .aviso-dest-ok { flex:none; border:none; border-radius:999px; padding:8px 14px; font-weight:700; cursor:pointer; background:#16130E; color:#fff; font:inherit; font-size:.88rem; }
 @media (max-width:560px) { .aviso-dest-in { flex-wrap:wrap; } .aviso-dest-ok { margin-left:auto; } }
 
-/* ---- Computadora (nov 2026): letra más grande y el menú completo en dos renglones, sin que se corte «Panel docente» */
-@media (min-width:1100px){
-  html{font-size:17px;}
+/* ---- Menú (nov 2026): que «Panel docente» siempre se alcance */
+/* En laptop, el nombre de la materia se oculta (queda el logo) para que el menú completo quepa en un renglón */
+@media (min-width:1261px) and (max-width:1760px){
+  .brand-text{display:none;}
+  .main-nav{gap:16px;}
 }
-@media (min-width:1261px){
-  .header-inner{flex-wrap:wrap; row-gap:6px; padding-bottom:10px; max-width:1400px;}
-  .main-nav{order:3; width:100%; flex-wrap:wrap; justify-content:center; gap:6px 20px; font-size:.94rem;}
-  .header-tools{margin-left:auto;}
-}
+/* En el menú desplegable, si no cabe en la pantalla se puede deslizar hasta el final */
+.main-nav.open{max-height:calc(100vh - 80px); overflow-y:auto; overscroll-behavior:contain;}
