@@ -19,6 +19,9 @@ const slug = n => n.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''
 const barajar = a => { const c = [...a]; for (let i = c.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [c[i], c[j]] = [c[j], c[i]]; } return c; };
 
 let sesion = null; try { sesion = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null'); } catch { sesion = null; }
+// Vista del docente: curso-apa.html?docente — recorre todo el curso; el avance se guarda solo en este navegador.
+const DOCENTE = new URLSearchParams(location.search).has('docente');
+if (DOCENTE) sesion = { grupoId: '_docente', alumnoId: 'docente', nombre: 'Docente (vista previa)', pin: '', docente: true };
 let P = { lecciones: {}, reto: {} };      // avance del alumno
 let relojReto = null;
 
@@ -54,7 +57,8 @@ function pintarAcceso() {
 }
 const refAvance = () => doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'atlas', DOC_ID);
 async function cargarAvance() {
-  try { const s = await getDoc(refAvance()); P = s.exists() ? s.data() : {}; } catch { P = {}; }
+  if (sesion.docente) P = {};
+  else { try { const s = await getDoc(refAvance()); P = s.exists() ? s.data() : {}; } catch { P = {}; } }
   P.lecciones = P.lecciones || {}; P.reto = P.reto || {};
   // Respaldo local por si se cayó el internet al guardar.
   try { const loc = JSON.parse(localStorage.getItem(`apa_${sesion.grupoId}_${sesion.alumnoId}`) || 'null'); if (loc) fusionar(loc); } catch { /* */ }
@@ -67,6 +71,7 @@ async function guardar(cambios) {
   if (cambios.lecciones) Object.assign(P.lecciones, cambios.lecciones);
   if (cambios.reto) P.reto = cambios.reto;
   try { localStorage.setItem(`apa_${sesion.grupoId}_${sesion.alumnoId}`, JSON.stringify({ lecciones: P.lecciones, reto: P.reto })); } catch { /* */ }
+  if (sesion.docente) return true;
   try {
     await setDoc(refAvance(), { ...cambios, nombre: sesion.nombre, pinVerificado: sesion.pin, aprobadas: LECCIONES.filter(l => (P.lecciones[l.id] || {}).aprobada).length, actualizado: serverTimestamp() }, { merge: true });
     return true;
@@ -80,7 +85,7 @@ function pintarMenu() {
   pararReto();
   const n = aprobadas(), R = P.reto || {};
   RAIZ.innerHTML = `<section class="apa-portada apa-portada-chica">
-      <p class="apa-hola">Hola, <b>${esc(sesion.nombre)}</b>. <button type="button" class="apa-link" id="apa-salir">No soy yo</button></p>
+      <p class="apa-hola">Hola, <b>${esc(sesion.nombre)}</b>. <button type="button" class="apa-link" id="apa-salir">${sesion.docente ? 'Salir de la vista previa' : 'No soy yo'}</button></p>
       <div class="apa-barra" role="progressbar" aria-valuemin="0" aria-valuemax="${LECCIONES.length}" aria-valuenow="${n}"><span style="width:${Math.round(100 * n / LECCIONES.length)}%"></span></div>
       <p class="apa-barra-txt">${n} de ${LECCIONES.length} lecciones aprobadas${n === LECCIONES.length ? ' · ¡ya puedes hacer el Reto final!' : ` · Aprueba cada una con ${Math.round(APA_APROBAR * 100)} % de aciertos.`}</p>
     </section>
@@ -92,7 +97,7 @@ function pintarMenu() {
       <button type="button" class="apa-extra${retoAbierto() ? '' : ' cerrado'}" id="apa-reto"><span>🏆</span><b>Reto final</b><small>${retoAbierto() ? `${APA_RETO.preguntas} preguntas de todo el curso en ${APA_RETO.minutos} minutos.${R.intentos ? ` Tu mejor: ${R.mejor} de 10.` : ''}` : `Se abre al aprobar las ${LECCIONES.length} lecciones.`}</small></button>
       ${(R.mejor || 0) >= APA_RETO.aprobar ? `<button type="button" class="apa-extra" id="apa-const"><span>📜</span><b>Tu constancia</b><small>Descárgala o imprímela en tamaño carta.</small></button>` : ''}
     </div>`;
-  $('#apa-salir').addEventListener('click', () => { try { sessionStorage.removeItem(SESSION_KEY); } catch { /* */ } location.reload(); });
+  $('#apa-salir').addEventListener('click', () => { if (sesion.docente) { location.href = location.pathname; return; } try { sessionStorage.removeItem(SESSION_KEY); } catch { /* */ } location.reload(); });
   $$('[data-lec]').forEach(b => b.addEventListener('click', () => pintarLeccion(b.dataset.lec)));
   $('#apa-gen').addEventListener('click', () => pintarGenerador(false));
   $('#apa-reto').addEventListener('click', () => { if (retoAbierto()) pintarReto(); else alert(`El Reto final se abre cuando apruebes las ${LECCIONES.length} lecciones.`); });
