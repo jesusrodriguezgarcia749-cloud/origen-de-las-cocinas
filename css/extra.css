@@ -312,3 +312,12 @@ html[data-theme="dark"] :is(#cl-form, #ma-form, #act-form-login, #form-login, #f
 }
 /* En el menú desplegable, si no cabe en la pantalla se puede deslizar hasta el final */
 .main-nav.open{max-height:calc(100vh - 80px); overflow-y:auto; overscroll-behavior:contain;}
+
+/* ---- Computadora mediana (900 a 1260 px): sin desplegable; el menú completo va en un segundo renglón */
+@media (min-width:900px) and (max-width:1260px){
+  .header-inner{flex-wrap:wrap; row-gap:4px; padding-bottom:10px;}
+  .header-tools{margin-left:auto;}
+  .main-nav, .main-nav.open{display:flex; flex-direction:row; flex-wrap:wrap; justify-content:center; align-items:center;
+    order:3; width:100%; gap:6px 20px; padding:0; max-height:none; overflow:visible;}
+  .nav-toggle{display:none !important;}
+}
