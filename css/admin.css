@@ -835,9 +835,9 @@ body.mon-completo .mon-grid { grid-template-columns: repeat(auto-fill, minmax(21
 
 /* ---- Pantallas de computadora y proyector: el panel aprovecha el ancho y las pestañas ocupan poco alto */
 @media (min-width:900px){
-  .admin-wrap{max-width:1200px; padding-top:18px;}
-  .admin-tabs{grid-template-columns:repeat(auto-fill, minmax(132px, 1fr)); gap:6px; margin-bottom:18px;}
-  .admin-tabs .tab-btn{min-height:40px; padding:6px 10px; font-size:.84rem;}
+  .admin-wrap{max-width:1180px; padding-top:20px;}
+  .admin-tabs{grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:8px; margin-bottom:20px;}
+  .admin-tabs .tab-btn{min-height:48px; padding:8px 12px; font-size:1rem;}
 }
 
 /* ===== Resumen general de tareas (Historial) ===== */
