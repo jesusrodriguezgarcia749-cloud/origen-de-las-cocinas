@@ -875,3 +875,9 @@ body.mon-completo .mon-grid { grid-template-columns: repeat(auto-fill, minmax(21
 .ct-cat-no { background:rgba(166,61,47,.12); color:#A63D2F; }
 .ct-cat-btn { border:0; border-radius:999px; padding:1px 8px; font:inherit; font-size:.68rem; cursor:pointer; background:#A63D2F; color:#fff; }
 html[data-theme="dark"] .ct-cat-si { color:#8FD19E; } html[data-theme="dark"] .ct-cat-no { color:#F0A193; }
+
+/* Concentrado: descargar todo el trabajo de un alumno o del grupo */
+.ct-tabla th.ct-al .ct-al-n { display:block; }
+.ct-al-zip { margin-top:3px; border:1px solid var(--line); border-radius:999px; background:transparent; color:var(--ink-soft); font:inherit; font-size:.68rem; font-weight:600; padding:1px 8px; cursor:pointer; }
+.ct-al-zip:hover { background:var(--saffron, #C98A2C); color:#16130E; border-color:transparent; }
+.ct-zip-grupo { display:block; margin-top:6px; white-space:nowrap; }

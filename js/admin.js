@@ -1498,6 +1498,7 @@ async function calificarTareaDig(a, enCatalogo) {
 // Alumnos (filas) contra trabajos con Word (columnas). Arriba, resaltado, el proyecto «Mi Plato, Mi Historia»
 // por entrega. Cada celda abre una ventana para ver, calificar y pasar al siguiente alumno sin salir de la tabla.
 const TIPOS_WORD = ['atlas', 'cuadro', 'influencias', 'especias', 'recado', 'ficha', 'fusion', 'desarma'];
+const CLASE_NOMBRE_ZIP = 'Origen de las Cocinas';
 const CT = { cols: [], datos: {}, enCat: new Set(), grupo: null, dlg: null };
 const ctFecha = t => { const d = t && t.toDate ? t.toDate() : typeof t === 'number' ? new Date(t) : t ? new Date(t) : null; return d && !isNaN(d) ? d.toLocaleDateString('es-MX', { day: 'numeric', month: 'short' }) : ''; };
 const ctNorm = t => String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -1561,9 +1562,11 @@ function ctPintarTabla() {
   CT.cols = ctColumnas();
   const cont = document.getElementById('ct-tabla');
   cont.innerHTML = `<table class="ct-tabla"><thead><tr><th class="ct-al">Alumno</th>${CT.cols.map(c => `<th class="${c.tipo === 'proyecto' ? 'ct-proy' : ''}" data-col="${c.id}"><span class="ct-ico">${c.icono}</span><b>${escaparHTML(c.nombre)}</b><small>${escaparHTML(c.fecha)}</small>${ctMarcaCat(c)}</th>`).join('')}</tr></thead>
-    <tbody>${alumnosCache.map(al => `<tr data-al="${al.id}" data-n="${escaparHTML(ctNorm(al.nombre))}"><th class="ct-al" scope="row">${escaparHTML(al.nombre)}</th>${CT.cols.map(c => `<td class="${c.tipo === 'proyecto' ? 'ct-proy' : ''}" data-c="${c.id}"><span class="ct-carga">…</span></td>`).join('')}</tr>`).join('')}</tbody>
-    <tfoot><tr><th class="ct-al">Todos</th>${CT.cols.map(c => `<td class="${c.tipo === 'proyecto' ? 'ct-proy' : ''}"><button type="button" class="btn btn-small ct-zip" data-zip="${c.id}" title="Descargar el Word de todos en un .zip">⬇ .zip</button></td>`).join('')}</tr></tfoot></table>`;
+    <tbody>${alumnosCache.map(al => `<tr data-al="${al.id}" data-n="${escaparHTML(ctNorm(al.nombre))}"><th class="ct-al" scope="row"><span class="ct-al-n">${escaparHTML(al.nombre)}</span><button type="button" class="ct-al-zip" data-zipal="${al.id}" title="Descargar todo el trabajo de este alumno en un .zip">⬇ .zip</button></th>${CT.cols.map(c => `<td class="${c.tipo === 'proyecto' ? 'ct-proy' : ''}" data-c="${c.id}"><span class="ct-carga">…</span></td>`).join('')}</tr>`).join('')}</tbody>
+    <tfoot><tr><th class="ct-al">Todos<button type="button" class="btn btn-small ct-zip ct-zip-grupo" id="ct-zip-grupo" title="Un .zip con una carpeta (.zip) por alumno">⬇ Grupo completo</button></th>${CT.cols.map(c => `<td class="${c.tipo === 'proyecto' ? 'ct-proy' : ''}"><button type="button" class="btn btn-small ct-zip" data-zip="${c.id}" title="Descargar el Word de todos en un .zip">⬇ .zip</button></td>`).join('')}</tr></tfoot></table>`;
   cont.querySelectorAll('[data-zip]').forEach(b => b.addEventListener('click', () => ctZip(CT.cols.find(c => c.id === b.dataset.zip), b)));
+  cont.querySelectorAll('[data-zipal]').forEach(b => b.addEventListener('click', () => ctZipAlumno(alumnosCache.find(a => a.id === b.dataset.zipal), b)));
+  document.getElementById('ct-zip-grupo')?.addEventListener('click', e => ctZipGrupo(e.currentTarget));
   cont.querySelectorAll('[data-ctcat]').forEach(b => b.addEventListener('click', async () => {
     const a = TAREAS_DIG[b.dataset.ctcat]; if (!a) return;
     if (!confirm(`¿Agregar «${nombreCatalogo(a)}» a las tareas del ${parcialDe(a.fecha) === 'final' ? 'Examen Final' : 'Parcial 2'}?\n\nDesde este momento cuenta para la calificación: a quien no la entregue le contará como cero en el promedio de tareas.`)) return;
@@ -1613,6 +1616,51 @@ async function ctBajar(c, x, b) {
   if (!x || !x.word) return; b.disabled = true;
   try { const r = await ctWord(c, x); bajarArchivo(r.blob, r.archivo); } catch (e) { alert('No se pudo generar el Word: ' + (e.message || e)); } finally { b.disabled = false; }
 }
+// ---- Todo el trabajo de un alumno (individual y en equipo) y el grupo completo
+const ctListo = () => CT.cols.every(c => CT.datos[c.id]);
+const ctOrdenCols = () => [...CT.cols].sort((a, b) => (a.tipo === 'proyecto') - (b.tipo === 'proyecto') || String(a.orden || '').localeCompare(String(b.orden || '')));
+async function ctArchivosAlumno(al) {
+  const arch = [], ind = [], usados = new Set(); let n = 0;
+  for (const c of ctOrdenCols()) {
+    const x = ((CT.datos[c.id] || {}).filas || []).find(f => f.al && f.al.id === al.id);
+    const modo = x && x.eq ? `en equipo (${x.eq.nombre || 'equipo'})` : 'individual';
+    const ent = c.tipo === 'proyecto' ? (x && x.es && x.es.entregada ? 'entregada' : x && x.importado ? 'subió su Word' : x && x.word ? 'empezada, sin entregar' : 'sin trabajo')
+      : (x && x.entregado ? 'entregada' : x && x.word ? 'empezada, sin entregar' : 'sin trabajo');
+    const cal = x && x.cal !== undefined && x.cal !== null && x.cal !== '' ? ` · calificación: ${x.cal}` : (x && x.exento ? ' · exento' : '');
+    ind.push(`${c.nombre} (${c.fecha || 'sin fecha'}) · ${modo} · ${ent}${cal}`);
+    if (!x || !x.word) continue;
+    try {
+      const r = await ctWord(c, x); n++;
+      let nom = `${String(n).padStart(2, '0')}_${r.archivo}`; while (usados.has(nom)) nom = nom.replace(/\.docx$/, '_b.docx'); usados.add(nom);
+      arch.push([nom, new Uint8Array(await r.blob.arrayBuffer())]);
+    } catch (e) { ind[ind.length - 1] += ' · (no se pudo generar el Word)'; }
+  }
+  const txt = `${CLASE_NOMBRE_ZIP} · ${al.nombre}\nGrupo: ${grupoActivo} · descargado el ${new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' })}\n\n` + ind.map((l, i) => `${i + 1}. ${l}`).join('\r\n');
+  arch.unshift(['00_Indice.txt', '﻿' + txt.replace(/\r?\n/g, '\r\n')]);
+  return { arch, conWord: arch.length - 1 };
+}
+async function ctZipAlumno(al, b) {
+  const msg = document.getElementById('ct-zip-msg'); if (!al) return;
+  if (!ctListo()) { msg.textContent = 'Espera a que termine de cargar toda la tabla.'; return; }
+  b.disabled = true; msg.textContent = `Armando el trabajo de ${al.nombre}…`;
+  try { const { arch, conWord } = await ctArchivosAlumno(al); bajarArchivo(new Blob([zipDocx(arch)], { type: 'application/zip' }), `${slugArchivo(al.nombre)}_${slugArchivo(grupoActivo)}.zip`); msg.textContent = `✓ ${al.nombre}: ${conWord} documentos y el índice en el .zip`; }
+  catch (e) { msg.textContent = 'No se pudo armar el .zip: ' + (e.message || e); } finally { b.disabled = false; }
+}
+async function ctZipGrupo(b) {
+  const msg = document.getElementById('ct-zip-msg');
+  if (!ctListo()) { msg.textContent = 'Espera a que termine de cargar toda la tabla.'; return; }
+  b.disabled = true; const tot = alumnosCache.length, fuera = [];
+  try {
+    for (let i = 0; i < tot; i++) {
+      const al = alumnosCache[i]; msg.textContent = `Armando el grupo completo… ${i + 1} de ${tot} (${al.nombre})`;
+      const { arch } = await ctArchivosAlumno(al);
+      fuera.push([`${slugArchivo(al.nombre)}.zip`, new Uint8Array(await zipDocx(arch).arrayBuffer())]);
+    }
+    bajarArchivo(new Blob([zipDocx(fuera)], { type: 'application/zip' }), `${slugArchivo(CLASE_NOMBRE_ZIP)}_${slugArchivo(grupoActivo)}_grupo_completo.zip`);
+    msg.textContent = `✓ Grupo completo: ${tot} alumnos, cada uno en su propio .zip`;
+  } catch (e) { msg.textContent = 'No se pudo armar el .zip del grupo: ' + (e.message || e); } finally { b.disabled = false; }
+}
+
 async function ctZip(c, b) {
   const msg = document.getElementById('ct-zip-msg'), D = CT.datos[c.id];
   if (!D) { msg.textContent = 'Espera a que termine de cargar ese trabajo.'; return; }
