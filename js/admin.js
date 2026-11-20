@@ -17,7 +17,7 @@ import { resumenSemana } from "./resumen-semana.js?v=2026112001";
 import { vistaRapida } from "./matriz.js?v=2026110501";
 import { BASE, enEquipo, formacionDe, formaciones, ordenFormaciones, formacionDeTarea, equiposDe, tareasDeFormacion, urlUnir, qrSvg } from "./equipos.js";
 import { wordMiPlato, numsDe as numsMiPlato, estadoEntrega as estadoMiPlato, slugArchivo, ORDEN as ORDEN_MP } from "./mi-plato-word.js?v=2026102901";
-import { zipDocx } from "./docx-ites.js?v=2026111202";
+import { zipDocx, DocITES } from "./docx-ites.js?v=2026111202";
 import { wordTarea } from "./tarea-word.js?v=2026111901";
 import { FICHAS, sugerirFicha } from "./fichas-datos.js?v=2026111901";
 import { TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, nombreCatalogo, sugerirAtlas, sugerirCuadro, MIN_PALABRAS_CELDA, sugerirDesarma, CUADRO_MM, CUADROS, INFLUENCIAS, sugerirInfluencias, ESPECIAS, FUSION, sugerirFusion, subregionDe, sugerirEspecias } from "./clase-datos.js?v=2026111703";
@@ -1620,30 +1620,54 @@ async function ctBajar(c, x, b) {
 const ctListo = () => CT.cols.every(c => CT.datos[c.id]);
 const ctOrdenCols = () => [...CT.cols].sort((a, b) => (a.tipo === 'proyecto') - (b.tipo === 'proyecto') || String(a.orden || '').localeCompare(String(b.orden || '')));
 async function ctArchivosAlumno(al) {
-  const arch = [], ind = [], usados = new Set(); let n = 0;
-  for (const c of ctOrdenCols()) {
+  const arch = [], filas = [], usados = new Set();
+  const cols = ctOrdenCols();
+  for (let i = 0; i < cols.length; i++) {
+    const c = cols[i], num = String(i + 1).padStart(2, '0');
     const x = ((CT.datos[c.id] || {}).filas || []).find(f => f.al && f.al.id === al.id);
-    const modo = x && x.eq ? `en equipo (${x.eq.nombre || 'equipo'})` : 'individual';
-    const ent = c.tipo === 'proyecto' ? (x && x.es && x.es.entregada ? 'entregada' : x && x.importado ? 'subió su Word' : x && x.word ? 'empezada, sin entregar' : 'sin trabajo')
-      : (x && x.entregado ? 'entregada' : x && x.word ? 'empezada, sin entregar' : 'sin trabajo');
-    const cal = x && x.cal !== undefined && x.cal !== null && x.cal !== '' ? ` · calificación: ${x.cal}` : (x && x.exento ? ' · exento' : '');
-    ind.push(`${c.nombre} (${c.fecha || 'sin fecha'}) · ${modo} · ${ent}${cal}`);
-    if (!x || !x.word) continue;
-    try {
-      const r = await ctWord(c, x); n++;
-      let nom = `${String(n).padStart(2, '0')}_${r.archivo}`; while (usados.has(nom)) nom = nom.replace(/\.docx$/, '_b.docx'); usados.add(nom);
-      arch.push([nom, new Uint8Array(await r.blob.arrayBuffer())]);
-    } catch (e) { ind[ind.length - 1] += ' · (no se pudo generar el Word)'; }
+    const modo = c.tipo === 'proyecto' ? 'Proyecto' : x && x.eq ? `En equipo${x.eq.nombre ? ` (${x.eq.nombre})` : ''}` : 'Individual';
+    const est = c.tipo === 'proyecto'
+      ? (x && x.es && x.es.entregada ? 'ok' : x && x.importado ? 'ok' : x && x.word ? 'medio' : 'nada')
+      : (x && x.exento ? 'exento' : x && x.entregado ? 'ok' : x && x.word ? 'medio' : 'nada');
+    const cal = x && x.cal !== undefined && x.cal !== null && x.cal !== '' && !isNaN(Number(x.cal)) ? Number(x.cal) : null;
+    let archivo = '';
+    if (x && x.word) {
+      try {
+        const rr = await ctWord(c, x);
+        let nom = `${num}_${rr.archivo}`; while (usados.has(nom)) nom = nom.replace(/\.docx$/, '_b.docx'); usados.add(nom);
+        arch.push([nom, new Uint8Array(await rr.blob.arrayBuffer())]); archivo = nom;
+      } catch { archivo = '(no se pudo generar)'; }
+    }
+    filas.push({ num, c, modo, est, cal, archivo });
   }
-  const txt = `${CLASE_NOMBRE_ZIP} · ${al.nombre}\nGrupo: ${grupoActivo} · descargado el ${new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' })}\n\n` + ind.map((l, i) => `${i + 1}. ${l}`).join('\r\n');
-  arch.unshift(['00_Indice.txt', '﻿' + txt.replace(/\r?\n/g, '\r\n')]);
+  // Resumen en Word, legible para el docente y para Coordinación.
+  const n = k => filas.filter(f => f.est === k).length, conCal = filas.filter(f => f.cal !== null);
+  const prom = conCal.length ? Math.round(conCal.reduce((s, f) => s + f.cal, 0) / conCal.length * 10) / 10 : null;
+  const ESTADO = { ok: ['✓ Entregada', '2F6B3F', 'E3F0E5'], medio: ['✎ Empezada, sin entregar', '8F5F17', 'FBF0DC'], nada: ['✗ Sin trabajo', 'A63D2F', 'F8E3DF'], exento: ['○ Exento (falta justificada)', '5E584F', 'EFEBE3'] };
+  const D = new DocITES();
+  const hoyTxt = new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' });
+  D.h1('Resumen de trabajos del alumno', `${CLASE_NOMBRE_ZIP} · Grupo ${grupoActivo} · al ${hoyTxt}`);
+  D.p([[al.nombre, { fuente: 'Georgia', b: true, tam: 16 }]], { despues: 160 });
+  D.tabla([
+    [{ t: 'Actividades del curso', b: true }, { t: String(filas.length) }, { t: 'Entregadas', b: true }, { t: `${n('ok')} de ${filas.length - n('exento')}`, b: true, color: '2F6B3F' }],
+    [{ t: 'Empezadas, sin entregar', b: true }, { t: String(n('medio')), color: n('medio') ? '8F5F17' : null }, { t: 'Sin trabajo', b: true }, { t: String(n('nada')), b: !!n('nada'), color: n('nada') ? 'A63D2F' : null }],
+    [{ t: 'Promedio de lo calificado', b: true }, { t: prom === null ? 'Sin calificaciones' : `${prom} (de ${conCal.length} calificadas)`, b: prom !== null }, { t: 'Exento', b: true }, { t: String(n('exento')) }],
+  ], { anchos: [2700, 2000, 2400, 2260], encabezado: false, cebra: false });
+  D.h2('Detalle por actividad');
+  D.tabla([
+    ['N.º', 'Actividad', 'Fecha', 'Modalidad', 'Estado', 'Calif.'],
+    ...filas.map(f => { const [t, col, fondo] = ESTADO[f.est];
+      return [{ t: f.num, color: '5E584F' }, { t: f.c.nombre, b: true }, { t: f.c.fecha || '—', tam: 9 }, { t: f.modo, tam: 9 }, { t, color: col, b: true, fondo, tam: 9 }, { t: f.cal === null ? '—' : String(f.cal), b: f.cal !== null, color: f.cal !== null && f.cal < 6 ? 'A63D2F' : null }]; }),
+  ], { anchos: [620, 3300, 1500, 1500, 1720, 720] });
+  D.nota('Los documentos Word de este archivo llevan el mismo número de la tabla (por ejemplo, «03_…»). Las actividades sin trabajo no tienen documento.');
+  arch.unshift([`00_Resumen_${slugArchivo(al.nombre)}.docx`, new Uint8Array(await D.blob().arrayBuffer())]);
   return { arch, conWord: arch.length - 1 };
 }
 async function ctZipAlumno(al, b) {
   const msg = document.getElementById('ct-zip-msg'); if (!al) return;
   if (!ctListo()) { msg.textContent = 'Espera a que termine de cargar toda la tabla.'; return; }
   b.disabled = true; msg.textContent = `Armando el trabajo de ${al.nombre}…`;
-  try { const { arch, conWord } = await ctArchivosAlumno(al); bajarArchivo(new Blob([zipDocx(arch)], { type: 'application/zip' }), `${slugArchivo(al.nombre)}_${slugArchivo(grupoActivo)}.zip`); msg.textContent = `✓ ${al.nombre}: ${conWord} documentos y el índice en el .zip`; }
+  try { const { arch, conWord } = await ctArchivosAlumno(al); bajarArchivo(new Blob([zipDocx(arch)], { type: 'application/zip' }), `${slugArchivo(al.nombre)}_${slugArchivo(grupoActivo)}.zip`); msg.textContent = `✓ ${al.nombre}: el resumen y ${conWord} documentos en el .zip`; }
   catch (e) { msg.textContent = 'No se pudo armar el .zip: ' + (e.message || e); } finally { b.disabled = false; }
 }
 async function ctZipGrupo(b) {
