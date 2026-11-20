@@ -1550,13 +1550,30 @@ async function ctReunirProyecto(c) {
   }) };
 }
 
+// Marca en el encabezado si la tarea está en el catálogo (cuenta para la calificación) o no, con botón para agregarla.
+function ctMarcaCat(c) {
+  if (!c || c.tipo !== 'tarea') return '';
+  return CT.enCat.has(catalogoId(c.a.id))
+    ? '<span class="ct-cat ct-cat-si" title="Está en el catálogo: cuenta para la calificación">✓ En catálogo</span>'
+    : `<span class="ct-cat ct-cat-no" title="No está en el catálogo: no cuenta en el promedio">✗ Fuera del catálogo <button type="button" class="ct-cat-btn" data-ctcat="${c.a.id}">Agregar</button></span>`;
+}
 function ctPintarTabla() {
   CT.cols = ctColumnas();
   const cont = document.getElementById('ct-tabla');
-  cont.innerHTML = `<table class="ct-tabla"><thead><tr><th class="ct-al">Alumno</th>${CT.cols.map(c => `<th class="${c.tipo === 'proyecto' ? 'ct-proy' : ''}" data-col="${c.id}"><span class="ct-ico">${c.icono}</span><b>${escaparHTML(c.nombre)}</b><small>${escaparHTML(c.fecha)}</small></th>`).join('')}</tr></thead>
+  cont.innerHTML = `<table class="ct-tabla"><thead><tr><th class="ct-al">Alumno</th>${CT.cols.map(c => `<th class="${c.tipo === 'proyecto' ? 'ct-proy' : ''}" data-col="${c.id}"><span class="ct-ico">${c.icono}</span><b>${escaparHTML(c.nombre)}</b><small>${escaparHTML(c.fecha)}</small>${ctMarcaCat(c)}</th>`).join('')}</tr></thead>
     <tbody>${alumnosCache.map(al => `<tr data-al="${al.id}" data-n="${escaparHTML(ctNorm(al.nombre))}"><th class="ct-al" scope="row">${escaparHTML(al.nombre)}</th>${CT.cols.map(c => `<td class="${c.tipo === 'proyecto' ? 'ct-proy' : ''}" data-c="${c.id}"><span class="ct-carga">…</span></td>`).join('')}</tr>`).join('')}</tbody>
     <tfoot><tr><th class="ct-al">Todos</th>${CT.cols.map(c => `<td class="${c.tipo === 'proyecto' ? 'ct-proy' : ''}"><button type="button" class="btn btn-small ct-zip" data-zip="${c.id}" title="Descargar el Word de todos en un .zip">⬇ .zip</button></td>`).join('')}</tr></tfoot></table>`;
   cont.querySelectorAll('[data-zip]').forEach(b => b.addEventListener('click', () => ctZip(CT.cols.find(c => c.id === b.dataset.zip), b)));
+  cont.querySelectorAll('[data-ctcat]').forEach(b => b.addEventListener('click', async () => {
+    const a = TAREAS_DIG[b.dataset.ctcat]; if (!a) return;
+    if (!confirm(`¿Agregar «${nombreCatalogo(a)}» a las tareas del ${parcialDe(a.fecha) === 'final' ? 'Examen Final' : 'Parcial 2'}?\n\nDesde este momento cuenta para la calificación: a quien no la entregue le contará como cero en el promedio de tareas.`)) return;
+    b.disabled = true;
+    try {
+      await setDoc(doc(db, 'grupos', grupoActivo, 'tareas_catalogo', catalogoId(a.id)), { nombre: nombreCatalogo(a), fecha: a.fecha, parcial: parcialDe(a.fecha), digital: a.id, creado: serverTimestamp() });
+      CT.enCat.add(catalogoId(a.id)); const th = b.closest('th'); const m = th && th.querySelector('.ct-cat'); if (m) m.outerHTML = ctMarcaCat(CT.cols.find(c => c.id === a.id));
+      try { cargarCatalogo('tareas'); } catch { /* */ }
+    } catch (e) { b.disabled = false; alert('No se pudo agregar: ' + (e.message || e)); }
+  }));
   CT.cols.forEach(c => { if (CT.datos[c.id]) ctPintarColumna(c); });
   ctFiltrar();
 }

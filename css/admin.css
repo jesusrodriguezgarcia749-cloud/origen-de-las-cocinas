@@ -868,3 +868,10 @@ body.mon-completo .mon-grid { grid-template-columns: repeat(auto-fill, minmax(21
 .td-pro-form{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
 .td-pro-form select{width:auto;min-width:220px;}
 .td-pro-lista{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:4px;}
+
+/* Concentrado (Historial): marca de catálogo en cada encabezado */
+.ct-cat { display:inline-flex; flex-wrap:wrap; align-items:center; gap:4px; margin-top:5px; padding:2px 7px; border-radius:999px; font-size:.7rem; font-weight:700; line-height:1.3; }
+.ct-cat-si { background:rgba(63,122,79,.14); color:#2F6B3F; }
+.ct-cat-no { background:rgba(166,61,47,.12); color:#A63D2F; }
+.ct-cat-btn { border:0; border-radius:999px; padding:1px 8px; font:inherit; font-size:.68rem; cursor:pointer; background:#A63D2F; color:#fff; }
+html[data-theme="dark"] .ct-cat-si { color:#8FD19E; } html[data-theme="dark"] .ct-cat-no { color:#F0A193; }
