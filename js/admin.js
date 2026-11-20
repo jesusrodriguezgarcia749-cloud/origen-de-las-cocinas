@@ -10,9 +10,10 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 import { firebaseConfig } from "./firebase-config.js";
-import { calcularParcial, calcularCuatrimestre, calcularCuatrimestreRedondeado, zonaDeDecision, textoCalificacion, NOMBRES_PARCIAL, NOMBRES_REDONDEO, TOPES } from "./calculo.js";
+import { ACTIVIDADES_PARCIAL, calcularParcial, calcularCuatrimestre, calcularCuatrimestreRedondeado, zonaDeDecision, textoCalificacion, NOMBRES_PARCIAL, NOMBRES_REDONDEO, TOPES } from "./calculo.js";
 import { reporteGrupo, reporteAlumno, reporteExamenAlumno, reporteExamenGrupo } from "./reporte.js";
 import { resumenGeneral } from "./resumen-tareas.js?v=2026111801";
+import { resumenSemana } from "./resumen-semana.js?v=2026112001";
 import { vistaRapida } from "./matriz.js?v=2026110501";
 import { BASE, enEquipo, formacionDe, formaciones, ordenFormaciones, formacionDeTarea, equiposDe, tareasDeFormacion, urlUnir, qrSvg } from "./equipos.js";
 import { wordMiPlato, numsDe as numsMiPlato, estadoEntrega as estadoMiPlato, slugArchivo, ORDEN as ORDEN_MP } from "./mi-plato-word.js?v=2026102901";
@@ -2787,6 +2788,11 @@ function tiLeer(id) {
   JV.proy = false; ov.classList.add('jv-leer'); ov.hidden = false;
   document.getElementById('jv-cerrar').addEventListener('click', () => { ov.hidden = true; });
 }
+
+// ---------- RESUMEN DE LA SEMANA (Historial) ----------
+on('btn-resumen-semana', 'click', () => { const p = parcialDeHoy(); resumenSemana(document.getElementById('rsem-cont'), {
+  clase: 'Origen de las Cocinas', grupo: grupoActivo, alumnos: alumnosCache, parcial: p, nombresParcial: NOMBRES_PARCIAL,
+  datosDeAlumno, calcularParcial, temasRepaso: ACTIVIDADES_PARCIAL[p] || [] }); });
 
 // ---------- RESUMEN GENERAL (Historial) ----------
 on('btn-resumen-general', 'click', () => resumenGeneral(document.getElementById('rs-cont'), {
