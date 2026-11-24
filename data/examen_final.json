@@ -1311,6 +1311,549 @@
    "correcta": 2,
    "explicacion": "Se abrió sobre todo en la segunda mitad del siglo XX.",
    "gemela": "oc-196"
+  },
+  {
+   "subtema": "1.1",
+   "tipo": "caso",
+   "pregunta": "Un compañero escribe en su ensayo: «Según Cunqueiro, Carlomagno comía exactamente lo que se narra en La cocina cristiana de Occidente», y no cita otra fuente. ¿Qué le recomendarías?",
+   "opciones": [
+    "Contrastarlo con una fuente histórica, porque Cunqueiro mezcla hechos con anécdotas literarias",
+    "Nada: toda obra publicada sobre cocina es una fuente histórica confiable",
+    "Quitar la cita, porque un escritor nunca puede citarse en un trabajo académico",
+    "Cambiarla por una receta de Apicio, que es más antigua"
+   ],
+   "correcta": 0,
+   "explicacion": "Cunqueiro escribe con estilo literario: sirve, pero hay que contrastarlo (Tema 1.1).",
+   "id": "fin-088"
+  },
+  {
+   "subtema": "1.2.1",
+   "tipo": "caso",
+   "pregunta": "En una recreación de una cena romana, el anfitrión sirve primero carnes asadas y al final huevos y aceitunas. ¿Qué error histórico cometió?",
+   "opciones": [
+    "Ninguno: en Roma el orden de los tiempos era libre",
+    "Debió servir todo en un thermopolium",
+    "Invirtió el orden: huevos, aceitunas y vino endulzado iban al inicio, en la gustatio",
+    "Los romanos no conocían las aceitunas"
+   ],
+   "correcta": 2,
+   "explicacion": "La gustatio era la entrada de la cena romana.",
+   "id": "fin-089"
+  },
+  {
+   "subtema": "1.2.2",
+   "tipo": "caso",
+   "pregunta": "Un guion de película muestra a un noble medieval que agrega vainilla y chocolate a su postre en el año 1300. ¿Qué observación histórica es la correcta?",
+   "opciones": [
+    "Solo es error el chocolate; la vainilla sí era medieval",
+    "Es correcto, porque las especias se usaban para conservar",
+    "Es correcto: los monasterios cultivaban vainilla",
+    "Es un anacronismo: vainilla y cacao son americanos y llegaron a Europa después de 1492"
+   ],
+   "correcta": 3,
+   "explicacion": "Ambos ingredientes son americanos (intercambio colombino).",
+   "id": "fin-090"
+  },
+  {
+   "subtema": "1.2.4",
+   "tipo": "caso",
+   "pregunta": "Una chef quiere un menú que muestre el intercambio colombino «en las dos direcciones». ¿Qué combinación lo logra?",
+   "opciones": [
+    "Un platillo con maíz y cacao americanos junto a otro con trigo y res llegados de Europa",
+    "Un menú de especias asiáticas medievales",
+    "Solo platillos con maíz, cacao y jitomate",
+    "Solo platillos con trigo, res y vino"
+   ],
+   "correcta": 0,
+   "explicacion": "El intercambio fue de ida y vuelta: América aportó maíz y cacao; Europa, trigo y ganado.",
+   "id": "fin-091"
+  },
+  {
+   "subtema": "1.2.4",
+   "tipo": "caso",
+   "pregunta": "Un estudiante afirma que La Varenne «siguió la cocina medieval de especias exóticas». ¿Cómo lo corriges?",
+   "opciones": [
+    "La Varenne inventó el microondas",
+    "La Varenne fue un cocinero romano",
+    "La Varenne (1651) cambió las especias exóticas por hierbas locales frescas como perejil y tomillo",
+    "Tiene razón: La Varenne usó más especias que nadie"
+   ],
+   "correcta": 2,
+   "explicacion": "Le Cuisinier françois marca el paso a una cocina de hierbas locales.",
+   "id": "fin-092"
+  },
+  {
+   "subtema": "1.4",
+   "tipo": "caso",
+   "pregunta": "Una cocina escolar sin gas va a elegir equipo y pregunta qué tecnología llegó primero al hogar. ¿Cuál es la secuencia correcta para explicarle?",
+   "opciones": [
+    "Inducción, microondas y después la estufa eléctrica",
+    "Microondas en 1859 y estufa eléctrica en 1945",
+    "Patente de cocina eléctrica (1859), estufa eléctrica doméstica (finales del siglo XIX), microondas (1945) e inducción comercial (años setenta)",
+    "Todas aparecieron al mismo tiempo en 1970"
+   ],
+   "correcta": 2,
+   "explicacion": "Es la cronología de la cocina eléctrica del Tema 1.4.",
+   "id": "fin-093"
+  },
+  {
+   "subtema": "1.5",
+   "tipo": "caso",
+   "pregunta": "Una empresa debe dar de comer a 300 invitados de una boda con menú cerrado y número de personas confirmado. ¿Qué tipo de cocina es y por qué?",
+   "opciones": [
+    "Económica, porque es barata",
+    "De banquetes y eventos, porque se planea conociendo de antemano el número de comensales",
+    "Institucional, porque atiende a muchas personas todos los días",
+    "Molecular, porque usa técnicas de laboratorio"
+   ],
+   "correcta": 1,
+   "explicacion": "El banquete se organiza con un número conocido de invitados.",
+   "id": "fin-094"
+  },
+  {
+   "subtema": "1.6",
+   "tipo": "caso",
+   "pregunta": "Un restaurante de tu ciudad usa solo productos de productores locales, defiende recetas tradicionales y rechaza la comida rápida. ¿A qué movimiento se parece más?",
+   "opciones": [
+    "A la codificación de Escoffier",
+    "A Slow Food, fundado en Italia en 1989",
+    "A la nouvelle cuisine de 1973",
+    "A la carne cultivada en laboratorio"
+   ],
+   "correcta": 1,
+   "explicacion": "Slow Food reaccionó contra la comida rápida y la pérdida de lo local.",
+   "id": "fin-095"
+  },
+  {
+   "subtema": "2.1",
+   "tipo": "caso",
+   "pregunta": "En tu casa el pozole se come solo el 15 de septiembre, pero en una fonda se vende todos los jueves. Con la tipología del Tema 2, ¿cómo lo explicas?",
+   "opciones": [
+    "Por la época: el pozole es de vanguardia",
+    "Por el régimen: el mismo platillo es festivo en un contexto y cotidiano en otro",
+    "Por la religión: el pozole es un alimento ritual",
+    "No se puede clasificar"
+   ],
+   "correcta": 1,
+   "explicacion": "El régimen depende de la frecuencia y el contexto.",
+   "id": "fin-096"
+  },
+  {
+   "subtema": "2.3",
+   "tipo": "caso",
+   "pregunta": "Vas a preparar un banquete para invitados judíos que siguen el kashrut y musulmanes que comen halal. ¿Qué decisión respeta a ambos grupos?",
+   "opciones": [
+    "Servir cerdo bien cocido",
+    "Evitar el cerdo y usar carne de sacrificio ritual que drene la sangre, según cada tradición",
+    "No importa: las dos reglas son iguales a las del budismo",
+    "Servir solo mariscos, que ambas permiten"
+   ],
+   "correcta": 1,
+   "explicacion": "Ambas prohíben el cerdo y regulan el sacrificio (shejitá y dhabihah).",
+   "id": "fin-097"
+  },
+  {
+   "subtema": "2.3",
+   "tipo": "caso",
+   "pregunta": "Un cocinero prepara un curry vegetariano con cebolla y ajo para un invitado jainista muy devoto, y este no lo come. ¿Por qué?",
+   "opciones": [
+    "Porque el curry está prohibido en la India",
+    "Porque el ajo es un alimento de fiesta",
+    "Porque arrancar raíces y bulbos mata a la planta entera, y eso va contra el ahimsa",
+    "Porque los jainistas solo comen carne"
+   ],
+   "correcta": 2,
+   "explicacion": "El ahimsa (no violencia) llevado al extremo excluye raíces y bulbos.",
+   "id": "fin-098"
+  },
+  {
+   "subtema": "2.4",
+   "tipo": "caso",
+   "pregunta": "Un restaurante en Lima sirve sashimi con ají amarillo y limón, y otro en Copenhague, musgo recolectado y verduras fermentadas. ¿Qué corrientes representan?",
+   "opciones": [
+    "Nouvelle cuisine los dos",
+    "Nikkei el primero y New Nordic el segundo",
+    "Cocina institucional los dos",
+    "Slow Food el primero y Escoffier el segundo"
+   ],
+   "correcta": 1,
+   "explicacion": "Nikkei une técnica japonesa y sazón peruana; New Nordic se basa en recolección y fermentación.",
+   "id": "fin-099"
+  },
+  {
+   "subtema": "3.1",
+   "tipo": "caso",
+   "pregunta": "Una alumna dice que la vainilla es «un producto africano» porque Madagascar es el mayor productor. ¿Qué le respondes?",
+   "opciones": [
+    "Es de origen asiático",
+    "Tiene razón: la vainilla nació en Madagascar",
+    "Es de origen europeo",
+    "Es de origen mexicano (Papantla, Veracruz); Madagascar es hoy el mayor productor"
+   ],
+   "correcta": 3,
+   "explicacion": "La paradoja de la vainilla: origen mexicano, producción africana.",
+   "id": "fin-100"
+  },
+  {
+   "subtema": "3.2",
+   "tipo": "caso",
+   "pregunta": "En una exposición alguien afirma que «antes de la Conquista se comía muy poco y mal en México». ¿Qué evidencia del Tema 3 usarías para refutarlo?",
+   "opciones": [
+    "Que el chocolate se bebía caliente con leche",
+    "El Códice Florentino registra casi cien insectos comestibles y más de setenta hierbas, además de las chinampas",
+    "Que los mayas compraban especias asiáticas",
+    "Que en México ya había reses y trigo antes de 1492"
+   ],
+   "correcta": 1,
+   "explicacion": "La diversidad documentada por Sahagún y el sistema de chinampas desmienten esa idea.",
+   "id": "fin-101"
+  },
+  {
+   "subtema": "3.2",
+   "tipo": "caso",
+   "pregunta": "Un turista pide en Campeche «un chocolate como el de los mayas» y le sirven uno caliente, dulce y con leche. ¿Qué tan fiel es?",
+   "opciones": [
+    "Fiel, porque así lo describe el Códice Florentino",
+    "Poco: en Mesoamérica se bebía espumoso, amargo y frío, a veces con chile; el dulce con leche es europeo",
+    "Fiel, solo le faltó vainilla de Madagascar",
+    "Totalmente fiel a la receta maya"
+   ],
+   "correcta": 1,
+   "explicacion": "El chocolate dulce con leche es una adaptación europea posterior.",
+   "id": "fin-102"
+  },
+  {
+   "subtema": "3.3",
+   "tipo": "caso",
+   "pregunta": "En un restaurante indio del norte te sirven naan, yogur y platillos con ghee hechos en tandoor. ¿Qué historia explica ese estilo?",
+   "opciones": [
+    "La llegada de la papa desde América",
+    "La influencia de los monasterios medievales",
+    "La herencia de la corte mogol, de raíz persa y centroasiática",
+    "El movimiento Slow Food"
+   ],
+   "correcta": 2,
+   "explicacion": "El norte de la India conserva la herencia mogol.",
+   "id": "fin-103"
+  },
+  {
+   "subtema": "3.4",
+   "tipo": "caso",
+   "pregunta": "Viajas a Sarajevo y comes burek y ćevapi, muy parecidos a lo que comiste en Estambul. ¿Cómo lo explica el Tema 3?",
+   "opciones": [
+    "Porque Sarajevo es parte de Asia Central",
+    "Por la influencia de la nouvelle cuisine",
+    "Por cinco siglos de dominio otomano en los Balcanes",
+    "Por el intercambio colombino"
+   ],
+   "correcta": 2,
+   "explicacion": "Las cocinas no se desarrollan aisladas: conquista y comercio las mezclan.",
+   "id": "fin-104"
+  },
+  {
+   "subtema": "4.1",
+   "tipo": "caso",
+   "pregunta": "Un nutriólogo dice que «comer es solo nutrirse». Con el Tema 4, ¿cuál es la respuesta más completa?",
+   "opciones": [
+    "Comer cubre una necesidad biológica, pero también es identidad, religión, economía y vínculo social",
+    "Comer es solo un placer y no una necesidad",
+    "Tiene razón: la gastronomía no tiene relación con la cultura",
+    "Solo la nobleza necesitaba alimentarse"
+   ],
+   "correcta": 0,
+   "explicacion": "La gastronomía nace del cruce entre lo biológico y lo cultural.",
+   "id": "fin-105"
+  },
+  {
+   "subtema": "4.1",
+   "tipo": "caso",
+   "pregunta": "Un país depende casi por completo de un solo cultivo y una plaga lo destruye. ¿Qué caso histórico del Tema 4 ilustra este riesgo?",
+   "opciones": [
+    "La fundación de Le Cordon Bleu en 1895",
+    "El saqueo de Campeche en 1685",
+    "El cierre de El Bulli en 2011",
+    "La gran hambruna irlandesa de 1845 a 1852 por el tizón de la papa"
+   ],
+   "correcta": 3,
+   "explicacion": "Irlanda dependía de la papa; el tizón tardío provocó la hambruna.",
+   "id": "fin-106"
+  },
+  {
+   "subtema": "4.3",
+   "tipo": "caso",
+   "pregunta": "Un político organiza cenas fastuosas para impresionar a otros gobernantes. ¿Con qué práctica histórica la relacionas?",
+   "opciones": [
+    "Con la dieta ital rastafari",
+    "Con la table d'hôte de las posadas",
+    "Con el grand couvert de Versalles y las especias medievales: la mesa como exhibición de poder",
+    "Con los comedores institucionales"
+   ],
+   "correcta": 2,
+   "explicacion": "La mesa ha sido un instrumento político (Tema 4.3).",
+   "id": "fin-107"
+  },
+  {
+   "subtema": "4.4",
+   "tipo": "caso",
+   "pregunta": "Un estudiante dice que el restaurante existió siempre. ¿Qué dato del Tema 4 lo corrige?",
+   "opciones": [
+    "Los romanos inventaron el restaurante con menú a la carta",
+    "Antes se comía en posadas a hora fija y mesa común; «restaurant» designaba al principio un caldo reconstituyente",
+    "El restaurante nació en los monasterios",
+    "El restaurante nació en el siglo XX con la comida rápida"
+   ],
+   "correcta": 1,
+   "explicacion": "El restaurante moderno es una novedad frente a la table d'hôte.",
+   "id": "fin-108"
+  },
+  {
+   "subtema": "4.5",
+   "tipo": "caso",
+   "pregunta": "Una escuela de gastronomía organiza su cocina con jefe, sous chef y cocineros de partida, y enseña técnicas estandarizadas. ¿A quién le debe ese modelo?",
+   "opciones": [
+    "A Carlo Petrini y Slow Food",
+    "A Brillat-Savarin y su Fisiología del gusto",
+    "A Escoffier y su sistema de brigada",
+    "A Apicio y De re coquinaria"
+   ],
+   "correcta": 2,
+   "explicacion": "Escoffier creó la brigada y un cuerpo de técnicas enseñables.",
+   "id": "fin-109"
+  },
+  {
+   "subtema": "1.2.2",
+   "tipo": "verdadero_falso",
+   "pregunta": "Las especias en la Edad Media se usaban sobre todo para conservar la carne.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "Falso: eran un símbolo de riqueza y estatus.",
+   "id": "fin-110"
+  },
+  {
+   "subtema": "3.2",
+   "tipo": "verdadero_falso",
+   "pregunta": "Antes de 1492 ya había reses en América.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 1,
+   "explicacion": "Falso: el ganado llegó con los españoles.",
+   "id": "fin-111"
+  },
+  {
+   "subtema": "4.4",
+   "tipo": "verdadero_falso",
+   "pregunta": "Durante el Porfiriato la élite comía a la francesa, mientras las fondas sostenían la comida popular.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 0,
+   "explicacion": "Verdadero.",
+   "id": "fin-112"
+  },
+  {
+   "subtema": "4.5",
+   "tipo": "verdadero_falso",
+   "pregunta": "Le Cordon Bleu se fundó antes que el Culinary Institute of America.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 0,
+   "explicacion": "Verdadero: 1895 y 1946.",
+   "id": "fin-113"
+  },
+  {
+   "subtema": "3.5",
+   "tipo": "verdadero_falso",
+   "pregunta": "El kumara se conservaba en fosas durante el invierno maorí.",
+   "opciones": [
+    "Verdadero",
+    "Falso"
+   ],
+   "correcta": 0,
+   "explicacion": "Verdadero.",
+   "id": "fin-114"
+  },
+  {
+   "subtema": "1.6",
+   "tipo": "relacionar",
+   "pregunta": "Relaciona cada corriente con su rasgo.",
+   "pares": [
+    {
+     "izquierda": "Nouvelle cuisine",
+     "derecha": "Manifiesto de diez mandamientos de 1973"
+    },
+    {
+     "izquierda": "Slow Food",
+     "derecha": "Reacción a la comida rápida, Italia 1989"
+    },
+    {
+     "izquierda": "New Nordic",
+     "derecha": "Recolección silvestre y fermentación"
+    },
+    {
+     "izquierda": "El Bulli",
+     "derecha": "Cerró en 2011 para dedicarse a la creación"
+    }
+   ],
+   "explicacion": "Corrientes del siglo XX y XXI.",
+   "id": "fin-115"
+  },
+  {
+   "subtema": "2.3",
+   "tipo": "relacionar",
+   "pregunta": "Relaciona cada práctica con su tradición religiosa.",
+   "pares": [
+    {
+     "izquierda": "Kashrut",
+     "derecha": "Judaísmo"
+    },
+    {
+     "izquierda": "Iftar",
+     "derecha": "Islam"
+    },
+    {
+     "izquierda": "Langar",
+     "derecha": "Sijismo"
+    },
+    {
+     "izquierda": "Ital",
+     "derecha": "Rastafari"
+    }
+   ],
+   "explicacion": "Tipología por religión.",
+   "id": "fin-116"
+  },
+  {
+   "subtema": "1.2",
+   "tipo": "relacionar",
+   "pregunta": "Relaciona cada obra con su época.",
+   "pares": [
+    {
+     "izquierda": "De re coquinaria",
+     "derecha": "Antigua Roma"
+    },
+    {
+     "izquierda": "Le Viandier",
+     "derecha": "Edad Media"
+    },
+    {
+     "izquierda": "Opera de Scappi",
+     "derecha": "Renacimiento"
+    },
+    {
+     "izquierda": "Le Cuisinier françois",
+     "derecha": "Edad Moderna"
+    }
+   ],
+   "explicacion": "Recetarios que marcan cada época.",
+   "id": "fin-117"
+  },
+  {
+   "subtema": "3.1",
+   "tipo": "relacionar",
+   "pregunta": "Relaciona cada alimento o práctica con su región.",
+   "pares": [
+    {
+     "izquierda": "Injera de teff",
+     "derecha": "Etiopía"
+    },
+    {
+     "izquierda": "Braai",
+     "derecha": "Sudáfrica"
+    },
+    {
+     "izquierda": "Charqui",
+     "derecha": "Andes"
+    },
+    {
+     "izquierda": "Bushfood",
+     "derecha": "Australia"
+    }
+   ],
+   "explicacion": "Cocinas del mundo.",
+   "id": "fin-118"
+  },
+  {
+   "subtema": "4.5",
+   "tipo": "relacionar",
+   "pregunta": "Relaciona cada figura con su aportación.",
+   "pares": [
+    {
+     "izquierda": "Escoffier",
+     "derecha": "La brigada de cocina"
+    },
+    {
+     "izquierda": "Julia Child",
+     "derecha": "La cocina francesa en la televisión"
+    },
+    {
+     "izquierda": "Paul Bocuse",
+     "derecha": "El campeonato Bocuse d'Or"
+    },
+    {
+     "izquierda": "Marthe Distel",
+     "derecha": "Origen de Le Cordon Bleu"
+    }
+   ],
+   "explicacion": "La cocina profesional.",
+   "id": "fin-119"
+  },
+  {
+   "subtema": "3.3",
+   "tipo": "relacionar",
+   "pregunta": "Relaciona cada platillo con su origen.",
+   "pares": [
+    {
+     "izquierda": "Pato laqueado",
+     "derecha": "Pekín, dinastía Yuan"
+    },
+    {
+     "izquierda": "Kumis",
+     "derecha": "Estepas de Asia Central"
+    },
+    {
+     "izquierda": "Burek",
+     "derecha": "Herencia otomana"
+    },
+    {
+     "izquierda": "Caviar",
+     "derecha": "Rusia zarista"
+    }
+   ],
+   "explicacion": "Cocinas de Asia y Europa.",
+   "id": "fin-120"
+  },
+  {
+   "subtema": "4.2",
+   "tipo": "relacionar",
+   "pregunta": "Relaciona cada elemento romano con su descripción.",
+   "pares": [
+    {
+     "izquierda": "Garum",
+     "derecha": "Salsa de pescado fermentado"
+    },
+    {
+     "izquierda": "Thermopolium",
+     "derecha": "Mostrador de comida caliente en la calle"
+    },
+    {
+     "izquierda": "Annona",
+     "derecha": "Reparto público de grano"
+    },
+    {
+     "izquierda": "Gustatio",
+     "derecha": "Entrada de la cena"
+    }
+   ],
+   "explicacion": "Roma y la cocina refinada.",
+   "id": "fin-121"
   }
  ]
 }
