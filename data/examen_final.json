@@ -28,12 +28,12 @@
    "tipo": "opcion_multiple",
    "pregunta": "¿Qué idea resume el aforismo «Dime lo que comes y te diré quién eres»?",
    "opciones": [
-    "Que cada persona debería comer solo lo que produce su región",
-    "Que el gusto es una sensación física igual en todos los humanos",
-    "Que la comida revela la identidad de una persona o un pueblo",
-    "Que la salud depende sobre todo de la cantidad que se come"
+    "Que la salud de una persona depende de lo que come",
+    "Que el gusto se educa y cambia con la clase social",
+    "Que cada pueblo debe comer solo lo que produce su región",
+    "Que la comida revela la identidad de una persona o un pueblo"
    ],
-   "correcta": 2,
+   "correcta": 3,
    "explicacion": "Para Brillat-Savarin, la comida expresa quién eres.",
    "gemela": "oc-3"
   },
@@ -688,12 +688,12 @@
    "tipo": "opcion_multiple",
    "pregunta": "En el antiguo Egipto, el pan y la cerveza eran además…",
    "opciones": [
-    "ofrendas exclusivas para los faraones",
-    "productos importados de Mesopotamia",
-    "parte del salario de los trabajadores",
-    "alimentos prohibidos para los esclavos"
+    "alimentos que solo se consumían en las fiestas del Nilo",
+    "productos que Egipto importaba de Mesopotamia",
+    "ofrendas reservadas a los templos y a los sacerdotes",
+    "parte del salario de los trabajadores"
    ],
-   "correcta": 2,
+   "correcta": 3,
    "explicacion": "Se pagaba con pan y cerveza.",
    "gemela": "oc-203"
   },
@@ -718,12 +718,12 @@
    "tipo": "opcion_multiple",
    "pregunta": "¿Qué cifra del Códice Florentino desmiente la idea de una dieta prehispánica pobre?",
    "opciones": [
-    "Tres variedades de maíz cultivadas",
-    "Una sola forma de preparar el cacao, siempre caliente",
+    "Más de sesenta variedades de maíz cultivadas",
     "Casi un centenar de insectos comestibles",
-    "Diez hierbas comestibles en total"
+    "Unas cuarenta clases de aves domésticas",
+    "Cerca de treinta formas de preparar el cacao"
    ],
-   "correcta": 2,
+   "correcta": 1,
    "explicacion": "Sahagún registra casi cien insectos y más de setenta hierbas.",
    "gemela": "oc-108"
   },
@@ -793,12 +793,12 @@
    "tipo": "opcion_multiple",
    "pregunta": "¿De dónde viene el ganado del asado del Cono Sur?",
    "opciones": [
-    "De la domesticación prehispánica de la llama",
-    "De la ganadería que llevaron los españoles",
-    "De los rebaños de bisontes de las pampas",
-    "De la migración italiana del siglo XIX"
+    "De los rebaños que llevaron los portugueses a Brasil desde África",
+    "De la migración italiana y alemana del siglo XIX",
+    "De la domesticación prehispánica de la llama y la alpaca",
+    "De la ganadería que llevaron los españoles"
    ],
-   "correcta": 1,
+   "correcta": 3,
    "explicacion": "No había reses en América antes de 1492.",
    "gemela": "oc-125"
   },
@@ -958,12 +958,12 @@
    "tipo": "opcion_multiple",
    "pregunta": "¿Qué región NO se estudia entre las cinco del Tema 3?",
    "opciones": [
-    "Oceanía y el Pacífico",
-    "Asia",
+    "La Antártida",
+    "Oceanía",
     "África",
-    "La Antártida"
+    "Asia"
    ],
-   "correcta": 3,
+   "correcta": 0,
    "explicacion": "África, América, Asia, Europa y Oceanía.",
    "gemela": "oc-153"
   },
@@ -973,12 +973,12 @@
    "tipo": "opcion_multiple",
    "pregunta": "¿Qué idea atraviesa todo el Tema 3?",
    "opciones": [
-    "Las cocinas dependen solo del clima",
-    "Casi ninguna cocina se desarrolló aislada",
-    "Las cocinas europeas influyeron en todas las demás",
-    "Cada cocina nació pura y luego se degradó"
+    "Las cocinas más antiguas conservaron su forma original hasta hoy",
+    "Las cocinas europeas definieron las técnicas que luego adoptaron las demás",
+    "Casi ninguna cocina se desarrolló aislada: comercio, migración y conquista las mezclan",
+    "Cada cocina refleja sobre todo su clima y los cultivos de su territorio"
    ],
-   "correcta": 1,
+   "correcta": 2,
    "explicacion": "Comercio, migración y conquista explican cada cocina.",
    "gemela": "oc-154"
   },
@@ -1003,12 +1003,12 @@
    "tipo": "opcion_multiple",
    "pregunta": "¿Qué idea del Tema 4 contradice la frase «comer es solo nutrirse»?",
    "opciones": [
-    "Comer dejó de ser una necesidad al nacer la agricultura",
-    "Comer se volvió también identidad, religión, economía y vínculo",
-    "Comer depende sobre todo de la cantidad de calorías",
-    "Comer es un acto individual, biológico, sin una relación real con la cultura"
+    "Comer depende sobre todo del clima y de los cultivos de cada región",
+    "Comer es un placer reservado a las élites desde la Antigüedad",
+    "Comer se refinó cuando la agricultura eliminó por completo el hambre",
+    "Comer se volvió también identidad, religión, economía y vínculo"
    ],
-   "correcta": 1,
+   "correcta": 3,
    "explicacion": "La gastronomía nace en el cruce de lo biológico y lo cultural.",
    "gemela": "oc-158"
   },
@@ -1018,12 +1018,12 @@
    "tipo": "opcion_multiple",
    "pregunta": "¿Quién tuvo históricamente acceso al refinamiento gastronómico?",
    "opciones": [
-    "Quien vivía en épocas de hambruna",
-    "Quien practicaba una religión sin prohibiciones",
-    "Quien vivía en el campo, cerca de los cultivos",
-    "Quien ya tenía resuelta la necesidad básica"
+    "Quien vivía cerca de las rutas de las especias",
+    "Quien ya tenía resuelta la necesidad básica",
+    "Quien practicaba una religión sin prohibiciones alimentarias",
+    "Quien trabajaba en las cocinas de los monasterios"
    ],
-   "correcta": 3,
+   "correcta": 1,
    "explicacion": "La nobleza, la corte, la clase mercantil.",
    "gemela": "oc-162"
   },
@@ -1093,12 +1093,12 @@
    "tipo": "opcion_multiple",
    "pregunta": "¿Sobre qué base se construyó la cocina medieval de Le Viandier?",
    "opciones": [
-    "Sobre la cocina china de la Ruta de la Seda",
-    "Sobre la cocina mexica que llegó a Europa tras la conquista",
-    "Sobre la cocina nórdica de los vikingos",
-    "Sobre la herencia difundida por el Imperio romano"
+    "Sobre la cocina bizantina de Constantinopla",
+    "Sobre la herencia difundida por el Imperio romano",
+    "Sobre las recetas de los monasterios irlandeses",
+    "Sobre la cocina árabe que llegó con al-Ándalus"
    ],
-   "correcta": 3,
+   "correcta": 1,
    "explicacion": "Roma difundió cultivos y técnicas.",
    "gemela": "oc-167"
   },
@@ -1108,10 +1108,10 @@
    "tipo": "opcion_multiple",
    "pregunta": "¿Qué tienen en común las especias medievales y el grand couvert de Versalles?",
    "opciones": [
-    "Ambos buscaban conservar los alimentos",
-    "Ambos nacieron en la corte otomana",
+    "Ambos buscaban alimentar al pueblo en las fiestas",
+    "Ambos eran prácticas exclusivas de la Iglesia",
     "Ambos usan la mesa para exhibir poder",
-    "Ambos eran costumbres del pueblo llano"
+    "Ambos servían para conservar los alimentos de la corte"
    ],
    "correcta": 2,
    "explicacion": "La mesa como instrumento político.",
@@ -1138,12 +1138,12 @@
    "tipo": "opcion_multiple",
    "pregunta": "¿Qué se sabe del banquete manchú-han de la corte Qing?",
    "opciones": [
-    "Era la comida diaria del pueblo de Pekín",
-    "Lo inventó un cocinero francés contratado por la corte de Pekín",
+    "Lo describió Marco Polo en su visita a la corte",
     "Se conoce más por la tradición que por documentos",
-    "Se sirvió una sola vez, en el siglo XX"
+    "Se servía a diario en el palacio para los funcionarios",
+    "Está documentado plato por plato en los archivos imperiales"
    ],
-   "correcta": 2,
+   "correcta": 1,
    "explicacion": "Según la tradición, más de cien platos en varios días.",
    "gemela": "oc-174"
   },
@@ -1198,10 +1198,10 @@
    "tipo": "opcion_multiple",
    "pregunta": "¿Qué papel tuvieron las fondas durante el Porfiriato?",
    "opciones": [
-    "Sirvieron los banquetes oficiales en francés",
-    "Fueron prohibidas por el gobierno de Díaz",
+    "Sirvieron los banquetes oficiales de la élite porfiriana",
+    "Fueron sustituidas por restaurantes de estilo francés",
     "Sostuvieron la comida popular de la mayoría",
-    "Atendieron solo a los extranjeros ricos"
+    "Atendieron sobre todo a los extranjeros de paso"
    ],
    "correcta": 2,
    "explicacion": "La élite cenaba en francés; el pueblo, en fondas.",
@@ -1213,12 +1213,12 @@
    "tipo": "opcion_multiple",
    "pregunta": "¿Qué une a los thermopolia romanos con las fondas mexicanas?",
    "opciones": [
-    "Ambos alimentaban al pueblo junto a la alta cocina",
-    "Ambos servían menús escritos en francés",
-    "Ambos nacieron como consecuencia de la Revolución Francesa",
-    "Ambos eran comedores de la nobleza"
+    "Ambos fueron el origen directo del restaurante francés",
+    "Ambos alimentaban al pueblo, en paralelo a la alta cocina",
+    "Ambos nacieron como comedores de beneficencia religiosa",
+    "Ambos servían los banquetes de las élites de su época"
    ],
-   "correcta": 0,
+   "correcta": 1,
    "explicacion": "Circuitos populares paralelos.",
    "gemela": "oc-188"
   },
@@ -1273,12 +1273,12 @@
    "tipo": "opcion_multiple",
    "pregunta": "¿Cuál es el orden de fundación de estas escuelas?",
    "opciones": [
-    "Las dos se fundaron en 1895",
-    "Las dos se fundaron después de 1950",
-    "El CIA (1946) y después Le Cordon Bleu (1895), en ese orden",
-    "Le Cordon Bleu (1895) y después el CIA (1946)"
+    "El CIA (1946) y después Le Cordon Bleu (1973)",
+    "Le Cordon Bleu (1946) y después el CIA (1895)",
+    "Le Cordon Bleu (1895) y después el CIA (1946)",
+    "El CIA (1895) y después Le Cordon Bleu (1946)"
    ],
-   "correcta": 3,
+   "correcta": 2,
    "explicacion": "Primero París, después Estados Unidos.",
    "gemela": "oc-192"
   },
@@ -1303,12 +1303,12 @@
    "tipo": "opcion_multiple",
    "pregunta": "¿Cómo fue la entrada de las mujeres a la cocina profesional?",
    "opciones": [
-    "Inmediata: desde Escoffier hubo paridad",
-    "Temprana: las cocinas de corte las preferían como jefas de cocina",
     "Tardía: la alta cocina fue un espacio casi masculino",
-    "Igual en todas las cocinas del mundo"
+    "Temprana: Escoffier promovió jefas de cocina desde 1900",
+    "Temprana: Le Cordon Bleu nació como escuela solo para chefs profesionales",
+    "Pareja: las cortes europeas contrataban por igual a hombres y mujeres"
    ],
-   "correcta": 2,
+   "correcta": 0,
    "explicacion": "Se abrió sobre todo en la segunda mitad del siglo XX.",
    "gemela": "oc-196"
   },
@@ -1317,12 +1317,12 @@
    "tipo": "caso",
    "pregunta": "Un compañero escribe en su ensayo: «Según Cunqueiro, Carlomagno comía exactamente lo que se narra en La cocina cristiana de Occidente», y no cita otra fuente. ¿Qué le recomendarías?",
    "opciones": [
-    "Contrastarlo con una fuente histórica, porque Cunqueiro mezcla hechos con anécdotas literarias",
-    "Nada: toda obra publicada sobre cocina es una fuente histórica confiable",
-    "Quitar la cita, porque un escritor nunca puede citarse en un trabajo académico",
-    "Cambiarla por una receta de Apicio, que es más antigua"
+    "Citarlo tal cual, porque Cunqueiro reunió documentos de los monasterios medievales",
+    "Citarlo, pero agregar a Brillat-Savarin, que confirma los menús de Carlomagno",
+    "Cambiarlo por Apicio, que describe la mesa de Carlomagno en De re coquinaria",
+    "Contrastarlo con fuentes históricas, porque Cunqueiro mezcla datos reales con anécdotas literarias"
    ],
-   "correcta": 0,
+   "correcta": 3,
    "explicacion": "Cunqueiro escribe con estilo literario: sirve, pero hay que contrastarlo (Tema 1.1).",
    "id": "fin-088"
   },
@@ -1331,10 +1331,10 @@
    "tipo": "caso",
    "pregunta": "En una recreación de una cena romana, el anfitrión sirve primero carnes asadas y al final huevos y aceitunas. ¿Qué error histórico cometió?",
    "opciones": [
-    "Ninguno: en Roma el orden de los tiempos era libre",
-    "Debió servir todo en un thermopolium",
+    "Invirtió el orden: huevos y aceitunas iban en la secunda mensa, al final",
+    "El orden es correcto: la gustatio era el cierre dulce de la cena romana",
     "Invirtió el orden: huevos, aceitunas y vino endulzado iban al inicio, en la gustatio",
-    "Los romanos no conocían las aceitunas"
+    "El orden es correcto, pero el vino endulzado se servía solo en la prima mensa"
    ],
    "correcta": 2,
    "explicacion": "La gustatio era la entrada de la cena romana.",
@@ -1345,12 +1345,12 @@
    "tipo": "caso",
    "pregunta": "Un guion de película muestra a un noble medieval que agrega vainilla y chocolate a su postre en el año 1300. ¿Qué observación histórica es la correcta?",
    "opciones": [
-    "Solo es error el chocolate; la vainilla sí era medieval",
-    "Es correcto, porque las especias se usaban para conservar",
-    "Es correcto: los monasterios cultivaban vainilla",
-    "Es un anacronismo: vainilla y cacao son americanos y llegaron a Europa después de 1492"
+    "Solo la vainilla es anacrónica; el cacao llegaba de África por al-Ándalus",
+    "Es correcto: ambos llegaban a Europa por la ruta de las especias desde Asia",
+    "Es un anacronismo: la vainilla y el cacao son americanos y llegaron después de 1492",
+    "Solo el chocolate es anacrónico; la vainilla llegaba de Madagascar en la Edad Media"
    ],
-   "correcta": 3,
+   "correcta": 2,
    "explicacion": "Ambos ingredientes son americanos (intercambio colombino).",
    "id": "fin-090"
   },
@@ -1359,10 +1359,10 @@
    "tipo": "caso",
    "pregunta": "Una chef quiere un menú que muestre el intercambio colombino «en las dos direcciones». ¿Qué combinación lo logra?",
    "opciones": [
-    "Un platillo con maíz y cacao americanos junto a otro con trigo y res llegados de Europa",
-    "Un menú de especias asiáticas medievales",
-    "Solo platillos con maíz, cacao y jitomate",
-    "Solo platillos con trigo, res y vino"
+    "Un platillo con maíz y cacao americanos y otro con trigo y res llegados de Europa",
+    "Un platillo con maíz y trigo, y otro con cacao y res, todos de origen americano",
+    "Un platillo con trigo y cacao europeos, y otro con maíz y res americanos",
+    "Un platillo con papa y jitomate, y otro con maíz y chile, todos americanos"
    ],
    "correcta": 0,
    "explicacion": "El intercambio fue de ida y vuelta: América aportó maíz y cacao; Europa, trigo y ganado.",
@@ -1373,12 +1373,12 @@
    "tipo": "caso",
    "pregunta": "Un estudiante afirma que La Varenne «siguió la cocina medieval de especias exóticas». ¿Cómo lo corriges?",
    "opciones": [
-    "La Varenne inventó el microondas",
-    "La Varenne fue un cocinero romano",
-    "La Varenne (1651) cambió las especias exóticas por hierbas locales frescas como perejil y tomillo",
-    "Tiene razón: La Varenne usó más especias que nadie"
+    "La Varenne (1651) sustituyó las especias exóticas por hierbas frescas locales",
+    "La Varenne (1651) codificó las salsas madre y la brigada de cocina",
+    "La Varenne (1651) trajo a Francia los ingredientes del intercambio colombino",
+    "La Varenne (1651) mantuvo las especias, pero redujo el azúcar en los platos salados"
    ],
-   "correcta": 2,
+   "correcta": 0,
    "explicacion": "Le Cuisinier françois marca el paso a una cocina de hierbas locales.",
    "id": "fin-092"
   },
@@ -1387,12 +1387,12 @@
    "tipo": "caso",
    "pregunta": "Una cocina escolar sin gas va a elegir equipo y pregunta qué tecnología llegó primero al hogar. ¿Cuál es la secuencia correcta para explicarle?",
    "opciones": [
-    "Inducción, microondas y después la estufa eléctrica",
-    "Microondas en 1859 y estufa eléctrica en 1945",
-    "Patente de cocina eléctrica (1859), estufa eléctrica doméstica (finales del siglo XIX), microondas (1945) e inducción comercial (años setenta)",
-    "Todas aparecieron al mismo tiempo en 1970"
+    "Patente de Simpson (1859), estufa doméstica (finales del XIX), microondas (1945) e inducción (años setenta)",
+    "Patente de Simpson (1859), microondas (1945), estufa doméstica (años cincuenta) e inducción (años setenta)",
+    "Patente de Simpson (1859), inducción (años treinta), estufa doméstica (1945) y microondas (años setenta)",
+    "Estufa doméstica (1859), patente de Simpson (finales del XIX), inducción (1945) y microondas (años setenta)"
    ],
-   "correcta": 2,
+   "correcta": 0,
    "explicacion": "Es la cronología de la cocina eléctrica del Tema 1.4.",
    "id": "fin-093"
   },
@@ -1401,12 +1401,12 @@
    "tipo": "caso",
    "pregunta": "Una empresa debe dar de comer a 300 invitados de una boda con menú cerrado y número de personas confirmado. ¿Qué tipo de cocina es y por qué?",
    "opciones": [
-    "Económica, porque es barata",
-    "De banquetes y eventos, porque se planea conociendo de antemano el número de comensales",
-    "Institucional, porque atiende a muchas personas todos los días",
-    "Molecular, porque usa técnicas de laboratorio"
+    "De mercado y temporada, porque el menú depende de lo que se consiga esa semana",
+    "Institucional, porque atiende a muchas personas con un menú cerrado y presupuesto fijo",
+    "De autor, porque el chef diseña un menú exclusivo para la ocasión",
+    "De banquetes y eventos, porque se planea conociendo de antemano el número de comensales"
    ],
-   "correcta": 1,
+   "correcta": 3,
    "explicacion": "El banquete se organiza con un número conocido de invitados.",
    "id": "fin-094"
   },
@@ -1415,12 +1415,12 @@
    "tipo": "caso",
    "pregunta": "Un restaurante de tu ciudad usa solo productos de productores locales, defiende recetas tradicionales y rechaza la comida rápida. ¿A qué movimiento se parece más?",
    "opciones": [
-    "A la codificación de Escoffier",
-    "A Slow Food, fundado en Italia en 1989",
-    "A la nouvelle cuisine de 1973",
-    "A la carne cultivada en laboratorio"
+    "A la nouvelle cuisine, de 1973",
+    "A la vanguardia New Nordic, de 2004",
+    "A la cocina de mercado y temporada de Escoffier",
+    "A Slow Food, fundado en Italia en 1989"
    ],
-   "correcta": 1,
+   "correcta": 3,
    "explicacion": "Slow Food reaccionó contra la comida rápida y la pérdida de lo local.",
    "id": "fin-095"
   },
@@ -1429,12 +1429,12 @@
    "tipo": "caso",
    "pregunta": "En tu casa el pozole se come solo el 15 de septiembre, pero en una fonda se vende todos los jueves. Con la tipología del Tema 2, ¿cómo lo explicas?",
    "opciones": [
-    "Por la época: el pozole es de vanguardia",
+    "Por la época: el pozole cambió de categoría al pasar de lo prehispánico a lo actual",
+    "Por la religión: el pozole tuvo un origen ritual y conserva ese uso en las fiestas",
     "Por el régimen: el mismo platillo es festivo en un contexto y cotidiano en otro",
-    "Por la religión: el pozole es un alimento ritual",
-    "No se puede clasificar"
+    "Por la corriente: la fonda lo presenta como cocina de mercado y la casa como tradicional"
    ],
-   "correcta": 1,
+   "correcta": 2,
    "explicacion": "El régimen depende de la frecuencia y el contexto.",
    "id": "fin-096"
   },
@@ -1443,12 +1443,12 @@
    "tipo": "caso",
    "pregunta": "Vas a preparar un banquete para invitados judíos que siguen el kashrut y musulmanes que comen halal. ¿Qué decisión respeta a ambos grupos?",
    "opciones": [
-    "Servir cerdo bien cocido",
+    "Evitar el cerdo y la res, y servir solo aves, que ambas tradiciones aceptan sin condiciones",
+    "Evitar el cerdo y los lácteos, porque ambas tradiciones prohíben mezclarlos con carne",
     "Evitar el cerdo y usar carne de sacrificio ritual que drene la sangre, según cada tradición",
-    "No importa: las dos reglas son iguales a las del budismo",
-    "Servir solo mariscos, que ambas permiten"
+    "Servir solo pescados y mariscos, porque ambas tradiciones los aceptan sin restricciones"
    ],
-   "correcta": 1,
+   "correcta": 2,
    "explicacion": "Ambas prohíben el cerdo y regulan el sacrificio (shejitá y dhabihah).",
    "id": "fin-097"
   },
@@ -1457,10 +1457,10 @@
    "tipo": "caso",
    "pregunta": "Un cocinero prepara un curry vegetariano con cebolla y ajo para un invitado jainista muy devoto, y este no lo come. ¿Por qué?",
    "opciones": [
-    "Porque el curry está prohibido en la India",
-    "Porque el ajo es un alimento de fiesta",
+    "Porque el ajo y la cebolla se consideran estimulantes que alteran la meditación",
+    "Porque el jainismo solo permite alimentos crudos, y el curry es un guiso",
     "Porque arrancar raíces y bulbos mata a la planta entera, y eso va contra el ahimsa",
-    "Porque los jainistas solo comen carne"
+    "Porque el ajo y la cebolla se reservan para las ofrendas del templo"
    ],
    "correcta": 2,
    "explicacion": "El ahimsa (no violencia) llevado al extremo excluye raíces y bulbos.",
@@ -1471,10 +1471,10 @@
    "tipo": "caso",
    "pregunta": "Un restaurante en Lima sirve sashimi con ají amarillo y limón, y otro en Copenhague, musgo recolectado y verduras fermentadas. ¿Qué corrientes representan?",
    "opciones": [
-    "Nouvelle cuisine los dos",
+    "Nikkei el primero y Slow Food el segundo",
     "Nikkei el primero y New Nordic el segundo",
-    "Cocina institucional los dos",
-    "Slow Food el primero y Escoffier el segundo"
+    "Fusión californiana el primero y nouvelle cuisine el segundo",
+    "Chifa el primero y New Nordic el segundo"
    ],
    "correcta": 1,
    "explicacion": "Nikkei une técnica japonesa y sazón peruana; New Nordic se basa en recolección y fermentación.",
@@ -1485,12 +1485,12 @@
    "tipo": "caso",
    "pregunta": "Una alumna dice que la vainilla es «un producto africano» porque Madagascar es el mayor productor. ¿Qué le respondes?",
    "opciones": [
-    "Es de origen asiático",
-    "Tiene razón: la vainilla nació en Madagascar",
-    "Es de origen europeo",
-    "Es de origen mexicano (Papantla, Veracruz); Madagascar es hoy el mayor productor"
+    "Es de origen mexicano, y México sigue siendo el mayor productor del mundo",
+    "Es de origen mexicano (Papantla, Veracruz); Madagascar es hoy el mayor productor",
+    "Es de origen malgache; México la adoptó después y hoy es el mayor productor",
+    "Es de origen indio; los comerciantes árabes la llevaron a Madagascar"
    ],
-   "correcta": 3,
+   "correcta": 1,
    "explicacion": "La paradoja de la vainilla: origen mexicano, producción africana.",
    "id": "fin-100"
   },
@@ -1499,12 +1499,12 @@
    "tipo": "caso",
    "pregunta": "En una exposición alguien afirma que «antes de la Conquista se comía muy poco y mal en México». ¿Qué evidencia del Tema 3 usarías para refutarlo?",
    "opciones": [
-    "Que el chocolate se bebía caliente con leche",
-    "El Códice Florentino registra casi cien insectos comestibles y más de setenta hierbas, además de las chinampas",
-    "Que los mayas compraban especias asiáticas",
-    "Que en México ya había reses y trigo antes de 1492"
+    "El Códice Florentino registra que solo la nobleza comía insectos y hierbas",
+    "El Códice Florentino registra que se importaba trigo de Europa desde antes de 1519",
+    "El Códice Florentino registra que la base de la dieta era el maíz con carne de res",
+    "El Códice Florentino registra casi cien insectos comestibles y más de setenta hierbas"
    ],
-   "correcta": 1,
+   "correcta": 3,
    "explicacion": "La diversidad documentada por Sahagún y el sistema de chinampas desmienten esa idea.",
    "id": "fin-101"
   },
@@ -1513,10 +1513,10 @@
    "tipo": "caso",
    "pregunta": "Un turista pide en Campeche «un chocolate como el de los mayas» y le sirven uno caliente, dulce y con leche. ¿Qué tan fiel es?",
    "opciones": [
-    "Fiel, porque así lo describe el Códice Florentino",
-    "Poco: en Mesoamérica se bebía espumoso, amargo y frío, a veces con chile; el dulce con leche es europeo",
-    "Fiel, solo le faltó vainilla de Madagascar",
-    "Totalmente fiel a la receta maya"
+    "Fiel: solo le faltó la canela, que los mayas agregaban desde antes de 1492",
+    "Poco fiel: en Mesoamérica se bebía espumoso, amargo y frío, a veces con chile",
+    "Fiel: así lo bebían los mayas, aunque endulzado con miel de abeja melipona",
+    "Poco fiel: los mayas lo bebían fermentado, como una cerveza dulce"
    ],
    "correcta": 1,
    "explicacion": "El chocolate dulce con leche es una adaptación europea posterior.",
@@ -1527,12 +1527,12 @@
    "tipo": "caso",
    "pregunta": "En un restaurante indio del norte te sirven naan, yogur y platillos con ghee hechos en tandoor. ¿Qué historia explica ese estilo?",
    "opciones": [
-    "La llegada de la papa desde América",
-    "La influencia de los monasterios medievales",
+    "La influencia británica del periodo colonial",
     "La herencia de la corte mogol, de raíz persa y centroasiática",
-    "El movimiento Slow Food"
+    "La influencia portuguesa que llegó a través de Goa",
+    "La tradición vegetariana del jainismo, que favorece los lácteos"
    ],
-   "correcta": 2,
+   "correcta": 1,
    "explicacion": "El norte de la India conserva la herencia mogol.",
    "id": "fin-103"
   },
@@ -1541,10 +1541,10 @@
    "tipo": "caso",
    "pregunta": "Viajas a Sarajevo y comes burek y ćevapi, muy parecidos a lo que comiste en Estambul. ¿Cómo lo explica el Tema 3?",
    "opciones": [
-    "Porque Sarajevo es parte de Asia Central",
-    "Por la influencia de la nouvelle cuisine",
+    "Por la influencia austrohúngara del siglo XIX",
+    "Por la migración balcánica a Turquía en el siglo XX",
     "Por cinco siglos de dominio otomano en los Balcanes",
-    "Por el intercambio colombino"
+    "Por el comercio veneciano en el Adriático"
    ],
    "correcta": 2,
    "explicacion": "Las cocinas no se desarrollan aisladas: conquista y comercio las mezclan.",
@@ -1555,12 +1555,12 @@
    "tipo": "caso",
    "pregunta": "Un nutriólogo dice que «comer es solo nutrirse». Con el Tema 4, ¿cuál es la respuesta más completa?",
    "opciones": [
-    "Comer cubre una necesidad biológica, pero también es identidad, religión, economía y vínculo social",
-    "Comer es solo un placer y no una necesidad",
-    "Tiene razón: la gastronomía no tiene relación con la cultura",
-    "Solo la nobleza necesitaba alimentarse"
+    "Comer fue solo nutrición hasta que la nouvelle cuisine lo convirtió en un hecho cultural",
+    "Comer cubre una necesidad biológica, pero también expresa identidad, religión, economía y vínculo social",
+    "Comer es nutrición para el pueblo y placer para la nobleza; son dos actividades distintas",
+    "Comer es sobre todo un hecho cultural; la necesidad biológica es secundaria en la historia"
    ],
-   "correcta": 0,
+   "correcta": 1,
    "explicacion": "La gastronomía nace del cruce entre lo biológico y lo cultural.",
    "id": "fin-105"
   },
@@ -1569,12 +1569,12 @@
    "tipo": "caso",
    "pregunta": "Un país depende casi por completo de un solo cultivo y una plaga lo destruye. ¿Qué caso histórico del Tema 4 ilustra este riesgo?",
    "opciones": [
-    "La fundación de Le Cordon Bleu en 1895",
-    "El saqueo de Campeche en 1685",
-    "El cierre de El Bulli en 2011",
-    "La gran hambruna irlandesa de 1845 a 1852 por el tizón de la papa"
+    "La hambruna francesa previa a la Revolución, por la falta de trigo",
+    "La gran hambruna irlandesa de 1845 a 1852, por el tizón de la papa",
+    "La escasez de especias en Europa tras la caída de Constantinopla",
+    "La crisis del cacao en Mesoamérica tras la llegada de los españoles"
    ],
-   "correcta": 3,
+   "correcta": 1,
    "explicacion": "Irlanda dependía de la papa; el tizón tardío provocó la hambruna.",
    "id": "fin-106"
   },
@@ -1583,12 +1583,12 @@
    "tipo": "caso",
    "pregunta": "Un político organiza cenas fastuosas para impresionar a otros gobernantes. ¿Con qué práctica histórica la relacionas?",
    "opciones": [
-    "Con la dieta ital rastafari",
-    "Con la table d'hôte de las posadas",
+    "Con el langar sikh, donde todos comen juntos sin distinción",
     "Con el grand couvert de Versalles y las especias medievales: la mesa como exhibición de poder",
-    "Con los comedores institucionales"
+    "Con la table d'hôte de las posadas, donde los viajeros compartían mesa y conversación",
+    "Con los thermopolia romanos, donde se comía en la calle junto al pueblo"
    ],
-   "correcta": 2,
+   "correcta": 1,
    "explicacion": "La mesa ha sido un instrumento político (Tema 4.3).",
    "id": "fin-107"
   },
@@ -1597,10 +1597,10 @@
    "tipo": "caso",
    "pregunta": "Un estudiante dice que el restaurante existió siempre. ¿Qué dato del Tema 4 lo corrige?",
    "opciones": [
-    "Los romanos inventaron el restaurante con menú a la carta",
-    "Antes se comía en posadas a hora fija y mesa común; «restaurant» designaba al principio un caldo reconstituyente",
-    "El restaurante nació en los monasterios",
-    "El restaurante nació en el siglo XX con la comida rápida"
+    "Antes se comía en thermopolia; «restaurant» designaba al principio la carta de precios",
+    "Antes se comía en posadas a hora fija y mesa común; «restaurant» designaba un caldo reconstituyente",
+    "Antes se comía en monasterios; «restaurant» designaba al principio el salón del comedor",
+    "Antes se comía en fondas; «restaurant» designaba al principio al cocinero de una casa noble"
    ],
    "correcta": 1,
    "explicacion": "El restaurante moderno es una novedad frente a la table d'hôte.",
@@ -1611,10 +1611,10 @@
    "tipo": "caso",
    "pregunta": "Una escuela de gastronomía organiza su cocina con jefe, sous chef y cocineros de partida, y enseña técnicas estandarizadas. ¿A quién le debe ese modelo?",
    "opciones": [
-    "A Carlo Petrini y Slow Food",
-    "A Brillat-Savarin y su Fisiología del gusto",
+    "A Marthe Distel y Le Cordon Bleu",
+    "A La Varenne y Le Cuisinier françois",
     "A Escoffier y su sistema de brigada",
-    "A Apicio y De re coquinaria"
+    "A Paul Bocuse y la nouvelle cuisine"
    ],
    "correcta": 2,
    "explicacion": "Escoffier creó la brigada y un cuerpo de técnicas enseñables.",
