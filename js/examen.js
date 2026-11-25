@@ -88,8 +88,19 @@ function elegirReactivos(banco, n, semilla) {
   // Desempate de residuos iguales con la semilla, para no favorecer siempre al mismo subtema.
   const orden = barajarConSemilla(cuotas, semilla + 17).sort((a, b) => b.resto - a.resto);
   for (const c of orden) { if (faltan <= 0) break; c.base++; faltan--; }
+  // «gemelos»: reactivos que se delatan entre sí (uno trae en su texto la respuesta
+  // del otro). Nunca salen juntos; si un subtema se quedara corto, se completa con ellos.
+  const gemelosDe = new Map();
+  (banco.gemelos || []).forEach(g => g.forEach(id => { if (!gemelosDe.has(id)) gemelosDe.set(id, new Set()); g.forEach(o => { if (o !== id) gemelosDe.get(id).add(o); }); }));
+  const bloqueados = new Set();
   const elegidos = [];
-  cuotas.forEach((c, i) => elegidos.push(...barajarConSemilla(grupos.get(c.k), (semilla + (i + 1) * 7919) % 233280 || 1).slice(0, c.base)));
+  cuotas.forEach((c, i) => {
+    const lista = barajarConSemilla(grupos.get(c.k), (semilla + (i + 1) * 7919) % 233280 || 1);
+    const tomados = [];
+    for (const id of lista) { if (tomados.length >= c.base) break; if (bloqueados.has(id)) continue; tomados.push(id); (gemelosDe.get(id) || []).forEach(o => bloqueados.add(o)); }
+    for (const id of lista) { if (tomados.length >= c.base) break; if (!tomados.includes(id)) tomados.push(id); }
+    elegidos.push(...tomados);
+  });
   return barajarConSemilla(elegidos, semilla);
 }
 
@@ -395,7 +406,7 @@ function tarjetaReactivo(r, numero) {
 }
 
 function etiquetaTipo(t) {
-  return { opcion_multiple: 'Opción múltiple', verdadero_falso: 'Verdadero o falso', relacionar: 'Relaciona columnas' }[t] || '';
+  return { opcion_multiple: 'Opción múltiple', verdadero_falso: 'Verdadero o falso', relacionar: 'Relaciona columnas', caso: 'Caso de aplicación' }[t] || '';
 }
 
 function contestada(r) {

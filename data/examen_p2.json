@@ -120,8 +120,8 @@
    "opciones": [
     "El chuño",
     "El charqui",
-    "El garum",
-    "El braai"
+    "La chicha de jora",
+    "La fariña"
    ],
    "correcta": 0,
    "explicacion": "El chuño combina ciclos de congelación nocturna y deshidratación solar diurna, una tecnología de conservación extraordinaria para su época."
@@ -179,9 +179,9 @@
    "tipo": "opcion_multiple",
    "pregunta": "¿Por qué es impreciso hablar de \"cocina asiática\" como si fuera una sola cosa, según el compendio?",
    "opciones": [
-    "Porque sus cocinas son recientes y todavía no tienen tradiciones definidas",
+    "Porque casi todas comparten el arroz como base y solo cambian las especias",
     "Porque sus cocinas comparten técnicas pero cambian solo en el nivel de picante",
-    "Porque sus cocinas dependen de ingredientes llegados de Europa",
+    "Porque la cocina china absorbió a las demás y las volvió variantes suyas",
     "Porque reúne varias subregiones con climas, religiones e ingredientes propios"
    ],
    "correcta": 3,
@@ -210,7 +210,7 @@
     "El tahdig persa",
     "El kebab otomano",
     "El plov o pilaf",
-    "El biryani mogol"
+    "El tandoori del Punjab"
    ],
    "correcta": 2,
    "explicacion": "El plov —arroz con zanahoria, cebolla y cordero o res— ilustra la fusión cultural típica de las rutas comerciales de Asia Central."
@@ -289,7 +289,7 @@
    "tipo": "opcion_multiple",
    "pregunta": "¿Qué ilustra el caso de Hawái dentro de la gastronomía de Oceanía?",
    "opciones": [
-    "Una cocina de origen sudamericano llegada con el kumara hacia el año 1200",
+    "Una cocina de origen japonés que desplazó a la polinesia",
     "Capas de migración (japonesa, china, filipina) sobre una base polinesia",
     "Una cocina polinesia que se conservó sin cambios hasta el siglo XX",
     "Una cocina británica colonial, como la de Australia y Nueva Zelanda"
@@ -345,7 +345,7 @@
    "tipo": "opcion_multiple",
    "pregunta": "¿Qué anticipó la cocina de palacio del Imperio otomano en el Topkapi de Estambul, según el compendio?",
    "opciones": [
-    "La carta impresa a la carta de Delmonico's",
+    "El menú de degustación de la alta cocina moderna",
     "La organización por estaciones de la brigada de Escoffier",
     "El banquete público del grand couvert de Versalles",
     "El servicio en mesas individuales del restaurante parisino"
@@ -360,9 +360,9 @@
    "pregunta": "¿Qué platillo se asocia con la cocina de la corte mogol?",
    "opciones": [
     "El plov",
-    "El kebab",
+    "El kebab otomano",
     "El biryani",
-    "El kebab de cordero"
+    "El tahdig persa"
    ],
    "correcta": 2,
    "explicacion": "El biryani es una de las fusiones culinarias más influyentes de Asia, nacida de la corte mogol de origen persa y centroasiático."
@@ -401,7 +401,7 @@
     },
     {
      "izquierda": "Imperio mogol",
-     "derecha": "Fusión de cocina persa e india, origen del biryani"
+     "derecha": "Fusión de las cocinas persa e india en la mesa del emperador"
     }
    ],
    "explicacion": "Cada corte imperial desarrolló su propia forma de usar la mesa como instrumento de poder, documentada de forma distinta en cada caso."
@@ -562,9 +562,9 @@
    "pregunta": "¿Qué muestra el caso de la cocina francesa, según el Tema 3?",
    "opciones": [
     "Que la cocina francesa nació completa y codificada con Escoffier en el siglo XX",
-    "Que Italia copió su cocina de Francia durante el Renacimiento",
+    "Que Francia llevó su cocina a Italia con Catalina de Médici",
     "Que ni la tradición más «clásica» se desarrolló aislada de sus vecinos",
-    "Que Francia fue la única cocina europea sin influencias externas"
+    "Que su prestigio se debe sobre todo a la abundancia de ingredientes de su territorio"
    ],
    "correcta": 2,
    "explicacion": "La cocina francesa, hoy vista como la más \"clásica\", se enriqueció con aportes italianos del Renacimiento antes de codificarse técnicamente en el siglo XVII."
@@ -618,8 +618,8 @@
    "pregunta": "Según el compendio, ¿qué tres preguntas ayudan a «leer» cualquier cocina africana?",
    "opciones": [
     "Qué permite su clima, con quién comerció y qué religión ordena su mesa",
-    "Qué tan picante es, qué tan cara es y qué tan antigua es",
-    "Qué imperio la creó, qué ingredientes exporta y qué tan picante es su cocina",
+    "Qué cultivos son nativos, qué lengua se habla y qué altitud tiene su territorio",
+    "Qué imperio la fundó, qué puerto la abastecía y qué técnica de cocción domina",
     "Qué ingredientes son europeos, cuáles asiáticos y cuáles americanos"
    ],
    "correcta": 0,
@@ -677,9 +677,9 @@
    "pregunta": "Un platillo maya prehispánico cocido en pib podía llevar venado o pavo de monte, pero no…",
    "opciones": [
     "cerdo, que llegó con los españoles",
-    "chile, que llegó desde Asia",
+    "jitomate, que llegó desde Europa",
     "achiote, que llegó con los españoles",
-    "maíz, que llegó desde los Andes"
+    "frijol, que llegó desde los Andes"
    ],
    "correcta": 0,
    "explicacion": "El cerdo llegó con los españoles; el pib y el achiote son mayas.",
@@ -783,7 +783,7 @@
    "opciones": [
     "Son ricos en umami",
     "Todos son fermentados",
-    "Todos contienen capsaicina, que pica",
+    "Son ricos en azúcares naturales",
     "Todos son ácidos"
    ],
    "correcta": 0,
@@ -859,7 +859,7 @@
     "abrió Japón al comercio portugués",
     "declaró al sushi platillo nacional",
     "promovió el consumo de carne",
-    "prohibió el consumo de carne"
+    "oficializó la ceremonia del té como rito de Estado"
    ],
    "correcta": 2,
    "explicacion": "Meiji promovió la carne en 1872; antes estuvo restringida por influencia budista.",
@@ -934,7 +934,7 @@
     "las mismas leyes del kashrut",
     "los mismos ingredientes centroeuropeos",
     "el origen en Polonia",
-    "el uso del cerdo curado"
+    "los mismos platillos de fiesta"
    ],
    "correcta": 0,
    "explicacion": "Ambas siguen el kashrut; la sefardí es ibérico-mediterránea y la asquenazí centroeuropea.",
@@ -992,8 +992,8 @@
    "pregunta": "La existencia del horno de tierra en Oceanía, Mesoamérica y los Andes demuestra que…",
    "opciones": [
     "la técnica la llevó el Galeón de Manila",
-    "todos lo aprendieron de los romanos",
-    "los mayas navegaron hasta Nueva Zelanda y la enseñaron",
+    "la técnica se difundió desde Asia por la Ruta de la Seda",
+    "los austronesios la llevaron a América en sus canoas",
     "pueblos sin contacto llegaron a la misma solución"
    ],
    "correcta": 3,
@@ -1084,7 +1084,7 @@
     "abandonar la pesca",
     "importar el trigo de América",
     "depender de un solo cultivo",
-    "comer maíz sin nixtamalizar"
+    "exportar casi toda su pesca"
    ],
    "correcta": 2,
    "explicacion": "El tizón tardío arruinó la papa; murió un millón de personas y otro millón emigró.",
@@ -1096,7 +1096,7 @@
    "tipo": "opcion_multiple",
    "pregunta": "Para un profesional de la gastronomía, el derecho a la alimentación tiene consecuencias como…",
    "opciones": [
-    "cobrar menos a cada comensal",
+    "servir siempre porciones más grandes",
     "evitar los ingredientes importados del extranjero",
     "cocinar solo platillos regionales",
     "reducir el desperdicio en la cocina"
@@ -1114,7 +1114,7 @@
     "la transformación cultural de la naturaleza",
     "el estado natural de los alimentos",
     "la transformación natural de los alimentos, como lo podrido",
-    "una prohibición religiosa"
+    "el alimento reservado a los sacerdotes"
    ],
    "correcta": 0,
    "explicacion": "Crudo = naturaleza; cocido = cultura; podrido = transformación natural.",
@@ -1126,8 +1126,8 @@
    "tipo": "opcion_multiple",
    "pregunta": "En una cena romana, el lugar que ocupaba cada comensal en el triclinio indicaba…",
    "opciones": [
-    "si era esclavo o cocinero",
-    "el tiempo del banquete",
+    "su edad dentro de la familia",
+    "la provincia de la que venía",
     "su rango social",
     "el tipo de vino que bebía"
    ],
@@ -1156,7 +1156,7 @@
    "tipo": "opcion_multiple",
    "pregunta": "¿Por qué muchos romanos comían en los thermopolia?",
    "opciones": [
-    "Porque la ley prohibía cocinar en casa",
+    "Porque eran parte de los baños públicos",
     "Porque solo ahí se vendía garum",
     "Porque la annona los hacía gratuitos",
     "Porque sus insulae no tenían cocina"
@@ -1171,10 +1171,10 @@
    "tipo": "opcion_multiple",
    "pregunta": "Que las leyes suntuarias se repitieran una y otra vez indica que…",
    "opciones": [
-    "solo aplicaban a los esclavos",
+    "cada emperador las redactaba desde cero",
     "el pueblo las exigía",
     "se cumplían poco",
-    "eran muy eficaces"
+    "el lujo de los banquetes iba en descenso"
    ],
    "correcta": 2,
    "explicacion": "Las leyes contra el lujo se repetían porque se incumplían.",
@@ -1217,7 +1217,7 @@
    "pregunta": "En el grand couvert de Luis XIV, el derecho a acercarse o a sentarse cerca de la mesa del rey comunicaba…",
    "opciones": [
     "la jerarquía de cada cortesano",
-    "la religión del invitado",
+    "la región de Francia de la que venía",
     "el orden de los platos",
     "la calidad de la comida que recibía"
    ],
@@ -1232,7 +1232,7 @@
    "pregunta": "¿Qué tienen en común la mesa de Moctezuma y el grand couvert de Versalles?",
    "opciones": [
     "Ambas eran públicas",
-    "Ambas usaban cocineros franceses",
+    "Ambas se servían al gobernante a solas, sin testigos",
     "Ambas servían cacao espumoso en copas de oro",
     "Ambas comunicaban poder sobre un territorio"
    ],
@@ -1279,7 +1279,7 @@
     "La creación de la crítica",
     "La apertura de casas de café",
     "La abolición de los gremios",
-    "La llegada de la Guía Michelin"
+    "La creación de los mercados municipales"
    ],
    "correcta": 2,
    "explicacion": "La table d'hôte servía a hora fija lo que el dueño preparaba.",
@@ -1390,5 +1390,57 @@
    "explicacion": "La tercera raíz es la africana, junto a la indígena y la española.",
    "gemela": "oc-257"
   }
+ ],
+ "gemelos": [
+  [
+   "p2-014",
+   "p2-102"
+  ],
+  [
+   "p2-012",
+   "p2-100"
+  ],
+  [
+   "p2-013",
+   "p2-101"
+  ],
+  [
+   "p2-031",
+   "p2-116"
+  ],
+  [
+   "p2-072",
+   "p2-135",
+   "p2-073"
+  ],
+  [
+   "p2-070",
+   "p2-137",
+   "p2-073"
+  ],
+  [
+   "p2-022",
+   "p2-071"
+  ],
+  [
+   "p2-040",
+   "p2-120"
+  ],
+  [
+   "p2-010",
+   "p2-098"
+  ],
+  [
+   "p2-001",
+   "p2-094"
+  ],
+  [
+   "p2-081",
+   "p2-139"
+  ],
+  [
+   "p2-003",
+   "p2-143"
+  ]
  ]
 }
