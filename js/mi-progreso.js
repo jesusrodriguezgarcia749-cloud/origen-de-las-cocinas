@@ -234,7 +234,7 @@ function renderParciales() {
       </div>`;
   });
 
-  cont.innerHTML = renderArchivos() + renderRetroalimentacion() + html;
+  cont.innerHTML = renderArchivos() + renderRetroalimentacion() + renderPractico() + html;
   cont.querySelectorAll('[data-arch]').forEach(b => b.addEventListener('click', () => bajarArchivoDocente(b)));
 }
 
@@ -256,6 +256,18 @@ async function bajarArchivoDocente(b) {
     const url = URL.createObjectURL(new Blob([u], { type: a.tipo || 'application/octet-stream' })), el = document.createElement('a');
     el.href = url; el.download = a.nombre || 'archivo'; document.body.appendChild(el); el.click(); el.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000);
   } catch (e) { alert('No se pudo descargar: ' + (e.message || e)); } finally { b.disabled = false; b.textContent = txt; }
+}
+
+// Examen práctico del Parcial 2 calificado con la rúbrica: nivel de cada criterio y comentario.
+function renderPractico() {
+  const d = (datosCache.practico || {}).p2;
+  if (!d || (d.calificacion ?? null) === null || (!d.rubrica && !d.noPresento && !d.comentario)) return '';
+  const NOM = { logrado: '✅ Logrado', proceso: '🟡 En proceso', insuficiente: '🔴 Insuficiente' };
+  const filas = Object.entries(d.rubrica || {}).map(([c, n]) => `<li><b>${esc(c)}:</b> ${NOM[n] || esc(n)}</li>`).join('');
+  return `<div class="res-card retro-card"><h4>Tu examen práctico · Práctica de cocina 3</h4>
+    <p class="retro-titulo">${d.platillo ? esc(d.platillo) + ' · ' : ''}<strong>${d.calificacion}/10</strong>${d.noPresento ? ' (no te presentaste)' : ''}</p>
+    ${filas ? `<ul class="retro-texto" style="margin:.3rem 0 .3rem 1.1rem">${filas}</ul>` : ''}
+    ${d.comentario ? `<p class="retro-texto">${esc(d.comentario).replace(/\n/g, '<br>')}</p>` : ''}</div>`;
 }
 
 // Comentarios del docente en cada entrega del proyecto (solo los ve el alumno

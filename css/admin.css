@@ -881,3 +881,25 @@ html[data-theme="dark"] .ct-cat-si { color:#8FD19E; } html[data-theme="dark"] .c
 .ct-al-zip { margin-top:3px; border:1px solid var(--line); border-radius:999px; background:transparent; color:var(--ink-soft); font:inherit; font-size:.68rem; font-weight:600; padding:1px 8px; cursor:pointer; }
 .ct-al-zip:hover { background:var(--saffron, #C98A2C); color:#16130E; border-color:transparent; }
 .ct-zip-grupo { display:block; margin-top:6px; white-space:nowrap; }
+
+/* Examen práctico con rúbrica */
+.rp-wrap{margin-bottom:18px}
+.rp-al{border:1px solid #E3DCCD;border-radius:10px;margin:6px 0;background:#fff}
+.rp-al>summary{cursor:pointer;padding:10px 12px;display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap;font-weight:600}
+.rp-res small{font-weight:400;color:#6B6257}
+.rp-chip{display:inline-block;padding:2px 9px;border-radius:999px;background:#EFE9DC;font-size:.85rem}
+.rp-chip.rp-ok{background:#DDEFE2;color:#245C35}.rp-chip.rp-mal{background:#F6DCD7;color:#8A2A1D}
+.rp-cuerpo{padding:4px 12px 12px}
+.rp-fila{margin:8px 0}.rp-fila label{display:block;font-size:.88rem;font-weight:600;margin-bottom:3px}
+.rp-fila select,.rp-fila input,.rp-fila textarea{width:100%;padding:8px;border:1px solid #D5CCBA;border-radius:8px;font:inherit}
+.rp-otro{margin-top:6px}
+.rp-no{display:flex;gap:8px;align-items:center;margin:6px 0 10px;font-size:.92rem}
+.rp-c{border-top:1px dashed #E3DCCD;padding:8px 0}
+.rp-cn{margin:0 0 6px;font-weight:600}
+.rp-bots{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.rp-b{padding:10px 4px;border:1.5px solid #D5CCBA;border-radius:8px;background:#FAF7F0;font:inherit;font-size:.9rem;cursor:pointer}
+.rp-b.sel.rp-logrado{background:#2E7D4F;border-color:#2E7D4F;color:#fff}
+.rp-b.sel.rp-proceso{background:#C98A2C;border-color:#C98A2C;color:#fff}
+.rp-b.sel.rp-insuficiente{background:#A63D2F;border-color:#A63D2F;color:#fff}
+.rp-desc{margin:5px 0 0;font-size:.85rem;color:#5E564B;min-height:1em}
+.rp-total{font-size:1rem;margin:10px 0}

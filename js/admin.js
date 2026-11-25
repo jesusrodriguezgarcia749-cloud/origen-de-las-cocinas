@@ -14,7 +14,7 @@ import { ACTIVIDADES_PARCIAL, calcularParcial, calcularCuatrimestre, calcularCua
 import { reporteGrupo, reporteAlumno, reporteExamenAlumno, reporteExamenGrupo } from "./reporte.js";
 import { resumenGeneral } from "./resumen-tareas.js?v=2026111801";
 import { resumenSemana } from "./resumen-semana.js?v=2026112001";
-import { vistaRapida } from "./matriz.js?v=2026110501";
+import { vistaRapida } from "./matriz.js?v=2026112501";
 import { BASE, enEquipo, formacionDe, formaciones, ordenFormaciones, formacionDeTarea, equiposDe, tareasDeFormacion, urlUnir, qrSvg } from "./equipos.js";
 import { wordMiPlato, numsDe as numsMiPlato, estadoEntrega as estadoMiPlato, slugArchivo, ORDEN as ORDEN_MP } from "./mi-plato-word.js?v=2026102901";
 import { zipDocx, DocITES } from "./docx-ites.js?v=2026111202";

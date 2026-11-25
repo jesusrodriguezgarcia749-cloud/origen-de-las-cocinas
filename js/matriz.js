@@ -17,6 +17,7 @@ import {
   collection, doc, getDoc, getDocs, setDoc, deleteDoc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+import { vistaRubricaPractico } from "./practico-rubrica.js?v=2026112501";
 import { calcularParcial, calcularCuatrimestre, PESO_CUATRIMESTRE, calcularCuatrimestreRedondeado, META_PARTICIPACION, ACTIVIDADES_PARCIAL, PARTICIPACION_MIXTA } from "./calculo.js";
 
 const ESTADOS = ['presente', 'retardo', 'justificado', 'falta'];
@@ -443,13 +444,13 @@ async function vistaExamenes(ctx, { soloPractico = false } = {}) {
           const ref = doc(db, 'grupos', grupoActivo, 'alumnos', a.id, c.coleccion, c.docId);
           const v = (vals[a.id] || {})[c.id];
           if (v === undefined || v === '') {
-            escrituras.push(setDoc(ref, { calificacion: null, actualizado: serverTimestamp() }));
+            escrituras.push(setDoc(ref, { calificacion: null, actualizado: serverTimestamp() }, { merge: true }));
           } else {
             escrituras.push(setDoc(ref, {
               calificacion: Number(v),
               origen: 'ajuste manual del docente',
               actualizado: serverTimestamp(),
-            }));
+            }, { merge: true }));
           }
         });
       });
@@ -580,7 +581,7 @@ export async function vistaRapida(tab, ctx) {
     if (tab === 'participacion') return await vistaCatalogo(ctx, 'participaciones');
     if (tab === 'asistencia') return await vistaAsistencia(ctx);
     if (tab === 'proyecto') return await vistaProyecto(ctx);
-    if (tab === 'practico') return await vistaExamenes(ctx, { soloPractico: true });
+    if (tab === 'practico') return await vistaRubricaPractico(ctx);
     if (tab === 'enlinea') return await vistaExamenes(ctx, { soloPractico: false });
     if (tab === 'historial') return await vistaPromedios(ctx);
   } catch (err) {
