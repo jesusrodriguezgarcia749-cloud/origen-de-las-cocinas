@@ -7,6 +7,7 @@ import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, deleteField, 
 import { firebaseConfig } from "./firebase-config.js";
 import { DocITES, mapaContinentePNG, ABREV } from "./docx-ites.js?v=2026111202";
 import { TAREAS_DIG } from "./clase-datos.js?v=2026111703";
+import { estaAbierta } from "./cierre-tareas.js?v=2026112601";
 import { formacionDe, formaciones, formacionDeTarea, abiertas as inscAbiertas, equipoDe, tareasDeFormacion } from "./equipos.js";
 
 const db = getFirestore(initializeApp(firebaseConfig));
@@ -38,7 +39,8 @@ let editando = null;
 // ---- modo equipo: el atlas vive en grupos/{g}/equipos/{e}/atlas/{continente} y se edita en vivo
 let ultimaNota = '', TAREA_EST = {}, entregaEq = {};
 const tareaDe = k => TAREAS_DIG['atlas-' + k];
-const cerrada = () => { const t = tareaDe(cont), e = t && TAREA_EST[t.id]; return !!(e && (e.abierta === false || (e.cierre && Date.now() > Date.parse(e.cierre)))); };
+// Mismas reglas que el resto de las tareas (cierre del docente, fecha límite, prórroga del alumno y reapertura general).
+const cerrada = () => { const t = tareaDe(cont); return !!t && !estaAbierta(TAREA_EST[t.id], t, sesion && sesion.alumnoId); };
 function avisoCerrada() { estado('🔒 Tu maestro cerró esta tarea: ya no se guardan cambios.', 'mal'); }
 const nota = d => { ultimaNota = d; };
 const nomCampo = f => ({ nombre: 'el nombre', ...Object.fromEntries(CAMPOS_REGION.map(([k, t]) => [k, t])) })[f] || f;

@@ -15,16 +15,15 @@ const hoy = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.
 
 // Aviso fijo publicado desde el repositorio (no depende del panel). Se muestra primero mientras esté vigente.
 const AVISO_FIJO = {
-  id: 'practica3-recados', hasta: '2026-11-26',
-  titulo: 'Examen práctico del jueves 26: elige tu platillo con recado',
-  texto: 'Para el examen práctico del Parcial 2 (Práctica de cocina 3) vas a cocinar un platillo que use uno de los recados campechanos que vimos en clase. Elige uno de esta lista y ve pensando tus ingredientes:\n' +
-    '**Recado rojo (achiote):** cochinita pibil, pollo pibil, tikin xic (pescado en achiote), mondongo kabic, lomitos de Valladolid.\n' +
-    '**Recado negro:** relleno negro, pollo en chilmole.\n' +
-    '**Recado blanco:** puchero de tres carnes, relleno blanco, queso relleno.\n' +
-    '**Recado de escabeche:** pámpano en escabeche, sierra en escabeche, escabeche oriental de pavo o pollo, pollo en escabeche.\n' +
-    '**Recado para bistec:** bistec de cazuela, chocolomo, bistec a la yucateca (encebollado).\n' +
-    '**Recado verde (pepita):** papadzules, sikil p\'aak, pipián de pollo.\n' +
-    'Elige con tiempo y avisa al maestro cuál vas a hacer. El jueves trae tu uniforme completo y tu cuchillo.',
+  id: 'reapertura-tareas-p2', hasta: '2026-11-27', vence: '2026-11-27T10:30:00-06:00',
+  titulo: 'Última oportunidad: tareas abiertas hasta el viernes 27 a las 10:30 a. m.',
+  texto: 'Abrí otra vez **todas las tareas del Parcial 2** para que termines y entregues las que te faltan. Tienes hasta el **viernes 27 de noviembre a las 10:30 de la mañana**; después se cierran y ya no se guardan cambios.\n' +
+    '**Te recomiendo terminar todo:** las tareas que no entregues cuentan como cero, y lo mismo las actividades de repaso.\n' +
+    '**Cuánto vale cada cosa en el Parcial 2 (100 puntos):**\n' +
+    '• **Tareas: 25 puntos.** Son 15 tareas (los cinco atlas: África, América, Asia, Europa y Oceanía; mexica vs. maya, desarma el platillo, las siete influencias, especias de Asia, el recado campechano, platillo de fusión, más que comida, Versalles vs. Topkapi, banquete de Estado y el menú à la carte). Se promedian todas: cada una vale cerca de 1.7 puntos.\n' +
+    '• **Participación: 25 puntos.** 10 por participar en clase y 15 por las actividades de repaso: el Tema 3 vale 7.5 y el Tema 4 vale 7.5, y cuentan cuando terminas el tema sin errores.\n' +
+    '• **Examen escrito: 20 puntos** (viernes 27) · **Examen práctico: 20 puntos** · **Asistencia: 5** · **Uniforme: 5**.\n' +
+    'Entra a **Tareas** y a **Actividades**, revisa cuáles te faltan y entrégalas. Si trabajas en equipo, pónganse de acuerdo para entregar a tiempo.',
 };
 
 async function iniciar() {
@@ -34,7 +33,7 @@ async function iniciar() {
   try { const sn = await getDocs(collection(db, 'grupos')); grupos = sn.docs.map(d => ({ id: d.id, ...d.data() })); } catch { grupos = []; }
   if (sesion && sesion.grupoId) grupos = grupos.filter(g => g.id === sesion.grupoId);
   const vistos = new Set(), avisos = [];
-  if (AVISO_FIJO.hasta >= hoy() && lsGet('aviso-visto-' + AVISO_FIJO.id) !== '1') { vistos.add(AVISO_FIJO.id); avisos.push({ ...AVISO_FIJO, fijo: true }); }
+  if (AVISO_FIJO.hasta >= hoy() && !(AVISO_FIJO.vence && Date.now() > Date.parse(AVISO_FIJO.vence)) && lsGet('aviso-visto-' + AVISO_FIJO.id) !== '1') { vistos.add(AVISO_FIJO.id); avisos.push({ ...AVISO_FIJO, fijo: true }); }
   grupos.forEach(g => { const a = g.avisoDestacado; if (a && a.id && !vistos.has(a.id) && (!a.hasta || a.hasta >= hoy()) && lsGet('aviso-visto-' + a.id) !== '1') { vistos.add(a.id); avisos.push({ ...a, grupo: g.id }); } });
   if (!avisos.length) return;
   const a = avisos[0];

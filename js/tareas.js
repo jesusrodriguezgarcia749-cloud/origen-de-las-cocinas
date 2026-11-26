@@ -10,7 +10,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, FieldPath, collection, getDocs, query, orderBy, serverTimestamp, increment } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
 import { CUADRO_MM, CUADROS, PLATILLOS, TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, sugerirCuadro, MIN_PALABRAS_CELDA, INFLUENCIAS, sugerirInfluencias, ESPECIAS, subregionDe, sugerirEspecias, FUSION, sugerirFusion } from "./clase-datos.js?v=2026111703";
-import { cierreDe, prorrogaDe, estaAbierta } from "./cierre-tareas.js?v=2026111901";
+import { cierreDe, prorrogaDe, estaAbierta, reaperturaDe } from "./cierre-tareas.js?v=2026112601";
 import { DocITES } from "./docx-ites.js?v=2026111202";
 import { INGREDIENTES, CONTINENTES } from "./aporto-datos.js";
 import { BALUARTES, CAMPECHE, QUE_INFLUENCIA, PAISES_AM, PLATILLOS_AM } from "./america-datos.js";
@@ -66,7 +66,7 @@ let EQS = null, GDATA = {}, ESTADO = {}, unsubGrupo = null, detener = null;
 // Una tarea está cerrada si el docente la cerró o si ya pasó su fecha límite (grupos/{g}.tareasDig.{id}.cierre).
 // Desde el 19 de noviembre, cada tarea cierra sola a las 23:59 del día de su clase (ver cierre-tareas.js); el docente
 // puede cambiar la fecha o darle prórroga a un alumno.
-const cierreEf = id => prorrogaDe(ESTADO[id], sesion && sesion.alumnoId) || cierreDe(ESTADO[id], TAREAS_DIG[id]);
+const cierreEf = id => { const x = [prorrogaDe(ESTADO[id], sesion && sesion.alumnoId), reaperturaDe(TAREAS_DIG[id])].filter(Boolean).sort((a, b) => Date.parse(b) - Date.parse(a))[0]; return x || cierreDe(ESTADO[id], TAREAS_DIG[id]); };
 const vencida = id => { const c = cierreEf(id); return !!c && Date.now() > Date.parse(c); };
 const abierta = id => estaAbierta(ESTADO[id], TAREAS_DIG[id], sesion && sesion.alumnoId);
 const cierreTxt = id => { const c = cierreEf(id); return c ? new Date(c).toLocaleString('es-MX', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }) : ''; };
@@ -264,7 +264,7 @@ function unirPorQR(codigo) {
       const t = await unirseCodigo(codigo);
       const d0 = new Date(), hoy = `${d0.getFullYear()}-${String(d0.getMonth() + 1).padStart(2, '0')}-${String(d0.getDate()).padStart(2, '0')}`;
       const ts = tareasDeFormacion(GDATA, formacionDe(t), TAREAS_DIG).sort((x, y) => x.fecha.localeCompare(y.fecha));
-      const abiertasT = ts.filter(a => !(((GDATA.tareasDig || {})[a.id] || {}).abierta === false));
+      const abiertasT = ts.filter(a => abierta(a.id));
       const destino = [...abiertasT].reverse().find(a => a.fecha <= hoy) || abiertasT[0] || ts[ts.length - 1];
       cuerpo.innerHTML = `<div class="cl-unido"><p class="cl-unido-ok">✅ ¡Listo, ${esc(sesion.nombre.split(' ')[0])}! Ya eres parte de <b>«${esc(t.nombre)}»</b>.</p>
         <p>Integrantes: ${esc((t.nombres || []).join(', '))}</p>
