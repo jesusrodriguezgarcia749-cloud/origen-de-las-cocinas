@@ -7,7 +7,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getFirestore, doc, getDoc, setDoc, collection, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
 import { palabras, tieneCita, numsDe, refsDe, estadoEntrega, huella, gramas, porcentajeCopia, fechasApertura, wordMiPlato, ORDEN } from "./mi-plato-word.js?v=2026102901";
-import { leerArchivo, parrafosTexto, acomodar } from "./leer-entrega.js?v=2026102901";
+import { leerArchivo, parrafosTexto, acomodar } from "./leer-entrega.js?v=2026112601";
 
 const db = getFirestore(initializeApp(firebaseConfig));
 const SESSION_KEY = 'oc_sesion_alumno';
@@ -149,8 +149,8 @@ function pintarTodo() {
       <label class="e1-sub"><span><b>🍽️ Mi platillo</b><small>El que elegiste al inicio del cuatrimestre. Aparece en el título de tu ficha.</small></span>
         <input id="mp-plat" type="text" maxlength="90" placeholder="Por ejemplo: cochinita pibil" value="${esc(T.platillo)}"></label>
       <div class="mp-import-cta">
-        <p><b>📥 ¿Ya tienes tu Entrega 1 en Word?</b> Súbela y la plataforma acomoda cada respuesta en su pregunta. Después solo revisas que todo quedó en su lugar.${T.importado ? ` <span class="t-entregada">✓ Subiste tu Entrega 1 el ${new Date(T.importado.t).toLocaleDateString('es-MX', { day: 'numeric', month: 'short' })}</span>` : ''}</p>
-        <div class="mp-import-btns"><label class="btn-lab mp-file">📄 Subir mi Word (.docx)<input type="file" id="mp-file" accept=".docx,.txt"></label>
+        <p><b>📥 ¿Ya tienes tu Entrega 1 en Word o en PDF?</b> Súbela y la plataforma acomoda cada respuesta en su pregunta. Después solo revisas que todo quedó en su lugar.${T.importado ? ` <span class="t-entregada">✓ Subiste tu Entrega 1 el ${new Date(T.importado.t).toLocaleDateString('es-MX', { day: 'numeric', month: 'short' })}</span>` : ''}</p>
+        <div class="mp-import-btns"><label class="btn-lab mp-file">📄 Subir mi Word o PDF<input type="file" id="mp-file" accept=".docx,.pdf,.txt"></label>
         <button type="button" class="btn-lab-l" id="mp-pegar">📋 Mejor pego el texto</button></div>
         <p class="t-error" id="mp-import-err" hidden></p>
       </div>
@@ -189,7 +189,7 @@ function refrescarChips() {
 function errImport(msg) { const e = $('#mp-import-err'); e.textContent = msg; e.hidden = !msg; }
 function pintarPegar() {
   errImport('');
-  $('#mp-import').innerHTML = `<div class="mp-import-box"><p class="lab-ayuda">Copia todo el texto de tu Entrega 1 (desde la primera pregunta hasta las referencias) y pégalo aquí. Deja el número de cada pregunta: «1.», «2.», etc.</p>
+  $('#mp-import').innerHTML = `<div class="mp-import-box"><p class="lab-ayuda">Copia todo el texto de tu Entrega 1 (desde la primera pregunta hasta las referencias), del Word o del PDF, y pégalo aquí. Deja el número de cada pregunta: «1.», «2.», etc.</p>
     <textarea id="mp-texto" rows="10" class="t-resp" placeholder="1. ¿Qué platillo elijo y por qué me interesa investigarlo?&#10;Mi platillo es…"></textarea>
     <div class="e1-nav"><button type="button" class="btn-lab-l" id="mp-cancelar">Cancelar</button><button type="button" class="btn-lab" id="mp-leer">Acomodar mis respuestas →</button></div></div>`;
   $('#mp-cancelar').addEventListener('click', () => { $('#mp-import').innerHTML = ''; });
@@ -246,7 +246,7 @@ function pintarGuiada() {
   const paso = Math.min(tot, pasoDe(ent)); fijarPaso(ent, paso);
   const est = estadoEntrega(T, D, ent);
   $('#c-lista').innerHTML = `<div class="t-entrega"><b>${esc(E.nombre)}</b> · ${esc(E.fecha)}<p>${esc(E.req)}</p><p>Vas pregunta por pregunta. <b>Todo se guarda solo</b> mientras escribes.${est.entregada ? ` <span class="t-entregada">${est.modificada ? '✏️ Entregada y modificada después' : '📬 Entregada'} el ${new Date(est.t).toLocaleDateString('es-MX', { day: 'numeric', month: 'short' })}</span>` : ''}</p>
-      ${ent !== 'entrega1' ? (() => { const f1 = numsDe(D, 'entrega1').filter(n => !hecha(n)).length; return f1 ? `<p class="t-recuerda">📥 Te falta${f1 === 1 ? '' : 'n'} <b>${f1} de 12</b> preguntas de la Entrega 1 en tu ficha. Entran a tu Word de esta entrega: súbelas con <b>«Subir mi Word»</b> (arriba) o tócale a <b>Entrega 1</b> y escríbelas. <button type="button" class="btn-lab-l" id="ir-e1">Ir a la Entrega 1 →</button></p>` : `<p class="t-nota">Las preguntas ${ent === 'entrega2' ? '1 a 12' : '1 a 20'} ya están en tu ficha y entran solas a tu Word. Si quieres corregirlas, toca su entrega arriba.</p>`; })() : ''}</div>
+      ${ent !== 'entrega1' ? (() => { const f1 = numsDe(D, 'entrega1').filter(n => !hecha(n)).length; return f1 ? `<p class="t-recuerda">📥 Te falta${f1 === 1 ? '' : 'n'} <b>${f1} de 12</b> preguntas de la Entrega 1 en tu ficha. Entran a tu Word de esta entrega: súbelas con <b>«Subir mi Word o PDF»</b> (arriba) o tócale a <b>Entrega 1</b> y escríbelas. <button type="button" class="btn-lab-l" id="ir-e1">Ir a la Entrega 1 →</button></p>` : `<p class="t-nota">Las preguntas ${ent === 'entrega2' ? '1 a 12' : '1 a 20'} ya están en tu ficha y entran solas a tu Word. Si quieres corregirlas, toca su entrega arriba.</p>`; })() : ''}</div>
     <nav class="e1-pasos" aria-label="Preguntas de la ${esc(E.nombre)}">${NS.map((n, i) => `<button type="button" data-p="${i}" class="${paso === i ? 'actual' : ''} ${hecha(n) ? 'hecha' : ''} ${abierta(n) ? '' : 'cerrada'}" title="${abierta(n) ? '' : 'Se abre el ' + fechaLarga(APERTURA[n])}">${hecha(n) ? '✓' : abierta(n) ? n : '🔒'}</button>`).join('')}<button type="button" data-p="${tot}" class="e1-desc ${paso === tot ? 'actual' : ''}">📚 Referencias y Word</button></nav>
     <div id="e1-cuerpo"></div>`;
   const ir = v => { fijarPaso(ent, v); cambio(); pintarGuiada(); $('#c-lista').scrollIntoView({ behavior: 'smooth', block: 'start' }); };
