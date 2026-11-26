@@ -7,7 +7,7 @@ import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, deleteField, 
 import { firebaseConfig } from "./firebase-config.js";
 import { DocITES, mapaContinentePNG, ABREV } from "./docx-ites.js?v=2026111202";
 import { TAREAS_DIG } from "./clase-datos.js?v=2026111703";
-import { estaAbierta } from "./cierre-tareas.js?v=2026112601";
+import { estaAbierta, reaperturaDe } from "./cierre-tareas.js?v=2026112601";
 import { formacionDe, formaciones, formacionDeTarea, abiertas as inscAbiertas, equipoDe, tareasDeFormacion } from "./equipos.js";
 
 const db = getFirestore(initializeApp(firebaseConfig));
@@ -390,7 +390,8 @@ function pintarTarea() {
   const t = tareaDe(cont);
   if (!t || !sesion || sesion.anon) { z.innerHTML = ''; return; }
   const en = entregadoActual(), f = x => { const d = x && x.toDate ? x.toDate() : typeof x === 'number' ? new Date(x) : null; return d ? d.toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : ''; };
-  z.innerHTML = `<div class="ma-tarea-f ${cerrada() ? 'cerr' : en ? 'ent' : ''}"><span>📌 <b>Tarea ${t.tema} · ${t.nombre}</b> · cuenta para el Parcial 2. ${cerrada() ? `🔒 ${(TAREA_EST[t.id] || {}).abierta === false ? 'Tu maestro la cerró' : 'Ya pasó su fecha límite'}: ya no se guardan cambios.` : en ? `✅ Entregada el ${f(en.t)}${en.por ? ` por ${en.por}.` : /\.$/.test(f(en.t)) ? '' : '.'} Puedes corregir mientras siga abierta.` : 'Cuando terminen, entréguenla.'}</span>${!cerrada() && !en ? '<button type="button" class="btn-at" id="ma-entregar">📤 Entregar tarea</button>' : ''}</div>`;
+  z.innerHTML = `<div class="ma-tarea-f ${cerrada() ? 'cerr' : en ? 'ent' : ''}"><span>📌 <b>Tarea ${t.tema} · ${t.nombre}</b> · cuenta para el Parcial 2. ${cerrada() ? `🔒 ${(TAREA_EST[t.id] || {}).abierta === false ? 'Tu maestro la cerró' : 'Ya pasó su fecha límite'}: ya no se guardan cambios.` : en ? `✅ Entregada el ${f(en.t)}${en.por ? ` por ${en.por}.` : /\.$/.test(f(en.t)) ? '' : '.'} Puedes corregir mientras siga abierta.` : 'Cuando terminen, entréguenla.'}</span>${!cerrada() && !en ? '<button type="button" class="btn-at" id="ma-entregar">📤 Entregar tarea</button>' : ''}</div>${modo === 'equipo' && !en && !cerrada() && reaperturaDe(t) ? '<div class="ma-tarea-f"><span>👤 <b>Tu equipo no entregó este atlas.</b> Por la reapertura de tareas, ahora lo haces individual: cámbiate a tu atlas personal, complétalo y entrégalo.</span><button type="button" class="btn-at" id="ma-solo">Hacerlo individual</button></div>' : ''}`;
+  const bs = $('#ma-solo'); if (bs) bs.addEventListener('click', () => cambiarModo('personal'));
   const b = $('#ma-entregar');
   if (b) b.addEventListener('click', async () => {
     if (!C().regiones.length) { alert('Primero creen al menos una región y clasifiquen países.'); return; }

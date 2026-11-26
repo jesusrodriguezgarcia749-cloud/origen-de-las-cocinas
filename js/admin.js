@@ -1386,7 +1386,19 @@ async function reunirTareaDig(a) {
   const cacheEq = {};
   const docEquipo = async (eq, id) => { const k = eq.id + '/' + id; if (!(k in cacheEq)) { try { const s = await getDoc(doc(db, 'grupos', g, 'equipos', eq.id, 'atlas', id)); cacheEq[k] = s.exists() ? s.data() : null; } catch { cacheEq[k] = null; } } return cacheEq[k]; };
   const filas = await Promise.all(alumnosCache.map(async al => {
-    const eq = enEquipo(a) ? equipos.find(e => (e.integrantes || []).includes(al.id)) || null : null;
+    let eq = enEquipo(a) ? equipos.find(e => (e.integrantes || []).includes(al.id)) || null : null;
+    // Si el equipo no entregó y el alumno hizo la tarea individual (reapertura del Parcial 2), se califica su trabajo individual.
+    if (eq) {
+      try {
+        const idEq = { atlas: a.cont, cuadro: (CUADROS[a.id] || CUADRO_MM).id, influencias: INFLUENCIAS.id, especias: ESPECIAS.id, recado: RECADOS.id }[a.tipo];
+        const de = idEq ? await docEquipo(eq, idEq) : null;
+        if (!(de && de.entregado)) {
+          const idInd = { cuadro: (CUADROS[a.id] || CUADRO_MM).ind, influencias: 'tarea-influencias', especias: 'tarea-especias', recado: 'tarea-recado' }[a.tipo];
+          if (idInd) { const si = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', idInd)); if (si.exists()) eq = null; }
+          else if (a.tipo === 'atlas') { const si = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'atlas', 'mi-atlas')); const dd = si.exists() ? si.data().datos || {} : {}; if ((dd.entregas || {})[a.cont]) eq = null; }
+        }
+      } catch { /* */ }
+    }
     let sug = { nota: 0, detalle: 'Sin trabajo' }, entregado = null, resumen = '', cal = '', exento = false, word = null;
     try { const c = await getDoc(doc(db, 'grupos', g, 'alumnos', al.id, 'tareas', catalogoId(a.id))); if (c.exists()) { cal = c.data().calificacion ?? ''; exento = !!c.data().exento; } } catch { /* */ }
     try {

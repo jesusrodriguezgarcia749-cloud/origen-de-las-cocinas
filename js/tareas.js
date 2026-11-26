@@ -104,8 +104,29 @@ async function cargarEquipos(forzar) {
 }
 async function equipo(tareaId) {
   try { await cargarEquipos(); } catch { return null; }
-  return equipoDe(EQS, formacionDeTarea(GDATA, tareaId), sesion.alumnoId);
+  const eq = equipoDe(EQS, formacionDeTarea(GDATA, tareaId), sesion.alumnoId);
+  if (!eq) return null;
+  if (!(tareaId in SOLO)) SOLO[tareaId] = await individualPorFalta(TAREAS_DIG[tareaId], eq);
+  return SOLO[tareaId] ? null : eq;
 }
+// Tareas en equipo que el equipo NO entregó: el alumno las hace individual (decisión del docente al reabrir
+// las tareas del Parcial 2). Si el equipo sí la entregó o el alumno ya tiene calificación, sigue en equipo.
+// Una vez que el alumno empezó su versión individual, se queda individual aunque termine la reapertura.
+const SOLO = {};
+const DOCS_TAREA = a => a.tipo === 'cuadro' ? [(CUADROS[a.id] || CUADRO_MM).id, (CUADROS[a.id] || CUADRO_MM).ind]
+  : a.tipo === 'influencias' ? [INFLUENCIAS.id, 'tarea-influencias'] : a.tipo === 'especias' ? [ESPECIAS.id, 'tarea-especias']
+  : a.tipo === 'recado' ? [RECADOS.id, 'tarea-recado'] : null;
+async function individualPorFalta(a, eq) {
+  const d = a && DOCS_TAREA(a); if (!d) return false;            // el atlas lo resuelve mi-atlas.js
+  const g = sesion.grupoId, al = sesion.alumnoId;
+  try {
+    const [se, si, sc] = await Promise.all([getDoc(doc(db, 'grupos', g, 'equipos', eq.id, 'atlas', d[0])), getDoc(doc(db, 'grupos', g, 'alumnos', al, 'atlas', d[1])), getDoc(doc(db, 'grupos', g, 'alumnos', al, 'tareas', catalogoId(a.id)))]);
+    if (se.exists() && se.data().entregado) return false;
+    if (sc.exists() && sc.data().calificacion !== undefined && sc.data().calificacion !== null && sc.data().calificacion !== '') return false;
+    return si.exists() || !!reaperturaDe(a);
+  } catch { return false; }
+}
+const quienTrabaja = (a, eq) => eq ? `👥 <b>${esc(eq.nombre)}</b>: ${esc((eq.nombres || []).join(', '))}` : `👤 <b>${esc(sesion.nombre)}</b> (individual)${SOLO[a.id] ? ' · tu equipo no entregó esta tarea, así que la haces tú solo' : ''}`;
 // une al alumno al equipo del código; si se pasa la tarea, el código debe ser de sus equipos
 async function unirseCodigo(codigo, tareaId) {
   codigo = String(codigo || '').trim().toUpperCase();
@@ -304,6 +325,7 @@ function actCuadro(cont, a0) {
     cont.innerHTML = '<p class="atlas-ayuda">Buscando a tu equipo…</p>';
     const eq = await equipo(A.tarea);
     if (eq) return cuadro(cont, eq, A);
+    if (SOLO[A.tarea] || reaperturaDe(TAREAS_DIG[A.tarea])) return cuadro(cont, null, A);   // reapertura: individual
     cont.innerHTML = `<div class="cl-sin-eq"><p><b>Todavía no estás en un equipo.</b> Escribe el código de 4 letras de tu equipo (o escanea el QR que proyecta tu maestro).</p>
       <form id="cl-unir" class="ma-unir"><div><input id="cl-cod" maxlength="4" autocomplete="off" placeholder="ABCD" aria-label="Código del equipo"><button class="btn-at" type="submit">Unirme</button></div></form>
       <p class="ma-msg mal" id="cl-unir-msg" hidden></p><p class="cl-o">o</p><button type="button" class="btn-ruta" id="cl-solo">Hacerla solo (se guarda en tu cuenta)</button></div>`;
@@ -317,7 +339,7 @@ function cuadro(cont, eq, A = CUADRO_MM) {
   let S = { celdas: {}, por: {}, entregado: null }, clave = false, pend = new Map(), vuelo = new Map(), pendT = null, existe = false, ultima = '';
   const ref = eq ? doc(db, 'grupos', sesion.grupoId, 'equipos', eq.id, 'atlas', A.id) : doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'atlas', A.ind);
   const nInv = A.filas.filter(x => x[3]).length;
-  cont.innerHTML = `<div class="ma-barra"><span>${eq ? `👥 <b>${esc(eq.nombre)}</b>: ${esc((eq.nombres || []).join(', '))}` : `👤 <b>${esc(sesion.nombre)}</b> (individual)`}</span><span class="ma-estado" id="cu-estado"></span>
+  cont.innerHTML = `<div class="ma-barra"><span>${quienTrabaja(a, eq)}</span><span class="ma-estado" id="cu-estado"></span>
       <button type="button" class="btn-ruta" id="cu-word">⬇ Descargar en Word</button></div>
     <div data-entrega></div>
     <p class="atlas-ayuda">${A.ayuda} Las filas marcadas <b>🔎 Investiga</b> no vienen en el compendio: búsquenlas en internet${eq ? ', repártanselas entre el equipo' : ''} y anoten de dónde sacaron la información. Se guarda solo${eq ? ' y todos ven al instante lo que escriben los demás' : ''}.</p>
@@ -946,6 +968,7 @@ function actInfluencias(cont) {
     cont.innerHTML = '<p class="atlas-ayuda">Buscando a tu equipo…</p>';
     const eq = await equipo('influencias');
     if (eq) return influencias(cont, eq);
+    if (SOLO.influencias || reaperturaDe(TAREAS_DIG.influencias)) return influencias(cont, null);
     cont.innerHTML = `<div class="cl-sin-eq"><p><b>Todavía no estás en un equipo.</b> Escribe el código de 4 letras de tu equipo (o escanea el QR que proyecta tu maestro).</p>
       <form id="cl-unir" class="ma-unir"><div><input id="cl-cod" maxlength="4" autocomplete="off" placeholder="ABCD" aria-label="Código del equipo"><button class="btn-at" type="submit">Unirme</button></div></form>
       <p class="ma-msg mal" id="cl-unir-msg" hidden></p><p class="cl-o">o</p><button type="button" class="btn-ruta" id="cl-solo">Hacerla solo (se guarda en tu cuenta)</button></div>`;
@@ -957,7 +980,7 @@ function actInfluencias(cont) {
 function influencias(cont, eq) {
   const a = TAREAS_DIG.influencias, I = INFLUENCIAS;
   const ref = eq ? doc(db, 'grupos', sesion.grupoId, 'equipos', eq.id, 'atlas', I.id) : doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'atlas', 'tarea-influencias');
-  cont.innerHTML = `<div class="ma-barra"><span>${eq ? `👥 <b>${esc(eq.nombre)}</b>: ${esc((eq.nombres || []).join(', '))}` : `👤 <b>${esc(sesion.nombre)}</b> (individual)`}</span><span class="ma-estado" id="in-estado"></span>
+  cont.innerHTML = `<div class="ma-barra"><span>${quienTrabaja(a, eq)}</span><span class="ma-estado" id="in-estado"></span>
       <button type="button" class="btn-ruta" id="in-word">⬇ Descargar en Word</button></div>
     <div data-entrega></div>
     <div id="in-voto"></div>
@@ -1189,6 +1212,7 @@ function actEspecias(cont) {
     cont.innerHTML = '<p class="atlas-ayuda">Buscando a tu equipo…</p>';
     const eq = await equipo('especias');
     if (eq) return especias(cont, eq);
+    if (SOLO.especias || reaperturaDe(TAREAS_DIG.especias)) return especias(cont, null);
     cont.innerHTML = `<div class="cl-sin-eq"><p><b>Todavía no estás en un equipo.</b> Escribe el código de 4 letras de tu equipo (o escanea el QR que proyecta tu maestro).</p>
       <form id="cl-unir" class="ma-unir"><div><input id="cl-cod" maxlength="4" autocomplete="off" placeholder="ABCD" aria-label="Código del equipo"><button class="btn-at" type="submit">Unirme</button></div></form>
       <p class="ma-msg mal" id="cl-unir-msg" hidden></p><p class="cl-o">o</p><button type="button" class="btn-ruta" id="cl-solo">Hacerla solo (se guarda en tu cuenta)</button></div>`;
@@ -1200,7 +1224,7 @@ function actEspecias(cont) {
 function especias(cont, eq) {
   const a = TAREAS_DIG.especias, E = ESPECIAS, [sk, sn, scol, spista] = subregionDe(eq, sesion.alumnoId);
   const ref = eq ? doc(db, 'grupos', sesion.grupoId, 'equipos', eq.id, 'atlas', E.id) : doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'atlas', 'tarea-especias');
-  cont.innerHTML = `<div class="ma-barra"><span>${eq ? `👥 <b>${esc(eq.nombre)}</b>: ${esc((eq.nombres || []).join(', '))}` : `👤 <b>${esc(sesion.nombre)}</b> (individual)`}</span><span class="ma-estado" id="es-estado"></span>
+  cont.innerHTML = `<div class="ma-barra"><span>${quienTrabaja(a, eq)}</span><span class="ma-estado" id="es-estado"></span>
       <button type="button" class="btn-ruta" id="es-word">⬇ Descargar en Word</button></div>
     <div data-entrega></div>
     <div class="es-sub" style="--c:${scol}"><small>${eq ? 'Por sorteo, a su equipo le tocó' : 'Por sorteo, te tocó'}</small><b>${esc(sn)}</b><p>${esc(spista)}</p></div>
@@ -1283,6 +1307,7 @@ function actRecado(cont) {
     cont.innerHTML = '<p class="atlas-ayuda">Buscando a tu equipo…</p>';
     const eq = await equipo('recado');
     if (eq) return recado(cont, eq);
+    if (SOLO.recado || reaperturaDe(TAREAS_DIG.recado)) return recado(cont, null);
     cont.innerHTML = `<div class="cl-sin-eq"><p><b>Todavía no estás en un equipo.</b> Escribe el código de 4 letras de tu equipo (o escanea el QR que proyecta tu maestro).</p>
       <form id="cl-unir" class="ma-unir"><div><input id="cl-cod" maxlength="4" autocomplete="off" placeholder="ABCD" aria-label="Código del equipo"><button class="btn-at" type="submit">Unirme</button></div></form>
       <p class="ma-msg mal" id="cl-unir-msg" hidden></p><p class="cl-o">o</p><button type="button" class="btn-ruta" id="cl-solo">Hacerla solo (se guarda en tu cuenta)</button></div>`;
@@ -1298,7 +1323,7 @@ function recado(cont, eq) {
   const a = TAREAS_DIG.recado, R = RECADOS, [rk] = recadoDe(eq, sesion.alumnoId);
   let REC = rk;   // el recado del equipo: el que quedó guardado en su trabajo (el docente lo puede cambiar) o el del sorteo
   const ref = eq ? doc(db, 'grupos', sesion.grupoId, 'equipos', eq.id, 'atlas', R.id) : doc(db, 'grupos', sesion.grupoId, 'alumnos', sesion.alumnoId, 'atlas', 'tarea-recado');
-  cont.innerHTML = `<div class="ma-barra"><span>${eq ? `👥 <b>${esc(eq.nombre)}</b>: ${esc((eq.nombres || []).join(', '))}` : `👤 <b>${esc(sesion.nombre)}</b> (individual)`}</span><span class="ma-estado" id="re-estado"></span>
+  cont.innerHTML = `<div class="ma-barra"><span>${quienTrabaja(a, eq)}</span><span class="ma-estado" id="re-estado"></span>
       <button type="button" class="btn-ruta" id="re-word">⬇ Descargar en Word</button></div>
     <div data-entrega></div>
     <div id="re-sub"></div>

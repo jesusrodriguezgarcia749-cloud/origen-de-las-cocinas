@@ -23,7 +23,8 @@ const AVISO_FIJO = {
     '• **Tareas: 25 puntos.** Son 15 tareas (los cinco atlas: África, América, Asia, Europa y Oceanía; mexica vs. maya, desarma el platillo, las siete influencias, especias de Asia, el recado campechano, platillo de fusión, más que comida, Versalles vs. Topkapi, banquete de Estado y el menú à la carte). Se promedian todas: cada una vale cerca de 1.7 puntos.\n' +
     '• **Participación: 25 puntos.** 10 por participar en clase y 15 por las actividades de repaso: el Tema 3 vale 7.5 y el Tema 4 vale 7.5, y cuentan cuando terminas el tema sin errores.\n' +
     '• **Examen escrito: 20 puntos** (viernes 27) · **Examen práctico: 20 puntos** · **Asistencia: 5** · **Uniforme: 5**.\n' +
-    'Entra a **Tareas** y a **Actividades**, revisa cuáles te faltan y entrégalas. Si trabajas en equipo, pónganse de acuerdo para entregar a tiempo.',
+    '**Tareas en equipo:** si tu equipo no entregó una tarea, ahora la haces **individual**: al abrirla te aparece tu propia versión (en el atlas, toca «Hacerlo individual»). Si tu equipo sí la entregó, ya no tienes que hacer nada.\n' +
+    'Entra a **Tareas** y a **Actividades**, revisa cuáles te faltan y entrégalas.',
 };
 
 async function iniciar() {
