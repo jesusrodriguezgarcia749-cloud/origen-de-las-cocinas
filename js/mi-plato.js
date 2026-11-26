@@ -262,23 +262,36 @@ function pintarGuiada() {
   } else {
     T.pasos[n] = T.pasos[n] || p.pasos.map(() => '');
     const previas = p.ver.filter(v => (T.respuestas[v] || '').trim());
-    cuerpo.innerHTML = `<article class="t-preg e1">
-      <p class="e1-n">Pregunta ${n} · ${paso + 1} de ${tot} · ${esc(p.titulo)}</p><h3>${esc(p.texto)}</h3>
-      ${previas.length ? `<div class="e1-base"><p class="e1-k">📌 Lo que ya escribiste y te sirve aquí</p>${previas.map(v => `<p><b>Pregunta ${v}:</b> ${esc(extracto(T.respuestas[v]))}</p>`).join('')}<small>Conecta tu respuesta con lo que ya investigaste, sin repetirlo igual.</small></div>` : ''}
-      <h4 class="e1-h">✍️ Ahora hazla tuya</h4>
-      <p class="lab-ayuda">Contesta cada punto con tus palabras. Con eso la plataforma te arma tu respuesta.</p>
-      ${p.pasos.map(([t, a], i) => `<label class="e1-sub"><span><b>${NUM[i]} ${esc(t)}</b><small>${esc(a)}</small></span><textarea data-i="${i}" rows="3">${esc(T.pasos[n][i] || '')}</textarea></label>`).join('')}
+    // Si ya tiene su respuesta (por ejemplo, la subió de su Word) y no usó los puntos de ayuda, primero se le
+    // muestra su respuesta; los puntos quedan plegados por si quiere rehacerla. Antes veía los cuadros vacíos
+    // arriba y la palomita en la pregunta, y parecía que su respuesta no estaba.
+    const yaTiene = !!(T.respuestas[n] || '').trim() && !(T.pasos[n] || []).some(x => (x || '').trim());
+    const armar = `<button type="button" class="btn-lab-l" id="e1-armar">🧩 Armar mi respuesta con lo anterior</button>`;
+    const ayuda = `${p.pasos.map(([t, a], i) => `<label class="e1-sub"><span><b>${NUM[i]} ${esc(t)}</b><small>${esc(a)}</small></span><textarea data-i="${i}" rows="3">${esc(T.pasos[n][i] || '')}</textarea></label>`).join('')}
       <details class="t-pistas"><summary>Dónde investigar y cómo citar</summary><ul>
         ${p.temas.length ? `<li><b>Compendio:</b> ${p.temas.map(t => `<a href="tema.html?id=${t}" target="_blank" rel="noopener">${t}</a>`).join(' · ')}</li>` : ''}
         ${p.pista ? `<li>${esc(p.pista)}</li>` : ''}
         <li>Si usas el libro o el compendio del curso, escribe el dato con tus palabras y al final pon <b>${esc(D.libro.cita)}</b>.</li>
         <li>Si usas otra fuente, cítala igual: (Apellido, año). Si no tiene año: (Apellido, s. f.). Agrégala en «Referencias y Word».</li>
-        <li>Si copias una frase exacta, ponla entre comillas «así» y agrega la cita.</li></ul></details>
+        <li>Si copias una frase exacta, ponla entre comillas «así» y agrega la cita.</li></ul></details>`;
+    const caja = `<textarea class="t-resp" id="e1-final" rows="9" placeholder="Aquí queda tu respuesta completa (al menos 4 renglones).">${esc(T.respuestas[n] || '')}</textarea>
+      <ul class="e1-checks" id="e1-checks"></ul>`;
+    cuerpo.innerHTML = `<article class="t-preg e1">
+      <p class="e1-n">Pregunta ${n} · ${paso + 1} de ${tot} · ${esc(p.titulo)}</p><h3>${esc(p.texto)}</h3>
+      ${previas.length ? `<div class="e1-base"><p class="e1-k">📌 Lo que ya escribiste y te sirve aquí</p>${previas.map(v => `<p><b>Pregunta ${v}:</b> ${esc(extracto(T.respuestas[v]))}</p>`).join('')}<small>Conecta tu respuesta con lo que ya investigaste, sin repetirlo igual.</small></div>` : ''}
+      ${yaTiene ? `<h4 class="e1-h">📝 Tu respuesta</h4>
+      <p class="lab-ayuda">✓ Esta pregunta ya tiene tu respuesta. Léela, corrígela con lo que te dijo tu maestro y revisa que tenga su cita: esto es lo que va a tu Word.</p>
+      ${caja}
+      <details class="t-pistas e1-rehacer"><summary>✍️ ¿Quieres rehacerla con ayuda, punto por punto?</summary>
+        <p class="lab-ayuda">Contesta cada punto con tus palabras y toca <b>Armar</b>: la plataforma junta tus puntos en una respuesta nueva (antes te pregunta si quieres reemplazar la que tienes).</p>
+        ${ayuda}${armar}</details>${nav}</article>`
+      : `<h4 class="e1-h">✍️ Ahora hazla tuya</h4>
+      <p class="lab-ayuda">Contesta cada punto con tus palabras. Con eso la plataforma te arma tu respuesta.</p>
+      ${ayuda}
       <h4 class="e1-h">📝 Tu respuesta</h4>
       <p class="lab-ayuda">Toca <b>Armar mi respuesta</b> para juntar lo que escribiste arriba. Después léela completa y corrígela para que suene a ti: esto es lo que va a tu Word.</p>
-      <button type="button" class="btn-lab-l" id="e1-armar">🧩 Armar mi respuesta con lo anterior</button>
-      <textarea class="t-resp" id="e1-final" rows="9" placeholder="Aquí queda tu respuesta completa (al menos 4 renglones).">${esc(T.respuestas[n] || '')}</textarea>
-      <ul class="e1-checks" id="e1-checks"></ul>${nav}</article>`;
+      ${armar}
+      ${caja}${nav}</article>`}`;
     const checks = () => {
       const t = T.respuestas[n] || '', w = palabras(t), sub = (T.pasos[n] || []).filter(x => palabras(x) >= 3).length, cp = w ? copiaDe(n) : 0;
       T.copia = T.copia || {}; T.copia[n] = cp;
@@ -288,7 +301,7 @@ function pintarGuiada() {
         [!!w && !!T.platillo.trim() && mencionaPlatillo(t), !T.platillo.trim() ? 'Escribe arriba el nombre de tu platillo' : !w ? `Tu respuesta debe hablar de tu platillo (${T.platillo.trim()})` : mencionaPlatillo(t) ? 'Habla de tu platillo ✓' : `No mencionas tu platillo (${T.platillo.trim()}): tu respuesta debe hablar de él`],
         ...(w ? [[cp <= D.maxCopia, cp <= D.maxCopia ? `Escrita con tus palabras ✓` : `El ${cp} % es igual al compendio: explícalo con tus palabras (o pon la frase exacta entre comillas con su cita)`]] : []),
       ];
-      if (!(T.importado && (T.importado.n || []).includes(n))) L.splice(2, 0, [sub === p.pasos.length, `Contestaste ${sub} de ${p.pasos.length} puntos de «Ahora hazla tuya»`]);
+      if (!yaTiene && !(T.importado && (T.importado.n || []).includes(n))) L.splice(2, 0, [sub === p.pasos.length, `Contestaste ${sub} de ${p.pasos.length} puntos de «Ahora hazla tuya»`]);
       $('#e1-checks').innerHTML = L.map(([ok, txt]) => `<li class="${ok ? 'ok' : ''}">${ok ? '✓' : '○'} ${esc(txt.replace(/\s*✓$/, ''))}</li>`).join('');
     };
     $('#e1-checks')._checks = checks;
