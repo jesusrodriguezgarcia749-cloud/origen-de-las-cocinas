@@ -908,3 +908,4 @@ html[data-theme="dark"] .ct-cat-si { color:#8FD19E; } html[data-theme="dark"] .c
 .sug-det { display: block; font-size: .78rem; font-weight: 500; color: var(--ink-soft, #6B6257); margin-top: 2px; }
 .sug-chip { border: 1.5px solid var(--sage, #6E8B5E); background: #EEF4EA; color: #2F4A25; border-radius: 999px; padding: 5px 12px; font-weight: 600; font-size: .85rem; cursor: pointer; white-space: nowrap; }
 .sug-chip b { font-size: 1rem; }
+.td-cat.si:hover { background: #FBEDEA; color: #9B3328; border-color: #9B3328; }

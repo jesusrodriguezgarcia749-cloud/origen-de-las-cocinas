@@ -491,6 +491,24 @@ async function cargarCatalogo(tipo) {
   });
 }
 
+// Quita una tarea o participación del catálogo: deja de contar en el promedio. Las calificaciones ya
+// capturadas no se borran (si se vuelve a agregar con el mismo nombre, regresan). Si es una tarea digital,
+// queda marcada con noCat para que el panel no la vuelva a agregar solo.
+async function quitarDelCatalogo(tipo, item) {
+  const cfg = CONFIG_TIPO[tipo];
+  if (!confirm(`¿Quitar «${item.nombre}» del catálogo?\n\nYa no contará para la calificación de nadie. Lo que ya calificaste no se borra.`)) return false;
+  try {
+    await deleteDoc(doc(db, 'grupos', grupoActivo, cfg.catalogo, item.id));
+    const dig = String(item.id).startsWith('dig-') ? String(item.id).slice(4) : '';
+    if (dig) await setDoc(doc(db, 'grupos', grupoActivo), { tareasDig: { [dig]: { noCat: true } } }, { merge: true });
+    const v = await getDoc(doc(db, 'grupos', grupoActivo, cfg.catalogo, item.id));
+    if (v.exists()) throw new Error('sigue en el catálogo');
+  } catch (e) { console.error(e); alert('No se pudo quitar. Revisa tu conexión e inténtalo otra vez.'); return false; }
+  alert(`✓ «${item.nombre}» ya no está en el catálogo.`);
+  cargarCatalogo(tipo);
+  return true;
+}
+
 async function calificarItem(tipo, item) {
   const cfg = CONFIG_TIPO[tipo];
   itemCalificandoId[tipo] = item.id;
@@ -518,7 +536,7 @@ async function calificarItem(tipo, item) {
     if (itemCalificandoId[tipo] !== item.id) return;
   }
 
-  cont.innerHTML = `<div class="quiz-actions" style="margin-bottom:12px; display:flex; gap:8px;"><button type="button" class="btn btn-ghost-dark btn-small" data-accion="marcar-diez">${esParticipacion ? 'Marcar a todos' : 'Marcar todos con 10'}</button>${sugs ? '<button type="button" class="btn btn-ghost-dark btn-small" data-accion="usar-sug">Usar sugeridas en las vacías</button>' : ''}<button type="button" class="btn btn-ghost-dark btn-small" data-accion="limpiar-todos">${esParticipacion ? 'Quitar a todos (nadie participó)' : 'Limpiar todos'}</button></div>`;
+  cont.innerHTML = `<div class="quiz-actions" style="margin-bottom:12px; display:flex; gap:8px;"><button type="button" class="btn btn-ghost-dark btn-small" data-accion="marcar-diez">${esParticipacion ? 'Marcar a todos' : 'Marcar todos con 10'}</button><button type="button" class="btn btn-ghost-dark btn-small" data-accion="quitar-cat" style="margin-left:auto">🗑 Quitar del catálogo</button>${sugs ? '<button type="button" class="btn btn-ghost-dark btn-small" data-accion="usar-sug">Usar sugeridas en las vacías</button>' : ''}<button type="button" class="btn btn-ghost-dark btn-small" data-accion="limpiar-todos">${esParticipacion ? 'Quitar a todos (nadie participó)' : 'Limpiar todos'}</button></div>`;
   const filasCont = document.createElement('div');
   filasCont.id = `${cfg.calificarLista}-filas`;
   cont.appendChild(filasCont);
@@ -539,6 +557,9 @@ async function calificarItem(tipo, item) {
   cont.querySelector('[data-accion="marcar-diez"]').addEventListener('click', () => {
     if (esParticipacion) filasCont.querySelectorAll('.part-input').forEach(inp => { inp.checked = true; });
     else filasCont.querySelectorAll('.calif-input:not(:disabled)').forEach(inp => { inp.value = '10'; });
+  });
+  cont.querySelector('[data-accion="quitar-cat"]').addEventListener('click', async () => {
+    if (await quitarDelCatalogo(tipo, item)) { document.getElementById(cfg.calificarWrap).hidden = true; if (tipo === 'tareas') { try { cargarTareasDig(); } catch { /* */ } } }
   });
   const usar = cont.querySelector('[data-accion="usar-sug"]');
   if (usar) usar.addEventListener('click', () => filasCont.querySelectorAll('.ens-row').forEach(row => { const i = row.querySelector('.calif-input'), c = row.querySelector('.sug-chip'); if (c && i && !i.disabled && i.value === '') i.value = c.dataset.sug; }));
@@ -1313,7 +1334,8 @@ async function autoCatalogo() {
   if (!g || AUTO_CAT === g + hoy) return;
   try {
     const sn = await getDocs(collection(db, 'grupos', g, 'tareas_catalogo')), ya = new Set(sn.docs.map(d => d.id));
-    const nuevas = Object.values(TAREAS_DIG).filter(a => califica(a) && esAuto(a) && a.fecha <= hoy && !ya.has(catalogoId(a.id)));
+    let td = {}; try { td = ((await getDoc(doc(db, 'grupos', g))).data() || {}).tareasDig || {}; } catch { /* */ }
+    const nuevas = Object.values(TAREAS_DIG).filter(a => califica(a) && esAuto(a) && a.fecha <= hoy && !ya.has(catalogoId(a.id)) && !(td[a.id] && td[a.id].noCat));
     await Promise.all(nuevas.map(a => setDoc(doc(db, 'grupos', g, 'tareas_catalogo', catalogoId(a.id)), { nombre: nombreCatalogo(a), fecha: a.fecha, parcial: parcialDe(a.fecha), digital: a.id, auto: true, creado: serverTimestamp() })));
     AUTO_CAT = g + hoy;
     if (nuevas.length && g === grupoActivo) { try { cargarCatalogo('tareas'); } catch { /* */ } }
@@ -1336,7 +1358,7 @@ async function cargarTareasDig() {
     const cat = enCat.has(catalogoId(a.id)), auto = esAuto(TAREAS_DIG[a.id]) && !(est[a.id] && 'cierre' in est[a.id]), cierre = cierreDe(est[a.id], TAREAS_DIG[a.id]), pro = Object.entries((est[a.id] && est[a.id].extra) || {}).filter(([, v]) => v && Date.parse(v) > Date.now()).length, vencida = !!cierre && Date.now() > Date.parse(cierre), ab = !(est[a.id] && est[a.id].abierta === false) && !vencida;
     return `<div class="td-fila"><span class="td-nom">${a.icono} ${escaparHTML(a.nombre)}${cat ? ` <span data-marca="${catalogoId(a.id)}">${marcaCalificada(cuenta[catalogoId(a.id)] || 0, alumnosCache.length)}</span>` : ''}</span>
       <label class="td-cierre" title="${auto ? 'Automático: cierra a las 23:59 del día de la clase. Cámbiala si quieres otra fecha; vacía, la cierras tú.' : 'Fecha y hora límite: la tarea se cierra sola. Déjala vacía para cerrarla tú.'}"><span>⏰ Cierra${auto ? ' <small class="td-auto">auto</small>' : ''}</span><input type="datetime-local" data-cierre="${a.id}" value="${escaparHTML(cierre)}"></label>
-      <button type="button" class="btn btn-small td-cat ${cat ? 'si' : ''}" data-cat="${a.id}" ${cat ? 'disabled' : ''}>${cat ? '✓ En el catálogo' : '+ Agregar al catálogo'}</button>
+      <button type="button" class="btn btn-small td-cat ${cat ? 'si' : ''}" data-cat="${a.id}" title="${cat ? 'Toca para quitarla del catálogo' : 'Toca para que cuente en la calificación'}">${cat ? '✓ En el catálogo' : '+ Agregar al catálogo'}</button>
       <button type="button" class="btn btn-small td-ab ${ab ? 'si' : 'no'}" data-ab="${a.id}">${ab ? '🔓 Abierta' : vencida ? '🔒 Cerrada (venció)' : '🔒 Cerrada'}</button>
       ${enEquipo(a) ? `<button type="button" class="btn btn-small td-eq" data-eqt="${a.id}" aria-expanded="false">👥 Equipos</button>` : ''}
       <button type="button" class="btn btn-small td-pro${pro ? ' si' : ''}" data-pro="${a.id}" aria-expanded="false" title="Abrir esta tarea solo a un alumno (falta justificada u otra razón)">👤 Prórroga${pro ? ` (${pro})` : ''}</button>
@@ -1345,8 +1367,10 @@ async function cargarTareasDig() {
   const irHoy = document.getElementById('td-ir-hoy'); if (irHoy) irHoy.addEventListener('click', () => document.getElementById('td-hoy').scrollIntoView({ behavior: 'smooth', block: 'start' }));
   cont.querySelectorAll('[data-cat]').forEach(b => b.addEventListener('click', async () => {
     const a = TAREAS_DIG[b.dataset.cat];
+    if (enCat.has(catalogoId(a.id))) { if (await quitarDelCatalogo('tareas', { id: catalogoId(a.id), nombre: nombreCatalogo(a) })) { cargarTareasDig(); } return; }
     if (!confirm(`¿Agregar «${nombreCatalogo(a)}» a las tareas del ${parcialDe(a.fecha) === 'final' ? 'Examen Final' : 'Parcial 2'}?\n\nDesde este momento cuenta para la calificación: a quien no la entregue le contará como cero en el promedio de tareas.`)) return;
     await setDoc(doc(db, 'grupos', grupoActivo, 'tareas_catalogo', catalogoId(a.id)), { nombre: nombreCatalogo(a), fecha: a.fecha, parcial: parcialDe(a.fecha), digital: a.id, creado: serverTimestamp() });
+    await setDoc(doc(db, 'grupos', grupoActivo), { tareasDig: { [a.id]: { noCat: false } } }, { merge: true }).catch(() => {});
     cargarTareasDig(); cargarCatalogo('tareas');
   }));
   cont.querySelectorAll('[data-ab]').forEach(b => b.addEventListener('click', async () => {
