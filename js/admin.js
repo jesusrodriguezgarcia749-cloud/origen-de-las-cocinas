@@ -508,8 +508,17 @@ async function calificarItem(tipo, item) {
   // es cuántas veces participó cada quien contra la meta del parcial, no qué
   // tan bien lo hizo. Las TAREAS sí se califican de 0 a 10.
   const esParticipacion = tipo === 'participaciones';
+  // Si la tarea del catálogo es una tarea digital (dig-…), se calcula la calificación sugerida de cada alumno
+  // con el mismo criterio de «Tareas digitales»: el docente la revisa y decide.
+  const dig = tipo !== 'tareas' ? null : (String(item.id).startsWith('dig-') && TAREAS_DIG[String(item.id).slice(4)]) || Object.values(TAREAS_DIG).find(t => nombreCatalogo(t) === item.nombre) || null;
+  let sugs = null;
+  if (dig && califica(dig)) {
+    cont.innerHTML = '<p class="empty-inline">Calculando la calificación sugerida de cada alumno…</p>';
+    try { const { filas } = await reunirTareaDig(dig); sugs = Object.fromEntries(filas.map(x => [x.al.id, x])); } catch (e) { console.error(e); }
+    if (itemCalificandoId[tipo] !== item.id) return;
+  }
 
-  cont.innerHTML = `<div class="quiz-actions" style="margin-bottom:12px; display:flex; gap:8px;"><button type="button" class="btn btn-ghost-dark btn-small" data-accion="marcar-diez">${esParticipacion ? 'Marcar a todos' : 'Marcar todos con 10'}</button><button type="button" class="btn btn-ghost-dark btn-small" data-accion="limpiar-todos">${esParticipacion ? 'Quitar a todos (nadie participó)' : 'Limpiar todos'}</button></div>`;
+  cont.innerHTML = `<div class="quiz-actions" style="margin-bottom:12px; display:flex; gap:8px;"><button type="button" class="btn btn-ghost-dark btn-small" data-accion="marcar-diez">${esParticipacion ? 'Marcar a todos' : 'Marcar todos con 10'}</button>${sugs ? '<button type="button" class="btn btn-ghost-dark btn-small" data-accion="usar-sug">Usar sugeridas en las vacías</button>' : ''}<button type="button" class="btn btn-ghost-dark btn-small" data-accion="limpiar-todos">${esParticipacion ? 'Quitar a todos (nadie participó)' : 'Limpiar todos'}</button></div>`;
   const filasCont = document.createElement('div');
   filasCont.id = `${cfg.calificarLista}-filas`;
   cont.appendChild(filasCont);
@@ -520,15 +529,19 @@ async function calificarItem(tipo, item) {
       const marcado = valores[a.id] !== '' && valores[a.id] !== undefined && valores[a.id] !== null;
       row.innerHTML = `<label class="part-check" style="display:flex; align-items:center; gap:10px; width:100%; cursor:pointer;"><input type="checkbox" class="part-input" ${marcado ? 'checked' : ''} style="width:22px; height:22px; flex:none;"><span class="student-name">${escaparHTML(a.nombre)}</span></label>`;
     } else {
-      row.innerHTML = `<span class="student-name">${escaparHTML(a.nombre)}</span><input type="number" min="0" max="10" step="0.1" class="calif-input" value="${valores[a.id] ?? ''}" placeholder="0-10" ${exentos[a.id] ? 'disabled' : ''}><label class="ex-check" title="Falta justificada: esta tarea no le cuenta en el promedio"><input type="checkbox" class="ex-input" ${exentos[a.id] ? 'checked' : ''}> Exento</label><textarea class="proy-comentario" rows="2" placeholder="Comentarios para el alumno: qué salió bien y qué debe corregir (lo verá en Mi progreso)">${escaparHTML(comentarios[a.id] || '')}</textarea>`;
+      const sg = sugs && sugs[a.id];
+      row.innerHTML = `<span class="student-name">${escaparHTML(a.nombre)}${sg ? `<small class="sug-det">${escaparHTML(sg.sug.detalle)}${sg.entregado ? ' · ✓ entregada' : ' · no entregada'}</small>` : ''}</span>${sg ? `<button type="button" class="sug-chip" data-sug="${sg.sug.nota}" title="Toca para usarla">Sugerida <b>${sg.sug.nota}</b></button>` : ''}<input type="number" min="0" max="10" step="0.1" class="calif-input" value="${valores[a.id] ?? ''}" placeholder="0-10" ${exentos[a.id] ? 'disabled' : ''}><label class="ex-check" title="Falta justificada: esta tarea no le cuenta en el promedio"><input type="checkbox" class="ex-input" ${exentos[a.id] ? 'checked' : ''}> Exento</label><textarea class="proy-comentario" rows="2" placeholder="Comentarios para el alumno: qué salió bien y qué debe corregir (lo verá en Mi progreso)">${escaparHTML(comentarios[a.id] || '')}</textarea>`;
     }
     filasCont.appendChild(row);
+    const chip = row.querySelector('.sug-chip'); if (chip) chip.addEventListener('click', () => { const i = row.querySelector('.calif-input'); if (!i.disabled) i.value = chip.dataset.sug; });
     const ex = row.querySelector('.ex-input'); if (ex) ex.addEventListener('change', () => { const i = row.querySelector('.calif-input'); i.disabled = ex.checked; if (ex.checked) i.value = ''; });
   });
   cont.querySelector('[data-accion="marcar-diez"]').addEventListener('click', () => {
     if (esParticipacion) filasCont.querySelectorAll('.part-input').forEach(inp => { inp.checked = true; });
     else filasCont.querySelectorAll('.calif-input:not(:disabled)').forEach(inp => { inp.value = '10'; });
   });
+  const usar = cont.querySelector('[data-accion="usar-sug"]');
+  if (usar) usar.addEventListener('click', () => filasCont.querySelectorAll('.ens-row').forEach(row => { const i = row.querySelector('.calif-input'), c = row.querySelector('.sug-chip'); if (c && i && !i.disabled && i.value === '') i.value = c.dataset.sug; }));
   cont.querySelector('[data-accion="limpiar-todos"]').addEventListener('click', () => {
     if (!confirm('¿Vaciar la captura de todos los alumnos para esta actividad?')) return;
     if (esParticipacion) filasCont.querySelectorAll('.part-input').forEach(inp => { inp.checked = false; });

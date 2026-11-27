@@ -903,3 +903,8 @@ html[data-theme="dark"] .ct-cat-si { color:#8FD19E; } html[data-theme="dark"] .c
 .rp-b.sel.rp-insuficiente{background:#A63D2F;border-color:#A63D2F;color:#fff}
 .rp-desc{margin:5px 0 0;font-size:.85rem;color:#5E564B;min-height:1em}
 .rp-total{font-size:1rem;margin:10px 0}
+
+/* Calificación sugerida en «Calificar» del catálogo de tareas */
+.sug-det { display: block; font-size: .78rem; font-weight: 500; color: var(--ink-soft, #6B6257); margin-top: 2px; }
+.sug-chip { border: 1.5px solid var(--sage, #6E8B5E); background: #EEF4EA; color: #2F4A25; border-radius: 999px; padding: 5px 12px; font-weight: 600; font-size: .85rem; cursor: pointer; white-space: nowrap; }
+.sug-chip b { font-size: 1rem; }
