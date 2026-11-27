@@ -179,6 +179,19 @@ function renderListaActividades(lista, vacio, conCalificacion = true) {
   return `<ul style="margin:6px 0 0; padding-left:18px; font-size:.9em;">${filas}</ul>`;
 }
 
+// Asistencias del parcial, clase por clase, con su estado (presente, retardo, justificado o falta).
+const ESTADO_ASIS = { presente: ['✅', 'Presente'], retardo: ['🕒', 'Retardo'], justificado: ['📝', 'Falta justificada'], falta: ['❌', 'Falta'] };
+function renderListaAsistencia(parcial) {
+  const L = (datosCache.asistencias || []).filter(a => a.parcial === parcial && a.fecha).sort((a, b) => a.fecha.localeCompare(b.fecha));
+  if (!L.length) return '<p class="empty-inline">Sin asistencias capturadas.</p>';
+  const cuenta = {}; L.forEach(a => { const e = ESTADO_ASIS[a.estado] ? a.estado : 'presente'; cuenta[e] = (cuenta[e] || 0) + 1; });
+  const PL = { presente: ['presente', 'presentes'], retardo: ['retardo', 'retardos'], justificado: ['falta justificada', 'faltas justificadas'], falta: ['falta', 'faltas'] };
+  const resumen = Object.keys(ESTADO_ASIS).filter(e => cuenta[e]).map(e => `${ESTADO_ASIS[e][0]} ${cuenta[e]} ${PL[e][cuenta[e] > 1 ? 1 : 0]}`).join(' · ');
+  const dia = f => { const d = new Date(f + 'T12:00:00'); return isNaN(d) ? f : d.toLocaleDateString('es-MX', { weekday: 'short', day: 'numeric', month: 'short' }); };
+  const filas = L.map(a => { const e = ESTADO_ASIS[a.estado] || ESTADO_ASIS.presente; return `<li>${esc(dia(a.fecha))} — ${e[0]} <strong>${e[1]}</strong></li>`; }).join('');
+  return `<p style="margin:4px 0 0; font-size:.9em;">${resumen}</p><ul style="margin:6px 0 0; padding-left:18px; font-size:.9em;">${filas}</ul>`;
+}
+
 function renderParciales() {
   const cont = document.getElementById('prog-parciales');
   const PARCIALES = ['p1', 'p2', 'final'];
@@ -224,10 +237,11 @@ function renderParciales() {
         <h4>${NOMBRES_PARCIAL[p]}</h4>
         ${filasDetalle}
         <details class="prog-detalle-bloque" style="margin-top:8px;">
-          <summary>Ver fechas — Tareas${listaPart ? ' y Participación' : ''}</summary>
+          <summary>Ver fechas — Tareas${listaPart ? ', Participación' : ''} y Asistencias</summary>
           <p class="field-hint" style="margin:8px 0 2px;">Tareas:</p>
           ${esFinal ? renderListaActividades(listaTareas, 'Sin tareas capturadas.') : renderListaTareas(listaTareas, faltantesTareas)}
           ${listaPart ? `<p class="field-hint" style="margin:10px 0 2px;">Participación:</p>${renderListaActividades(listaPart, 'Sin participación capturada.', false)}` : ''}
+          <p class="field-hint" style="margin:10px 0 2px;">Asistencias:</p>${renderListaAsistencia(p)}
         </details>
         <div class="res-row res-total"><span>Total</span><strong>${r.total.toFixed(1)} / 100 pts</strong></div>
         ${r.total > 0 ? `<div class="res-row res-total"><span>Calificación del bloque</span><strong>${r.calif.pendiente ? `${r.calif.cruda.toFixed(2)} <small class="res-extra">— tu docente está revisando el redondeo</small>` : `${r.calif.oficial} / 10`}</strong></div>` : ''}
