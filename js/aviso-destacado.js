@@ -15,9 +15,9 @@ const hoy = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.
 
 // Aviso fijo publicado desde el repositorio (no depende del panel). Se muestra primero mientras esté vigente.
 const AVISO_FIJO = {
-  id: 'reapertura-tareas-p2', hasta: '2026-11-27', vence: '2026-11-27T10:30:00-06:00',
-  titulo: 'Última oportunidad: tareas abiertas hasta el viernes 27 a las 10:30 a. m.',
-  texto: 'Abrí otra vez **todas las tareas del Parcial 2** para que termines y entregues las que te faltan. Tienes hasta el **viernes 27 de noviembre a las 10:30 de la mañana**; después se cierran y ya no se guardan cambios.\n' +
+  id: 'reapertura-tareas-p2b', hasta: '2026-11-27', vence: '2026-11-27T12:45:00-06:00',
+  titulo: 'Dos horas más: tareas abiertas hasta hoy viernes 27 a las 12:45 p. m.',
+  texto: 'Abrí otra vez **todas las tareas del Parcial 2** para que termines y entregues las que te faltan. Tienes hasta **hoy viernes 27 de noviembre a las 12:45 de la tarde**; después se cierran y ya no se guardan cambios.\n' +
     '**Te recomiendo terminar todo:** las tareas que no entregues cuentan como cero, y lo mismo las actividades de repaso.\n' +
     '**Cuánto vale cada cosa en el Parcial 2 (100 puntos):**\n' +
     '• **Tareas: 25 puntos.** Son 15 tareas (los cinco atlas: África, América, Asia, Europa y Oceanía; mexica vs. maya, desarma el platillo, las siete influencias, especias de Asia, el recado campechano, platillo de fusión, más que comida, Versalles vs. Topkapi, banquete de Estado y el menú à la carte). Se promedian todas: cada una vale cerca de 1.7 puntos.\n' +

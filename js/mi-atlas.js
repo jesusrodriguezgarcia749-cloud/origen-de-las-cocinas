@@ -7,7 +7,7 @@ import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, deleteField, 
 import { firebaseConfig } from "./firebase-config.js";
 import { DocITES, mapaContinentePNG, ABREV } from "./docx-ites.js?v=2026111202";
 import { TAREAS_DIG } from "./clase-datos.js?v=2026111703";
-import { estaAbierta, reaperturaDe } from "./cierre-tareas.js?v=2026112601";
+import { estaAbierta, reaperturaDe } from "./cierre-tareas.js?v=2026112702";
 import { formacionDe, formaciones, formacionDeTarea, abiertas as inscAbiertas, equipoDe, tareasDeFormacion } from "./equipos.js";
 
 const db = getFirestore(initializeApp(firebaseConfig));

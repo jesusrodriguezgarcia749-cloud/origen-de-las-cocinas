@@ -21,7 +21,7 @@ import { zipDocx, DocITES } from "./docx-ites.js?v=2026111202";
 import { wordTarea } from "./tarea-word.js?v=2026111901";
 import { FICHAS, sugerirFicha } from "./fichas-datos.js?v=2026111901";
 import { TEMAS_TAREAS, TAREAS_DIG, califica, catalogoId, nombreCatalogo, sugerirAtlas, sugerirCuadro, MIN_PALABRAS_CELDA, sugerirDesarma, CUADRO_MM, CUADROS, INFLUENCIAS, sugerirInfluencias, ESPECIAS, FUSION, sugerirFusion, subregionDe, sugerirEspecias } from "./clase-datos.js?v=2026111703";
-import { cierreDe, parcialDe, esAuto } from "./cierre-tareas.js?v=2026112601";
+import { cierreDe, parcialDe, esAuto } from "./cierre-tareas.js?v=2026112702";
 import { RECADOS, ORIGENES, LLEGADAS, INGS, CLAVE_RECADO, recadoDe, ingsDe, sugerirRecado, infoRecado, recadosDe } from "./recado-datos.js";
 import { idFoto } from "./fotos.js";
 

@@ -11,7 +11,7 @@ export const esAuto = a => !!(a && a.fecha && a.fecha >= AUTO_DESDE);
 // Reapertura general para todo el grupo, puesta desde el repositorio (no hace falta tocar el panel):
 // mientras esté vigente, todas las tareas de clases ya dadas quedan abiertas hasta «hasta», aunque el
 // docente las haya cerrado o ya hubiera pasado su fecha límite.
-export const REAPERTURA = { desde: '2026-11-26T12:00:00-06:00', hasta: '2026-11-27T10:30:00-06:00' };
+export const REAPERTURA = { desde: '2026-11-27T10:00:00-06:00', hasta: '2026-11-27T12:45:00-06:00' };
 export function reaperturaDe(a, ahora = Date.now()) {
   if (!REAPERTURA || !a || !a.fecha) return '';
   const d = Date.parse(REAPERTURA.desde), h = Date.parse(REAPERTURA.hasta);
